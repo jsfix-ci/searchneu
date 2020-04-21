@@ -382,10 +382,31 @@ class Course {
     });
   }
 
-  hasWaitList() : boolean {
-    return this.sections.some((e) => {
-      return e.hasWaitList();
-    });
+  getHasWaitList() {
+    for (let i = this.sections.length - 1; i >= 0; i--) {
+      if (this.sections[i].getHasWaitList()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getHasOnlineSections() {
+    for (let i = this.sections.length - 1; i >= 0; i--) {
+      if (this.sections[i].campus === 'Online') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getHasHonorsSections() {
+    for (let i = this.sections.length - 1; i >= 0; i--) {
+      if (this.sections[i].honors) {
+        return true;
+      }
+    }
+    return false;
   }
 
   hasHonorsSections() : boolean {
