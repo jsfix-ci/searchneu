@@ -393,7 +393,7 @@ class Course {
 
   getHasOnlineSections() {
     for (let i = this.sections.length - 1; i >= 0; i--) {
-      if (this.sections[i].campus === 'Online') {
+      if (this.sections[i].online) {
         return true;
       }
     }
