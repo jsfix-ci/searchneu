@@ -117,7 +117,12 @@ class DumpProcessor {
 
     macros.log('finished with courses');
 
-    await Promise.all(_.chunk(Object.values(termDump.sections), 2000).map(async (sections) => {
+    // FIXME this is a bad hack that will work
+    const courseIds = new Set(await prisma.course.findMany({ select: { id: true } })); 
+    macros.log(`THE CHUNGUS: ${Object.values(termDump.sections).length}`);
+    const processedSections = Object.values(termDump.sections).map((section) => this.constituteSection(section)).filter((s) => courseIds.has(s.classHash));
+
+    await Promise.all(_.chunk(processedSections, 2000).map(async (sections) => {
       await prisma.$executeRaw(this.bulkUpsert('sections', sectionCols, sectionTransforms, sections.map((s) => this.constituteSection(s))));
     }));
 
