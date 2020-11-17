@@ -94,10 +94,6 @@ class Updater {
     const classHashes: string[] = Object.keys(classHashToUsers);
     const sectionHashes: string[] = Object.keys(sectionHashToUsers);
 
-    if (classHashes.length === 0 && sectionHashes.length === 0) {
-      return;
-    }
-
     macros.log('watching classes ', classHashes.length);
 
     const { oldWatchedClasses, oldWatchedSections, oldSectionsByClass } = await this.getOldData(classHashes);
