@@ -1,6 +1,7 @@
 import React from 'react'
 import Section from '../../classModels/Section'
 import WeekdayBoxes from './WeekdayBoxes'
+import AddToCalendar from './AddToCalendar'
 import NotifCheckBox from '../../panels/NotifCheckBox'
 import useSectionPanelDetail from './useSectionPanelDetail';
 import Meeting, { MomentTuple } from '../../classModels/Meeting';
@@ -8,7 +9,6 @@ import Meeting, { MomentTuple } from '../../classModels/Meeting';
 interface DesktopSectionPanelProps {
   section: Section
   showNotificationSwitches: boolean
-
 }
 
 
@@ -68,6 +68,7 @@ function DesktopSectionPanel({ section, showNotificationSwitches } : DesktopSect
         {section.getProfs().join(', ')}
       </td>
       <td>
+        <AddToCalendar />
         {section.online ? <span>Online Class</span>
           : getMeetings(section)}
       </td>
