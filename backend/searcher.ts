@@ -2,7 +2,6 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-
 import _ from 'lodash';
 import { Course, Section } from '@prisma/client';
 import prisma from './prisma';
@@ -247,14 +246,16 @@ class Searcher {
     const start = Date.now();
     const result = await prisma.course.findOne({ where: { uniqueCourseProps: { classId, subject, termId } }, include: { sections: true } });
     const serializer = new HydrateCourseSerializer();
-    let results = result ? await serializer.bulkSerialize([result]) : {};
+    const showCourse = result && result.sections && result.sections.length > 0;
+    // don't show search result of course with no sections
+    let results = showCourse ? await serializer.bulkSerialize([result]) : {};
     results = Object.values(results); // necessary because results looks like { some_class_id: { class: { ... }} and we want [{ class: { ...}}]
     return {
       results,
-      resultCount: result === null ? 0 : 1,
+      resultCount: showCourse ? 0 : 1,
       took: 0,
       hydrateDuration: Date.now() - start,
-      aggregations: result ? this.getSingleResultAggs(result) : { nupath: [], subject: [], classType: [] },
+      aggregations: showCourse ? this.getSingleResultAggs(result) : { nupath: [], subject: [], classType: [] },
     };
   }
 
@@ -262,7 +263,7 @@ class Searcher {
     return {
       nupath: result.nupath.map((val) => { return { value: val, count: 1 } }),
       subject: [{ value: result.subject, count: 1 }],
-      classType: result.sections[0] ? [{ value: result.sections[0].classType, count: 1 }] : [],
+      classType: [{ value: result.sections[0].classType, count: 1 }],
     };
   }
 
