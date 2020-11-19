@@ -143,8 +143,8 @@ describe('searcher', () => {
           hydrateDuration: expect.anything(),
           aggregations: {
             nupath: [],
-            subject: [{ count: 1, value: "CS"}],
-            classType: [{ count: 1, value: "Lecture"}],
+            subject: [{ count: 1, value: 'CS' }],
+            classType: [{ count: 1, value: 'Lecture' }],
           },
         });
       });
