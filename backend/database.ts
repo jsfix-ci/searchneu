@@ -37,7 +37,7 @@ class Database {
         user: { connect: { id: userId } },
         course: { connect: { id: courseId } },
       },
-      update: {}
+      update: {},
     });
   }
 
@@ -48,7 +48,7 @@ class Database {
         user: { connect: { id: userId } },
         section: { connect: { id: sectionId } },
       },
-      update: {}
+      update: {},
     });
   }
 
