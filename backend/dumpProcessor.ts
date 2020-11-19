@@ -127,6 +127,19 @@ class DumpProcessor {
 
     macros.log('finished with sections');
 
+    const courseUpdateTimes: Record<string, Date> = processedSections.reduce((acc: Record<string, Date>, section) => {
+      return { ...acc, [section.classHash]: new Date() };
+    }, {});
+
+    await Promise.all(Object.entries(courseUpdateTimes).map(async ([id, updateTime]) => {
+      return prisma.course.update({
+        where: { id },
+        data: { lastUpdateTime: updateTime },
+      });
+    }));
+
+    macros.log('finished updating times');
+
     if (destroy) {
       await prisma.course.deleteMany({
         where: {
