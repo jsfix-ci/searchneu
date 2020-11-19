@@ -22,12 +22,34 @@ class Database {
     await Promise.all([prisma.followedSection.deleteMany({ where: { userId: key } }), prisma.followedCourse.deleteMany({ where: { userId: key } })]);
 
     if (value.watchingSections) {
-      await Promise.all(value.watchingSections.map((section) => { return prisma.followedSection.create({ data: { user: { connect: { id: key } }, section: { connect: { id: section } } } }); }));
+      await Promise.all(value.watchingSections.map((section) => this.createFollowedSection(key, section)));
     }
 
     if (value.watchingClasses) {
-      await Promise.all(value.watchingClasses.map((course) => { return prisma.followedCourse.create({ data: { user: { connect: { id: key } }, course: { connect: { id: course } } } }); }));
+      await Promise.all(value.watchingClasses.map((course) => this.createFollowedCourse(key, course)));
     }
+  }
+
+  async createFollowedCourse(userId: string, courseId: string) {
+    return prisma.followedCourse.upsert({
+      where: { userId_courseId: { userId, courseId } },
+      create: {
+        user: { connect: { id: userId } },
+        course: { connect: { id: courseId } },
+      },
+      update: {}
+    });
+  }
+
+  async createFollowedSection(userId: string, sectionId: string) {
+    return prisma.followedSection.upsert({
+      where: { userId_sectionId: { userId, sectionId } },
+      create: {
+        user: { connect: { id: userId } },
+        section: { connect: { id: sectionId } },
+      },
+      update: {}
+    });
   }
 
   // Get the value at this key.
