@@ -252,7 +252,7 @@ class Searcher {
     results = Object.values(results); // necessary because results looks like { some_class_id: { class: { ... }} and we want [{ class: { ...}}]
     return {
       results,
-      resultCount: showCourse ? 0 : 1,
+      resultCount: showCourse ? 1 : 0,
       took: 0,
       hydrateDuration: Date.now() - start,
       aggregations: showCourse ? this.getSingleResultAggs(result) : { nupath: [], subject: [], classType: [] },

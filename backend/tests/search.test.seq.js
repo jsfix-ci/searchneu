@@ -125,7 +125,7 @@ describe('searcher', () => {
       });
     });
     describe('getOneSearchResult', () => {
-      it('Gets 1 result for valid class', async () => {
+      it('Gets results for valid class', async () => {
         expect(await searcher.getOneSearchResult('CS', '2500', '202030')).toMatchObject({
           results: [{
             class: {
@@ -143,8 +143,8 @@ describe('searcher', () => {
           hydrateDuration: expect.anything(),
           aggregations: {
             nupath: [],
-            subject: [{ value: 'CS', count: 1 }],
-            classType: [{ value: 'Lecture', count: 1 }],
+            subject: [{ count: 1, value: "CS"}],
+            classType: [{ count: 1, value: "Lecture"}],
           },
         });
       });
@@ -161,6 +161,19 @@ describe('searcher', () => {
           },
         })
       });
+      it('Gets 0 results for course with no sections', async () => {
+        expect(await searcher.getOneSearchResult('CS', '2510', '202030')).toMatchObject({
+          results: [],
+          resultCount: 0,
+          took: 0,
+          hydrateDuration: expect.anything(),
+          aggregations: {
+            nupath: [],
+            subject: [],
+            classType: [],
+          },
+        })
+      })
     });
   })
 });
