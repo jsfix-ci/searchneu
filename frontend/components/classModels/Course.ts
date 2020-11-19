@@ -347,7 +347,9 @@ class Course {
   }
 
   getLastUpdateString() : string {
-    return this.lastUpdateTime ? moment(this.lastUpdateTime).fromNow() : null;
+    const sectionLastUpdateTimes: number[] = this.sections.map((section) => section.lastUpdateTime);
+    const minLastUpdateTime: number = Math.min(this.lastUpdateTime, ...sectionLastUpdateTimes);
+    return minLastUpdateTime ? moment(minLastUpdateTime).fromNow() : null;
   }
 
   //returns true if any sections have an exam, else false

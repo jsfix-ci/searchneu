@@ -131,6 +131,7 @@ class DumpProcessor {
       await prisma.course.deleteMany({
         where: {
           termId: { in: Array.from(coveredTerms) },
+          // delete all courses that haven't been updated in the past 2 days (in milliseconds)
           lastUpdateTime: { lt: new Date(new Date().getTime() - 48 * 60 * 60 * 1000) },
         },
       });
