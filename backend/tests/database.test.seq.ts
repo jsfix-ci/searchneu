@@ -152,7 +152,7 @@ describe('set', () => {
   it('does not blow up if the same course is followed multiple times', async () => {
     expect(((await prisma.followedCourse.findMany({ where: { userId: '123456789' } }))[0]).courseId).toBe('neu.edu/202030/CS/3500');
     await database.set('123456789', {
-      watchingClasses: ['neu.edu/202030/CS/3500', 'neu.edu/202030/CS/2500']
+      watchingClasses: ['neu.edu/202030/CS/3500', 'neu.edu/202030/CS/2500'],
     });
 
     expect(await prisma.followedCourse.count({ where: { userId: '123456789', courseId: 'neu.edu/202030/CS/3500' } })).toBe(1);
