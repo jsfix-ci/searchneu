@@ -1,6 +1,6 @@
 #!/bin/sh
 
-yarn db:migrate
+yarn prod:db:migrate
 yarn db:refresh
 
 
