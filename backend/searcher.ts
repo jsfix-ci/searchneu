@@ -12,7 +12,7 @@ import macros from './macros';
 import {
   EsQuery, QueryNode, ExistsQuery, TermsQuery, TermQuery, LeafQuery, MATCH_ALL_QUERY, RangeQuery,
   EsFilterStruct, EsAggFilterStruct, FilterInput, FilterPrelude, AggFilterPrelude, SortInfo, Range,
-  SearchResults, SingleSearchResult, PartialResults, EsResultBody, EsMultiResult, AggResults,
+  SearchResults, SingleSearchResult, PartialResults, EsResultBody, EsMultiResult, AggResults, SearchResult,
 } from './search_types';
 
 type CourseWithSections = Course & { sections: Section[] };
@@ -277,8 +277,11 @@ class Searcher {
   async search(query: string, termId: string, min: number, max: number, filters: FilterInput = {}): Promise<SearchResults> {
     await this.initializeSubjects();
     const start = Date.now();
-    let results; let resultCount; let hydrateDuration; let took; let aggregations;
-
+    let results: SearchResult[];
+    let resultCount: number;
+    let took: number;
+    let hydrateDuration: number;
+    let aggregations: AggResults;
     // if we know that the query is of the format of a course code, we want to return only one result
     const patternResults = query.match(this.COURSE_CODE_PATTERN);
     const subject = patternResults ? patternResults[1].toUpperCase() : '';

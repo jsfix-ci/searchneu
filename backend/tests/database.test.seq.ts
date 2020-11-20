@@ -148,6 +148,28 @@ describe('set', () => {
     expect(await prisma.followedCourse.count({ where: { userId: '123456789', courseId: 'neu.edu/202030/CS/2510' } })).toBe(1);
     expect(await prisma.followedCourse.count({ where: { userId: '123456789' } })).toBe(2);
   });
+
+  it('does not blow up if the same course is followed multiple times', async () => {
+    expect(((await prisma.followedCourse.findMany({ where: { userId: '123456789' } }))[0]).courseId).toBe('neu.edu/202030/CS/3500');
+    await database.set('123456789', {
+      watchingClasses: ['neu.edu/202030/CS/3500', 'neu.edu/202030/CS/2500'],
+    });
+
+    expect(await prisma.followedCourse.count({ where: { userId: '123456789', courseId: 'neu.edu/202030/CS/3500' } })).toBe(1);
+    expect(await prisma.followedCourse.count({ where: { userId: '123456789', courseId: 'neu.edu/202030/CS/2500' } })).toBe(1);
+    expect(await prisma.followedCourse.count({ where: { userId: '123456789' } })).toBe(2);
+  });
+
+  it('does not blow up if the same section is followed multiple times', async () => {
+    expect(((await prisma.followedSection.findMany({ where: { userId: '123456789' } }))[0]).sectionId).toBe('neu.edu/202030/CS/2500/19350');
+    await database.set('123456789', {
+      watchingSections: ['neu.edu/202030/CS/2500/19350', 'neu.edu/202030/CS/3500/20350'],
+    });
+
+    expect(await prisma.followedSection.count({ where: { userId: '123456789', sectionId: 'neu.edu/202030/CS/2500/19350' } })).toBe(1);
+    expect(await prisma.followedSection.count({ where: { userId: '123456789', sectionId: 'neu.edu/202030/CS/3500/20350' } })).toBe(1);
+    expect(await prisma.followedSection.count({ where: { userId: '123456789' } })).toBe(2);
+  });
 });
 
 describe('get', () => {

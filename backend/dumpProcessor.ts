@@ -117,16 +117,34 @@ class DumpProcessor {
 
     macros.log('finished with courses');
 
-    await Promise.all(_.chunk(Object.values(termDump.sections), 2000).map(async (sections) => {
-      await prisma.$executeRaw(this.bulkUpsert('sections', sectionCols, sectionTransforms, sections.map((s) => this.constituteSection(s))));
+    // FIXME this is a bad hack that will work
+    const courseIds = new Set((await prisma.course.findMany({ select: { id: true } })).map((elem) => elem.id));
+    const processedSections = Object.values(termDump.sections).map((section) => this.constituteSection(section)).filter((s) => courseIds.has(s.classHash));
+
+    await Promise.all(_.chunk(processedSections, 2000).map(async (sections) => {
+      await prisma.$executeRaw(this.bulkUpsert('sections', sectionCols, sectionTransforms, sections));
     }));
 
     macros.log('finished with sections');
+
+    const courseUpdateTimes: Record<string, Date> = processedSections.reduce((acc: Record<string, Date>, section) => {
+      return { ...acc, [section.classHash]: new Date() };
+    }, {});
+
+    await Promise.all(Object.entries(courseUpdateTimes).map(async ([id, updateTime]) => {
+      return prisma.course.update({
+        where: { id },
+        data: { lastUpdateTime: updateTime },
+      });
+    }));
+
+    macros.log('finished updating times');
 
     if (destroy) {
       await prisma.course.deleteMany({
         where: {
           termId: { in: Array.from(coveredTerms) },
+          // delete all courses that haven't been updated in the past 2 days (in milliseconds)
           lastUpdateTime: { lt: new Date(new Date().getTime() - 48 * 60 * 60 * 1000) },
         },
       });
