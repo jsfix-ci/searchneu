@@ -4,12 +4,13 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Course {
   classAttributes String[]         @map(name: "class_attributes")
   classId         String?          @map(name: "class_id")
+  college         String?
   coreqs          Json?
   description     String?
   feeAmount       Int?             @map(name: "fee_amount")
@@ -96,7 +97,7 @@ model Section {
   id               String            @id
   info             String?
   meetings         Json?
-  campus           String?
+  online           Boolean?
   profs            String[]
   seatsCapacity    Int?              @map(name: "seats_capacity")
   seatsRemaining   Int?              @map(name: "seats_remaining")

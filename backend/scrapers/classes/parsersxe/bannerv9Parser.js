@@ -43,7 +43,13 @@ class Bannerv9Parser {
    */
   async scrapeTerms(termIds) {
     const termData = await pMap(termIds, (p) => { return TermParser.parseTerm(p); });
-    return _.mergeWith(...termData, (a, b) => { return a.concat(b); });
+    return _.mergeWith(...termData, (a, b) => {
+      if (Array.isArray(a)) {
+        return a.concat(b);
+      } else {
+        return {...a, ...b};
+      }
+    });
   }
 
   /**

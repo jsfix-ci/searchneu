@@ -11,6 +11,7 @@ import Request from '../../request';
 import ClassParser from './classParser';
 import SectionParser from './sectionParser';
 import util from './util';
+import getSubjectDescriptions from './subjectAbbreviationParser';
 
 const request = new Request('termParser');
 
@@ -47,8 +48,10 @@ class TermParser {
       }
     }, { concurrency: 500 });
 
+    const subjectTable = getSubjectDescriptions(termId);
+
     macros.log(`scraped ${classes.length} classes and ${sections.length} sections`);
-    return { classes, sections };
+    return { classes, sections, subjects: subjectTable };
   }
 
   async parseSections(termId) {

@@ -18,7 +18,12 @@ const request = new Request('subjectAbberviationParser');
 const getSubjectAbbreviations = _.memoize(async (termId) => {
   macros.log(`SubjectAbberviationParser: Not memoized. Scraping term ${termId}`);
   const subjectResponse = await requestSubjects(termId);
-  return processSubjectListResponse(subjectResponse);
+  return createDescriptionTable(subjectResponse);
+});
+
+const getSubjectDescriptions = _.memoize(async (termId) => {
+  const subjectResponse = await requestSubjects(termId);
+  return createAbbrTable(subjectResponse);
 });
 
 async function requestSubjects(termId) {
@@ -35,7 +40,7 @@ async function requestSubjects(termId) {
   return response.body;
 }
 
-function processSubjectListResponse(subjects) {
+function createDescriptionTable(subjects) {
   subjects = subjects.map((subject) => {
     return {
       subjectCode: subject.code,
@@ -46,8 +51,20 @@ function processSubjectListResponse(subjects) {
   return _.mapValues(subjects, 'subjectCode');
 }
 
+function createAbbrTable(subjects) {
+  subjects = subjects.map((subject) => {
+    return {
+      description: he.decode(subject.description),
+      subjectCode: subject.code,
+    };
+  });
+  subjects = _.keyBy(subjects, 'subjectCode');
+  return _.mapValues(subjects, 'description');
+}
+
 export default {
-  getSubjectAbbreviations: getSubjectAbbreviations,
+  getSubjectAbbreviations,
+  getSubjectDescriptions,
   // Export for testing https://philipwalton.com/articles/how-to-unit-test-private-functions-in-javascript/
-  _processSubjectListResponse: processSubjectListResponse,
+  _createDescriptionTable: createDescriptionTable,
 };
