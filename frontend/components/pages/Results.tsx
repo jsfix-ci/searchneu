@@ -10,6 +10,7 @@ import {
 } from 'use-query-params';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import logo from '../images/logo.svg';
+import FilterButton from '../images/FilterButton.svg'
 import search from '../search';
 import macros from '../macros';
 import SearchBar from '../ResultsPage/SearchBar';
@@ -106,16 +107,25 @@ export default function Results() {
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
         <img src={ logo } className='Results__Logo' alt='logo' onClick={ () => { history.push('/'); } } />
         <div className='Results__spacer' />
-        <div className='Results__searchwrapper'>
-          <SearchBar
-            onSearch={ setSearchQuery }
-            query={ query }
-            onClick={ () => {
-              if (macros.isMobile) {
-                setShowOverlay(true);
-              }
-            } }
-          />
+        <div className='Results__mobileSearchFilterWrapper'>
+          <div className='Results__searchwrapper'>
+            <SearchBar
+              onSearch={ setSearchQuery }
+              query={ query }
+            />
+          </div>
+          {macros.isMobile &&
+            <img 
+              src={ FilterButton } 
+              className='Results__filterButton' 
+              alt='filter-button' 
+              onClick={ () => {
+                if (macros.isMobile) {
+                  setShowOverlay(true);
+                }
+              }}
+            />
+          }
         </div>
         <div className='Breadcrumb_Container'>
           <div className='Breadcrumb_Container__dropDownContainer'>
