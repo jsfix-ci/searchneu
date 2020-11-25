@@ -2,7 +2,7 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { useHistory, useParams } from 'react-router-dom';
 import {
@@ -27,12 +27,12 @@ import {
 } from '../ResultsPage/filters';
 import ResultsLoader from '../ResultsPage/ResultsLoader';
 import {
-  BLANK_SEARCH_RESULT, SearchResult, termDropdownOptions, campusDropdownOptions,
+  BLANK_SEARCH_RESULT, SearchResult, Campus,
 } from '../types';
 import SearchDropdown from '../ResultsPage/SearchDropdown';
+import { getAllCampusDropdownOptions, getTermDropdownOptionsForCampus, getLatestTerm, getCampusByLastDigit } from '../global';
 
 interface SearchParams {
-  campus: string,
   termId: string,
   query: string,
   filters: FilterSelection
@@ -61,18 +61,25 @@ const fetchResults = async ({ query, termId, filters }: SearchParams, page: numb
 export default function Results() {
   const atTop = useAtTop();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
-  const { campus, termId, query = '' } = useParams();
+  const { termId, query = '' } = useParams();
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const history = useHistory();
 
-  const setSearchQuery = (q: string) => { history.push(`/${campus}/${termId}/${q}${history.location.search}`); }
-  const setTerm = (t: string) => { history.push(`/${campus}/${t}/${query}${history.location.search}`); }
-  const setCampus = (c: string) => { history.push(`/${c}/${termId}/${query}${history.location.search}`); }
+  const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)))
+  console.log(campus.toString());
+
+  const setSearchQuery = (q: string) => { history.push(`/${termId}/${q}${history.location.search}`); }
+  const setTerm = (t: string) => { console.log("helloooo", t); history.push(`/${t}/${query}${history.location.search}`); }
+  const setCampusAndTerm = (c: string) => { 
+    setCampus(c);
+    setTerm(getLatestTerm(Campus[c.toUpperCase()]))
+  }
+
 
   const filters: FilterSelection = _.merge({}, DEFAULT_FILTER_SELECTION, qParams);
 
   const searchParams: SearchParams = {
-    campus, termId, query, filters,
+    termId, query, filters,
   };
 
   const filtersAreSet: Boolean = areFiltersSet(filters);
@@ -130,10 +137,10 @@ export default function Results() {
         <div className='Breadcrumb_Container'>
           <div className='Breadcrumb_Container__dropDownContainer'>
             <SearchDropdown
-              options={ campusDropdownOptions }
+              options={ getAllCampusDropdownOptions() }
               value={ campus }
               placeholder='NEU'
-              onChange={ setCampus }
+              onChange={ setCampusAndTerm }
               className='searchDropdown'
               compact={ false }
             />
@@ -141,7 +148,7 @@ export default function Results() {
           <span className='Breadcrumb_Container__slash'>/</span>
           <div className='Breadcrumb_Container__dropDownContainer'>
             <SearchDropdown
-              options={ termDropdownOptions }
+              options={ getTermDropdownOptionsForCampus(Campus[campus.toUpperCase()]) }
               value={ termId }
               placeholder='Fall 2020'
               onChange={ setTerm }

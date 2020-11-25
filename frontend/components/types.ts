@@ -45,44 +45,9 @@ export enum DayOfWeek {
   SATURDAY
 }
 
-export const termDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'Spring 2021',
-    value: '202130',
-  },
-  {
-    text: 'Fall 2020',
-    value: '202110',
-  },
-  {
-    text: 'Summer I 2020',
-    value: '202040',
-  },
-  {
-    text: 'Summer II 2020',
-    value: '202060',
-  },
-  {
-    text: 'Summer Full 2020',
-    value: '202050',
-  },
-  {
-    text: 'Spring 2020',
-    value: '202030',
-  },
-];
+export enum Campus {
+  NEU = "NEU",
+  CPS = "CPS",
+  LAW = "LAW"
+}
 
-export const campusDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'NEU',
-    value: 'neu',
-  },
-  {
-    text: 'CPS',
-    value: 'cps',
-  },
-  {
-    text: 'Law',
-    value: 'law',
-  },
-];

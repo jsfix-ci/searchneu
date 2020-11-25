@@ -16,7 +16,7 @@ export default function App() {
     <Router>
       <QueryParamProvider ReactRouterRoute={ Route }>
         <Switch>
-          <Route path='/:campus/:termId/:query?'>
+          <Route path='/:termId/:query?'>
             <Results />
           </Route>
           <Route path='/'>

@@ -5,31 +5,33 @@ import IconGradcap from '../images/IconGradcap'
 import IconScale from '../images/IconScale'
 import IconTie from '../images/IconTie'
 import SearchDropdown from '../ResultsPage/SearchDropdown'
-import { termDropdownOptions } from '../types'
+import { Campus } from '../types'
+import { getTermDropdownOptionsForCampus } from '../global'
 
 interface HomeSearchProps {
   setTermId: (s: string) => void
   termId: string
+  campus: Campus
+  setCampus: (c: Campus) => void
 }
 
-const HomeSearch = ({ setTermId, termId }: HomeSearchProps) => {
+const HomeSearch = ({ setTermId, termId, campus, setCampus }: HomeSearchProps) => {
   const history = useHistory();
-  const [selectedCampus, setSelectedCampus] = useState('neu');
   return (
     <div className='HomeSearch'>
       <div className='HomeSearch__campusSelector'>
         <input type='radio' id='campusSelectorNeu' name='CampusSelector' defaultChecked />
-        <label className='HomeSearch__campusSelector--neu' htmlFor='campusSelectorNeu' onClick={ () => setSelectedCampus('neu') }>
+        <label className='HomeSearch__campusSelector--neu' htmlFor='campusSelectorNeu' onClick={ () => setCampus(Campus.NEU) }>
           <IconGradcap />
           <span>NEU</span>
         </label>
         <input type='radio' id='campusSelectorCps' name='CampusSelector' />
-        <label className='HomeSearch__campusSelector--cps' htmlFor='campusSelectorCps' onClick={ () => setSelectedCampus('cps') }>
+        <label className='HomeSearch__campusSelector--cps' htmlFor='campusSelectorCps' onClick={ () => setCampus(Campus.CPS) }>
           <IconTie />
           <span>CPS</span>
         </label>
         <input type='radio' id='campusSelectorLaw' name='CampusSelector' />
-        <label className='HomeSearch__campusSelector--law' htmlFor='campusSelectorLaw' onClick={ () => setSelectedCampus('law') }>
+        <label className='HomeSearch__campusSelector--law' htmlFor='campusSelectorLaw' onClick={ () => setCampus(Campus.LAW) }>
           <IconScale />
           <span>Law</span>
         </label>
@@ -37,7 +39,7 @@ const HomeSearch = ({ setTermId, termId }: HomeSearchProps) => {
       <div className='HomeSearch__searchBar'>
         <div className='HomeSearch__searchBar--dropdown'>
           <SearchDropdown
-            options={ termDropdownOptions }
+            options={ getTermDropdownOptionsForCampus(campus) }
             value={ termId }
             placeholder='Fall 2020'
             onChange={ setTermId }
@@ -49,7 +51,7 @@ const HomeSearch = ({ setTermId, termId }: HomeSearchProps) => {
           className='HomeSearch__searchBar--input'
         >
           <SearchBar
-            onSearch={ (q) => { history.push(`${selectedCampus}/${termId}/${q}`); } }
+            onSearch={ (q) => { history.push(`${termId}/${q}`); } }
             query=''
           />
         </div>

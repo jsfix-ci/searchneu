@@ -11,7 +11,8 @@ import macros from '../macros';
 import SplashPage from '../SplashPage/SplashPage';
 import Footer from '../Footer';
 import HomeSearch from '../HomePage/HomeSearch'
-import { termDropdownOptions } from '../types'
+import { getTermDropdownOptionsForCampus, getLatestTerm } from '../global'
+import { Campus } from '../types'
 
 
 const ATTENTION_SECTION = {
@@ -21,15 +22,17 @@ const ATTENTION_SECTION = {
 
 const attentionSectionMode = ATTENTION_SECTION.getInvolved;
 
-// The lastest term
-const LATEST_TERM = '202130';
-
-const AVAILABLE_TERMS = termDropdownOptions.map((t) => { return t.value; });
-
 export default function Home() {
+  const [campus, setCampus] = useState(Campus.NEU)
   const [termId = LATEST_TERM, setTermId] = useQueryParam('termId', StringParam); // Default to LATEST if term not in params
+
+  // The lastest term
+  const LATEST_TERM = getLatestTerm(campus);
+
+  const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map((t) => { return t.value; });
+
   // Redirect to latest if we're at an old term
-  if (!AVAILABLE_TERMS.includes(termId)) {
+  if (!AVAILABLE_TERM_IDS.includes(termId)) {
     setTermId(LATEST_TERM);
   }
 
@@ -89,7 +92,7 @@ export default function Home() {
         >
           <div className='centerTextContainer'>
             <img src={ logo } className='logo' alt='logo' />
-            <HomeSearch setSearchFocused={ setSearchFocused } setTermId={ setTermId } termId={ termId } />
+            <HomeSearch setSearchFocused={ setSearchFocused } setTermId={ setTermId } termId={ termId } campus={ campus } setCampus={ setCampus } />
             {attentionSection}
           </div>
         </div>
