@@ -66,12 +66,12 @@ variable "app_count" {
 
 variable "webapp_cpu" {
   description = "cpu the webapp should get"
-  default = 1024
+  default = 512
 }
 
 variable "webapp_memory" {
   description = "memory the webapp should get"
-  default = 2048
+  default = 1024
 }
 
 variable "scrape_cpu" {
