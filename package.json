@@ -229,9 +229,6 @@
     "setupFiles": [
       "./common/jestSetupFile.js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/common/teardown.ts"
-    ],
     "moduleFileExtensions": [
       "js",
       "jsx",
