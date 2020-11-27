@@ -10,7 +10,6 @@ datasource db {
 model Course {
   classAttributes String[]         @map(name: "class_attributes")
   classId         String?          @map(name: "class_id")
-  college         String?
   coreqs          Json?
   description     String?
   feeAmount       Int?             @map(name: "fee_amount")
