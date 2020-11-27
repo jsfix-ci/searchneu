@@ -177,26 +177,6 @@ locals {
       description = "Elasticsearch hostname"
     },
     {
-      name        = "dbUsername"
-      value       = aws_db_instance.default.username
-      description = "Postgres database username"
-    },
-    {
-      name        = "dbPassword"
-      value       = aws_db_instance.default.password
-      description = "Postgres database password"
-    },
-    {
-      name        = "dbName"
-      value       = aws_db_instance.default.name
-      description = "Postgres database name"
-    },
-    {
-      name        = "dbHost"
-      value       = aws_db_instance.default.address
-      description = "Postgres database host"
-    },
-    {
       name        = "DATABASE_URL"
       value       = "postgresql://${aws_db_instance.default.username}:${aws_db_instance.default.password}@${aws_db_instance.default.endpoint}/${module.label.name}"
       description = "Postgres database URL"

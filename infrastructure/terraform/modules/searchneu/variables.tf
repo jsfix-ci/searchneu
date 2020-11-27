@@ -41,7 +41,7 @@ variable "cloudflare_zone_id" {
 }
 
 variable "stage" {
-  description = "Stage/environment. Should be prod or staging"
+  description = "Stage/environment. Should be dev, staging or prod"
 }
 
 variable "ecr_url" {
