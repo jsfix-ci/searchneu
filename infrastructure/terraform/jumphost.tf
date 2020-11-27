@@ -46,7 +46,7 @@ resource "aws_eip" "jumphost" {
 # SG to get into the DB sgs
 resource "aws_security_group" "jumphost" {
   name        = "jumphost-security-group"
-  description = "sg for jumphost to get into staging and prod DBs"
+  description = "sg for jumphost to get into dev, staging and prod DBs"
   vpc_id      = aws_vpc.main.id
 
   ingress {
