@@ -14,14 +14,13 @@ const request = new Request('subjectAbberviationParser');
 /**
  * Get the subject abberviations for use in parsing prereqs
  */
-
-const getSubjectAbbreviations = _.memoize(async (termId) => {
+export const getSubjectAbbreviations = _.memoize(async (termId) => {
   macros.log(`SubjectAbberviationParser: Not memoized. Scraping term ${termId}`);
   const subjectResponse = await requestSubjects(termId);
   return createDescriptionTable(subjectResponse);
 });
 
-const getSubjectDescriptions = _.memoize(async (termId) => {
+export const getSubjectDescriptions = _.memoize(async (termId) => {
   const subjectResponse = await requestSubjects(termId);
   return createAbbrTable(subjectResponse);
 });
@@ -62,9 +61,5 @@ function createAbbrTable(subjects) {
   return _.mapValues(subjects, 'description');
 }
 
-export default {
-  getSubjectAbbreviations,
-  getSubjectDescriptions,
-  // Export for testing https://philipwalton.com/articles/how-to-unit-test-private-functions-in-javascript/
-  _createDescriptionTable: createDescriptionTable,
-};
+// Export for testing https://philipwalton.com/articles/how-to-unit-test-private-functions-in-javascript/
+export { createDescriptionTable as _createDescriptionTable }

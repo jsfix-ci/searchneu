@@ -11,7 +11,7 @@ import Request from '../../request';
 import ClassParser from './classParser';
 import SectionParser from './sectionParser';
 import util from './util';
-import getSubjectDescriptions from './subjectAbbreviationParser';
+import { getSubjectDescriptions } from "./subjectAbbreviationParser";
 
 const request = new Request('termParser');
 
@@ -22,6 +22,7 @@ class TermParser {
    * @returns Object {classes, sections} where classes is a list of class data
    */
   async parseTerm(termId) {
+    const subjectTable = await getSubjectDescriptions(termId);
     const sections = await this.parseSections(termId);
     const courseIdentifiers = {};
     sections.forEach((section) => {
@@ -37,7 +38,11 @@ class TermParser {
     }, { concurrency: 500 });
     const refsPerCourse = classes.map((c) => ClassParser.getAllCourseRefs(c));
     const courseRefs = Object.assign({}, ...refsPerCourse);
-
+    classes.forEach(c => {
+      if (!c) {
+        macros.log(`Class in classes IS FALSE??? ${c}`);
+      }
+    })
     await pMap(Object.keys(courseRefs), async (ref) => {
       if (!(ref in courseIdentifiers)) {
         const { subject, classId } = courseRefs[ref];
@@ -47,8 +52,6 @@ class TermParser {
         }
       }
     }, { concurrency: 500 });
-
-    const subjectTable = getSubjectDescriptions(termId);
 
     macros.log(`scraped ${classes.length} classes and ${sections.length} sections`);
     return { classes, sections, subjects: subjectTable };

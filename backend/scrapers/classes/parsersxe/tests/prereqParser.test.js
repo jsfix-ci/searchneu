@@ -1,9 +1,10 @@
 import PrereqParser from '../prereqParser';
 import PrereqParserData from './data/prereqParser.data';
-import SubjectAbbreviationParser from '../subjectAbbreviationParser';
+import { getSubjectAbbreviations } from '../subjectAbbreviationParser';
 
 jest.mock('../subjectAbbreviationParser');
-const subjectAbbreviationTable = SubjectAbbreviationParser.getSubjectAbbreviations();
+
+const subjectAbbreviationTable = getSubjectAbbreviations();
 
 describe('prereqParser', () => {
   it('should parse corequisites', () => {

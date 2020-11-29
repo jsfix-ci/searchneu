@@ -8,7 +8,8 @@ import Keys from '../../../../common/Keys';
 import Request from '../../request';
 import PrereqParser from './prereqParser';
 import util from './util';
-import SubjectAbbreviationParser from './subjectAbbreviationParser';
+import { getSubjectAbbreviations } from './subjectAbbreviationParser';
+import macros from '../../../macros';
 
 const request = new Request('classParser');
 
@@ -47,6 +48,8 @@ class ClassParser {
     });
     if (req.body.success && req.body.data && req.body.data[0]) {
       return this.parseClassFromSearchResult(req.body.data[0], termId);
+    } else {
+      macros.log(`FALSE CLASS??? ${termId}, ${subject}, ${courseNumber}`);
     }
     return false;
   }
@@ -57,7 +60,7 @@ class ClassParser {
    * @param termId the termId that the class belongs to. Required cause searchresult doesn't include termid for some reason
    */
   async parseClassFromSearchResult(SR, termId) {
-    const subjectAbbreviations = await SubjectAbbreviationParser.getSubjectAbbreviations(termId);
+    const subjectAbbreviations = await getSubjectAbbreviations(termId);
     const { subjectCode, courseNumber } = SR;
     const description = await this.getDescription(termId, subjectCode, courseNumber);
     const prereqs = await this.getPrereqs(termId, subjectCode, courseNumber, subjectAbbreviations);

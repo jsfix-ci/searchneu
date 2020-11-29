@@ -139,13 +139,14 @@ class DumpProcessor {
 
     macros.log('finished updating times');
 
-    Objects.entries(subjects).map(async ([key, value]) => {
-      await prisma.subject.create({
-        abbreviation: key,
-        description: value,
+    await Promise.all(Object.entries(termDump.subjects).map(([key, value]) => {
+      return prisma.subject.create({
+        data : {
+          abbreviation: key,
+          description: value as string,
+        },
       });
-      macros.log(`SUBJECT MAP: ${key}: ${value}`);
-    });
+    }));
 
     macros.log('finished with subjects');
 
