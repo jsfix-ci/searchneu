@@ -113,6 +113,7 @@ describe('searcher', () => {
       it('Gets aggregation for single result', async () => {
         const singleResult = await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/2500' }, include: { sections: true } });
         expect(searcher.getSingleResultAggs(singleResult)).toEqual({
+          campus: [{ value: 'Seattle, WA', count: 1 }],
           nupath: [],
           subject: [{ value: 'CS', count: 1 }],
           classType: [{ value: 'Lecture', count: 1 }],
@@ -121,6 +122,7 @@ describe('searcher', () => {
       it('Gets aggregation for single result with nupath', async () => {
         const singleResult = await prisma.course.findOne({ where: { id: 'neu.edu/202030/PHIL/1145' }, include: { sections: true } });
         expect(searcher.getSingleResultAggs(singleResult)).toEqual({
+          campus: [{ value: 'Boston', count: 1 }],
           nupath: [{ value: 'Ethical reasoning', count: 1 }, { value: 'Argue', count: 1 }, { value: 'Live in the mud', count: 1 }],
           subject: [{ value: 'PHIL', count: 1 }],
           classType: [{ value: 'Lecture', count: 1 }],
