@@ -1,7 +1,7 @@
 .termdropdown {
   display: inline-block;
   max-width: 200px;
-  color: #636363 !important;
+  color: map-get($component-colors, "term-dropdown-text") !important;
   background: transparent !important;
   margin: 0 auto;
   box-shadow: none !important;
@@ -12,7 +12,7 @@
     font-size: 18px;
     font-weight: initial !important;
     border: none !important;
-    color: #636363 !important;
+    color: map-get($component-colors, "term-dropdown-text") !important;
   }
 
   &--compact {

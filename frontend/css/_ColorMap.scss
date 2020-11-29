@@ -129,18 +129,89 @@ $component-colors: (
   "dropdown-filter-scrollbar-thumb": rgba(172, 172, 172, 1),
   "dropdown-filter-scrollbar-track": rgba(229, 229, 229, 1),
   // EmailInput
+  "email-input-enter-email-text": gray,
+  "email-input-button-text": gray,
+  "email-input-button": rgba(224, 225, 226, 0.5),
+  "email-input-button-border": rgba(34, 36, 38, 0.1),
+  "email-input-status-text": green,
+  "email-input-success-text": green,
+  "email-input-error-text": #ae4543,
   // FeedbackModal
-  // FilterPanel
+  "feedback-modal-pill-border": rgba(79, 79, 79, 0.5),
+  "feedback-modal-pill": #fff,
+  "feedback-modal-pill-hover-shadow": rgba(51, 142, 241, 0.5),
+  "feedback-modal-popout": #f6f6f6,
+  "feedback-modal-popout-shadow": rgba(0, 0, 0, 0.25),
+  "feedback-modal-popout-header": #0a3767,
+  "feedback-modal-popout-header-text": white,
+  "feedback-modal-popout-subheader-bottom": #dbd9d9,
+  "feedback-modal-popout-subheader-text": black,
+  "feedback-modal-initial-text-hover": #eaeaea,
+  "feedback-modal-initial-radio": #338ef1,
+  "feedback-modal-initial-radio-border": rgba(0, 0, 0, 0.42),
+  "feedback-modal-checkbox-hover": #eaeaea,
+  "feedback-modal-checkbox-text-hover": black,
+  "feedback-modal-checkbox-box-border": rgba(0, 0, 0, 0.42),
+  "feedback-modal-checkbox-box-border-checked": #fff,
+  "feedback-modal-checkbox-text-bg-checked": #338ef1,
+  "feedback-modal-checkbox-text-border-checked": #338ef1,
+  "feedback-modal-checkbox-text-bg": rgba(51, 142, 241, 0.1),
+  "feedback-modal-checkbox-text-border": rgba(0, 0, 0, 0.8),
+  "feedback-modal-free-selector": #fff,
+  "feedback-modal-free-selector-border": #dededf,
+  "feedback-modal-free-selector-border-checked": #489fff,
+  "feedback-modal-free-selector-text-checked": #489fff,
+  "feedback-modal-free-query-border": #dededf,
+  "feedback-modal-submit": #338ef1,
+  "feedback-modal-submitted": #81c860,
+  "feedback-modal-submitted-text": white,
+  "feedback-modal-submit-text": white,
   // FilterPills
+  "filter-clear-all-text": #d41b2c,
+  "filter-pill-x": #d41b2c,
+  "filter-pill": #fff,
+  "filter-pill-text": #4c5454,
+  "filter-pill-border": #e6e6e6,
+  "filter-pill-hover": #d41b2c,
+  "filter-pill-border-hover": #d41b2c,
+  "filter-pill-text-hover": #fff,
+  "filter-pill-x-hover": #fff,
   // Filters
+  "online-only-switch-track-off": #d3d3d3,
+  "online-only-switch-off": #a0a0a0,
+  "online-only-switch-shadow-off": rgba(10, 10, 10, 0.29),
+  "online-only-switch-track-on": #ca9897,
+  "online-only-switch-on": #ae4543,
   // Footer
-  // LoadingContainer
+  "footer-affiliation-text": gray,
   // MobileSearchOverlay
+  "mobile-search-content-bg": #f6f6f6,
+  "mobile-search-execute": #338ef1,
+  "mobile-search-execute-text": #fff,
   // SearchBar
+  "searchbar-border": #e2dfdf,
+  "searchbar-focus-shadow": rgba(0, 0, 0, 0.2),
+  "searchbar-input-text": rgba(0, 0, 0, 0.6),
+  "searchbar-input-placeholder": rgba(51, 51, 51, 0.2),
+  "searchbar-search-button": #d41b2c,
   // SearchHeader
+  "search-header": #fff,
+  "search-header-shadow": rgba(0, 0, 0, 0.5),
+  "search-header-input-text": rgba(0, 0, 0, 0.6),
+  "search-header-input-border": #979797,
+  "search-header-term-dropdown-text": #636363,
   // SignUpForNotifications
+  "fb-notif-button-text-disabled": rgba(0, 0, 0, 0.6),
+  "fb-notif-button-shadow-disabled": rgba(34, 36, 38, 0.15),
+  "fb-notif-toggle-cta-text": #338ef1,
+  "fb-notif-seats-available-text": #27ae34,
+  "fb-notif-button": #fff,
+  "fb-notif-button-border": rgba(79, 79, 79, 0.5),
+  "fb-notif-button-hover": #fafafa,
+  "fb-notif-click-to-continue-text": gray,
   // TermDropDown
+  "term-dropdown-text": #636363,
 
   // -- Extras --
-  "highlight": #6803ff, // highlight a component in electric violet
+  "highlight": #6803ff, // use this to highlight a component in electric violet
 );

@@ -18,7 +18,7 @@
 
   &__clear {
     cursor: pointer;
-    color: #d41b2c;
+    color: map-get($component-colors, "filter-clear-all-text");
     padding: 0 10px;
     line-height: 30px;
   }
@@ -31,7 +31,7 @@
 /* for clearing filters when there are no results */
 .no-results__clear {
   cursor: pointer;
-  color: #d41b2c;
+  color: map-get($component-colors, "filter-clear-all-text");
   padding: 0 5px;
   display: inline;
   line-height: 30px;
@@ -57,7 +57,7 @@
       width: 14px; /* x size */
       height: 1.5px; /* x thickness */
       border-radius: 25px;
-      background-color: #d41b2c;
+      background-color: map-get($component-colors, "filter-pill-x");
     }
 
     &::before {
@@ -71,11 +71,11 @@
 
   &__close {
     height: 30px;
-    background: #ffff;
+    background: map-get($component-colors, "filter-pill");
     white-space: nowrap;
-    color: #4c5454;
+    color: map-get($component-colors, "filter-pill-text");
     border-radius: 7px;
-    border: 0.5px solid #e6e6e6;
+    border: 0.5px solid map-get($component-colors, "filter-pill-border");
     cursor: pointer;
     padding-left: 10px;
     margin-left: 5px;
@@ -86,14 +86,14 @@
     }
 
     &:hover {
-      background-color: #d41b2c;
-      border-color: #d41b2c;
-      color: #ffff;
+      background-color: map-get($component-colors, "filter-pill-hover");
+      border-color: map-get($component-colors, "filter-pill-border-hover");
+      color: map-get($component-colors, "filter-pill-text-hover");
     }
 
     &:hover .FilterPill__icon::before,
     &:hover .FilterPill__icon::after {
-      background-color: #ffff;
+      background-color: map-get($component-colors, "filter-pill-x-hover");
     }
   }
 

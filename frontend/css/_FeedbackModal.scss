@@ -8,13 +8,13 @@
     align-items: center;
     height: 32px;
     width: 160px;
-    border: 1px solid rgba(79, 79, 79, 0.5);
+    border: 1px solid map-get($component-colors, "feedback-modal-pill-border");
     border-radius: 20px;
-    background: #fff;
+    background: map-get($component-colors, "feedback-modal-pill");
 
     &:hover {
       cursor: pointer;
-      box-shadow: 0 0 5px rgba(51, 142, 241, 0.5);
+      box-shadow: 0 0 5px map-get($component-colors, "feedback-modal-pill-hover-shadow");
     }
 
     &:focus {
@@ -46,21 +46,21 @@
     right: 1.5%;
     width: 224px;
     height: 284px;
-    background: #f6f6f6;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+    background: map-get($component-colors, "feedback-modal-popout");
+    box-shadow: 0 4px 6px map-get($component-colors, "feedback-modal-popout-shadow");
     border-radius: 3px;
   }
 
   &__popoutHeader {
     height: 38px;
-    background: #0a3767;
+    background: map-get($component-colors, "feedback-modal-popout-header");
     border-radius: 3px 3px 0 0;
     display: flex;
     align-items: center;
   }
 
   &__popoutHeader > p {
-    color: white;
+    color: map-get($component-colors, "feedback-modal-popout-header-text");
     margin-left: 10px;
     font-size: 12px;
     user-select: none;
@@ -70,11 +70,11 @@
     display: flex;
     align-items: center;
     height: 60px;
-    border-bottom: 1px solid #dbd9d9;
+    border-bottom: 1px solid map-get($component-colors, "feedback-modal-popout-subheader-bottom");
   }
 
   &__popoutSubHeader > p {
-    color: black;
+    color: map-get($component-colors, "feedback-modal-popout-subheader-text");
     margin-left: 14px;
     width: 180px;
     font-size: 14px;
@@ -99,7 +99,7 @@
     width: 200px;
 
     &:hover {
-      background: #eaeaea;
+      background: map-get($component-colors, "feedback-modal-initial-text-hover");
     }
   }
 
@@ -120,7 +120,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #338ef1;
+    background: map-get($component-colors, "feedback-modal-initial-radio");
   }
 
   &__initialText > input:checked + .FeedbackModal__initialRadio::after {
@@ -135,7 +135,7 @@
     width: 14px;
     background-color: transparent;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.42);
+    border: 1px solid map-get($component-colors, "feedback-modal-initial-radio-border");
 
     &:hover {
       cursor: pointer;
@@ -159,7 +159,7 @@
     border-radius: 3px;
 
     &:hover {
-      background: #eaeaea;
+      background: map-get($component-colors, "feedback-modal-checkbox-hover");
     }
   }
 
@@ -171,7 +171,7 @@
     font-size: 12px;
 
     &:hover {
-      color: black;
+      color: map-get($component-colors, "feedback-modal-checkbox-text-hover");
     }
   }
 
@@ -184,7 +184,7 @@
     width: 16px;
     background-color: transparent;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.42);
+    border: 1px solid map-get($component-colors, "feedback-modal-checkbox-box-border");
 
     &:hover {
       cursor: pointer;
@@ -199,7 +199,7 @@
       top: 1px;
       width: 6px;
       height: 9px;
-      border: solid #ffff;
+      border: solid map-get($component-colors, "feedback-modal-checkbox-box-border-checked");
       border-radius: 1px;
       border-width: 0 2px 2px 0;
       -webkit-transform: rotate(40deg);
@@ -217,13 +217,13 @@
   }
 
   &__checkboxText > input:checked + .FeedbackModal__checkboxBox {
-    background: #338ef1;
-    border-color: #338ef1;
+    background: map-get($component-colors, "feedback-modal-checkbox-text-bg-checked");
+    border-color: map-get($component-colors, "feedback-modal-checkbox-text-border-checked");
   }
 
   &__checkboxText:hover > input:not(:checked) + .FeedbackModal__checkboxBox {
-    background-color: rgba(51, 142, 241, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.8);
+    background-color: map-get($component-colors, "feedback-modal-checkbox-text-bg");
+    border: 1px solid map-get($component-colors, "feedback-modal-checkbox-text-border");
   }
 
   &__checkboxText > input:checked + .FeedbackModal__checkboxBox::after {
@@ -249,8 +249,8 @@
     text-align: center;
     padding-top: 2px;
     font-size: 11px;
-    background: #fff;
-    border: 1px solid #dededf;
+    background: map-get($component-colors, "feedback-modal-free-selector");
+    border: 1px solid map-get($component-colors, "feedback-modal-free-selector-border");
     border-radius: 3px 0 0 3px;
     cursor: pointer;
   }
@@ -262,8 +262,8 @@
     text-align: center;
     padding-top: 2px;
     font-size: 11px;
-    background: #fff;
-    border: 1px solid #dededf;
+    background: map-get($component-colors, "feedback-modal-free-selector");
+    border: 1px solid map-get($component-colors, "feedback-modal-free-selector-border");
     cursor: pointer;
   }
 
@@ -274,8 +274,8 @@
     text-align: center;
     padding-top: 2px;
     font-size: 11px;
-    background: #fff;
-    border: 1px solid #dededf;
+    background: map-get($component-colors, "feedback-modal-free-selector");
+    border: 1px solid map-get($component-colors, "feedback-modal-free-selector-border");
     border-radius: 0 3px 3px 0;
     cursor: pointer;
   }
@@ -283,15 +283,15 @@
   &__freeSelector > input:checked + .FeedbackModal__freeSelectorLeft,
   &__freeSelector > input:checked + .FeedbackModal__freeSelectorCenter,
   &__freeSelector > input:checked + .FeedbackModal__freeSelectorRight {
-    border: 1px solid #489fff;
-    color: #489fff;
+    border: 1px solid map-get($component-colors, "feedback-modal-free-selector-border-checked");
+    color: map-get($component-colors, "feedback-modal-free-selector-text-checked");
   }
 
   &__freeQuery {
     margin: 0 10px;
     width: 204px;
     height: 90px;
-    border: 1px solid #dededf;
+    border: 1px solid map-get($component-colors, "feedback-modal-free-query-border");
     border-radius: 3px;
     resize: none;
     font-size: 12px;
@@ -304,7 +304,7 @@
   }
 
   &__submit {
-    background: #338ef1;
+    background: map-get($component-colors, "feedback-modal-submit");
     width: 210px;
     height: 24px;
     border-radius: 4px;
@@ -321,7 +321,7 @@
     }
 
     &--submitted {
-      background: #81c860;
+      background: map-get($component-colors, "feedback-modal-submitted");
       width: 210px;
       height: 24px;
       border-radius: 4px;
@@ -340,7 +340,7 @@
   }
 
   &__submit--submitted > p {
-    color: white;
+    color: map-get($component-colors, "feedback-modal-submitted-text");
     font-size: 11px;
     text-align: center;
     align-self: center;
@@ -348,7 +348,7 @@
   }
 
   &__submit > p {
-    color: white;
+    color: map-get($component-colors, "feedback-modal-submit-text");
     font-size: 11px;
     text-align: center;
     align-self: center;

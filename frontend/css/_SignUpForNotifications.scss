@@ -10,11 +10,11 @@
     padding: 0.78571429em 1.5em 0.78571429em;
     line-height: 1em;
     text-align: center;
-    color: rgba(0, 0, 0, 0.6);
+    color: map-get($component-colors, "fb-notif-button-text-disabled");
     font-weight: 400;
     border-radius: 0.28571429rem;
-    -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
-    box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+    -webkit-box-shadow: 0 0 0 1px map-get($component-colors, "fb-notif-button-shadow-disabled") inset;
+    box-shadow: 0 0 0 1px map-get($component-colors, "fb-notif-button-shadow-disabled") inset;
     opacity: 0.55;
   }
 
@@ -26,7 +26,7 @@
 
   .toggleCTA {
     margin-top: 4px;
-    color: #338ef1;
+    color: map-get($component-colors, "fb-notif-toggle-cta-text");
     width: 60%;
     margin-left: 40%;
     text-align: center;
@@ -36,7 +36,7 @@
 
   .allSeatsAvailable {
     margin-top: 4px;
-    color: #27ae34;
+    color: map-get($component-colors, "fb-notif-seats-available-text");
     width: 60%;
     margin-left: 40%;
     text-align: center;
@@ -47,15 +47,15 @@
   .initialNotificationButton {
     cursor: pointer;
     border-radius: 5px;
-    background: #fff;
-    border: 1px solid rgba(79, 79, 79, 0.5);
+    background: map-get($component-colors, "fb-notif-button");
+    border: 1px solid map-get($component-colors, "fb-notif-button-border");
     display: flex;
     align-items: center;
     padding: 10px;
     width: max-content;
 
     &:hover {
-      background: #fafafa;
+      background: map-get($component-colors, "fb-notif-button-hover");
     }
 
     &:focus {
@@ -111,12 +111,12 @@
 
     &__button {
       border-radius: 5px;
-      background: #fff;
+      background: map-get($component-colors, "fb-notif-button");
       cursor: pointer;
       display: flex;
       align-content: center;
       padding: 10px;
-      border: 1px solid rgba(79, 79, 79, 0.5);
+      border: 1px solid map-get($component-colors, "fb-notif-button-border");
 
       &:focus {
         outline: none;
@@ -139,7 +139,7 @@
     margin-right: 10px;
     vertical-align: top;
     margin-top: 5px;
-    color: grey;
+    color: map-get($component-colors, "fb-notif-click-to-continue-text");
     text-align: right;
   }
 

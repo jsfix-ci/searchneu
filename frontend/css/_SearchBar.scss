@@ -3,11 +3,11 @@
   pointer-events: initial;
   display: flex;
   align-items: stretch;
-  border: 1px solid #e2dfdf;
+  border: 1px solid map-get($component-colors, "searchbar-border");
   border-radius: 10px;
 
   &:focus-within {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px map-get($component-colors, "searchbar-focus-shadow");
   }
 
   &__input {
@@ -15,10 +15,10 @@
     margin: 2px 15px 2px;
     border: none;
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.6);
+    color: map-get($component-colors, "searchbar-input-text");
 
     &::placeholder {
-      color: rgba(51, 51, 51, 0.2);
+      color: map-get($component-colors, "searchbar-input-placeholder");
     }
 
     &:focus {
@@ -30,7 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #d41b2c;
+    background: map-get($component-colors, "searchbar-search-button");
     border-radius: 0 9px 9px 0;
     width: 50px;
     cursor: pointer;

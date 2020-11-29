@@ -4,8 +4,8 @@
   left: 0;
   top: 0;
   z-index: 9999;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background: map-get($component-colors, "search-header");
+  box-shadow: 0 2px 4px map-get($component-colors, "search-header-shadow");
   flex-direction: row;
   display: flex;
   align-items: center;
@@ -15,9 +15,9 @@
 
 .SearchHeader_Input {
   margin-left: 104px;
-  color: rgba(0, 0, 0, 0.6);
+  color: map-get($component-colors, "search-header-input-text");
   transition: all 300ms ease;
-  border: 1px solid #979797;
+  border: 1px solid map-get($component-colors, "search-header-input-border");
   border-radius: 9px;
   z-index: 9999;
   order: 0;
@@ -40,7 +40,7 @@
   line-height: 26px;
   align-items: center;
   letter-spacing: 1.5px;
-  color: #636363 !important;
+  color: map-get($component-colors, "search-header-term-dropdown-text") !important;
   text-transform: uppercase;
   white-space: nowrap !important;
   display: flex !important;
