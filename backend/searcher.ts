@@ -123,7 +123,6 @@ class Searcher {
    * { 'nupath': string[],
    *   'college': string[],
    *   'subject': string[],
-   *   'online': boolean,
    *   'classType': string }
    *
    * @param {object} filters The json object represting all filters on classes
@@ -254,7 +253,12 @@ class Searcher {
       resultCount: showCourse ? 1 : 0,
       took: 0,
       hydrateDuration: Date.now() - start,
-      aggregations: showCourse ? this.getSingleResultAggs(result) : { nupath: [], subject: [], classType: [] },
+      aggregations: showCourse ? this.getSingleResultAggs(result) : {
+        nupath: [],
+        subject: [],
+        classType: [],
+        campus: [],
+      },
     };
   }
 
@@ -263,6 +267,7 @@ class Searcher {
       nupath: result.nupath.map((val) => { return { value: val, count: 1 } }),
       subject: [{ value: result.subject, count: 1 }],
       classType: [{ value: result.sections[0].classType, count: 1 }],
+      campus: [{ value: result.sections[0].campus, count: 1 }],
     };
   }
 
