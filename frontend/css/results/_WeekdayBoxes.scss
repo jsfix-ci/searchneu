@@ -13,17 +13,17 @@
     display: block;
     width: 18px;
     height: 18px;
-    background: #fafafb;
-    color: #979797;
-    border: 0.5px solid #979797;
+    background: map-get($component-colors, "weekday-box");
+    color: map-get($component-colors, "weekday-box-text");
+    border: 0.5px solid map-get($component-colors, "weekday-box-border");
 
     &--checked {
       display: block;
       width: 18px;
       height: 18px;
-      background: #a5c0dd;
-      color: #000;
-      border: 0.5px solid #979797;
+      background: map-get($component-colors, "weekday-box-checked");
+      color: map-get($component-colors, "weekday-box-checked-text");
+      border: 0.5px solid map-get($component-colors, "weekday-box-border");
     }
   }
 

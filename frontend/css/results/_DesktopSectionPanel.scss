@@ -35,15 +35,15 @@
     line-height: 20px;
 
     & > .green {
-      color: #27ae34;
+      color: map-get($component-colors, "seat-count-green");
     }
 
     & > .yellow {
-      color: #ffbf3d;
+      color: map-get($component-colors, "seat-count-yellow");
     }
 
     & > .red {
-      color: #d41b2c;
+      color: map-get($component-colors, "seat-count-red");
     }
 
     & span:nth-of-type(2) {

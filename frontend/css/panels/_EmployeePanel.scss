@@ -10,7 +10,7 @@
   .header {
     outline: 0;
     border: none;
-    background: #fafafb;
+    background: map-get($component-colors, "employee-header-bg");
     padding: 11px;
     margin-top: 0;
     border-radius: 5px;

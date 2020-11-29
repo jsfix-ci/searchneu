@@ -19,7 +19,7 @@
   vertical-align: middle;
   display: inline-block;
   height: 2px;
-  background-color: rgba(9, 10, 10, 0.2);
+  background-color: map-get($component-colors, "online-div-bg-color");
   width: calc(50% - 102px);
   margin: 21px;
 }

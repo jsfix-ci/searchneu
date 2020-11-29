@@ -52,10 +52,10 @@
 }
 
 .Collapsible__trigger {
-  color: #009fda;
+  color: map-get($component-colors, "desktop-collapsible-trigger");
   cursor: pointer;
 
   &:hover {
-    color: #1e70bf;
+    color: map-get($component-colors, "desktop-collapsible-trigger-hover");
   }
 }

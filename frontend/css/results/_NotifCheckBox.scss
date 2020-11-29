@@ -11,7 +11,7 @@
   cursor: pointer;
   width: 45px;
   height: 20px;
-  background: #d3d3d3;
+  background: map-get($component-colors, "notif-switch-label");
   border-radius: 36px;
   transition: background-color 0.01s;
 
@@ -23,16 +23,16 @@
     height: 25px;
     border-radius: 25px;
     transition: 0.4s;
-    background: #a0a0a0;
-    box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
+    background: map-get($component-colors, "notif-switch-button");
+    box-shadow: 0 0 2px 0 map-get($component-colors, "notif-switch-button-shadow");
   }
 }
 
 .notif-switch-checkbox:checked + .notif-switch-label {
-  background: #afc1d3;
+  background: map-get($component-colors, "notif-switch-checked");
 
   .notif-switch-button {
-    background: #338ef1;
+    background: map-get($component-colors, "notif-switch-button-checked");
     left: 100%;
     transform: translateX(-100%);
   }
@@ -43,7 +43,7 @@
 }
 
 .notifSubscribeButton {
-  background: #338ef1;
+  background: map-get($component-colors, "notif-subscribe-button");
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
   & > span {
     font-size: 14px;
     line-height: 17px;
-    color: #fff;
+    color: map-get($component-colors, "notif-subscribe-button-span");
   }
 
   &:focus,
@@ -63,7 +63,7 @@
 }
 
 .notifSubscribeButton--checked {
-  background: #27ae34;
+  background: map-get($component-colors, "notif-subscribe-button-checked");
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -77,7 +77,7 @@
   & > span {
     font-size: 14px;
     line-height: 17px;
-    color: #fff;
+    color: map-get($component-colors, "notif-subscribe-button-span");
   }
 
   &:focus,

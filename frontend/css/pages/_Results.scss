@@ -7,18 +7,18 @@ $SIDEBAR_WIDTH: 268px;
   left: 0;
   top: 0;
   z-index: 9999;
-  background: #fff;
+  background: map-get($component-colors, "header-bg");
   flex-direction: row;
   display: flex;
   align-items: center;
   justify-content: left;
   position: fixed;
-  box-shadow: 0 0 10px rgba(31, 33, 38, 0.5);
-  border-bottom: 1px solid #fff;
+  box-shadow: 0 0 10px map-get($component-colors, "header-shadow");
+  border-bottom: 1px solid map-get($component-colors, "header-bottom");
 
   &-top {
     box-shadow: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid map-get($component-colors, "header-bottom-initial");
   }
 }
 
@@ -67,7 +67,7 @@ $SIDEBAR_WIDTH: 268px;
     display: none;
   }
 
-  background-color: #f6f6f6;
+  background-color: map-get($component-colors, "sidebar-bg");
   padding: 25px 15px 25px 15px;
 }
 

@@ -3,10 +3,10 @@
   font-family: Lato, sans-serif;
 
   &__header {
-    background: #fafafa;
-    border: 1px solid #dededf;
+    background: map-get($component-colors, "mobile-result-header");
+    border: 1px solid map-get($component-colors, "mobile-result-header-border");
     box-sizing: border-box;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 3px map-get($component-colors, "mobile-result-header-shadow");
     border-radius: 8px;
     padding: 16px;
     display: flex;
@@ -18,9 +18,9 @@
     }
 
     &--expanded {
-      background: #fafafa;
-      border: 1px solid #dededf;
-      box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.25);
+      background: map-get($component-colors, "mobile-result-header");
+      border: 1px solid map-get($component-colors, "mobile-result-header-border");
+      box-shadow: 0 -1px 3px map-get($component-colors, "mobile-result-header-shadow");
       border-radius: 8px 8px 0 0;
       border-bottom: none;
       padding: 16px;
@@ -49,17 +49,17 @@
       line-height: 24px;
       display: flex;
       align-items: center;
-      color: #505050;
+      color: map-get($component-colors, "mobile-result-class-title");
       margin-left: 24px;
     }
   }
 
   &__panel {
-    background: #fff;
+    background: map-get($component-colors, "mobile-result-panel");
     width: 100%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 3px map-get($component-colors, "mobile-result-panel-shadow");
     border-radius: 0 0 8px 8px;
-    border: 1px solid #dededf;
+    border: 1px solid map-get($component-colors, "mobile-result-panel-border");
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
@@ -102,7 +102,7 @@
     }
 
     &--showMore {
-      color: #d41b2c;
+      color: map-get($component-colors, "mobile-result-show-more");
       font-style: italic;
       text-decoration: underline;
       display: inline-block;
@@ -137,7 +137,7 @@
       & > span {
         font-weight: 500;
         letter-spacing: 0.5px;
-        color: black;
+        color: map-get($component-colors, "mobile-result-collapsible-title");
       }
     }
 
@@ -162,8 +162,8 @@
   }
 
   &__showAll {
-    background: #fafafb;
-    border: 1px solid #dededf;
+    background: map-get($component-colors, "mobile-result-show-all");
+    border: 1px solid map-get($component-colors, "mobile-result-show-all-border");
     border-radius: 0 0 8px 8px;
     padding: 10px 20px 10px 20px;
 

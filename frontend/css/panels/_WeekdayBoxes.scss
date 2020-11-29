@@ -12,12 +12,12 @@ $box-size: 12px;
     width: $box-size;
     height: $box-size;
     display: inline-block;
-    border: 2px solid #bbb;
+    border: 2px solid map-get($component-colors, "weekday-box-border");
     border-radius: 3px;
     margin: 0 1px;
   }
 
   .weekday-box-checked {
-    background: #bbb;
+    background: map-get($component-colors, "weekday-box-checked");
   }
 }

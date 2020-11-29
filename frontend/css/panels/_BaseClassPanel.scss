@@ -10,7 +10,7 @@
   .header {
     outline: 0;
     border: none;
-    background-color: #fafafa;
+    background-color: map-get($component-colors, "base-class-header");
     padding: 11px;
     margin-top: 0;
     border-radius: 5px;
@@ -28,17 +28,17 @@
   }
 
   .hint-text {
-    color: #969696;
+    color: map-get($component-colors, "hint-text");
   }
 
   .more-sections-button {
     cursor: pointer;
     padding: 10px;
-    color: #888;
+    color: map-get($component-colors, "more-sections-button");
     font-weight: 600;
     outline: 0;
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid map-get($component-colors, "more-sections-button-top");
   }
 
   .prereq-show-more {

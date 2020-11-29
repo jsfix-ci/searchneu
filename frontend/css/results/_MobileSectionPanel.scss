@@ -1,10 +1,10 @@
 .MobileSectionPanel {
-  border: 1px solid #cbcbcb;
+  border: 1px solid map-get($component-colors, "mobile-section-border");
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 16px;
   padding: 16px;
-  color: black;
+  color: map-get($component-colors, "mobile-section");
 
   &__meetings {
     &--online {
@@ -55,16 +55,16 @@
 
   & > .green {
     margin-top: 16px;
-    color: #27ae34;
+    color: map-get($component-colors, "seat-count-green");
   }
 
   & > .yellow {
     margin-top: 16px;
-    color: #ffbf3d;
+    color: map-get($component-colors, "seat-count-yellow");
   }
 
   & > .red {
     margin-top: 16px;
-    color: #d41b2c;
+    color: map-get($component-colors, "seat-count-red");
   }
 }

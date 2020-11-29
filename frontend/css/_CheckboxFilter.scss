@@ -29,13 +29,13 @@
     border-radius: 3px;
 
     &:hover {
-      background-color: #eaeaea;
+      background-color: map-get($component-colors, "checkbox-filter-text-hover");
     }
   }
 
   &__count {
     float: right;
-    color: #888;
+    color: map-get($component-colors, "checkbox-filter-count");
   }
 
   &__checkbox {
@@ -47,7 +47,7 @@
     width: 16px;
     background-color: transparent;
     border-radius: 5px;
-    border: 1px solid #888;
+    border: 1px solid map-get($component-colors, "checkbox-border");
 
     &:hover {
       cursor: pointer;
@@ -62,7 +62,7 @@
       top: 1px;
       width: 6px;
       height: 9px;
-      border: solid #ffff;
+      border: solid map-get($component-colors, "checkbox-check");
       border-radius: 1px;
       border-width: 0 2px 2px 0;
       -webkit-transform: rotate(40deg);
@@ -80,12 +80,12 @@
   }
 
   &__text > input:checked + .CheckboxFilter__checkbox {
-    background-color: #d41b2c;
-    border-color: #d41b2c;
+    background-color: map-get($component-colors, "checkbox-filter-checked");
+    border-color: map-get($component-colors, "checkbox-filter-checked-border");
   }
 
   &__text:hover > input:not(:checked) + .CheckboxFilter__checkbox {
-    background-color: #eaeaea;
+    background-color: map-get($component-colors, "checkbox-filter-box-hover");
   }
 
   &__text > input:checked + .CheckboxFilter__checkbox::after {
