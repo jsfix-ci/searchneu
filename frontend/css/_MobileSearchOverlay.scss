@@ -10,7 +10,7 @@ $EXECUTE_BTN_HEIGHT: 40px;
     height: 30px;
     width: 50px;
     float: right;
-    margin-top: 10px
+    margin-top: 10px;
   }
 
   &__search {
@@ -23,6 +23,7 @@ $EXECUTE_BTN_HEIGHT: 40px;
     margin-bottom: $EXECUTE_BTN_HEIGHT;
     background-color: #f6f6f6;
     padding: 0 15px 25px 15px;
+    padding-left: 30px;
   }
 
   &__pills {
