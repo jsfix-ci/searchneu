@@ -104,7 +104,6 @@ minIndex=0&maxIndex=5
         "seatsRemaining": 0,
         "waitCapacity": 0,
         "waitRemaining": 0,
-        "online": false,
         "url": "https://wl11gp.neu.edu/udcprod8/bwckschd.p_disp_detail_sched?term_in=201810&crn_in=11424",
         "crn": "11424",
         "meetings": [
@@ -128,14 +127,14 @@ minIndex=0&maxIndex=5
         "termId": "201810",
         "host": "neu.edu",
         "subject": "CS",
-        "classId": "2511"
+        "classId": "2511",
+        "campus": "Boston"
     },
     {
         "seatsCapacity": 45,
         "seatsRemaining": 1,
         "waitCapacity": 0,
         "waitRemaining": 0,
-        "online": false,
         "url": "https://wl11gp.neu.edu/udcprod8/bwckschd.p_disp_detail_sched?term_in=201810&crn_in=12579",
         "crn": "12579",
         "meetings": [
@@ -159,14 +158,14 @@ minIndex=0&maxIndex=5
         "termId": "201810",
         "host": "neu.edu",
         "subject": "CS",
-        "classId": "2511"
+        "classId": "2511",
+        "campus": "Boston"
     },
     {
         "seatsCapacity": 50,
         "seatsRemaining": 21,
         "waitCapacity": 0,
         "waitRemaining": 0,
-        "online": false,
         "url": "https://wl11gp.neu.edu/udcprod8/bwckschd.p_disp_detail_sched?term_in=201810&crn_in=13916",
         "crn": "13916",
         "meetings": [
@@ -190,14 +189,14 @@ minIndex=0&maxIndex=5
         "termId": "201810",
         "host": "neu.edu",
         "subject": "CS",
-        "classId": "2511"
+        "classId": "2511",
+        "campus": "Boston"
     },
     {
         "seatsCapacity": 50,
         "seatsRemaining": 30,
         "waitCapacity": 0,
         "waitRemaining": 0,
-        "online": false,
         "url": "https://wl11gp.neu.edu/udcprod8/bwckschd.p_disp_detail_sched?term_in=201810&crn_in=14347",
         "crn": "14347",
         "meetings": [
@@ -221,7 +220,8 @@ minIndex=0&maxIndex=5
         "termId": "201810",
         "host": "neu.edu",
         "subject": "CS",
-        "classId": "2511"
+        "classId": "2511",
+        "campus": "Boston"
     }]
 }]
 ```

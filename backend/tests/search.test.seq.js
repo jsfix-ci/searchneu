@@ -11,8 +11,8 @@ describe('searcher', () => {
       expect(searcher.generateMQuery('fundies', '202030', 0, 10, {})).toMatchSnapshot();
     });
 
-    it('generates aggs with online filters applied', () => {
-      expect(searcher.generateMQuery('fundies', '202030', 0, 10, { online: true })).toMatchSnapshot();
+    it('generates aggs with campus filters applied', () => {
+      expect(searcher.generateMQuery('fundies', '202030', 0, 10, { campus: ['Online', 'Boston'] })).toMatchSnapshot();
     });
   });
 
@@ -34,6 +34,7 @@ describe('searcher', () => {
         college: 'GS Col of Arts',
         subject: 'CS',
         online: false,
+        campus: ['Boston'],
         classType: ['Lecture'],
         inValidFilterKey: '',
       };
@@ -44,7 +45,7 @@ describe('searcher', () => {
       const validFilters = {
         nupath: ['NU Core/NUpath Adv Writ Dscpl', 'NUpath Interpreting Culture'],
         subject: ['ENGW', 'ARTG', 'CS'],
-        online: true,
+        campus: ['Boston'],
         classType: ['Lecture'],
       };
       expect(searcher.validateFilters(validFilters)).toMatchObject(validFilters);
@@ -94,6 +95,7 @@ describe('searcher', () => {
           seatsCapacity: 80,
           seatsRemaining: 0,
           classType: 'Lecture',
+          campus: 'Seattle, WA',
         },
       });
       await prisma.section.create({
@@ -103,6 +105,7 @@ describe('searcher', () => {
           seatsCapacity: 40,
           seatsRemaining: 0,
           classType: 'Lecture',
+          campus: 'Boston',
         },
       });
     });
@@ -110,6 +113,7 @@ describe('searcher', () => {
       it('Gets aggregation for single result', async () => {
         const singleResult = await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/2500' }, include: { sections: true } });
         expect(searcher.getSingleResultAggs(singleResult)).toEqual({
+          campus: [{ value: 'Seattle, WA', count: 1 }],
           nupath: [],
           subject: [{ value: 'CS', count: 1 }],
           classType: [{ value: 'Lecture', count: 1 }],
@@ -118,6 +122,7 @@ describe('searcher', () => {
       it('Gets aggregation for single result with nupath', async () => {
         const singleResult = await prisma.course.findOne({ where: { id: 'neu.edu/202030/PHIL/1145' }, include: { sections: true } });
         expect(searcher.getSingleResultAggs(singleResult)).toEqual({
+          campus: [{ value: 'Boston', count: 1 }],
           nupath: [{ value: 'Ethical reasoning', count: 1 }, { value: 'Argue', count: 1 }, { value: 'Live in the mud', count: 1 }],
           subject: [{ value: 'PHIL', count: 1 }],
           classType: [{ value: 'Lecture', count: 1 }],
