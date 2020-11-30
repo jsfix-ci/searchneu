@@ -31,6 +31,7 @@ import {
 } from '../types';
 import SearchDropdown from '../ResultsPage/SearchDropdown';
 import { getAllCampusDropdownOptions, getTermDropdownOptionsForCampus, getLatestTerm, getCampusByLastDigit } from '../global';
+import { useEffect } from 'react';
 
 interface SearchParams {
   termId: string,
@@ -65,16 +66,15 @@ export default function Results() {
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const history = useHistory();
 
-  const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)))
-  console.log(campus.toString());
+  const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)).toString())
+  const allCampuses = getAllCampusDropdownOptions()
 
   const setSearchQuery = (q: string) => { history.push(`/${termId}/${q}${history.location.search}`); }
-  const setTerm = (t: string) => { console.log("helloooo", t); history.push(`/${t}/${query}${history.location.search}`); }
-  const setCampusAndTerm = (c: string) => { 
-    setCampus(c);
-    setTerm(getLatestTerm(Campus[c.toUpperCase()]))
-  }
-
+  const setTerm = (t: string) => { history.push(`/${t}/${query}${history.location.search}`); }
+  
+  useEffect(() => {
+    setTerm(getLatestTerm(Campus[campus.toUpperCase()]))
+  }, [campus])
 
   const filters: FilterSelection = _.merge({}, DEFAULT_FILTER_SELECTION, qParams);
 
@@ -114,6 +114,7 @@ export default function Results() {
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
         <img src={ logo } className='Results__Logo' alt='logo' onClick={ () => { history.push('/'); } } />
         <div className='Results__spacer' />
+        {macros.isMobile &&
         <div className='Results__mobileSearchFilterWrapper'>
           <div className='Results__searchwrapper'>
             <SearchBar
@@ -121,7 +122,6 @@ export default function Results() {
               query={ query }
             />
           </div>
-          {macros.isMobile &&
             <img 
               src={ FilterButton } 
               className='Results__filterButton' 
@@ -132,15 +132,23 @@ export default function Results() {
                 }
               }}
             />
-          }
-        </div>
+        </div> 
+        }
+        {!macros.isMobile &&
+        <div className='Results__searchwrapper'>
+            <SearchBar
+              onSearch={ setSearchQuery }
+              query={ query }
+            />
+          </div>
+        }
         <div className='Breadcrumb_Container'>
           <div className='Breadcrumb_Container__dropDownContainer'>
             <SearchDropdown
-              options={ getAllCampusDropdownOptions() }
+              options={ allCampuses }
               value={ campus }
-              placeholder='NEU'
-              onChange={ setCampusAndTerm }
+              placeholder='Select a campus'
+              onChange={ setCampus }
               className='searchDropdown'
               compact={ false }
             />
@@ -150,7 +158,7 @@ export default function Results() {
             <SearchDropdown
               options={ getTermDropdownOptionsForCampus(Campus[campus.toUpperCase()]) }
               value={ termId }
-              placeholder='Fall 2020'
+              placeholder='Select a term'
               onChange={ setTerm }
               className='searchDropdown'
               compact={ false }
