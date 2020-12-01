@@ -140,10 +140,16 @@ class DumpProcessor {
     macros.log('finished updating times');
 
     await Promise.all(Object.entries(termDump.subjects).map(([key, value]) => {
-      return prisma.subject.create({
-        data : {
+      return prisma.subject.upsert({
+        where: {
+          abbreviation: key,
+        },
+        create: {
           abbreviation: key,
           description: value as string,
+        },
+        update: {
+          description: value,
         },
       });
     }));
