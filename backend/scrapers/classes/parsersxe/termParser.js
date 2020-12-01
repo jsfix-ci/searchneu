@@ -11,7 +11,7 @@ import Request from '../../request';
 import ClassParser from './classParser';
 import SectionParser from './sectionParser';
 import util from './util';
-import { getSubjectDescriptions } from "./subjectAbbreviationParser";
+import { getSubjectDescriptions } from './subjectAbbreviationParser';
 
 const request = new Request('termParser');
 

@@ -46,9 +46,8 @@ class Bannerv9Parser {
     return _.mergeWith(...termData, (a, b) => {
       if (Array.isArray(a)) {
         return a.concat(b);
-      } else {
-        return {...a, ...b};
       }
+      return { ...a, ...b };
     });
   }
 

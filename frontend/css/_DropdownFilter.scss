@@ -131,15 +131,16 @@
   &__element {
     display: flex;
     padding-left: 10px;
-    justify-content: flex-start;
+    justify-content: center;
+    flex-direction: column;
     height: 55px;
     background: #fff;
     border: 1px solid #f5f5f5;
     box-sizing: border-box;
     border-radius: 0;
     cursor: pointer;
-    text-align: center;
-    align-items: center;
+    text-align: left;
+    align-items: left;
   }
 
   &__element:hover {
@@ -153,6 +154,12 @@
   }
 
   &__elementCount {
+    color: grey;
+  }
+
+  &__elementSubtext {
+    text-align: left;
+    display: block;
     color: grey;
   }
 
