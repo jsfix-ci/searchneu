@@ -36,12 +36,6 @@ class TermParser {
     const classes = await pMap(Object.values(courseIdentifiers), ({ subject, classId }) => {
       return ClassParser.parseClass(termId, subject, classId);
     }, { concurrency: 500 });
-    classes.forEach(c => {
-      if (!c) {
-        macros.log(`Class in classes IS FALSE??? ${c}`);
-        throw "STOPPING SCRAPERS";
-      }
-    })
     const refsPerCourse = classes.map((c) => ClassParser.getAllCourseRefs(c));
     const courseRefs = Object.assign({}, ...refsPerCourse);
     await pMap(Object.keys(courseRefs), async (ref) => {

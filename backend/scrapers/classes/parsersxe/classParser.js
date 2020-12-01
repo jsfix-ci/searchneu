@@ -9,7 +9,6 @@ import Request from '../../request';
 import PrereqParser from './prereqParser';
 import util from './util';
 import { getSubjectAbbreviations } from './subjectAbbreviationParser';
-import macros from '../../../macros';
 
 const request = new Request('classParser');
 
@@ -48,8 +47,6 @@ class ClassParser {
     });
     if (req.body.success && req.body.data && req.body.data[0]) {
       return this.parseClassFromSearchResult(req.body.data[0], termId);
-    } else {
-      macros.log(`FALSE CLASS??? ${termId}, ${subject}, ${courseNumber}`);
     }
     return false;
   }
