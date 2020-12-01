@@ -201,6 +201,7 @@ export interface SingleSearchResult {
 export interface AggCount {
   value: string;
   count: number;
+  description?: string;
 }
 
 export interface AggResults {
