@@ -25,7 +25,7 @@ afterAll(async () => {
 
 it('does not create records if dump is empty', async () => {
   const prevCounts = Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count()]);
-  await dumpProcessor.main({ termDump: { classes: [], sections: [] } });
+  await dumpProcessor.main({ termDump: { classes: [], sections: [], subjects: [] } });
   expect(Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count()])).toEqual(prevCounts);
 });
 
@@ -71,7 +71,7 @@ describe('with professors', () => {
       },
     };
 
-    await dumpProcessor.main({ termDump: { classes: [], sections: [] }, profDump: profDump });
+    await dumpProcessor.main({ termDump: { classes: [], sections: [], subjects: [] }, profDump: profDump });
     expect(await prisma.professor.count()).toEqual(3);
   });
 });
@@ -124,6 +124,7 @@ describe('with classes', () => {
           lastUpdateTime: 123456789,
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
@@ -190,6 +191,7 @@ describe('with sections', () => {
           meetings: {},
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
@@ -241,6 +243,7 @@ describe('with updates', () => {
           lastUpdateTime: 123456789,
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
