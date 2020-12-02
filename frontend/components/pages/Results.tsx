@@ -32,6 +32,7 @@ import {
 import SearchDropdown from '../ResultsPage/SearchDropdown';
 import { getAllCampusDropdownOptions, getTermDropdownOptionsForCampus, getLatestTerm, getCampusByLastDigit } from '../global';
 import { useEffect } from 'react';
+import { useReducer } from 'react';
 
 interface SearchParams {
   termId: string,
@@ -62,11 +63,12 @@ const fetchResults = async ({ query, termId, filters }: SearchParams, page: numb
 export default function Results() {
   const atTop = useAtTop();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
-  const { termId, query = '' } = useParams();
+  const { query = '' } = useParams();
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const history = useHistory();
 
-  const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)).toString())
+  //const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)).toString())
+  const [{ campus, termString: termId }, dispatch] = useReducer(stateReducer, useParams(), initializer)
   const allCampuses = getAllCampusDropdownOptions()
 
   const setSearchQuery = (q: string) => { history.push(`/${termId}/${q}${history.location.search}`); }
@@ -148,7 +150,7 @@ export default function Results() {
               options={ allCampuses }
               value={ campus }
               placeholder='Select a campus'
-              onChange={ setCampus }
+              onChange={ () => dispatch('setCampus') }
               className='searchDropdown'
               compact={ false }
             />
@@ -162,6 +164,7 @@ export default function Results() {
               onChange={ setTerm }
               className='searchDropdown'
               compact={ false }
+              key={ campus }
             />
           </div>
         </div>
@@ -199,4 +202,28 @@ export default function Results() {
     </div>
 
   );
+}
+
+const ACTIONS = {
+  SET_TERM: 'setTerm',
+  SET_CAMPUS: 'setCampus'
+}
+
+interface CampusTermState {
+  campus: string;
+  termString: string; 
+}
+
+type Actions = 'setTerm' | 'setCampus'
+
+function stateReducer(prevState: CampusTermState, action: Actions) {
+  return prevState;
+} 
+
+function initializer(params: ReturnType<typeof useParams>): CampusTermState {
+  const { termId, query = '' } = params;
+  return { 
+    campus: getCampusByLastDigit(termId.charAt(termId.length - 1)).toString(),
+    termString: termId
+   }
 }

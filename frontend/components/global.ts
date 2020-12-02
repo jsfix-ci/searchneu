@@ -109,15 +109,15 @@ export const neuTermDropdownOptions: DropdownItemProps[] = [
   export const campusDropdownOptions: DropdownItemProps[] = [
     {
       text: 'NEU',
-      value: 'neu',
+      value: 'NEU',
     },
     {
       text: 'CPS',
-      value: 'cps',
+      value: 'CPS',
     },
     {
       text: 'Law',
-      value: 'law',
+      value: 'LAW',
     },
   ];
 
@@ -163,3 +163,5 @@ export const neuTermDropdownOptions: DropdownItemProps[] = [
         return Campus.CPS;
     }
   }
+
+  
