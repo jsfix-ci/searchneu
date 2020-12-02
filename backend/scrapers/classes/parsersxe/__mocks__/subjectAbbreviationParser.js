@@ -1,5 +1,5 @@
 import data from './subjectAbbreviationTable.json';
 
-export default function getSubjectAbbreviations() {
+export function getSubjectAbbreviations() {
   return data;
 }

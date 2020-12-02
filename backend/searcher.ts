@@ -21,7 +21,7 @@ type CourseWithSections = Course & { sections: Section[] };
 class Searcher {
   elastic: Elastic;
 
-  subjects: {};
+  subjects: Record<string, string>;
 
   filters: FilterPrelude;
 
