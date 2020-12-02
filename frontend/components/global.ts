@@ -2,123 +2,42 @@ import { DropdownItemProps } from 'semantic-ui-react';
 import { Campus } from './types';
 
 export const neuTermDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'Spring 2021',
-    value: '202130',
-  },
-  {
-    text: 'Fall 2020',
-    value: '202110',
-  },
-  {
-    text: 'Summer I 2020',
-    value: '202040',
-  },
-  {
-    text: 'Summer Full 2020',
-    value: '202050',
-  },
-  {
-    text: 'Summer II 2020',
-    value: '202060',
-  },
-  {
-    text: 'Spring 2020',
-    value: '202030',
-  },
+  { text: 'Spring 2021', value: '202130' },
+  { text: 'Fall 2020', value: '202110' },
+  { text: 'Summer I 2020', value: '202040' },
+  { text: 'Summer Full 2020', value: '202050' },
+  { text: 'Summer II 2020', value: '202060' },
+  { text: 'Spring 2020', value: '202030' },
 ];
-
+// spring 2021 CPS semester
 export const cpsTermDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'Spring Semester 2021',
-    value: '202134',
-  },
-  {
-    text: 'Spring Quarter 2021',
-    value: '202135',
-  },
-  {
-    text: 'Winter Quarter 2020',
-    value: '202125',
-  },
-  {
-    text: 'Fall Semester 2020',
-    value: '202114',
-  },
-  {
-    text: 'Fall Quarter 2020',
-    value: '202115',
-  },
-  {
-    text: 'Summer Semester 2020',
-    value: '202054',
-  },
-  {
-    text: 'Summer Quarter 2020',
-    value: '202055',
-  },
-  {
-    text: 'Spring Semester 2020',
-    value: '202034',
-  },
-  {
-    text: 'Spring Quarter 2020',
-    value: '202034',
-  },
+  { text: 'Spring 2021 CPS Semester ', value: '202134' },
+  { text: 'Spring 2021 CPS Quarter', value: '202135' },
+  { text: 'Winter 2020 CPS Quarter', value: '202125' },
+  { text: 'Fall 2020 CPS Semester', value: '202114' },
+  { text: 'Fall 2020 CPS Quarter', value: '202115' },
+  { text: 'Summer 2020 CPS Semester', value: '202054' },
+  { text: 'Summer 2020 CPS Quarter', value: '202055' },
+  { text: 'Spring 2020 CPS Semester', value: '202034' },
+  { text: 'Spring 2020 CPS Quarter', value: '202034' },
 ];
 
 export const lawTermDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'Spring Semester 2021',
-    value: '202132',
-  },
-  {
-    text: 'Spring Quarter 2021',
-    value: '202138',
-  },
-  {
-    text: 'Winter Quarter 2020',
-    value: '202128',
-  },
-  {
-    text: 'Fall Semester 2020',
-    value: '202112',
-  },
-  {
-    text: 'Fall Quarter 2020',
-    value: '202118',
-  },
-  {
-    text: 'Summer Semester 2020',
-    value: '202052',
-  },
-  {
-    text: 'Summer Quarter 2020',
-    value: '202058',
-  },
-  {
-    text: 'Spring Semester 2020',
-    value: '202032',
-  },
-  {
-    text: 'Spring Quarter 2020',
-    value: '202038',
-  },
+  { text: 'Spring 2021 Law Semester', value: '202132' },
+  { text: 'Spring 2021 Law Quarter', value: '202138' },
+  { text: 'Winter 2020 Law Quarter', value: '202128' },
+  { text: 'Fall 2020 Law Semester', value: '202112' },
+  { text: 'Fall 2020 Law Quarter', value: '202118' },
+  { text: 'Summer 2020 Law Semester', value: '202052' },
+  { text: 'Summer 2020 Law Quarter', value: '202058' },
+  { text: 'Spring 2020 Law Semester', value: '202032' },
+  { text: 'Spring 2020 Law Quarter', value: '202038' },
 ];
 
 export const campusDropdownOptions: DropdownItemProps[] = [
-  {
-    text: 'NEU',
-    value: 'NEU',
-  },
-  {
-    text: 'CPS',
-    value: 'CPS',
-  },
-  {
-    text: 'Law',
-    value: 'LAW',
-  },
+  { text: 'NEU', value: 'NEU' },
+  { text: 'CPS', value: 'CPS' },
+  { text: 'Law', value: 'LAW' },
 ];
 
 export function getAllCampusDropdownOptions(): DropdownItemProps[] {
@@ -163,7 +82,8 @@ export function getCampusByLastDigit(t: string): Campus {
     case '4':
     case '5':
       return Campus.CPS;
-    default: throw new Error('unexpected campus digit');
+    default:
+      throw new Error('unexpected campus digit');
   }
 }
 
@@ -171,7 +91,10 @@ function getSecondToLastDigit(s: string) {
   return s.charAt(s.length - 2);
 }
 
-function tryGetMatchingSecondToLastDigitOption(secondToLast: string, options: DropdownItemProps[]): DropdownItemProps | undefined {
+function tryGetMatchingSecondToLastDigitOption(
+  secondToLast: string,
+  options: DropdownItemProps[],
+): DropdownItemProps | undefined {
   for (const option of options) {
     const secondToLastOfOption = getSecondToLastDigit(option.value as string);
     if (secondToLast === secondToLastOfOption) {
@@ -198,6 +121,9 @@ export function getRoundedTerm(nextCampus: Campus, prevTerm: string): string {
   }
   // here, there was no result with the corresponding digit. so round down and try again.
   const roundedDownDigit = String(Number(secondToLast) - 1);
-  const result2 = tryGetMatchingSecondToLastDigitOption(roundedDownDigit, options);
+  const result2 = tryGetMatchingSecondToLastDigitOption(
+    roundedDownDigit,
+    options,
+  );
   return result2.value as string;
 }
