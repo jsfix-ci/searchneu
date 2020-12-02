@@ -1,4 +1,5 @@
 import React from 'react'
+import { Markup } from 'interweave'
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
 import Course from '../../classModels/Course'
@@ -45,7 +46,7 @@ export default function SearchResult({ aClass } : SearchResultProps) {
         </span>
       </div>
       <div className='SearchResult__panel'>
-        {aClass.desc}
+        <Markup content={ aClass.desc } />
         <br />
         <br />
         <div className='SearchResult__panel--main'>
