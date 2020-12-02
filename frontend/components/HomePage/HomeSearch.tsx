@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import SearchBar from '../ResultsPage/SearchBar'
 import IconGradcap from '../images/IconGradcap'
@@ -15,7 +15,9 @@ interface HomeSearchProps {
   setCampus: (c: Campus) => void
 }
 
-const HomeSearch = ({ setTermId, termId, campus, setCampus }: HomeSearchProps) => {
+const HomeSearch = ({
+  setTermId, termId, campus, setCampus,
+}: HomeSearchProps) => {
   const history = useHistory();
   return (
     <div className='HomeSearch'>

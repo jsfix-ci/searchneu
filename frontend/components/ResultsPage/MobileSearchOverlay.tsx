@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import FilterPanel from './FilterPanel';
 import FilterPills from './FilterPills';
 import macros from '../macros';
-import LogoInput from '../images/LogoInput';
 import IconClose from '../images/IconClose';
 import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
 

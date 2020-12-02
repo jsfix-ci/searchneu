@@ -89,12 +89,12 @@ export default function FilterPills({ filters, setFilters }: FilterPillsProps) {
         </div>
       </div>
       <div
-      className='selected-filters__clear'
-      role='button'
-      tabIndex={ 0 }
-      onClick={ () => setFilters(DEFAULT_FILTER_SELECTION) }
+        className='selected-filters__clear'
+        role='button'
+        tabIndex={ 0 }
+        onClick={ () => setFilters(DEFAULT_FILTER_SELECTION) }
       >
-      Clear All
+        Clear All
       </div>
     </div>
   )

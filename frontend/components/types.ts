@@ -5,7 +5,6 @@
  *
  * ONLY PUT COMMONLY USED TYPES HERE
  */
-import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterOptions } from './ResultsPage/filters';
 import Course from './classModels/Course';
 import Section from './classModels/Section';
@@ -46,8 +45,7 @@ export enum DayOfWeek {
 }
 
 export enum Campus {
-  NEU = "NEU",
-  CPS = "CPS",
-  LAW = "LAW"
+  NEU = 'NEU',
+  CPS = 'CPS',
+  LAW = 'LAW'
 }
-

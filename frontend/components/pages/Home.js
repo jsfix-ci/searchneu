@@ -24,10 +24,11 @@ const attentionSectionMode = ATTENTION_SECTION.getInvolved;
 
 export default function Home() {
   const [campus, setCampus] = useState(Campus.NEU)
-  const [termId = LATEST_TERM, setTermId] = useQueryParam('termId', StringParam); // Default to LATEST if term not in params
 
-  // The lastest term
+  // The latest term
   const LATEST_TERM = getLatestTerm(campus);
+
+  const [termId = LATEST_TERM, setTermId] = useQueryParam('termId', StringParam); // Default to LATEST if term not in params
 
   const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map((t) => { return t.value; });
 
