@@ -10,7 +10,6 @@ datasource db {
 model Course {
   classAttributes String[]         @map(name: "class_attributes")
   classId         String?          @map(name: "class_id")
-  college         String?
   coreqs          Json?
   description     String?
   feeAmount       Int?             @map(name: "fee_amount")
@@ -97,7 +96,7 @@ model Section {
   id               String            @id
   info             String?
   meetings         Json?
-  online           Boolean?
+  campus           String?
   profs            String[]
   seatsCapacity    Int?              @map(name: "seats_capacity")
   seatsRemaining   Int?              @map(name: "seats_remaining")
