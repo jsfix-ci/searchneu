@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import SubjectAbbreviationParser from '../subjectAbbreviationParser';
+import { _createDescriptionTable } from '../subjectAbbreviationParser';
 
 describe('subjectAbbreviationParser', () => {
-  it('_processSubjectListResponse builds mapping', () => {
+  it('_createDescriptionTable builds mapping', () => {
     const banner = [
       {
         code: 'ACCT',
@@ -17,6 +17,6 @@ describe('subjectAbbreviationParser', () => {
       Accounting: 'ACCT',
       'Adv Manufacturing System - CPS': 'AVM',
     };
-    expect(SubjectAbbreviationParser._processSubjectListResponse(banner)).toEqual(map);
+    expect(_createDescriptionTable(banner)).toEqual(map);
   });
 });

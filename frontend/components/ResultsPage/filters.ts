@@ -86,7 +86,8 @@ export type FilterOptions = Record<FilteredKeys<FilterSpecs, FilterSpec<'Dropdow
 // A single option in a multiple choice filter
 export type Option = {
   value: string,
-  count: number
+  count: number,
+  description?: string,
 }
 
 // ============== Constants For Components To Use ================

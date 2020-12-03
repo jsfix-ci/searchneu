@@ -28,7 +28,7 @@ class DumpProcessor {
    * @param {boolean} destroy determines if courses that haven't been updated for the last two days will be removed from the database
    */
   async main({
-    termDump = { classes: {}, sections: {} },
+    termDump = { classes: {}, sections: {}, subjects: {} },
     profDump = {},
     destroy = false,
   }) {
@@ -138,6 +138,23 @@ class DumpProcessor {
     }));
 
     macros.log('finished updating times');
+
+    await Promise.all(Object.entries(termDump.subjects).map(([key, value]) => {
+      return prisma.subject.upsert({
+        where: {
+          abbreviation: key,
+        },
+        create: {
+          abbreviation: key,
+          description: value as string,
+        },
+        update: {
+          description: value,
+        },
+      });
+    }));
+
+    macros.log('finished with subjects');
 
     if (destroy) {
       await prisma.course.deleteMany({
