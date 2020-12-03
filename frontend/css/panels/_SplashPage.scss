@@ -75,6 +75,8 @@
 
   .row-first {
     background: rgb(125, 128, 121);
+    z-index: 105;
+    position: relative;
 
     .text {
       color: white;

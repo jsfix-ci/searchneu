@@ -39,7 +39,6 @@
     align-items: center;
     margin-bottom: 0 !important;
     height: 100vh;
-    z-index: -1;
     position: relative;
     pointer-events: none;
     background: linear-gradient(
@@ -76,8 +75,7 @@
     position: absolute;
     right: -40px;
     bottom: -50px;
-    z-index: 100;
-    // margin-right: -50px;
+    z-index: 102;
   }
 
   .bostonContainer {
@@ -86,6 +84,7 @@
     bottom: 0;
     text-align: center;
     line-height: 0;
+    z-index: 101;
   }
 
   .boston {
@@ -139,7 +138,7 @@
     top: 0;
     border: 0;
     right: 0;
-    z-index: 10;
+    z-index: 101;
   }
 
   .octopusArm {
