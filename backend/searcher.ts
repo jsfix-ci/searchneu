@@ -113,7 +113,7 @@ class Searcher {
   /**
    * return a set of all existing subjects of classes
    */
-  getSubjects(): {} {
+  getSubjects(): Record<string, string> {
     return this.subjects;
   }
 
@@ -239,14 +239,19 @@ class Searcher {
       took: results[0].took,
       aggregations: _.fromPairs(filters.map((filter, idx) => {
         return [filter, results[idx + 1].aggregations[filter].buckets.map((aggVal) => {
-          const agg: AggCount = { value: aggVal.key, count: aggVal.doc_count };
-          if (filter === 'subject') {
-            agg.description = this.subjects[aggVal.key];
-          }
-          return agg;
+          return this.generateAgg(filter, aggVal.key, aggVal.doc_count);
         })];
       })),
     };
+  }
+
+  generateAgg(filter: string, value: string, count: number): AggCount {
+    const agg: AggCount = { value, count };
+    // in addition to the subject abbreviation, add subject description for subject filter
+    if (filter === 'subject') {
+      agg.description = this.subjects[value];
+    }
+    return agg;
   }
 
   async getOneSearchResult(subject: string, classId: string, termId: string) : Promise<SingleSearchResult> {
