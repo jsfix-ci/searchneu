@@ -51,6 +51,8 @@ exports[`should render a section 1`] = `
           src="file"
         />
         <HomeSearch
+          campus="NEU"
+          setCampus={[Function]}
           setSearchFocused={[Function]}
           setTermId={[Function]}
           termId="202030"

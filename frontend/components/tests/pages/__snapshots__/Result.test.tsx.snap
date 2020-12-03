@@ -18,7 +18,6 @@ exports[`should render a section 1`] = `
       className="Results__searchwrapper"
     >
       <SearchBar
-        onClick={[Function]}
         onSearch={[Function]}
         query="cs"
       />
@@ -37,19 +36,19 @@ exports[`should render a section 1`] = `
             Array [
               Object {
                 "text": "NEU",
-                "value": "neu",
+                "value": "NEU",
               },
               Object {
                 "text": "CPS",
-                "value": "cps",
+                "value": "CPS",
               },
               Object {
                 "text": "Law",
-                "value": "law",
+                "value": "LAW",
               },
             ]
           }
-          placeholder="NEU"
+          placeholder="Select a campus"
           value="NEU"
         />
       </div>
@@ -64,6 +63,7 @@ exports[`should render a section 1`] = `
         <Memo(SearchDropdown)
           className="searchDropdown"
           compact={false}
+          key="NEU"
           onChange={[Function]}
           options={
             Array [
@@ -80,12 +80,12 @@ exports[`should render a section 1`] = `
                 "value": "202040",
               },
               Object {
-                "text": "Summer II 2020",
-                "value": "202060",
-              },
-              Object {
                 "text": "Summer Full 2020",
                 "value": "202050",
+              },
+              Object {
+                "text": "Summer II 2020",
+                "value": "202060",
               },
               Object {
                 "text": "Spring 2020",
@@ -93,7 +93,7 @@ exports[`should render a section 1`] = `
               },
             ]
           }
-          placeholder="Fall 2020"
+          placeholder="Select a term"
           value="202030"
         />
       </div>
