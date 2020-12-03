@@ -12,7 +12,8 @@ import macros from './macros';
 import {
   EsQuery, QueryNode, ExistsQuery, TermsQuery, TermQuery, LeafQuery, MATCH_ALL_QUERY, RangeQuery,
   EsFilterStruct, EsAggFilterStruct, FilterInput, FilterPrelude, AggFilterPrelude, SortInfo, Range,
-  SearchResults, SingleSearchResult, PartialResults, EsResultBody, EsMultiResult, AggResults, SearchResult,
+  SearchResults, SingleSearchResult, PartialResults, AggCount, EsResultBody, EsMultiResult,
+  AggResults, SearchResult,
 } from './search_types';
 
 type CourseWithSections = Course & { sections: Section[] };
@@ -20,7 +21,7 @@ type CourseWithSections = Course & { sections: Section[] };
 class Searcher {
   elastic: Elastic;
 
-  subjects: Set<string>;
+  subjects: Record<string, string>;
 
   filters: FilterPrelude;
 
@@ -32,7 +33,7 @@ class Searcher {
 
   constructor() {
     this.elastic = elastic;
-    this.subjects = null;
+    this.subjects = {};
     this.filters = Searcher.generateFilters();
     this.aggFilters = _.pickBy<EsFilterStruct, EsAggFilterStruct>(this.filters, (f): f is EsAggFilterStruct => f.agg !== false);
     this.AGG_RES_SIZE = 1000;
@@ -102,15 +103,17 @@ class Searcher {
   }
 
   async initializeSubjects(): Promise<void> {
-    if (!this.subjects) {
-      this.subjects = new Set((await prisma.course.findMany({ select: { subject: true }, distinct: ['subject'] })).map((obj) => obj.subject));
+    if (_.isEmpty(this.subjects)) {
+      (await prisma.subject.findMany()).forEach((obj) => {
+        this.subjects[obj.abbreviation] = obj.description;
+      });
     }
   }
 
   /**
    * return a set of all existing subjects of classes
    */
-  getSubjects(): Set<string> {
+  getSubjects(): Record<string, string> {
     return this.subjects;
   }
 
@@ -235,9 +238,20 @@ class Searcher {
       resultCount: results[0].hits.total.value,
       took: results[0].took,
       aggregations: _.fromPairs(filters.map((filter, idx) => {
-        return [filter, results[idx + 1].aggregations[filter].buckets.map((aggVal) => { return { value: aggVal.key, count: aggVal.doc_count } })];
+        return [filter, results[idx + 1].aggregations[filter].buckets.map((aggVal) => {
+          return this.generateAgg(filter, aggVal.key, aggVal.doc_count);
+        })];
       })),
     };
+  }
+
+  generateAgg(filter: string, value: string, count: number): AggCount {
+    const agg: AggCount = { value, count };
+    // in addition to the subject abbreviation, add subject description for subject filter
+    if (filter === 'subject') {
+      agg.description = this.subjects[value];
+    }
+    return agg;
   }
 
   async getOneSearchResult(subject: string, classId: string, termId: string) : Promise<SingleSearchResult> {
@@ -289,7 +303,7 @@ class Searcher {
     // if we know that the query is of the format of a course code, we want to return only one result
     const patternResults = query.match(this.COURSE_CODE_PATTERN);
     const subject = patternResults ? patternResults[1].toUpperCase() : '';
-    if (patternResults && macros.isNumeric(patternResults[2]) && (this.getSubjects()).has(subject)) {
+    if (patternResults && macros.isNumeric(patternResults[2]) && (subject in (this.getSubjects()))) {
       ({
         results, resultCount, took, hydrateDuration, aggregations,
       } = await this.getOneSearchResult(subject, patternResults[2], termId));

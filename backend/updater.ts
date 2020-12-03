@@ -136,7 +136,7 @@ class Updater {
     });
 
     await this.sendMessages(notifications, classHashToUsers, sectionHashToUsers);
-    await dumpProcessor.main({ termDump: { sections, classes: {} } });
+    await dumpProcessor.main({ termDump: { sections, classes: {}, subjects: {} } });
 
     const totalTime = Date.now() - startTime;
 
