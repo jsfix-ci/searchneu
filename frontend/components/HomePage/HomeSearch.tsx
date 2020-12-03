@@ -47,6 +47,7 @@ const HomeSearch = ({
             onChange={ setTermId }
             className='searchDropdown'
             compact={ false }
+            key={ campus }
           />
         </div>
         <div

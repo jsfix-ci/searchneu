@@ -6,6 +6,7 @@
   box-shadow: none !important;
   border: none !important;
   pointer-events: initial;
+  min-width: max-content !important;
 
   & * {
     font-size: 17px;
