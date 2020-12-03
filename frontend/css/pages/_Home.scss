@@ -37,29 +37,47 @@
   .topHeader {
     display: flex !important;
     align-items: center;
-    justify-content: center;
     margin-bottom: 0 !important;
     height: 100vh;
-    z-index: 100;
+    z-index: -1;
     position: relative;
     pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(168, 218, 220, 0.66) 3.86%,
+      rgba(168, 218, 220, 0.66) 54.45%,
+      rgba(189, 204, 174, 0.538607) 68.57%,
+      rgba(208, 191, 131, 0.424862) 78.28%,
+      rgba(255, 159, 28, 0.67) 103.17%
+    );
   }
 
   .centerTextContainer {
     flex-basis: 600px;
     padding-bottom: 8%;
+    text-align: left;
+    margin-left: 10% !important;
   }
 
   .logo {
     height: 50px;
     margin-bottom: 20px;
-    margin-left: 20px;
     margin-right: 20px;
     z-index: 10;
 
     @media only screen and (min-width: 400px) {
-      height: 60px;
+      height: 112px;
     }
+  }
+
+  .husky {
+    width: 576px !important;
+    height: auto !important;
+    position: absolute;
+    right: -40px;
+    bottom: -50px;
+    z-index: 100;
+    // margin-right: -50px;
   }
 
   .bostonContainer {
@@ -71,8 +89,7 @@
   }
 
   .boston {
-    width: 1500px;
-    max-width: 90%;
+    width: 100%;
   }
 
   .searchWrapper {
