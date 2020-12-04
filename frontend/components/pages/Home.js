@@ -7,7 +7,9 @@ import cx from 'classnames';
 import { useQueryParam, StringParam } from 'use-query-params';
 import logo from '../images/logo.svg';
 import boston from '../images/boston.svg';
-import husky from '../images/husky.svg';
+import huskyRed from '../images/husky_red.svg';
+import huskyBlue from '../images/husky_blue.svg';
+import huskyYellow from '../images/husky_yellow.svg';
 import sandbox from '../images/sandbox-logo.svg';
 import macros from '../macros';
 import SplashPage from '../SplashPage/SplashPage';
@@ -68,6 +70,20 @@ export default function Home() {
         </p>
       </div>
     );
+  }
+
+  let husky;
+  switch (campus) {
+    case Campus.NEU:
+      husky = huskyRed;
+      break;
+    case Campus.CPS:
+      husky = huskyYellow;
+      break;
+    case Campus.LAW:
+      husky = huskyBlue;
+      break;
+    default: throw new Error('unexpected campus type');
   }
 
   // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
