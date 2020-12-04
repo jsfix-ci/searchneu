@@ -279,7 +279,7 @@ class Searcher {
   getSingleResultAggs(result: CourseWithSections) : AggResults {
     return {
       nupath: result.nupath.map((val) => { return { value: val, count: 1 } }),
-      subject: [{ value: result.subject, count: 1 }],
+      subject: [this.generateAgg('subject', result.subject, 1)],
       classType: [{ value: result.sections[0].classType, count: 1 }],
       campus: [{ value: result.sections[0].campus, count: 1 }],
     };
