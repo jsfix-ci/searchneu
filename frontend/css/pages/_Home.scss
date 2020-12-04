@@ -41,14 +41,15 @@
     height: 100vh;
     position: relative;
     pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgba(168, 218, 220, 0.66) 3.86%,
-      rgba(168, 218, 220, 0.66) 54.45%,
-      rgba(189, 204, 174, 0.538607) 68.57%,
-      rgba(208, 191, 131, 0.424862) 78.28%,
-      rgba(255, 159, 28, 0.67) 103.17%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(168, 218, 220, 0.66) 3.86%,
+        rgba(168, 218, 220, 0.66) 54.45%,
+        rgba(189, 204, 174, 0.538607) 68.57%,
+        rgba(208, 191, 131, 0.424862) 78.28%,
+        rgba(255, 159, 28, 0.67) 103.17%
+      );
   }
 
   .centerTextContainer {
@@ -139,6 +140,17 @@
     border: 0;
     right: 0;
     z-index: 101;
+    display: none;
+  }
+
+  .sandboxLogoContainer {
+    position: absolute;
+    top: 0;
+    border: 0;
+    left: 0;
+    z-index: 101;
+    margin-left: 20px;
+    margin-top: 20px;
   }
 
   .octopusArm {

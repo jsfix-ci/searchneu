@@ -8,6 +8,7 @@ import { useQueryParam, StringParam } from 'use-query-params';
 import logo from '../images/logo.svg';
 import boston from '../images/boston.svg';
 import husky from '../images/husky.svg';
+import sandbox from '../images/sandbox-logo.svg';
 import macros from '../macros';
 import SplashPage from '../SplashPage/SplashPage';
 import Footer from '../Footer';
@@ -28,16 +29,11 @@ export default function Home() {
   // The latest term
   const LATEST_TERM = getLatestTerm(campus);
 
-  const [termId = LATEST_TERM, setTermId] = useQueryParam(
-    'termId',
-    StringParam,
-  ); // Default to LATEST if term not in params
+  const [termId = LATEST_TERM, setTermId] = useQueryParam('termId', StringParam); // Default to LATEST if term not in params
 
-  const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
-    (t) => {
-      return t.value;
-    },
-  );
+  const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map((t) => {
+    return t.value;
+  });
 
   // Redirect to latest if we're at an old term
   if (!AVAILABLE_TERM_IDS.includes(termId)) {
@@ -78,6 +74,9 @@ export default function Home() {
   // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
   return (
     <div className={ containerClassnames }>
+      <a href='https://www.sandboxnu.com/' target='_blank' rel='noopener noreferrer' className='sandboxLogoContainer'>
+        <img src={ sandbox } alt='sandbox' />
+      </a>
       <a
         target='_blank'
         rel='noopener noreferrer'
