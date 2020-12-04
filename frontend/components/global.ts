@@ -20,7 +20,7 @@ export const cpsTermDropdownOptions: DropdownItemProps[] = [
   { text: 'Summer 2020 CPS Semester', value: '202054' },
   { text: 'Summer 2020 CPS Quarter', value: '202055' },
   { text: 'Spring 2020 CPS Semester', value: '202034' },
-  { text: 'Spring 2020 CPS Quarter', value: '202034' },
+  { text: 'Spring 2020 CPS Quarter', value: '202035' },
 ];
 
 export const lawTermDropdownOptions: DropdownItemProps[] = [
