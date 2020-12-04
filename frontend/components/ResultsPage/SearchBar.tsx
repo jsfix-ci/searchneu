@@ -4,20 +4,18 @@
  */
 import React, { useState, useEffect } from 'react';
 import macros from '../macros';
-import LogoInput from '../images/LogoInput';
+import magnifyingGlass from '../images/magnifying-glass.svg';
 
 interface SearchBarProps {
-  query: string,
-  onSearch: (q: string) => void,
-  onClick?: () => void,
+  query: string;
+  onSearch: (q: string) => void;
+  onClick?: () => void;
 }
 
 /**
  * Component to handle the searchbar input. Abstracts the jankiness of controlling input components.
  */
-export default function SearchBar({
-  query, onSearch, onClick,
-}: SearchBarProps) {
+export default function SearchBar({ query, onSearch, onClick }: SearchBarProps) {
   // controlledQuery represents what's typed into the searchbar - even BEFORE enter is hit
   const [controlledQuery, setControlledQuery] = useState(query);
 
@@ -54,12 +52,14 @@ export default function SearchBar({
           }
         } }
         onClick={ onClick }
-        onChange={ (event) => { setControlledQuery(event.target.value); } }
+        onChange={ (event) => {
+          setControlledQuery(event.target.value);
+        } }
         value={ controlledQuery }
         placeholder={ !macros.isMobile ? 'Class, professor, course number' : undefined }
       />
       <div onClick={ search } className='searchbar__button' role='button' tabIndex={ 0 }>
-        <LogoInput />
+        <img src={ magnifyingGlass } alt='magnifying glass' className='searchbar__magnifyingGlass' />
       </div>
     </div>
   );
