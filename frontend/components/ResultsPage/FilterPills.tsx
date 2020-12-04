@@ -70,29 +70,31 @@ export default function FilterPills({ filters, setFilters }: FilterPillsProps) {
   }
 
   return (
-    <div className='selected-filters'>
-      <span className='selected-filters__label'>
-        Applied ({crumbs.length}):
-      </span>
-      <div className='selected-filters__row'>
-        {
-            crumbs.map((crumb: PillProps) => (
-              <FilterPill
-                key={ crumb.verbose }
-                verbose={ crumb.verbose }
-                compact={ crumb.compact }
-                onClose={ crumb.onClose }
-              />
-            ))
-          }
-        <div
-          className='selected-filters__clear'
-          role='button'
-          tabIndex={ 0 }
-          onClick={ () => setFilters(DEFAULT_FILTER_SELECTION) }
-        >
-          Clear All
+    <div>
+      <div className='selected-filters'>
+        <span className='selected-filters__label'>
+          Applied ({crumbs.length}):
+        </span>
+        <div className='selected-filters__row'>
+          {
+              crumbs.map((crumb: PillProps) => (
+                <FilterPill
+                  key={ crumb.verbose }
+                  verbose={ crumb.verbose }
+                  compact={ crumb.compact }
+                  onClose={ crumb.onClose }
+                />
+              ))
+            }
         </div>
+      </div>
+      <div
+        className='selected-filters__clear'
+        role='button'
+        tabIndex={ 0 }
+        onClick={ () => setFilters(DEFAULT_FILTER_SELECTION) }
+      >
+        Clear All
       </div>
     </div>
   )

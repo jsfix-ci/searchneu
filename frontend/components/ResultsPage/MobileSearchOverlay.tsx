@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import FilterPanel from './FilterPanel';
 import FilterPills from './FilterPills';
 import macros from '../macros';
-import LogoInput from '../images/LogoInput';
 import IconClose from '../images/IconClose';
 import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
 
@@ -47,7 +46,15 @@ export default function MobileSearchOverlay({
   };
   return (
     <div className='msearch-overlay'>
-      <div className='Results_Header Results_Header-top msearch-overlay__topbar'>
+      <div className='msearch-overlay__content'>
+        <div className='msearch-overlay__pills'>
+          {areFiltersSet(filterSelection) && (
+            <FilterPills
+              filters={ filterSelection }
+              setFilters={ setFilterPills }
+            />
+          )}
+        </div>
         <div
           className='msearch-overlay__back'
           role='button'
@@ -55,40 +62,6 @@ export default function MobileSearchOverlay({
           onClick={ search }
         >
           <IconClose fill='#d41b2c' />
-        </div>
-        <div className='overlay-search'>
-          <input
-            type='search'
-            id='search_id'
-            autoComplete='off'
-            spellCheck='false'
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-            tabIndex={ 0 }
-            className='overlay-search__input'
-            size={ 10 }
-            onKeyDown={ (event) => {
-              if (event.key === 'Enter') {
-                search();
-              }
-            } }
-            onChange={ (event) => { setControlledQuery(event.target.value); } }
-            value={ controlledQuery }
-            placeholder={ !macros.isMobile ? 'Class, professor, course number' : undefined }
-          />
-          <div onClick={ search } className='overlay-search__button' role='button' tabIndex={ 0 }>
-            <LogoInput fill='#d41b2c' />
-          </div>
-        </div>
-      </div>
-      <div className='msearch-overlay__content'>
-        <div className='msearch-overlay__pills'>
-          {areFiltersSet(filterSelection) ? (
-            <FilterPills
-              filters={ filterSelection }
-              setFilters={ setFilterPills }
-            />
-          ) : <span>No filters set</span>}
         </div>
         <FilterPanel
           options={ filterOptions }

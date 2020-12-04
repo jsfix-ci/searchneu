@@ -5,7 +5,6 @@
  *
  * ONLY PUT COMMONLY USED TYPES HERE
  */
-
 import { FilterOptions } from './ResultsPage/filters';
 import Course from './classModels/Course';
 import Section from './classModels/Section';
@@ -43,4 +42,10 @@ export enum DayOfWeek {
   THURSDAY,
   FRIDAY,
   SATURDAY
+}
+
+export enum Campus {
+  NEU = 'NEU',
+  CPS = 'CPS',
+  LAW = 'LAW'
 }

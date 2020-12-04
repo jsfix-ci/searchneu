@@ -39,4 +39,8 @@
       outline: none;
     }
   }
+
+  @media only screen and (max-width: 767px) {
+    border: 1px solid #d41b2c;
+  }
 }
