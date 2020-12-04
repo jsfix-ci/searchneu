@@ -9,7 +9,7 @@ import {
   useQueryParams, BooleanParam, useQueryParam,
 } from 'use-query-params';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import logo from '../images/logo.svg';
+import logo from '../images/logo_red.svg';
 import FilterButton from '../images/FilterButton.svg'
 import search from '../search';
 import macros from '../macros';
@@ -169,6 +169,7 @@ export default function Results() {
             <SearchBar
               onSearch={ setSearchQuery }
               query={ query }
+              buttonColor='red'
             />
           </div>
           <img
@@ -189,6 +190,7 @@ export default function Results() {
           <SearchBar
             onSearch={ setSearchQuery }
             query={ query }
+            buttonColor='red'
           />
         </div>
         )}

@@ -5,7 +5,9 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { useQueryParam, StringParam } from 'use-query-params';
-import logo from '../images/logo.svg';
+import logoRed from '../images/logo_red.svg';
+import logoBlue from '../images/logo_blue.svg';
+import logoYellow from '../images/logo_yellow.svg';
 import boston from '../images/boston.svg';
 import huskyRed from '../images/husky_red.svg';
 import huskyBlue from '../images/husky_blue.svg';
@@ -24,6 +26,27 @@ const ATTENTION_SECTION = {
 };
 
 const attentionSectionMode = ATTENTION_SECTION.getInvolved;
+
+function getResourcesFromCampus(campusType) {
+  switch (campusType) {
+    case Campus.NEU: return {
+      husky: huskyRed,
+      searchLogo: logoRed,
+      searchBarButtonColor: 'red',
+    }
+    case Campus.CPS: return {
+      husky: huskyYellow,
+      searchLogo: logoYellow,
+      searchBarButtonColor: 'yellow',
+    }
+    case Campus.LAW: return {
+      husky: huskyBlue,
+      searchLogo: logoBlue,
+      searchBarButtonColor: 'blue',
+    }
+    default: throw new Error('unexpected campus type');
+  }
+}
 
 export default function Home() {
   const [campus, setCampus] = useState(Campus.NEU);
@@ -72,19 +95,7 @@ export default function Home() {
     );
   }
 
-  let husky;
-  switch (campus) {
-    case Campus.NEU:
-      husky = huskyRed;
-      break;
-    case Campus.CPS:
-      husky = huskyYellow;
-      break;
-    case Campus.LAW:
-      husky = huskyBlue;
-      break;
-    default: throw new Error('unexpected campus type');
-  }
+  const { husky, searchLogo, searchBarButtonColor } = getResourcesFromCampus(campus);
 
   // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
   // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
@@ -127,13 +138,14 @@ export default function Home() {
           }) }
         >
           <div className='centerTextContainer'>
-            <img src={ logo } className='logo' alt='logo' />
+            <img src={ searchLogo } className='logo' alt='logo' />
             <HomeSearch
               setSearchFocused={ setSearchFocused }
               setTermId={ setTermId }
               termId={ termId }
               campus={ campus }
               setCampus={ setCampus }
+              buttonColor={ searchBarButtonColor }
             />
             {attentionSection}
           </div>

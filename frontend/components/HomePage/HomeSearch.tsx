@@ -9,14 +9,15 @@ import { Campus } from '../types'
 import { getTermDropdownOptionsForCampus } from '../global'
 
 interface HomeSearchProps {
-  setTermId: (s: string) => void
-  termId: string
-  campus: Campus
-  setCampus: (c: Campus) => void
+  setTermId: (s: string) => void;
+  termId: string;
+  campus: Campus;
+  setCampus: (c: Campus) => void;
+  buttonColor: 'red' | 'yellow' | 'blue';
 }
 
 const HomeSearch = ({
-  setTermId, termId, campus, setCampus,
+  setTermId, termId, campus, setCampus, buttonColor,
 }: HomeSearchProps) => {
   const history = useHistory();
   return (
@@ -56,6 +57,7 @@ const HomeSearch = ({
           <SearchBar
             onSearch={ (q) => { history.push(`${termId}/${q}`); } }
             query=''
+            buttonColor={ buttonColor }
           />
         </div>
       </div>

@@ -10,12 +10,15 @@ interface SearchBarProps {
   query: string;
   onSearch: (q: string) => void;
   onClick?: () => void;
+  buttonColor: 'red' | 'yellow' | 'blue';
 }
 
 /**
  * Component to handle the searchbar input. Abstracts the jankiness of controlling input components.
  */
-export default function SearchBar({ query, onSearch, onClick }: SearchBarProps) {
+export default function SearchBar({
+  query, onSearch, onClick, buttonColor,
+}: SearchBarProps) {
   // controlledQuery represents what's typed into the searchbar - even BEFORE enter is hit
   const [controlledQuery, setControlledQuery] = useState(query);
 
@@ -58,7 +61,7 @@ export default function SearchBar({ query, onSearch, onClick }: SearchBarProps) 
         value={ controlledQuery }
         placeholder={ !macros.isMobile ? 'Class, professor, course number' : undefined }
       />
-      <div onClick={ search } className='searchbar__button' role='button' tabIndex={ 0 }>
+      <div onClick={ search } className={ `searchbar__button ${buttonColor}` } role='button' tabIndex={ 0 }>
         <img src={ magnifyingGlass } alt='magnifying glass' className='searchbar__magnifyingGlass' />
       </div>
     </div>
