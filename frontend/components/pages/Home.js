@@ -75,7 +75,7 @@ export default function Home() {
   return (
     <div className={ containerClassnames }>
       <a href='https://www.sandboxnu.com/' target='_blank' rel='noopener noreferrer' className='sandboxLogoContainer'>
-        <img src={ sandbox } alt='sandbox' />
+        <img src={ sandbox } alt='sandbox' className='sandboxLogo' />
       </a>
       <a
         target='_blank'
