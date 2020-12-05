@@ -18,6 +18,7 @@ exports[`should render a section 1`] = `
       className="Results__searchwrapper"
     >
       <SearchBar
+        buttonColor="red"
         onSearch={[Function]}
         query="cs"
       />

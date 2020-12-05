@@ -54,6 +54,7 @@ exports[`should render a section 1`] = `
           src="file"
         />
         <HomeSearch
+          buttonColor="red"
           campus="NEU"
           setCampus={[Function]}
           setSearchFocused={[Function]}
