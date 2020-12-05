@@ -5,6 +5,18 @@ exports[`should render a section 1`] = `
   className="home-container"
 >
   <a
+    className="sandboxLogoContainer"
+    href="https://www.sandboxnu.com/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <img
+      alt="sandbox"
+      className="sandboxLogo"
+      src="file"
+    />
+  </a>
+  <a
     className="githubCornerContainer"
     href="https://github.com/sandboxnu/searchneu"
     rel="noopener noreferrer"
@@ -29,15 +41,6 @@ exports[`should render a section 1`] = `
       />
     </svg>
   </a>
-  <div
-    className="bostonContainer"
-  >
-    <img
-      alt="logo"
-      className="boston"
-      src="file"
-    />
-  </div>
   <div>
     <div
       className="ui center spacing aligned icon header topHeader"
@@ -51,6 +54,7 @@ exports[`should render a section 1`] = `
           src="file"
         />
         <HomeSearch
+          buttonColor="red"
           campus="NEU"
           setCampus={[Function]}
           setSearchFocused={[Function]}
@@ -80,6 +84,20 @@ exports[`should render a section 1`] = `
             </a>
           </p>
         </div>
+      </div>
+      <img
+        alt="husky"
+        className="husky"
+        src="file"
+      />
+      <div
+        className="bostonContainer"
+      >
+        <img
+          alt="logo"
+          className="boston"
+          src="file"
+        />
       </div>
     </div>
     <SplashPage />

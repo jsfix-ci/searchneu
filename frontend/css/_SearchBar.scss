@@ -30,13 +30,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #d41b2c;
     border-radius: 0 9px 9px 0;
     width: 50px;
     cursor: pointer;
 
     &:focus {
       outline: none;
+    }
+
+    &.red {
+      background: #d41b2c;
+    }
+
+    &.yellow {
+      background: #ff9f1c;
+    }
+
+    &.blue {
+      background: #457b9d;
     }
   }
 

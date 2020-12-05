@@ -37,28 +37,73 @@
   .topHeader {
     display: flex !important;
     align-items: center;
-    justify-content: center;
     margin-bottom: 0 !important;
     height: 100vh;
-    z-index: 100;
     position: relative;
     pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(168, 218, 220, 0.66) 3.86%,
+        rgba(168, 218, 220, 0.66) 54.45%,
+        rgba(189, 204, 174, 0.538607) 68.57%,
+        rgba(208, 191, 131, 0.424862) 78.28%,
+        rgba(255, 159, 28, 0.67) 103.17%
+      );
   }
 
   .centerTextContainer {
     flex-basis: 600px;
     padding-bottom: 8%;
+    text-align: center;
+    margin: 0 auto;
+
+    @media only screen and (min-width: 1025px) {
+      margin: 0;
+      margin-left: 10% !important;
+      text-align: left;
+    }
   }
 
   .logo {
-    height: 50px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    height: 60px;
     z-index: 10;
 
-    @media only screen and (min-width: 400px) {
-      height: 60px;
+    @media only screen and (min-width: 1025px) {
+      height: 112px;
+      margin-bottom: 20px;
+      margin-right: 20px;
+    }
+  }
+
+  .husky {
+    width: 260px !important;
+    height: auto !important;
+    position: absolute;
+    right: -20px;
+    bottom: -50px;
+    z-index: 102;
+
+    // there is definitely a better way to scale the width/position
+    // but for now there is just a bunch of media queries
+    @media only screen and (min-width: 767px) {
+      width: 280px !important;
+      right: -20px;
+    }
+
+    @media only screen and (min-width: 1025px) {
+      width: 310px !important;
+      right: -20px;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      width: 380px !important;
+      right: -30px;
+    }
+
+    @media only screen and (min-width: 1400px) {
+      width: 576px !important;
+      right: -40px;
     }
   }
 
@@ -68,11 +113,11 @@
     bottom: 0;
     text-align: center;
     line-height: 0;
+    z-index: 8;
   }
 
   .boston {
-    width: 1500px;
-    max-width: 90%;
+    width: 100%;
   }
 
   .searchWrapper {
@@ -96,6 +141,7 @@
       transition-delay: 1s !important;
       transition-duration: 0.75s;
       transition-property: transform;
+      overflow: hidden;
     }
 
     .resultsContainer {
@@ -111,6 +157,7 @@
     .topHeader {
       padding-bottom: 20px !important;
       height: 100vh;
+      overflow: hidden;
     }
   }
 
@@ -122,7 +169,35 @@
     top: 0;
     border: 0;
     right: 0;
-    z-index: 10;
+    z-index: 101;
+    display: none;
+  }
+
+  .sandboxLogoContainer {
+    position: absolute;
+    top: 0;
+    border: 0;
+    left: 0;
+    z-index: 101;
+    margin-left: 15px;
+    margin-top: 15px;
+
+    @media only screen and (min-width: 767px) {
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+  }
+
+  .sandboxLogo {
+    width: 25px;
+
+    @media only screen and (min-width: 1025px) {
+      width: 40px;
+    }
+
+    @media only screen and (min-width: 1025px) {
+      width: 47px;
+    }
   }
 
   .octopusArm {
