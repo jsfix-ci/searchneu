@@ -4,8 +4,6 @@
  * See the license file in the root folder for details.
  */
 
-import _ from 'lodash';
-
 import Keys from '../../../common/Keys';
 import macros from '../macros';
 import Meeting, { MomentTuple } from './Meeting';

@@ -57,10 +57,6 @@ describe('Testing basic getters on meeting', () => {
   it('is exam?', () => {
     expect(meeting.isExam()).toBe(false);
   });
-
-  it('meets on weekends', () => {
-    expect(meeting.meetsOnWeekends()).toBe(false);
-  });
 });
 
 it('Testing getMeetsOnDay', () => {
@@ -77,9 +73,5 @@ describe('Testing basic getters on exam', () => {
 
   it('is exam?', () => {
     expect(exam.isExam()).toBe(true);
-  });
-
-  it('meets on weekends?', () => {
-    expect(exam.meetsOnWeekends()).toBe(false);
   });
 });

@@ -5,7 +5,6 @@
 
 import Section from '../../classModels/Section';
 import mockData from '../../panels/tests/mockData'
-import Meeting from '../../classModels/Meeting';
 
 let section : Section;
 let section2 : Section;
