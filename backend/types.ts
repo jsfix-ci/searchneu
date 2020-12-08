@@ -76,6 +76,7 @@ export interface Section {
   termId: string,
   subject: string,
   classId: string,
+  classType: string,
   crn: string,
   seatsCapacity: number,
   seatsRemaining: number,

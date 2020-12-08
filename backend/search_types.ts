@@ -24,7 +24,6 @@ export interface Range {
   max: number;
 }
 
-
 // every query is either a leaf query or a bool query
 export type QueryNode = LeafQuery | BoolQuery;
 
@@ -49,7 +48,7 @@ export interface MultiMatchQuery {
     query: string;
     type: string;
     fields: string[];
-  }
+  };
 }
 
 export interface RangeQuery {
@@ -59,8 +58,8 @@ export interface RangeQuery {
       gt?: number;
       lte?: number;
       lt?: number;
-    }
-  }
+    };
+  };
 }
 
 export const MATCH_ALL_QUERY = { match_all: {} };
@@ -106,7 +105,7 @@ export interface SortInfo {
   [fieldName: string]: {
     order: string;
     unmapped_type: string;
-  }
+  };
 }
 
 export interface QueryAgg {
@@ -114,14 +113,14 @@ export interface QueryAgg {
     terms: {
       field: string;
       size?: number;
-    }
-  }
+    };
+  };
 }
 
 // ========= Filters =========
 export type FilterInput = {
   [filterName: string]: EsValue;
-}
+};
 
 interface FilterStruct<Input> {
   validate: (input: Input) => boolean;
@@ -151,25 +150,24 @@ export type EsResult = any;
 export type EsMultiResult = {
   body: {
     responses: EsResultBody[];
-  }
+  };
 };
 
 export interface EsResultBody {
-  took: number,
+  took: number;
   hits: {
     total: { value: number };
     hits: EsResult[];
     value: number;
-  }
+  };
   aggregations: EsAggResults;
 }
 
 export interface EsAggResults {
   [aggName: string]: {
-    buckets: Array<{ key: string, doc_count: number }>;
-  }
+    buckets: Array<{ key: string; doc_count: number }>;
+  };
 }
-
 
 /************* SEARCH RESULTS **************/
 export interface SearchResults {
@@ -179,7 +177,7 @@ export interface SearchResults {
     total: number;
     hydrate: number;
     es: number;
-  },
+  };
   aggregations: AggResults;
 }
 
@@ -208,21 +206,14 @@ export interface AggResults {
   [filterName: string]: AggCount[];
 }
 
-
 /**
  * WARNING: there should be a `type` property of type `string` here, but Typescript doesn't like it.
  * This is because `type`, the name of the property (the key), is a string, which conflicts with
  * the `resultId` field, which captures all string property names, but has a value other than `string`.
  */
-export interface SearchResult {
-  [resultId: string]: ResultDoc;
-}
-
-export interface CourseDoc {
-  class: Course;
-  sections: Section[];
-}
-export type ResultDoc = Employee | CourseDoc;
+export type SearchResult =
+  | { type: 'employee'; employee: Employee }
+  | { type: 'class'; class: Course; sections: Section[] };
 
 /**************** ES UTILS *****************/
 export type EsMapping = Record<string, any>;
