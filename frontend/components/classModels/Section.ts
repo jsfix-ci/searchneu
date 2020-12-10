@@ -4,8 +4,6 @@
  * See the license file in the root folder for details.
  */
 
-import _ from 'lodash';
-
 import Keys from '../../../common/Keys';
 import macros from '../macros';
 import Meeting, { MomentTuple } from './Meeting';
@@ -69,10 +67,6 @@ class Section {
     return Keys.getSectionHash(this);
   }
 
-  meetsOnWeekends() : boolean {
-    return this.meetings.some((meeting) => { return meeting.meetsOnWeekends(); });
-  }
-
   getAllMeetingMoments(ignoreExams = true) : MomentTuple[] {
     let retVal = [];
     this.meetings.forEach((meeting) => {
@@ -101,48 +95,9 @@ class Section {
     return retVal;
   }
 
-  getWeekDaysAsStringArray() : string[] {
-    return this.getAllMeetingMoments().map((time) => {
-      return time.start.format('dddd');
-    });
-  }
-
-  //returns true if has exam, else false
-  getHasExam() : boolean {
-    return this.meetings.some((meeting) => { return meeting.isExam(); });
-  }
-
-  //returns the {start:end:} moment object of the first exam found
-  //else returns null
-  getExamMeeting() : Meeting {
-    return this.meetings.find((meeting) => {
-      return meeting.isExam() && meeting.times.length > 0;
-    });
-  }
-
   // Unique list of all professors in all meetings, sorted alphabetically, unescape html entity decoding
   getProfs() : string[] {
     return this.profs.length > 0 ? Array.from(this.profs.map((prof) => unescape(prof))).sort() : ['TBA'];
-  }
-
-  getLocations(ignoreExams = true) : string[] {
-    const meetingLocations = [];
-    this.meetings.forEach((meeting) => {
-      if (!(ignoreExams && meeting.isExam())) {
-        meetingLocations.push(meeting.location);
-      }
-    });
-    const retVal = _.uniq(meetingLocations);
-
-    // If it is at least 1 long with TBAs remove, return the array without any TBAs
-    // Eg ["TBA", "Richards Hall 201" ] -> ["Richards Hall 201"]
-    const noTBAs = _.pull(retVal.slice(0), 'TBA');
-
-    return (noTBAs || retVal);
-  }
-
-  hasWaitList() : boolean {
-    return this.waitCapacity > 0 || this.waitRemaining > 0;
   }
 
   updateWithData(data) : void {
