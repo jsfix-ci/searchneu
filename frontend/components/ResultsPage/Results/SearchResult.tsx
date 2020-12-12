@@ -1,5 +1,6 @@
 import React from 'react'
 import { Markup } from 'interweave'
+import { DropdownItemProps } from 'semantic-ui-react'
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
 import Course from '../../classModels/Course'
@@ -9,16 +10,47 @@ import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
+import { Campus } from '../../types';
+import {
+  neuTermDropdownOptions, cpsTermDropdownOptions, lawTermDropdownOptions, getCampusByLastDigit,
+} from '../../global';
 
 interface SearchResultProps {
   aClass: Course,
 }
+
+function greaterTermExists(dropdownOptions : DropdownItemProps[], termId : number) : boolean {
+  let greaterTermFound = false;
+  dropdownOptions.forEach((option) => {
+    const diff = Number(option.value) - termId;
+    if (diff > 0 && diff % 10 === 0) {
+      greaterTermFound = true;
+    }
+  })
+  return greaterTermFound;
+}
+
+function notMostRecentTerm(termId: string) : boolean {
+  const campus = getCampusByLastDigit(termId.substring(termId.length - 1, termId.length));
+  const termIdNum = Number(termId);
+  switch (campus) {
+    case Campus.NEU:
+      return greaterTermExists(neuTermDropdownOptions, termIdNum);
+    case Campus.CPS:
+      return greaterTermExists(cpsTermDropdownOptions, termIdNum);
+    case Campus.LAW:
+      return greaterTermExists(lawTermDropdownOptions, termIdNum);
+    default:
+      throw new Error('Unrecognized campus type.');
+  }
+}
+
 export default function SearchResult({ aClass } : SearchResultProps) {
   const { optionalDisplay, creditsString } = useResultDetail(aClass)
   const userIsWatchingClass = useUserChange(aClass)
   const {
     showAll, setShowAll, renderedSections, hideShowAll,
-  } = useShowAll(aClass)
+  } = useShowAll(aClass);
 
   const feeString = aClass.feeDescription && aClass.feeAmount ? `${aClass.feeDescription}- $${aClass.feeAmount}` : null
 
@@ -62,7 +94,7 @@ export default function SearchResult({ aClass } : SearchResultProps) {
             {feeString ? <span>  {feeString}</span> : <span className='empty'> None</span>}
           </div>
           <div className='SearchResult__panel--right'>
-            <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />
+            { notMostRecentTerm(aClass.termId) ? '' : <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />}
           </div>
         </div>
       </div>
