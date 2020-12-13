@@ -1,7 +1,16 @@
-import { identity, pickBy, result } from 'lodash';
+import { identity, pickBy } from 'lodash';
 import searcher from '../../searcher';
-import { SearchResult } from '../../search_types';
 import { Course, Employee } from '../../types';
+
+type SearchResultItem = Course | Employee;
+
+interface SearchResultItemConnection {
+  totalCount: number;
+  pageInfo: {
+    hasNextPage: boolean;
+  };
+  nodes: SearchResultItem[];
+}
 
 interface SearchArgs {
   termId: number;
@@ -11,18 +20,22 @@ interface SearchArgs {
   campus?: string[];
   classType?: string[];
   classIdRange?: { min: number; max: number };
+
+  offset: number;
+  first: number;
 }
 const resolvers = {
   Query: {
     search: async (
       parent,
       args: SearchArgs,
-    ): Promise<(Course | Employee)[]> => {
+    ): Promise<SearchResultItemConnection> => {
+      const { offset = 0, first = 10 } = args;
       const results = await searcher.search(
         args.query || '',
         String(args.termId),
-        0,
-        10,
+        offset,
+        offset + first,
         pickBy(
           {
             subject: args.subject,
@@ -34,18 +47,24 @@ const resolvers = {
           identity,
         ),
       );
-      return results.searchContent.map((r) => {
-        if (r.type === 'employee') {
-          return r.employee;
-        }
-        return r.class;
-      });
+
+      const hasNextPage = offset + results.searchContent.length < results.resultCount;
+
+      return {
+        totalCount: results.resultCount,
+        nodes: results.searchContent.map((r) => (r.type === 'employee'
+          ? r.employee
+          : { ...r.class, sections: r.sections })),
+        pageInfo: {
+          hasNextPage,
+        },
+      };
     },
   },
 
-  SearchResult: {
+  SearchResultItem: {
     // eslint-disable-next-line no-underscore-dangle
-    __resolveType(obj: Course | Employee) {
+    __resolveType(obj: SearchResultItem) {
       return 'firstName' in obj ? 'Employee' : 'ClassOccurrence';
     },
   },

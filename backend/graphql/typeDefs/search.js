@@ -10,7 +10,16 @@ const typeDef = gql`
       campus: [String!]
       classType: [String!]
       classIdRange: IntRange
-    ): [SearchResult]
+
+      """"
+      Get elements after the given offset
+      """
+      offset: Int
+      """
+      Get n elements
+      """
+      first: Int
+    ): SearchResultItemConnection
   }
 
   input IntRange {
@@ -18,7 +27,13 @@ const typeDef = gql`
     max: Int!
   }
 
-  union SearchResult = ClassOccurrence | Employee
+  type SearchResultItemConnection {
+    totalCount: Int!
+    pageInfo: PageInfo!
+    nodes: [SearchResultItem]
+  }
+
+  union SearchResultItem = ClassOccurrence | Employee
 `;
 
 export default typeDef;

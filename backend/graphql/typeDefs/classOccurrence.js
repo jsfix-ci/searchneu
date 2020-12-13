@@ -12,6 +12,25 @@ const typeDef = gql`
     coreqs: JSON
     maxCredits: Int
     minCredits: Int
+
+    sections: [Section!]!
+  }
+
+  type Section {
+    termId: String
+    subject: String
+    classId: String
+    classType: String
+    crn: String
+    seatsCapacity: Int
+    seatsRemaining: Int
+    waitCapacity: Int
+    waitRemaining: Int
+    campus: String
+    honors: Boolean
+    url: String
+    profs: [String]
+    meetings: JSON
   }
 `;
 

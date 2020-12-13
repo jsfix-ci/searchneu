@@ -29,6 +29,11 @@ const baseQuery = gql`
   type Query {
     _empty: String
   }
+
+  type PageInfo {
+    # When paginating forwards, are there more items
+    hasNextPage: Boolean!
+  }
 `;
 
 const server = new ApolloServer({
