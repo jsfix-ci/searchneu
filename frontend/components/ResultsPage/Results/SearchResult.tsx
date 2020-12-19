@@ -1,6 +1,7 @@
 import React from 'react'
 import { Markup } from 'interweave'
 import { DropdownItemProps } from 'semantic-ui-react'
+import _ from 'lodash';
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
 import Course from '../../classModels/Course'
@@ -20,18 +21,14 @@ interface SearchResultProps {
 }
 
 function greaterTermExists(dropdownOptions : DropdownItemProps[], termId : number) : boolean {
-  let greaterTermFound = false;
-  dropdownOptions.forEach((option) => {
+  return _.some(dropdownOptions, (option) => {
     const diff = Number(option.value) - termId;
-    if (diff > 0 && diff % 10 === 0) {
-      greaterTermFound = true;
-    }
+    return diff > 0 && diff % 10 === 0;
   })
-  return greaterTermFound;
 }
 
 function notMostRecentTerm(termId: string) : boolean {
-  const campus = getCampusByLastDigit(termId.substring(termId.length - 1, termId.length));
+  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1));
   const termIdNum = Number(termId);
   switch (campus) {
     case Campus.NEU:
