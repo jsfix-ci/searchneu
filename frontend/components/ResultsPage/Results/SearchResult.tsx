@@ -1,7 +1,5 @@
 import React from 'react'
 import { Markup } from 'interweave'
-import { DropdownItemProps } from 'semantic-ui-react'
-import _ from 'lodash';
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
 import Course from '../../classModels/Course'
@@ -11,35 +9,10 @@ import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
-import { Campus } from '../../types';
-import {
-  neuTermDropdownOptions, cpsTermDropdownOptions, lawTermDropdownOptions, getCampusByLastDigit,
-} from '../../global';
+import { notMostRecentTerm } from '../../global';
 
 interface SearchResultProps {
   aClass: Course,
-}
-
-function greaterTermExists(dropdownOptions : DropdownItemProps[], termId : number) : boolean {
-  return _.some(dropdownOptions, (option) => {
-    const diff = Number(option.value) - termId;
-    return diff > 0 && diff % 10 === 0;
-  })
-}
-
-function notMostRecentTerm(termId: string) : boolean {
-  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1));
-  const termIdNum = Number(termId);
-  switch (campus) {
-    case Campus.NEU:
-      return greaterTermExists(neuTermDropdownOptions, termIdNum);
-    case Campus.CPS:
-      return greaterTermExists(cpsTermDropdownOptions, termIdNum);
-    case Campus.LAW:
-      return greaterTermExists(lawTermDropdownOptions, termIdNum);
-    default:
-      throw new Error('Unrecognized campus type.');
-  }
 }
 
 export default function SearchResult({ aClass } : SearchResultProps) {
