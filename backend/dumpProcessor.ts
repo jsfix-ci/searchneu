@@ -5,9 +5,7 @@
 import fs from 'fs-extra';
 import _ from 'lodash';
 import path from 'path';
-import {
-  ProfessorCreateInput, Course, SectionCreateInput,
-} from '@prisma/client';
+import { Professor, Course, Section } from '@prisma/client';
 import prisma from './prisma';
 import knex from './knex';
 import Keys from '../common/Keys';
@@ -19,6 +17,14 @@ type Maybe<T> = T | null | undefined;
 // FIXME should we use a string or use the Promise interface?
 export function bulkInsertCourses(courses: Course[]): string {
   return knex('courses').insert(courses).onConflict('id').merge().toString();
+}
+
+export function bulkInsertSections(sections: Section[]): string {
+  return knex('sections').insert(sections).onConflict('id').merge().toString();
+}
+
+export function bulkInsertProfs(profs: Professor[]): string {
+  return knex('professors').insert(profs).onConflict('id').merge().toString();
 }
 
 
