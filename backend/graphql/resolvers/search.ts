@@ -48,7 +48,7 @@ const resolvers = {
         ),
       );
 
-      const hasNextPage = offset + results.searchContent.length < results.resultCount;
+      const hasNextPage = offset + first < results.resultCount;
 
       return {
         totalCount: results.resultCount,
