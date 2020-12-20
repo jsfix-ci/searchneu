@@ -6,14 +6,21 @@ import fs from 'fs-extra';
 import _ from 'lodash';
 import path from 'path';
 import {
-  ProfessorCreateInput, CourseCreateInput, SectionCreateInput,
+  ProfessorCreateInput, Course, SectionCreateInput,
 } from '@prisma/client';
 import prisma from './prisma';
+import knex from './knex';
 import Keys from '../common/Keys';
 import macros from './macros';
 import { populateES } from './scripts/populateES';
 
 type Maybe<T> = T | null | undefined;
+
+// FIXME should we use a string or use the Promise interface?
+export function bulkInsertCourses(courses: Course[]): string {
+  return knex('courses').insert(courses).onConflict('id').merge().toString();
+}
+
 
 class DumpProcessor {
   CHUNK_SIZE: number;

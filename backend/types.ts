@@ -34,20 +34,26 @@ export interface Employee {
 
 // A course within a semester
 export interface Course {
-  host: string,
-  termId: string,
-  subject: string,
-  classId: string,
   classAttributes: string[],
-  desc: string,
-  prettyUrl: string,
-  name: string,
-  url: string,
+  classId: string,
+  coreqs: Requisite,
+  description: string,
+  feeAmount: number,
+  feeDescription: string,
+  host: string,
+  id: string, 
   lastUpdateTime: number,
   maxCredits: number,
   minCredits: number,
-  coreqs: Requisite,
+  name: string,
+  nupath: string[],
+  optPrereqsFor: Requisite,
   prereqs: Requisite,
+  prereqsFor: Requisite,
+  prettyUrl: string,
+  subject: string,
+  termId: string,
+  url: string,
 }
 
 // A co or pre requisite object.
