@@ -45,86 +45,16 @@ class DumpProcessor {
     profDump = {},
     destroy = false,
   }) {
-    const profTransforms = {
-      big_picture_url: this.strTransform,
-      email: this.strTransform,
-      emails: this.arrayTransform,
-      emails_contents: this.arrayStrTransform,
-      first_name: this.strTransform,
-      name: this.strTransform,
-      google_scholar_id: this.strTransform,
-      id: this.strTransform,
-      last_name: this.strTransform,
-      link: this.strTransform,
-      office_room: this.strTransform,
-      personal_site: this.strTransform,
-      phone: this.strTransform,
-      pic: this.jsonTransform,
-      primary_department: this.strTransform,
-      primary_role: this.strTransform,
-      street_address: this.strTransform,
-      url: this.strTransform,
-    };
-
-    const profCols = ['big_picture_url', 'email', 'emails', 'first_name', 'google_scholar_id', 'id', 'last_name', 'link', 'name', 'office_room', 'personal_site', 'phone', 'pic', 'primary_department', 'primary_role', 'street_address', 'url'];
-
-    const courseTransforms = {
-      class_attributes: this.arrayTransform,
-      class_attributes_contents: this.arrayStrTransform,
-      class_id: this.strTransform,
-      coreqs: this.jsonTransform,
-      description: this.strTransform,
-      fee_amount: this.intTransform,
-      fee_description: this.strTransform,
-      host: this.strTransform,
-      id: this.strTransform,
-      last_update_time: this.dateTransform,
-      max_credits: this.intTransform,
-      min_credits: this.intTransform,
-      name: this.strTransform,
-      nupath: this.arrayTransform,
-      nupath_contents: this.arrayStrTransform,
-      opt_prereqs_for: this.jsonTransform,
-      prereqs: this.jsonTransform,
-      prereqs_for: this.jsonTransform,
-      pretty_url: this.strTransform,
-      subject: this.strTransform,
-      term_id: this.strTransform,
-      url: this.strTransform,
-    };
-
-    const courseCols = ['class_attributes', 'class_id', 'coreqs', 'description', 'fee_amount', 'fee_description', 'host', 'id', 'last_update_time', 'max_credits', 'min_credits', 'name', 'nupath', 'opt_prereqs_for', 'prereqs', 'prereqs_for', 'pretty_url', 'subject', 'term_id', 'url'];
-
-    const sectionTransforms = {
-      class_hash: this.strTransform,
-      class_type: this.strTransform,
-      crn: this.strTransform,
-      honors: this.boolTransform,
-      id: this.strTransform,
-      info: this.strTransform,
-      meetings: this.jsonTransform,
-      campus: this.strTransform,
-      profs: this.arrayTransform,
-      profs_contents: this.arrayStrTransform,
-      seats_capacity: this.intTransform,
-      seats_remaining: this.intTransform,
-      url: this.strTransform,
-      wait_capacity: this.intTransform,
-      wait_remaining: this.intTransform,
-    };
-
-    const sectionCols = ['class_hash', 'class_type', 'crn', 'honors', 'id', 'info', 'meetings', 'campus', 'profs', 'seats_capacity', 'seats_remaining', 'url', 'wait_capacity', 'wait_remaining'];
-
     const coveredTerms: Set<string> = new Set();
 
     await Promise.all(_.chunk(Object.values(profDump), 2000).map(async (profs) => {
-      await prisma.$executeRaw(this.bulkUpsert('professors', profCols, profTransforms, profs));
+      await prisma.$executeRaw(bulkInsertProfs(profs));
     }));
 
     macros.log('finished with profs');
 
     await Promise.all(_.chunk(Object.values(termDump.classes), 2000).map(async (courses) => {
-      await prisma.$executeRaw(this.bulkUpsert('courses', courseCols, courseTransforms, courses.map((c) => this.constituteCourse(c, coveredTerms))));
+      await prisma.$executeRaw(bulkInsertCourses(courses));
     }));
 
     macros.log('finished with courses');
@@ -134,7 +64,7 @@ class DumpProcessor {
     const processedSections = Object.values(termDump.sections).map((section) => this.constituteSection(section)).filter((s) => courseIds.has(s.classHash));
 
     await Promise.all(_.chunk(processedSections, 2000).map(async (sections) => {
-      await prisma.$executeRaw(this.bulkUpsert('sections', sectionCols, sectionTransforms, sections));
+      await prisma.$executeRaw(bulkInsertSections(sections));
     }));
 
     macros.log('finished with sections');
@@ -182,44 +112,6 @@ class DumpProcessor {
     macros.log('finished cleaning up');
 
     await populateES();
-  }
-
-  bulkUpsert(tableName: string, columnNames: string[], valTransforms: Record<string, Function>, vals: any[]): any {
-    let query = `INSERT INTO ${tableName} (${columnNames.join(',')}) VALUES `;
-    query += vals.map((val) => {
-      return `(${columnNames.map((c) => valTransforms[c](val[this.toCamelCase(c)], c, valTransforms)).join(',')})`;
-    }).join(',');
-
-    query += ` ON CONFLICT (id) DO UPDATE SET ${columnNames.map((c) => `${c} = excluded.${c}`).join(',')} WHERE ${tableName}.id = excluded.id;`;
-    return query;
-  }
-
-  strTransform(val: Maybe<string>): string {
-    return val ? `'${val.replace(/'/g, "''")}'` : '\'\'';
-  }
-
-  arrayStrTransform(val: Maybe<string>): string {
-    return val ? `"${val}"` : '\'\'';
-  }
-
-  intTransform(val: Maybe<number>): string {
-    return val || val === 0 ? `${val}` : 'NULL';
-  }
-
-  arrayTransform(val: Maybe<any[]>, kind: string, transforms: Record<string, Function>): string {
-    return val && val.length !== 0 ? `'{${val.map((v) => transforms[`${kind}_contents`](v, `${kind}_contents`, transforms)).join(',')}}'` : 'array[]::text[]';
-  }
-
-  jsonTransform(val: Maybe<any>): string {
-    return val ? `'${JSON.stringify(val)}'` : '\'{}\'';
-  }
-
-  dateTransform(val: Maybe<any>): string {
-    return val ? `to_timestamp(${val / 1000})` : 'now()';
-  }
-
-  boolTransform(val: Maybe<any>): string {
-    return val ? 'TRUE' : 'FALSE';
   }
 
   processProf(profInfo: any): ProfessorCreateInput {
@@ -280,10 +172,6 @@ class DumpProcessor {
   constituteSection(secInfo: any): SectionCreateInput {
     const additionalProps = { id: `${Keys.getSectionHash(secInfo)}`, classHash: Keys.getClassHash(secInfo) };
     return _.omit({ ...secInfo, ...additionalProps }, ['classId', 'termId', 'subject', 'host']) as SectionCreateInput;
-  }
-
-  toCamelCase(str: string): string {
-    return str.replace(/(_[a-z])/g, (group) => group.toUpperCase().replace('_', ''));
   }
 }
 
