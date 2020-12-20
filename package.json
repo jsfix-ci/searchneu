@@ -121,6 +121,7 @@
     "jest": "^24.8.0",
     "jest-environment-node": "^26.3.0",
     "json": "^9.0.6",
+    "knex": "^0.21.14",
     "lodash": "^4.17.4",
     "mock-local-storage": "^1.0.5",
     "mockdate": "^2.0.1",
