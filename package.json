@@ -4,7 +4,7 @@
   "scripts": {
     "-development-": "--------development--------",
     "babel-node-ts": "babel-node --extensions '.js,.jsx,.ts,.tsx'",
-    "start": "nodemon --exec ./node_modules/.bin/cross-env NODE_ENV=dev yarn babel-node-ts backend/server.ts",
+    "dev": "nodemon --exec ./node_modules/.bin/cross-env NODE_ENV=dev yarn babel-node-ts backend/server.ts",
     "scrape": "yarn babel-node-ts --max_old_space_size=12000 backend/scrapers/main.js",
     "resetIndex": "yarn babel-node-ts backend/script/resetIndex.js",
     "populateES": "yarn babel-node-ts backend/script/populateES.ts",
@@ -37,8 +37,8 @@
     "build": "yarn -s build_backend; yarn -s build_frontend",
     "-deployment-": "--------deployment--------",
     "prod:scrape": "node dist/backend/scrapers/main.js",
-    "prod:start": "node dist/backend/server.js",
-    "prod:start:updater": "node dist/backend/updater.js",
+    "prod": "node dist/backend/server.js",
+    "prod:updater": "node dist/backend/updater.js",
     "prod:db:migrate": "npx prisma migrate up --experimental --auto-approve"
   },
   "repository": {
