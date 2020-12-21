@@ -127,7 +127,7 @@ module "update-container" {
   container_cpu   = var.webapp_cpu
   container_memory= var.webapp_memory
 
-  command         = ["yarn", "prod:start:updater"]
+  command         = ["yarn", "prod:updater"]
 
   log_configuration = {
     logDriver = "awslogs"

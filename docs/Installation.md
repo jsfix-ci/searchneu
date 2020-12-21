@@ -80,7 +80,7 @@ If you get installation errors, try deleting the `node_modules` folder and runni
 This will start Search NEU in development mode locally. It will listen on port 5000. If you make any changes to the frontend code while the server is running, webpack will automatically recompile the code and send the updates to the browser. Most of the time, the changes should appear in the browser without needing to reload the page ([More info about Hot Module Reloading](https://webpack.js.org/concepts/hot-module-replacement/)). Sometimes this will fail and a message will appear in Chrome's developer tools asking you to reload the page to see the changes. 
 
 ```bash
-yarn start # or npm run start
+yarn dev # or npm run dev
 ```
 
 ### React Dev tools
