@@ -14,13 +14,24 @@ import { populateES } from './scripts/populateES';
 
 type Maybe<T> = T | null | undefined;
 
-// FIXME should we use a string or use the Promise interface?
-export function bulkInsertCourses(courses: Course[]): string {
-  return knex('courses').insert(courses).onConflict('id').merge().toString();
+type InsertOutcome = []; // PostgreSQL always returns an empty array on insert, unless `returning` fields are specified.
+
+interface TermDump {
+  classes: Course[];
+  sections: Section[];
 }
 
-export function bulkInsertSections(sections: Section[]): string {
-  return knex('sections').insert(sections).onConflict('id').merge().toString();
+// FIXME should we use a string or use the Promise interface?
+export async function bulkInsertCourses(courses: Course[]): Promise<InsertOutcome> {
+  return knex('courses').insert(courses).onConflict('id').merge();
+}
+
+export async function bulkInsertSections(sections: Section[]): Promise<InsertOutcome> {
+  return knex('sections').insert(sections).onConflict('id').merge();
+}
+
+export async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
+  return knex('professors').insert(profs).onConflict('id').merge();
 }
 
 export function bulkInsertProfs(profs: Professor[]): string {
