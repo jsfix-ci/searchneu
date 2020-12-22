@@ -22,21 +22,51 @@ interface TermDump {
 }
 
 // FIXME should we use a string or use the Promise interface?
-export async function bulkInsertCourses(courses: Course[]): Promise<InsertOutcome> {
+async function bulkInsertCourses(courses: Course[]): Promise<InsertOutcome> {
   return knex('courses').insert(courses).onConflict('id').merge();
 }
 
-export async function bulkInsertSections(sections: Section[]): Promise<InsertOutcome> {
+async function bulkInsertSections(sections: Section[]): Promise<InsertOutcome> {
   return knex('sections').insert(sections).onConflict('id').merge();
 }
 
-export async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
+async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
   return knex('professors').insert(profs).onConflict('id').merge();
 }
 
-export async function bulkInsertDump(termDump: TermDump = { classes: [], sections: [] }): Promise<void> {
-  await Promise.all(_.chunk(termDump.classes, CHUNK_SIZE).map(bulkInsertCourses));
-  await Promise.all(_.chunk(termDump.sections, CHUNK_SIZE).map(bulkInsertSections));
+// TODO what is the right abstraction here? should we have one at all?
+async function bulkInsertInChunks<T>(entries: T[], bulkInsert: (entries: T[]) => Promise<InsertOutcome>): Promise<void> {
+  _.chunk(entries, CHUNK_SIZE).forEach(async (entryChunk: T[]) => await bulkInsert(entryChunk));
+}
+
+export async function bulkInsertCourseDump(courses: Course[]): Promise<void> {
+  await bulkInsertInChunks(courses, bulkInsertCourses);
+}
+
+export async function bulkInsertSectionDump(sections: Section[]): Promise<void> {
+  await bulkInsertInChunks(sections, bulkInsertSections);
+}
+
+export async function bulkInsertProfDump(profs: Professor[]): Promise<void> {
+  await bulkInsertInChunks(profs, bulkInsertProfs);
+}
+
+export async function bulkInsertTermDump(termDump: TermDump = { classes: [], sections: [] }): Promise<void> {
+  await bulkInsertCourseDump(termDump.classes);
+  await bulkInsertSectionDump(termDump.sections);
+}
+
+// TODO define a term type with the new String API?
+// TODO what does the delete return?
+// TODO updatedAt column?
+export async function deleteStaleCourses(terms: string[]): number {
+  return prisma.course.deleteMany({
+    where: {
+      termId: { in: Array.from(terms) },
+      // delete all courses that haven't been updated in the past 2 days (in milliseconds)
+      lastUpdateTime: { lt: new Date(new Date().getTime() - 48 * 60 * 60 * 1000) },
+    },
+  });
 }
 
 // TODO
