@@ -14,8 +14,6 @@ import { populateES } from './scripts/populateES';
 
 const CHUNK_SIZE = 2000;
 
-type Maybe<T> = T | null | undefined;
-
 type InsertOutcome = []; // PostgreSQL always returns an empty array on insert, unless `returning` fields are specified.
 
 interface TermDump {
@@ -40,6 +38,13 @@ export async function bulkInsertDump(termDump: TermDump = { classes: [], section
   await Promise.all(_.chunk(termDump.classes, CHUNK_SIZE).map(bulkInsertCourses));
   await Promise.all(_.chunk(termDump.sections, CHUNK_SIZE).map(bulkInsertSections));
 }
+
+// TODO
+// 1. the `bulkInsert___` methods above shouldn't be exported, they should be wrapped in a chunking interface.
+// 2. re-write the bulkInsertDump function, how should it work?
+// 3. garbage collection also needs to be split out.
+// 4. add lastUpdateTime to sections?
+// 5. move the pre-processors elsewhere (where they're needed).
 
 
 class DumpProcessor {
