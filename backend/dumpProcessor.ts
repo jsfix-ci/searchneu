@@ -12,6 +12,8 @@ import Keys from '../common/Keys';
 import macros from './macros';
 import { populateES } from './scripts/populateES';
 
+const CHUNK_SIZE = 2000;
+
 type Maybe<T> = T | null | undefined;
 
 type InsertOutcome = []; // PostgreSQL always returns an empty array on insert, unless `returning` fields are specified.
@@ -34,8 +36,9 @@ export async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome
   return knex('professors').insert(profs).onConflict('id').merge();
 }
 
-export function bulkInsertProfs(profs: Professor[]): string {
-  return knex('professors').insert(profs).onConflict('id').merge().toString();
+export async function bulkInsertDump(termDump: TermDump = { classes: [], sections: [] }): Promise<void> {
+  await Promise.all(_.chunk(termDump.classes, CHUNK_SIZE).map(bulkInsertCourses));
+  await Promise.all(_.chunk(termDump.sections, CHUNK_SIZE).map(bulkInsertSections));
 }
 
 
