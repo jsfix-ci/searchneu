@@ -40,10 +40,9 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 const ResultItemMemoized = React.memo(({ result }:{result:SearchItem}) => {
   if (result.type === 'class') {
     const aClass = result.class;
-    // FIXME - do we need to still do this
-    //aClass.loadSectionsFromServerList(result.sections);
-
-
+    aClass.sections = result.sections;
+    // FIXME - do we need to still do this Don't think so...
+    // aClass.loadSectionsFromServerList(result.sections);
     return macros.isMobile ? <MobileSearchResult aClass={ aClass } /> : <SearchResult aClass={ aClass } />;
   }
 

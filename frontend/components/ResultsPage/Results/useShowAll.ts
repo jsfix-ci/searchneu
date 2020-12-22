@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import Course from '../../classModels/Course'
-import Section from '../../classModels/Section'
+import Course from '../../classModels/_Course'
+import Section from '../../classModels/_Section'
 
 interface UseShowAllReturn {
   showAll: boolean

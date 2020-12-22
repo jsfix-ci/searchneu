@@ -88,7 +88,6 @@ class Course {
   }
 
   static create(config) : Course {
-    console.log(config);
     if (!config) {
       macros.error('Passed null config?', config);
       return null;

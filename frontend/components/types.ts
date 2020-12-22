@@ -6,23 +6,9 @@
  * ONLY PUT COMMONLY USED TYPES HERE
  */
 
+import { Moment } from 'moment';
 import { FilterOptions } from './ResultsPage/filters';
-import { CourseReq } from '../../backend/types';
-import moment, { Moment } from 'moment';
-
-export enum ReqKind {
-  AND = 'and',
-  OR = 'or'
-}
-
-export interface ReqType {
-  type: ReqKind,
-  values: Course[]
-}
-
-export interface ReqFor {
-  values : CourseReq[]
-}
+import { CompositeReq, ReqFor } from '../../common/types';
 
 type TimeTuple = {
   start : number;
@@ -40,8 +26,8 @@ type TimeToMoment = {
 
 export interface Course {
   sections: Section[];
-  prereqs : ReqType;
-  coreqs : ReqType;
+  prereqs : CompositeReq;
+  coreqs : CompositeReq;
   host: string;
   termId: string;
   desc : string;
@@ -56,7 +42,7 @@ export interface Course {
   maxCredits: number;
   feeDescription: string;
   feeAmount: number;
-  nupath: any; 
+  nupath: any;
 }
 
 interface Section {
@@ -97,10 +83,17 @@ export type CourseResult = {
 export type Employee = any;
 export type SearchItem = CourseResult | Employee;
 
-export function BLANK_SEARCH_RESULT(): SearchResult {
-  return { results: [], filterOptions: { nupath: [], subject: [], classType: [] } }
+export function NO_SEARCH_RESULTS(): SearchResult {
+  return {
+    results: [],
+    filterOptions: {
+      nupath: [],
+      subject: [],
+      classType: [],
+      campus: [],
+    },
+  }
 }
-
 
 export enum DayOfWeek {
   SUNDAY,

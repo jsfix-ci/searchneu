@@ -1,7 +1,7 @@
 import React from 'react'
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
-import Course from '../../classModels/Course'
+import { Course } from '../../types'
 import IconGlobe from '../../images/IconGlobe'
 import IconArrow from '../../images/IconArrow'
 import SignUpForNotifications from '../../SignUpForNotifications'

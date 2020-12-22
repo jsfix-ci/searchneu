@@ -26,7 +26,7 @@ import {
   FilterSelection, QUERY_PARAM_ENCODERS, DEFAULT_FILTER_SELECTION, areFiltersSet,
 } from '../ResultsPage/filters';
 import ResultsLoader from '../ResultsPage/ResultsLoader';
-import { BLANK_SEARCH_RESULT, SearchResult } from '../types';
+import { NO_SEARCH_RESULTS, SearchResult } from '../types';
 
 
 interface SearchParams {
@@ -70,7 +70,7 @@ export default function Results() {
 
   const filtersAreSet: Boolean = areFiltersSet(filters);
 
-  const us = useSearch(searchParams, BLANK_SEARCH_RESULT(), fetchResults);
+  const us = useSearch(searchParams, NO_SEARCH_RESULTS(), fetchResults);
   const {
     isReady, loadMore, doSearch,
   } = us;

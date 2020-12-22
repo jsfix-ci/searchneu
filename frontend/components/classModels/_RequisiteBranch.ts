@@ -4,7 +4,7 @@
  * See the license file in the root folder for details.
  */
 import macros from '../macros';
-import Course from './Course';
+import Course from './_Course';
 import { CourseReq } from '../../../backend/types';
 
 export enum ReqKind {

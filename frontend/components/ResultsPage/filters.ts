@@ -44,14 +44,14 @@ const ENCODERS_FOR_CAT: Record<FilterCategory, QueryParamConfig<any, any>> = {
 
 // ============== Filter specifications ================
 // Specify which filters exist, and which category they are
-const ONLINE_SPEC: FilterSpec<'Toggle'> = {
-  category: FilterCategories.Toggle, default: false, display: 'Online Classes Only', order: 3,
-}
 const NUPATH_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown, default: [], display: 'NU Path', order: 2,
 }
 const SUBJECT_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown, default: [], display: 'Subject', order: 1,
+}
+const CAMPUS_SPEC: FilterSpec<'Dropdown'> = {
+  category: FilterCategories.Dropdown, default: [], display: 'Campus', order: 3,
 }
 const CLASSTYPE_SPEC: FilterSpec<'Checkboxes'> = {
   category: FilterCategories.Checkboxes, default: [], display: 'Class Type', order: 4,
@@ -60,7 +60,7 @@ const CLASSIDRANGE_SPEC: FilterSpec<'Range'> = {
   category: FilterCategories.Range, default: { min:'', max:'' }, display: 'Course Number', order: 5,
 }
 export const FILTER_SPECS = {
-  online: ONLINE_SPEC,
+  campus: CAMPUS_SPEC,
   nupath: NUPATH_SPEC,
   subject: SUBJECT_SPEC,
   classType: CLASSTYPE_SPEC,

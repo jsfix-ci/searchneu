@@ -1,8 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import macros from '../../macros'
-import RequisiteBranch from '../../classModels/RequisiteBranch'
-import Course from '../../classModels/Course';
+import RequisiteBranch from '../../classModels/_RequisiteBranch'
+import Course from '../../classModels/_Course';
 
 
 export default function useResultDetail(aClass: Course) {

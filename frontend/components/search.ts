@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import macros from './macros';
 import request from './request';
-import { SearchResult, BLANK_SEARCH_RESULT } from './types';
+import { SearchResult, NO_SEARCH_RESULTS } from './types';
 import { FilterSelection, DEFAULT_FILTER_SELECTION } from './ResultsPage/filters';
 
 // Every time there is a breaking change in the search api, increment the version
@@ -51,7 +51,7 @@ class Search {
 
     if (!termId || termId.length !== 6) {
       macros.log('No termId given in frontend/search.js. Returning empty array.', termId, termCount);
-      return BLANK_SEARCH_RESULT();
+      return NO_SEARCH_RESULTS();
     }
 
     const stringFilters = JSON.stringify(_.pickBy(filters, (v, k: keyof FilterSelection) => !_.isEqual(v, DEFAULT_FILTER_SELECTION[k])));
@@ -100,13 +100,13 @@ class Search {
 
     if (results.error) {
       macros.error('Error with networking request', results.error);
-      return BLANK_SEARCH_RESULT();
+      return NO_SEARCH_RESULTS();
     }
 
     // if cache doesn't exist, instantiate. Subject info only changed here
     // since it should only be changed on cache misses
     if (!this.cache[searchHash]) {
-      this.cache[searchHash] = BLANK_SEARCH_RESULT();
+      this.cache[searchHash] = NO_SEARCH_RESULTS();
     }
 
     const cacheResult:SearchResult = this.cache[searchHash];

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Course from '../../classModels/Course'
+import Course from '../../classModels/_Course'
 import IconCollapseExpand from '../../images/IconCollapseExpand'
 import IconArrow from '../../images/IconArrow'
 import useResultDetail from './useResultDetail'
