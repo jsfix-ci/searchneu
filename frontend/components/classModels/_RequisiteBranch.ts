@@ -70,17 +70,17 @@ class RequisiteBranch {
   }
 
 
-  // Downloads the first layer of prereqs
-  async loadPrereqs(classMap) {
-    macros.log('classMap', classMap);
-    this.prereqs.values.forEach((childBranch) => {
-      if (childBranch instanceof RequisiteBranch) {
-        childBranch.loadPrereqs(classMap);
-      } else if (!childBranch.isString) {
-        childBranch.loadFromClassMap(classMap);
-      }
-    });
-  }
+  // // Downloads the first layer of prereqs
+  // async loadPrereqs(classMap) {
+  //   macros.log('classMap', classMap);
+  //   this.prereqs.values.forEach((childBranch) => {
+  //     if (childBranch instanceof RequisiteBranch) {
+  //       childBranch.loadPrereqs(classMap);
+  //     } else if (!childBranch.isString) {
+  //       childBranch.loadFromClassMap(classMap);
+  //     }
+  //   });
+  // }
 }
 
 

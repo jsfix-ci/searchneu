@@ -5,9 +5,8 @@ import EmployeePanel from '../panels/EmployeePanel';
 import SearchResult from './Results/SearchResult'
 import MobileSearchResult from './Results/MobileSearchResult'
 
-import Course from '../classModels/Course';
 import Keys from '../../../common/Keys';
-import { SearchItem } from '../types';
+import { Course, SearchItem } from '../types';
 
 interface ResultsLoaderProps {
   results: SearchItem[],
@@ -40,8 +39,9 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 // If the Panels are updated to function components, we can memoize them instead and remove this
 const ResultItemMemoized = React.memo(({ result }:{result:SearchItem}) => {
   if (result.type === 'class') {
-    const aClass = Course.create(result.class);
-    aClass.loadSectionsFromServerList(result.sections);
+    const aClass = result.class;
+    // FIXME - do we need to still do this
+    //aClass.loadSectionsFromServerList(result.sections);
 
 
     return macros.isMobile ? <MobileSearchResult aClass={ aClass } /> : <SearchResult aClass={ aClass } />;
