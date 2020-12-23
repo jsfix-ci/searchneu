@@ -24,7 +24,7 @@ export type MomentTuple = {
   end : Moment
 }
 
-type TimeToMoment = {
+export type TimeToMoment = {
   [key: number] : MomentTuple[];
 }
 
@@ -86,7 +86,7 @@ class Meeting {
           }
 
           timeMoments.push(obj);
-        });
+        }); 
       }
     }
 

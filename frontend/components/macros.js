@@ -154,12 +154,12 @@ Macros.searchEvent = 'customSearch';
 Macros.isMobile = isMobile();
 
 
-// Definition of some enums for our prerequsities
-Macros.prereqTypes = Object.freeze({
-  PREREQ: Symbol('prereq'),
-  COREQ: Symbol('coreq'),
-  PREREQ_FOR: Symbol('prereqFor'),
-  OPT_PREREQ_FOR: Symbol('optPrereqFor'),
-});
+// // Definition of some enums for our prerequsities
+// PrereqType = Object.freeze({
+//   PREREQ: Symbol('prereq'),
+//   COREQ: Symbol('coreq'),
+//   PREREQ_FOR: Symbol('prereqFor'),
+//   OPT_PREREQ_FOR: Symbol('optPrereqFor'),
+// });
 
 export default Macros;

@@ -2,13 +2,14 @@ import React from 'react'
 import { Markup } from 'interweave'
 import macros from '../../macros'
 import DesktopSectionPanel from './DesktopSectionPanel'
-import { Course } from '../../types'
+import { Course, PrereqType } from '../../types'
 import IconGlobe from '../../images/IconGlobe'
 import IconArrow from '../../images/IconArrow'
 import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
+import moment from 'moment';
 
 interface SearchResultProps {
   aClass: Course,
@@ -19,6 +20,12 @@ export default function SearchResult({ aClass } : SearchResultProps) {
   const {
     showAll, setShowAll, renderedSections, hideShowAll,
   } = useShowAll(aClass)
+
+  // FIXME move to utils?
+  const getLastUpdateString = (course: Course) : string => {
+    return course.lastUpdateTime ? moment(course.lastUpdateTime).fromNow() : null;
+  }
+  console.log(aClass);
 
   const feeString = aClass.feeDescription && aClass.feeAmount ? `${aClass.feeDescription}- $${aClass.feeAmount}` : null
 
@@ -38,7 +45,7 @@ export default function SearchResult({ aClass } : SearchResultProps) {
             >
               <IconGlobe />
             </a>
-            <span>{`Updated ${(aClass.getLastUpdateString())}`}</span>
+            <span>{`Updated ${(getLastUpdateString(aClass))}`}</span>
           </div>
         </div>
         <span className='SearchResult__header--creditString'>
@@ -54,9 +61,9 @@ export default function SearchResult({ aClass } : SearchResultProps) {
             NUPaths:
             {aClass.nupath.length > 0 ? <span> {aClass.nupath.join(', ')}</span> : <span className='empty'> None</span>}
             <br />
-            Prerequisites: {optionalDisplay(macros.prereqTypes.PREREQ, aClass)}
+            Prerequisites: {optionalDisplay(PrereqType.PREREQ, aClass)}
             <br />
-            Corequisites: {optionalDisplay(macros.prereqTypes.COREQ, aClass)}
+            Corequisites: {optionalDisplay(PrereqType.COREQ, aClass)}
             <br />
             Course fees:
             {feeString ? <span>  {feeString}</span> : <span className='empty'> None</span>}

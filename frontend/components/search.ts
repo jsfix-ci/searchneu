@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import macros from './macros';
 import request from './request';
-import { SearchResult, NO_SEARCH_RESULTS } from './types';
+import { SearchResult, BLANK_SEARCH_RESULT } from './types';
 import { FilterSelection, DEFAULT_FILTER_SELECTION } from './ResultsPage/filters';
 
 // Every time there is a breaking change in the search api, increment the version
@@ -51,7 +51,7 @@ class Search {
 
     if (!termId || termId.length !== 6) {
       macros.log('No termId given in frontend/search.js. Returning empty array.', termId, termCount);
-      return NO_SEARCH_RESULTS();
+      return BLANK_SEARCH_RESULT();
     }
 
     const stringFilters = JSON.stringify(_.pickBy(filters, (v, k: keyof FilterSelection) => !_.isEqual(v, DEFAULT_FILTER_SELECTION[k])));
@@ -100,13 +100,13 @@ class Search {
 
     if (results.error) {
       macros.error('Error with networking request', results.error);
-      return NO_SEARCH_RESULTS();
+      return BLANK_SEARCH_RESULT();
     }
 
     // if cache doesn't exist, instantiate. Subject info only changed here
     // since it should only be changed on cache misses
     if (!this.cache[searchHash]) {
-      this.cache[searchHash] = NO_SEARCH_RESULTS();
+      this.cache[searchHash] = BLANK_SEARCH_RESULT();
     }
 
     const cacheResult:SearchResult = this.cache[searchHash];
@@ -121,6 +121,7 @@ class Search {
       this.allLoaded[searchHash] = true;
     }
 
+    console.log("SEARCH");
     // Slice the array, so that if we modify the cache here it doesn't affect the instance we return.
     const retVal = cacheResult.results.slice(0);
 

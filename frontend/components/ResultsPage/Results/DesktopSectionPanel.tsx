@@ -1,19 +1,27 @@
 import React from 'react'
-import Section from '../../classModels/Section'
 import WeekdayBoxes from './WeekdayBoxes'
 import NotifCheckBox from '../../panels/NotifCheckBox'
 import useSectionPanelDetail from './useSectionPanelDetail';
-import Meeting, { MomentTuple } from '../../classModels/Meeting';
+import { Meeting, MomentTuple, Section, DayOfWeek } from '../../types';
+import Keys from '../../../../common/keys';
 
 interface DesktopSectionPanelProps {
   section: Section
   showNotificationSwitches: boolean
-
 }
-
 
 function DesktopSectionPanel({ section, showNotificationSwitches } : DesktopSectionPanelProps) {
   const { getSeatsClass } = useSectionPanelDetail(section)
+
+  const meetsOnDay = (meeting: Meeting, dayIndex : DayOfWeek) : boolean => {
+    console.log(meeting);
+    return meeting.times.some((time) => { return time.start.day() === dayIndex; });
+  }
+
+  // Unique list of all professors in all meetings, sorted alphabetically, unescape html entity decoding
+  const getProfs = (section: Section) : string[] => {
+    return section.profs.length > 0 ? Array.from(section.profs.map((prof) => unescape(prof))).sort() : ['TBA'];
+  }
 
   const getUniqueTimes = (times: MomentTuple[]) => {
     const seenTimes = new Set()
@@ -53,19 +61,19 @@ function DesktopSectionPanel({ section, showNotificationSwitches } : DesktopSect
   const getMeetings = (s: Section) => {
     return s.meetings.map((m) => {
       const meetingDays = Array(7).fill(false)
-      meetingDays.forEach((d, index) => { if (m.meetsOnDay(index)) meetingDays[index] = true })
+      meetingDays.forEach((d, index) => { if (meetsOnDay(m, index)) meetingDays[index] = true })
       return singleMeeting(meetingDays, m)
     })
   }
 
 
   return (
-    <tr className='DesktopSectionPanel' key={ section.getHash() }>
+    <tr className='DesktopSectionPanel' key={ Keys.getSectionHash(section) }>
       <td>
         <a href={ section.url } target='_blank' rel='noopener noreferrer'>{section.crn}</a>
       </td>
       <td>
-        {section.getProfs().join(', ')}
+        {getProfs(section).join(', ')}
       </td>
       <td>
         {section.online ? <span>Online Class</span>

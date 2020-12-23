@@ -9,6 +9,7 @@ import macros from '../../macros'
 import MobileCollapsableDetail from './MobileCollapsableDetail'
 import MobileSectionPanel from './MobileSectionPanel'
 import SignUpForNotifications from '../../SignUpForNotifications'
+import moment from 'moment';
 
 
 interface MobileSearchResultProps {
@@ -34,6 +35,11 @@ function MobileSearchResult({ aClass } : MobileSearchResultProps) {
     <div>{aClass.nupath.length > 0 ? <div> {aClass.nupath.join(', ')}</div> : <span className='empty'> None</span>}</div>
   )
 
+  // FIXME move to utils?
+  const getLastUpdateString = (course: Course) : string => {
+    return course.lastUpdateTime ? moment(this.lastUpdateTime).fromNow() : null;
+  }
+
   return (
     <div className='MobileSearchResult'>
       <div className={ expanded ? 'MobileSearchResult__header--expanded' : 'MobileSearchResult__header' } role='button' tabIndex={ 0 } onClick={ () => setExpanded(!expanded) }>
@@ -46,7 +52,7 @@ function MobileSearchResult({ aClass } : MobileSearchResultProps) {
       <div className='MobileSearchResult__panel'>
         <div className='MobileSearchResult__panel--mainContainer'>
           <div className='MobileSearchResult__panel--infoStrings'>
-            <a href={ aClass.prettyUrl } target='_blank' rel='noopener noreferrer'>{`Updated ${(aClass.getLastUpdateString())}`}</a>
+            <a href={ aClass.prettyUrl } target='_blank' rel='noopener noreferrer'>{`Updated ${(getLastUpdateString(aClass))}`}</a>
             <span>
               {creditsString()}
             </span>
@@ -56,8 +62,8 @@ function MobileSearchResult({ aClass } : MobileSearchResultProps) {
           </div>
           <div className='MobileSearchResult__panel--showMore' role='button' tabIndex={ 0 } onClick={ () => setShowMore(!showMore) }>{showMore ? 'Show less' : 'Show more'}</div>
           <MobileCollapsableDetail title='NUPATH' expand={ showNUPath } setExpand={ setShowNUPath } renderChildren={ renderNUPaths } />
-          <MobileCollapsableDetail title='PREREQUISITES' expand={ showPrereq } setExpand={ setShowPrereq } renderChildren={ () => optionalDisplay(macros.prereqTypes.PREREQ, aClass) } />
-          <MobileCollapsableDetail title='COREQUISITES' expand={ showCoreq } setExpand={ setShowCoreq } renderChildren={ () => optionalDisplay(macros.prereqTypes.COREQ, aClass) } />
+          <MobileCollapsableDetail title='PREREQUISITES' expand={ showPrereq } setExpand={ setShowPrereq } renderChildren={ () => optionalDisplay(PrereqType.PREREQ, aClass) } />
+          <MobileCollapsableDetail title='COREQUISITES' expand={ showCoreq } setExpand={ setShowCoreq } renderChildren={ () => optionalDisplay(PrereqType.COREQ, aClass) } />
           <div className='MobileSearchResult__panel--notifContainer'>
             <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />
           </div>

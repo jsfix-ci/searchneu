@@ -20,8 +20,30 @@ export type MomentTuple = {
   end : Moment
 }
 
-type TimeToMoment = {
+export type TimeToMoment = {
   [key: number] : MomentTuple[];
+}
+
+export enum PrereqType {
+  PREREQ = 'prereq',
+  COREQ = 'coreq',
+  PREREQ_FOR = 'prereqFor',
+  OPT_PREREQ_FOR = 'optPrereqFor'
+}
+
+export enum ReqKind {
+  AND = 'and',
+  OR = 'or'
+}
+
+export interface ReqType {
+  type: ReqKind,
+  values: Course[]
+}
+
+export interface RequisiteBranch {
+  prereqs: ReqType;
+  coreqs: ReqType;
 }
 
 export interface Course {
@@ -45,7 +67,7 @@ export interface Course {
   nupath: any;
 }
 
-interface Section {
+export interface Section {
   lastUpdateTime : number;
   meetings: Meeting[];
   profs : string[];
@@ -61,7 +83,7 @@ interface Section {
   url: string;
 }
 
-interface Meeting {
+export interface Meeting {
   location: string;
   startDate: Moment;
   endDate: Moment;

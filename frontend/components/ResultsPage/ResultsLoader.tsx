@@ -1,3 +1,4 @@
+import { flatten, cloneDeep, groupBy, values } from 'lodash';
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import macros from '../macros';
@@ -6,7 +7,8 @@ import SearchResult from './Results/SearchResult'
 import MobileSearchResult from './Results/MobileSearchResult'
 
 import Keys from '../../../common/Keys';
-import { Course, SearchItem } from '../types';
+import { Course, Section, SearchItem, Meeting, MomentTuple, TimeToMoment } from '../types';
+import moment, { Moment } from 'moment';
 
 interface ResultsLoaderProps {
   results: SearchItem[],
@@ -23,12 +25,14 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
     >
       <div className='five column row'>
         <div className='page-home'>
-          {results.filter((result) => result !== null && result !== undefined).map((result) => (
-            <ResultItemMemoized
+          {results.filter((result) => result !== null && result !== undefined).map((result) => {
+            // FIXME: Do we need to clone deep here? Look into why re-render happens
+            const formattedResult = result.type === 'employee' ? result : formatResult(cloneDeep(result));
+            return <ResultItemMemoized
               key={ result.type === 'class' ? Keys.getClassHash(result.class) : result.employee.id }
-              result={ result }
+              result={ formattedResult }
             />
-          ))}
+            })}
         </div>
       </div>
     </InfiniteScroll>
@@ -41,6 +45,7 @@ const ResultItemMemoized = React.memo(({ result }:{result:SearchItem}) => {
   if (result.type === 'class') {
     const aClass = result.class;
     aClass.sections = result.sections;
+
     // FIXME - do we need to still do this Don't think so...
     // aClass.loadSectionsFromServerList(result.sections);
     return macros.isMobile ? <MobileSearchResult aClass={ aClass } /> : <SearchResult aClass={ aClass } />;
@@ -53,5 +58,75 @@ const ResultItemMemoized = React.memo(({ result }:{result:SearchItem}) => {
   macros.log('Unknown type', result.type);
   return null;
 });
+
+const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
+
+
+const formatResult = (result: any): SearchItem => {
+  console.log(result);
+  const sections = result.sections;
+  let formattedSections: Section[] = [];
+  sections.forEach(section => {
+    const meetings = section.meetings;
+    let formattedMeetings: Meeting[] = [];
+    meetings.forEach(meeting => {
+      formattedMeetings.push({
+        location: meeting.where,
+        startDate: moment((meeting.startDate + 1) * DAY_IN_MILLISECONDS),
+        endDate: moment((meeting.endDate + 1) * DAY_IN_MILLISECONDS),
+        times: getGroupedByTimeOfDay(meeting.times)
+      })
+    });
+    section.meetings = formattedMeetings;
+    formattedSections.push(section)
+  });
+  result.sections = formattedSections;
+  return result;
+}
+
+const getGroupedByTimeOfDay = (times): MomentTuple[] => {
+  const timeMoments = [];
+
+  if (times) {
+    const dayIndexies = Object.keys(times);
+
+    for (const dayIndex of dayIndexies) {
+      console.log(times[dayIndex]);
+      times[dayIndex].forEach((event) => {
+        //3 is to set in the second week of 1970
+        const day = parseInt(dayIndex, 10) + 3;
+
+        const obj = {
+          start: moment.utc(event.start * 1000).add(day, 'day'),
+          end: moment.utc(event.end * 1000).add(day, 'day'),
+        };
+
+        if (parseInt(obj.start.format('YYYY'), 10) !== 1970) {
+          macros.error();
+        }
+
+        timeMoments.push(obj);
+      }); 
+    }
+  }
+
+  // returns objects like this: {3540000041400000: Array[3]}
+  // if has three meetings per week that meet at the same times
+  const groupedByTimeOfDay : TimeToMoment = groupBy(timeMoments, (event) => {
+    const zero = moment(event.start).startOf('day');
+    return `${event.start.diff(zero)}${event.end.diff(zero)}`;
+  });
+
+  // Get the values of the object returned above
+  const valuesGroupedByTimeOfDay : MomentTuple[][] = values(groupedByTimeOfDay);
+
+  // And sort by start time
+  valuesGroupedByTimeOfDay.sort((meetingsInAday) => {
+    const zero = moment(meetingsInAday[0].start).startOf('day');
+    return meetingsInAday[0].start.diff(zero);
+  });
+
+  return flatten(valuesGroupedByTimeOfDay);
+}
 
 export default ResultsLoader;

@@ -1,4 +1,4 @@
-import Section from '../../classModels/Section';
+import { Section } from '../../types';
 
 
 interface UseSectionPanelDetailReturn {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import macros from '../../macros'
-import RequisiteBranch from '../../classModels/_RequisiteBranch'
-import Course from '../../classModels/_Course';
+import { Course, RequisiteBranch, PrereqType} from '../../types';
+import { CompositeReq, ReqFor, CourseReq, Requisite } from '../../../../common/types';
 
 
 export default function useResultDetail(aClass: Course) {
@@ -20,16 +20,16 @@ export default function useResultDetail(aClass: Course) {
     let reqTypeString;
 
     switch (reqType) {
-      case macros.prereqTypes.PREREQ:
+      case PrereqType.PREREQ:
         reqTypeString = 'Prerequisite';
         break;
-      case macros.prereqTypes.COREQ:
+      case PrereqType.COREQ:
         reqTypeString = 'Corequisite';
         break;
-      case macros.prereqTypes.PREREQ_FOR:
+      case PrereqType.PREREQ_FOR:
         reqTypeString = 'Required Prerequisite For';
         break;
-      case macros.prereqTypes.OPT_PREREQ_FOR:
+      case PrereqType.OPT_PREREQ_FOR:
         reqTypeString = 'Optional Prerequisite For';
         break;
       default:
@@ -45,7 +45,7 @@ export default function useResultDetail(aClass: Course) {
   }
 
   // returns an array made to be rendered by react to display the prereqs
-  const getReqsString = (reqType, course) => {
+  const getReqsString = (reqType: PrereqType, course: Course) => {
     const retVal = [];
 
     // Keep track of which subject+classId combonations have been used so far.
@@ -54,85 +54,90 @@ export default function useResultDetail(aClass: Course) {
     // because only the subject and the classId are going to be shown.
     const processedSubjectClassIds = {};
 
-    let childNodes;
+    let childNodes: Requisite[];
 
-    if (reqType === macros.prereqTypes.PREREQ) {
-      childNodes = course.prereqs;
-    } else if (reqType === macros.prereqTypes.COREQ) {
-      childNodes = course.coreqs;
-    } else if (reqType === macros.prereqTypes.PREREQ_FOR) {
-      childNodes = course.prereqsFor;
-    } else if (reqType === macros.prereqTypes.OPT_PREREQ_FOR) {
-      childNodes = course.optPrereqsFor;
+    if (reqType === PrereqType.PREREQ) {
+      childNodes = course.prereqs.values;
+    } else if (reqType === PrereqType.COREQ) {
+      childNodes = course.coreqs.values;
+    } else if (reqType === PrereqType.PREREQ_FOR) {
+      childNodes = course.prereqsFor.values;
+    } else if (reqType === PrereqType.OPT_PREREQ_FOR) {
+      childNodes = course.optPrereqsFor.values;
     } else {
       macros.error('Invalid prereqType', reqType);
     }
 
-    childNodes.values.forEach((childBranch) => {
-      // If the childBranch is a class
-      if (!(childBranch instanceof RequisiteBranch)) {
-        if (childBranch.isString) {
-          // Skip if already seen
-          if (processedSubjectClassIds[childBranch.desc]) {
-            return;
-          }
-          processedSubjectClassIds[childBranch.desc] = true;
-          retVal.push(childBranch.desc);
-        } else {
-          // Skip if already seen
-          if (processedSubjectClassIds[childBranch.subject + childBranch.classId]) {
-            return;
-          }
-          processedSubjectClassIds[childBranch.subject + childBranch.classId] = true;
 
-          // When adding support for right click-> open in new tab, we might also be able to fix the jsx-a11y/anchor-is-valid errors.
-          // They are disabled for now.
-          const hash = `/${aClass.termId}/${childBranch.subject}${childBranch.classId}`;
+    const isCompositeReq = (variableToCheck: any): variableToCheck is CompositeReq =>
+      (variableToCheck as CompositeReq) !== undefined;
+    // FIXME
+    console.log(childNodes);
+    // childNodes.forEach((childBranch) => {
+    //   // If the childBranch is a class
+    //   if (!(isCompositeReq(childBranch))) {
+    //     if (childBranch.isString) {
+    //       // Skip if already seen
+    //       if (processedSubjectClassIds[childBranch.desc]) {
+    //         return;
+    //       }
+    //       processedSubjectClassIds[childBranch.desc] = true;
+    //       retVal.push(childBranch.desc);
+    //     } else {
+    //       // Skip if already seen
+    //       if (processedSubjectClassIds[childBranch.subject + childBranch.classId]) {
+    //         return;
+    //       }
+    //       processedSubjectClassIds[childBranch.subject + childBranch.classId] = true;
 
-          const element = (
-            <a
-              role='link'
-              key={ hash }
-              tabIndex={ 0 }
-              onClick={ (event) => { onReqClick(reqType, childBranch, event, hash); } }
-            >
-              {`${childBranch.subject} ${childBranch.classId}`}
-            </a>
-          );
+    //       // When adding support for right click-> open in new tab, we might also be able to fix the jsx-a11y/anchor-is-valid errors.
+    //       // They are disabled for now.
+    //       const hash = `/${aClass.termId}/${childBranch.subject}${childBranch.classId}`;
 
-          retVal.push(element);
-        }
-      } else if (reqType === macros.prereqTypes.PREREQ) {
-        // Figure out how many unique classIds there are in the prereqs.
-        const allClassIds = {};
-        for (const node of childBranch.prereqs.values) {
-          allClassIds[node.classId] = true;
-        }
+    //       const element = (
+    //         <a
+    //           role='link'
+    //           key={ hash }
+    //           tabIndex={ 0 }
+    //           onClick={ (event) => { onReqClick(reqType, childBranch, event, hash); } }
+    //         >
+    //           {`${childBranch.subject} ${childBranch.classId}`}
+    //         </a>
+    //       );
 
-        // If there is only 1 prereq with a unique classId, don't show the parens.
-        if (Object.keys(allClassIds).length === 1) {
-          retVal.push(getReqsString(macros.prereqTypes.PREREQ, childBranch));
-        } else {
-          retVal.push(['(', getReqsString(macros.prereqTypes.PREREQ, childBranch), ')']);
-        }
-      } else {
-        macros.error('Branch found and parsing coreqs?', childBranch);
-      }
-    })
+    //       retVal.push(element);
+    //     }
+    //   } else if (reqType === PrereqType.PREREQ) {
+    //     // Figure out how many unique classIds there are in the prereqs.
+    //     const allClassIds = {};
+    //     for (const node of childBranch.prereqs.values) {
+    //       allClassIds[node.classId] = true;
+    //     }
+
+    //     // If there is only 1 prereq with a unique classId, don't show the parens.
+    //     if (Object.keys(allClassIds).length === 1) {
+    //       retVal.push(getReqsString(PrereqType.PREREQ, childBranch));
+    //     } else {
+    //       retVal.push(['(', getReqsString(PrereqType.PREREQ, childBranch), ')']);
+    //     }
+    //   } else {
+    //     macros.error('Branch found and parsing coreqs?', childBranch);
+    //   }
+    // })
 
 
     // Now insert the type divider ("and" vs "or") between the elements.
     // If we're parsing prereqsFor, we should use just a comma as a separator.
     // Can't use the join in case the objects are react elements
-    if (reqType === macros.prereqTypes.PREREQ_FOR || reqType === macros.prereqTypes.OPT_PREREQ_FOR) {
+    if (reqType === PrereqType.PREREQ_FOR || reqType === PrereqType.OPT_PREREQ_FOR) {
       for (let i = retVal.length - 1; i >= 1; i--) {
         retVal.splice(i, 0, ', ');
       }
     } else {
       let type;
-      if (reqType === macros.prereqTypes.PREREQ) {
+      if (reqType === PrereqType.PREREQ) {
         type = course.prereqs.type;
-      } else if (reqType === macros.prereqTypes.COREQ) {
+      } else if (reqType === PrereqType.COREQ) {
         type = course.coreqs.type;
       }
       for (let i = retVal.length - 1; i >= 1; i--) {
@@ -150,7 +155,7 @@ export default function useResultDetail(aClass: Course) {
     return retVal;
   }
 
-  const optionalDisplay = (prereqType, course) => {
+  const optionalDisplay = (prereqType: PrereqType, course: Course) => {
     const data = getReqsString(prereqType, course);
 
     return data;
