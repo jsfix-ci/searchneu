@@ -67,6 +67,13 @@ export async function bulkInsertTermDump({ classes, sections, subjects }: TermDu
   await bulkInsertSubjects(subjects);
 }
 
+export async function updateCourseTimes(terms: string[], time: Date): Promise<number> {
+  return knex('courses')
+    .update({ last_update_time: time })
+    .whereIn('term_id', terms)
+    .whereIn('id', () => this.select('class_hash').from('sections'));
+}
+
 export async function deleteStaleCourses(terms: string[]): Promise<BatchPayload> {
   return prisma.course.deleteMany({
     where: {
