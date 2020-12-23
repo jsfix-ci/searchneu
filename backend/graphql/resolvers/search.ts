@@ -26,10 +26,7 @@ interface SearchArgs {
 }
 const resolvers = {
   Query: {
-    search: async (
-      parent,
-      args: SearchArgs,
-    ): Promise<SearchResultItemConnection> => {
+    search: async (parent, args: SearchArgs): Promise<SearchResultItemConnection> => {
       const { offset = 0, first = 10 } = args;
       const results = await searcher.search(
         args.query || '',
