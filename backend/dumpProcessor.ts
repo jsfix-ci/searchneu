@@ -19,6 +19,7 @@ type InsertOutcome = []; // PostgreSQL always returns an empty array on insert, 
 interface TermDump {
   classes: Course[];
   sections: Section[];
+  subjects: Subject[];
 }
 
 // FIXME should we use a string or use the Promise interface?
@@ -32,6 +33,10 @@ async function bulkInsertSections(sections: Section[]): Promise<InsertOutcome> {
 
 async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
   return knex('professors').insert(profs).onConflict('id').merge();
+}
+
+async function bulkInsertSubjects(subjects: Subject[]): Promise<InsertOutcome> {
+  return knex('subjects').insert(subjects).onConflict('abbreviation').ignore();
 }
 
 // TODO what is the right abstraction here? should we have one at all?
@@ -51,9 +56,14 @@ export async function bulkInsertProfDump(profs: Professor[]): Promise<void> {
   return bulkInsertInChunks(profs, bulkInsertProfs);
 }
 
-export async function bulkInsertTermDump({ classes, sections }: TermDump): Promise<void> {
+export async function bulkInsertSubjectDump(subjects: Subject[]): Promise<void> {
+  return bulkInsertInChunks(subjects, bulkInsertSubjects);
+}
+
+export async function bulkInsertTermDump({ classes, sections, subjects }: TermDump): Promise<void> {
   await bulkInsertCourseDump(classes);
   await bulkInsertSectionDump(sections);
+  await bulkInsertSubjectDump(subjects);
 }
 
 export async function deleteStaleCourses(terms: string[]): Promise<BatchPayload> {
