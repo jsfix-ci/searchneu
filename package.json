@@ -4,7 +4,7 @@
   "scripts": {
     "-development-": "--------development--------",
     "babel-node-ts": "babel-node --extensions '.js,.jsx,.ts,.tsx'",
-    "start": "./node_modules/.bin/cross-env NODE_ENV=dev yarn babel-node-ts backend/server.ts",
+    "dev": "nodemon --exec ./node_modules/.bin/cross-env NODE_ENV=dev yarn babel-node-ts backend/server.ts",
     "scrape": "yarn babel-node-ts --max_old_space_size=12000 backend/scrapers/main.js",
     "resetIndex": "yarn babel-node-ts backend/script/resetIndex.js",
     "populateES": "yarn babel-node-ts backend/script/populateES.ts",
@@ -37,8 +37,8 @@
     "build": "yarn -s build_backend; yarn -s build_frontend",
     "-deployment-": "--------deployment--------",
     "prod:scrape": "node dist/backend/scrapers/main.js",
-    "prod:start": "node dist/backend/server.js",
-    "prod:start:updater": "node dist/backend/updater.js",
+    "prod": "node dist/backend/server.js",
+    "prod:updater": "node dist/backend/updater.js",
     "prod:db:migrate": "npx prisma migrate up --experimental --auto-approve"
   },
   "repository": {
@@ -116,6 +116,7 @@
     "html-webpack-plugin": "^3.0.6",
     "htmlparser2": "^3",
     "identity-obj-proxy": "^3.0.0",
+    "interweave": "^12.6.0",
     "is-mobile": "^2.0.0",
     "jest": "^24.8.0",
     "jest-environment-node": "^26.3.0",
@@ -127,6 +128,7 @@
     "msgpack5": "^4.0.0",
     "node-graceful-shutdown": "^1.0.5",
     "node-notifier": "^5.2.1",
+    "nodemon": "^2.0.6",
     "object-hash": "^1.1.7",
     "p-map": "^3.0.0",
     "pg": "^7.12.1",
@@ -229,9 +231,6 @@
     "setupFiles": [
       "./common/jestSetupFile.js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/common/teardown.ts"
-    ],
     "moduleFileExtensions": [
       "js",
       "jsx",
@@ -250,5 +249,9 @@
       "\\.(css|less|scss)$": "identity-obj-proxy",
       "\\.(svg|png)$": "<rootDir>/frontend/components/tests/exportsAString.js"
     }
+  },
+  "nodemonConfig": {
+    "ignore": ["node_modules/*"],
+    "ext": "js,jsx,ts,tsx"
   }
 }

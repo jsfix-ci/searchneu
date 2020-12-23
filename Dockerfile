@@ -28,4 +28,4 @@ COPY infrastructure/prod /app
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 EXPOSE 5000
-CMD ["yarn", "prod:start"]
+CMD ["yarn", "prod"]

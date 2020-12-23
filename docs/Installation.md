@@ -71,7 +71,7 @@ If you get installation errors, try deleting the `node_modules` folder and runni
 
 1. Run `yarn dev:docker` to start Elasticsearch and Postgres in docker. This is just short for going into `infrastructure/dev` and running `docker-compose up`. 
 2. Run `yarn db:migrate` to put the right columns in Postgres.
-3. Run `yarn:db:refresh` to synchronize the ORM with the database.
+3. Run `yarn db:refresh` to synchronize the ORM with the database.
 
 `yarn dev:docker:del` will delete the entire ES and PG databases! Useful if you need to just hard reset.
 
@@ -80,7 +80,7 @@ If you get installation errors, try deleting the `node_modules` folder and runni
 This will start Search NEU in development mode locally. It will listen on port 5000. If you make any changes to the frontend code while the server is running, webpack will automatically recompile the code and send the updates to the browser. Most of the time, the changes should appear in the browser without needing to reload the page ([More info about Hot Module Reloading](https://webpack.js.org/concepts/hot-module-replacement/)). Sometimes this will fail and a message will appear in Chrome's developer tools asking you to reload the page to see the changes. 
 
 ```bash
-yarn start # or npm run start
+yarn dev # or npm run dev
 ```
 
 ### React Dev tools

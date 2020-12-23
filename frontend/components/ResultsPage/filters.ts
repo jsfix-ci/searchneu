@@ -60,9 +60,9 @@ const CLASSIDRANGE_SPEC: FilterSpec<'Range'> = {
   category: FilterCategories.Range, default: { min:'', max:'' }, display: 'Course Number', order: 5,
 }
 export const FILTER_SPECS = {
-  campus: CAMPUS_SPEC,
   nupath: NUPATH_SPEC,
   subject: SUBJECT_SPEC,
+  campus: CAMPUS_SPEC,
   classType: CLASSTYPE_SPEC,
   classIdRange: CLASSIDRANGE_SPEC,
 }
@@ -86,7 +86,8 @@ export type FilterOptions = Record<FilteredKeys<FilterSpecs, FilterSpec<'Dropdow
 // A single option in a multiple choice filter
 export type Option = {
   value: string,
-  count: number
+  count: number,
+  description?: string,
 }
 
 // ============== Constants For Components To Use ================

@@ -122,11 +122,6 @@ class Meeting {
   meetsOnDay(dayIndex : DayOfWeek) : boolean {
     return this.times.some((time) => { return time.start.day() === dayIndex; });
   }
-
-  meetsOnWeekends() : boolean {
-    return !this.isExam()
-        && this.meetsOnDay(DayOfWeek.SUNDAY) || this.meetsOnDay(DayOfWeek.SATURDAY);
-  }
 }
 
 

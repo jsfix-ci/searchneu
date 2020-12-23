@@ -131,9 +131,9 @@ export default function useResultDetail(aClass: Course) {
     } else {
       let type;
       if (reqType === macros.prereqTypes.PREREQ) {
-        type = aClass.prereqs.type;
+        type = course.prereqs.type;
       } else if (reqType === macros.prereqTypes.COREQ) {
-        type = aClass.coreqs.type;
+        type = course.coreqs.type;
       }
       for (let i = retVal.length - 1; i >= 1; i--) {
         retVal.splice(i, 0, ` ${type} `);
@@ -147,7 +147,6 @@ export default function useResultDetail(aClass: Course) {
         </span>
       );
     }
-
     return retVal;
   }
 

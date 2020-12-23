@@ -18,16 +18,87 @@ exports[`should render a section 1`] = `
       className="Results__searchwrapper"
     >
       <SearchBar
-        onClick={[Function]}
+        buttonColor="red"
         onSearch={[Function]}
         query="cs"
       />
     </div>
-    <Memo(TermDropdown)
-      compact={true}
-      onChange={[Function]}
-      termId="202030"
-    />
+    <div
+      className="Breadcrumb_Container"
+    >
+      <div
+        className="Breadcrumb_Container__dropDownContainer"
+      >
+        <Memo(SearchDropdown)
+          className="searchDropdown"
+          compact={false}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "text": "NEU",
+                "value": "NEU",
+              },
+              Object {
+                "text": "CPS",
+                "value": "CPS",
+              },
+              Object {
+                "text": "Law",
+                "value": "LAW",
+              },
+            ]
+          }
+          placeholder="Select a campus"
+          value="NEU"
+        />
+      </div>
+      <span
+        className="Breadcrumb_Container__slash"
+      >
+        /
+      </span>
+      <div
+        className="Breadcrumb_Container__dropDownContainer"
+      >
+        <Memo(SearchDropdown)
+          className="searchDropdown"
+          compact={false}
+          key="NEU"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "text": "Spring 2021",
+                "value": "202130",
+              },
+              Object {
+                "text": "Fall 2020",
+                "value": "202110",
+              },
+              Object {
+                "text": "Summer I 2020",
+                "value": "202040",
+              },
+              Object {
+                "text": "Summer Full 2020",
+                "value": "202050",
+              },
+              Object {
+                "text": "Summer II 2020",
+                "value": "202060",
+              },
+              Object {
+                "text": "Spring 2020",
+                "value": "202030",
+              },
+            ]
+          }
+          placeholder="Select a term"
+          value="202030"
+        />
+      </div>
+    </div>
   </div>
   <FeedbackModal />
   <div
@@ -39,6 +110,7 @@ exports[`should render a section 1`] = `
       <Memo(FilterPanel)
         options={
           Object {
+            "campus": Array [],
             "classType": Array [],
             "nupath": Array [],
             "subject": Array [],
@@ -46,13 +118,13 @@ exports[`should render a section 1`] = `
         }
         selected={
           Object {
+            "campus": Array [],
             "classIdRange": Object {
               "max": "",
               "min": "",
             },
             "classType": Array [],
             "nupath": Array [],
-            "online": false,
             "subject": Array [],
           }
         }

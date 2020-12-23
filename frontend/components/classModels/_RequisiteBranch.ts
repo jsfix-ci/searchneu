@@ -3,9 +3,8 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import macros from '../macros';
 import Course from './_Course';
-import { CourseReq } from '../../../backend/types';
+import { CourseReq } from '../../../common/types';
 
 export enum ReqKind {
   AND = 'and',

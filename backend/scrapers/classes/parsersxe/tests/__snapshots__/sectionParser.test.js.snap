@@ -2,6 +2,7 @@
 
 exports[`sectionParser should match snapshot 1`] = `
 Object {
+  "campus": "Online",
   "classId": "2311",
   "classType": "Lecture",
   "crn": "10259",
@@ -42,7 +43,6 @@ Object {
       "where": "TBA",
     },
   ],
-  "online": true,
   "profs": Array [
     "Oyindasola Oyelaran",
   ],
@@ -58,6 +58,7 @@ Object {
 
 exports[`sectionParser should match snapshot 2`] = `
 Object {
+  "campus": "Boston",
   "classId": "2500",
   "classType": "Lecture",
   "crn": "30340",
@@ -91,7 +92,6 @@ Object {
       "where": "East Village 024",
     },
   ],
-  "online": false,
   "profs": Array [
     "Alan Mislove",
   ],

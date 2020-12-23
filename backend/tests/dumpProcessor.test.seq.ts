@@ -17,6 +17,7 @@ beforeEach(async () => {
   await prisma.professor.deleteMany({});
   await prisma.section.deleteMany({});
   await prisma.course.deleteMany({});
+  await prisma.subject.deleteMany({});
 });
 
 afterAll(async () => {
@@ -24,9 +25,9 @@ afterAll(async () => {
 });
 
 it('does not create records if dump is empty', async () => {
-  const prevCounts = Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count()]);
-  await dumpProcessor.main({ termDump: { classes: [], sections: [] } });
-  expect(Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count()])).toEqual(prevCounts);
+  const prevCounts = Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count(), prisma.subject.count()]);
+  await dumpProcessor.main({ termDump: { classes: [], sections: [], subjects: [] } });
+  expect(Promise.all([prisma.professor.count(), prisma.course.count(), prisma.section.count(), prisma.subject.count()])).toEqual(prevCounts);
 });
 
 describe('with professors', () => {
@@ -71,7 +72,7 @@ describe('with professors', () => {
       },
     };
 
-    await dumpProcessor.main({ termDump: { classes: [], sections: [] }, profDump: profDump });
+    await dumpProcessor.main({ termDump: { classes: [], sections: [], subjects: [] }, profDump: profDump });
     expect(await prisma.professor.count()).toEqual(3);
   });
 });
@@ -124,6 +125,7 @@ describe('with classes', () => {
           lastUpdateTime: 123456789,
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
@@ -160,7 +162,7 @@ describe('with sections', () => {
           seatsRemaining: 0,
           waitCapacity: 0,
           waitRemaining: 0,
-          online: false,
+          campus: 'Boston',
           honors: false,
           crn: '12345',
           meetings: {},
@@ -172,7 +174,7 @@ describe('with sections', () => {
           classId: '3500',
           seatsCapacity: 40,
           seatsRemaining: 10,
-          online: false,
+          campus: 'Online',
           honors: false,
           crn: '23456',
           meetings: {},
@@ -184,18 +186,35 @@ describe('with sections', () => {
           classId: '3500',
           seatsCapacity: 2,
           seatsRemaining: 2,
-          online: false,
+          campus: 'Seattle, WA',
           honors: false,
           crn: '34567',
           meetings: {},
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
     expect(await prisma.section.count()).toEqual(3);
   });
 });
+
+describe('with subjects', () => {
+  it('creates subjects', async () => {
+    const termDump = {
+      classes: [],
+      sections: [],
+      subjects: {
+        CS: 'Computer Science',
+        CHEM: 'Chemistry',
+        PHYS: 'Physics',
+      },
+    };
+    await dumpProcessor.main({ termDump: termDump });
+    expect(await prisma.subject.count()).toEqual(3);
+  })
+})
 
 describe('with updates', () => {
   beforeEach(async () => {
@@ -217,12 +236,19 @@ describe('with updates', () => {
         id: 'neu.edu/202030/CS/3500/34567',
         seatsCapacity: 2,
         seatsRemaining: 2,
-        online: false,
+        campus : 'Boston',
         honors: false,
         crn: '34567',
         meetings: {},
       },
     });
+
+    await prisma.subject.create({
+      data: {
+        abbreviation: 'CS',
+        description: 'Computer Science',
+      },
+    })
   });
 
   it('updates fields for courses', async () => {
@@ -241,11 +267,29 @@ describe('with updates', () => {
           lastUpdateTime: 123456789,
         },
       ],
+      subjects: [],
     };
 
     await dumpProcessor.main({ termDump: termDump });
     expect(await prisma.course.count()).toEqual(1);
     expect(await prisma.section.count()).toEqual(1);
+    expect(await prisma.subject.count()).toEqual(1);
     expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' } })).name).toEqual('Compilers');
   });
+
+  it('updates subjects', async () => {
+    const termDump = {
+      sections: [],
+      classes: [],
+      subjects: {
+        CS: 'Computer Sciences',
+      },
+    };
+    expect((await prisma.subject.findOne({ where: { abbreviation: 'CS' } })).description).toEqual('Computer Science');
+    await dumpProcessor.main({ termDump: termDump });
+    expect(await prisma.course.count()).toEqual(1);
+    expect(await prisma.section.count()).toEqual(1);
+    expect(await prisma.subject.count()).toEqual(1);
+    expect((await prisma.subject.findOne({ where: { abbreviation: 'CS' } })).description).toEqual('Computer Sciences');
+  })
 });

@@ -28,7 +28,7 @@ class DumpProcessor {
    * @param {boolean} destroy determines if courses that haven't been updated for the last two days will be removed from the database
    */
   async main({
-    termDump = { classes: {}, sections: {} },
+    termDump = { classes: {}, sections: {}, subjects: {} },
     profDump = {},
     destroy = false,
   }) {
@@ -90,7 +90,7 @@ class DumpProcessor {
       id: this.strTransform,
       info: this.strTransform,
       meetings: this.jsonTransform,
-      online: this.boolTransform,
+      campus: this.strTransform,
       profs: this.arrayTransform,
       profs_contents: this.arrayStrTransform,
       seats_capacity: this.intTransform,
@@ -100,7 +100,7 @@ class DumpProcessor {
       wait_remaining: this.intTransform,
     };
 
-    const sectionCols = ['class_hash', 'class_type', 'crn', 'honors', 'id', 'info', 'meetings', 'online', 'profs', 'seats_capacity', 'seats_remaining', 'url', 'wait_capacity', 'wait_remaining'];
+    const sectionCols = ['class_hash', 'class_type', 'crn', 'honors', 'id', 'info', 'meetings', 'campus', 'profs', 'seats_capacity', 'seats_remaining', 'url', 'wait_capacity', 'wait_remaining'];
 
     const coveredTerms: Set<string> = new Set();
 
@@ -138,6 +138,23 @@ class DumpProcessor {
     }));
 
     macros.log('finished updating times');
+
+    await Promise.all(Object.entries(termDump.subjects).map(([key, value]) => {
+      return prisma.subject.upsert({
+        where: {
+          abbreviation: key,
+        },
+        create: {
+          abbreviation: key,
+          description: value as string,
+        },
+        update: {
+          description: value,
+        },
+      });
+    }));
+
+    macros.log('finished with subjects');
 
     if (destroy) {
       await prisma.course.deleteMany({

@@ -23,6 +23,7 @@ module.exports = {
     }
   },
   "rules": {
+    "import/prefer-default-export": 0, 
     "arrow-parens": [1, "always"],
     "arrow-body-style": 0,
     "key-spacing": 0,

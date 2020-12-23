@@ -83,14 +83,11 @@ export type CourseResult = {
 export type Employee = any;
 export type SearchItem = CourseResult | Employee;
 
-export function NO_SEARCH_RESULTS(): SearchResult {
+export function BLANK_SEARCH_RESULT(): SearchResult {
   return {
     results: [],
     filterOptions: {
-      nupath: [],
-      subject: [],
-      classType: [],
-      campus: [],
+      nupath: [], subject: [], classType: [], campus: [],
     },
   }
 }
@@ -103,4 +100,10 @@ export enum DayOfWeek {
   THURSDAY,
   FRIDAY,
   SATURDAY
+}
+
+export enum Campus {
+  NEU = 'NEU',
+  CPS = 'CPS',
+  LAW = 'LAW'
 }

@@ -14,11 +14,15 @@ const request = new Request('subjectAbberviationParser');
 /**
  * Get the subject abberviations for use in parsing prereqs
  */
-
-const getSubjectAbbreviations = _.memoize(async (termId) => {
+export const getSubjectAbbreviations = _.memoize(async (termId) => {
   macros.log(`SubjectAbberviationParser: Not memoized. Scraping term ${termId}`);
   const subjectResponse = await requestSubjects(termId);
-  return processSubjectListResponse(subjectResponse);
+  return createDescriptionTable(subjectResponse);
+});
+
+export const getSubjectDescriptions = _.memoize(async (termId) => {
+  const subjectResponse = await requestSubjects(termId);
+  return createAbbrTable(subjectResponse);
 });
 
 async function requestSubjects(termId) {
@@ -35,7 +39,7 @@ async function requestSubjects(termId) {
   return response.body;
 }
 
-function processSubjectListResponse(subjects) {
+function createDescriptionTable(subjects) {
   subjects = subjects.map((subject) => {
     return {
       subjectCode: subject.code,
@@ -46,8 +50,16 @@ function processSubjectListResponse(subjects) {
   return _.mapValues(subjects, 'subjectCode');
 }
 
-export default {
-  getSubjectAbbreviations: getSubjectAbbreviations,
-  // Export for testing https://philipwalton.com/articles/how-to-unit-test-private-functions-in-javascript/
-  _processSubjectListResponse: processSubjectListResponse,
-};
+function createAbbrTable(subjects) {
+  subjects = subjects.map((subject) => {
+    return {
+      description: he.decode(subject.description),
+      subjectCode: subject.code,
+    };
+  });
+  subjects = _.keyBy(subjects, 'subjectCode');
+  return _.mapValues(subjects, 'description');
+}
+
+// Export for testing https://philipwalton.com/articles/how-to-unit-test-private-functions-in-javascript/
+export { createDescriptionTable as _createDescriptionTable };

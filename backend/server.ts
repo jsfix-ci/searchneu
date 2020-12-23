@@ -45,12 +45,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Process application/json
 app.use(bodyParser.json());
 
-// Prevent being in an iFrame.
 app.use((req, res, next) => {
+  // Prevent being in an iFrame.
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('X-Content-Type-Options', 'nosniff');
+
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   // Removing the cache--SearchNEU goes down more than it should, so we cache incorrect results too often.
   // FIXME use Vercel SWR

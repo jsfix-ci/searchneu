@@ -350,11 +350,6 @@ class Course {
     return this.lastUpdateTime ? moment(this.lastUpdateTime).fromNow() : null;
   }
 
-  //returns true if any sections have an exam, else false
-  sectionsHaveExam() {
-    return this.sections.some((section) => { return section.getHasExam(); });
-  }
-
   hasAtLeastOneSectionFull() : boolean {
     return this.sections.some((e) => {
       return e.seatsRemaining <= 0 && e.seatsCapacity > 0
@@ -380,22 +375,6 @@ class Course {
     this.sections.sort((a, b) => {
       return a.compareTo(b);
     });
-  }
-
-  hasWaitList() : boolean {
-    return this.sections.some((e) => {
-      return e.hasWaitList();
-    });
-  }
-
-  hasHonorsSections() : boolean {
-    return this.sections.some((e) => {
-      return e.honors;
-    });
-  }
-
-  loadFromClassMap(classMap) : void {
-    this.updateWithData(classMap[this.getHash()]);
   }
 }
 export default Course;

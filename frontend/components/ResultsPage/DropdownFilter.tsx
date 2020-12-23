@@ -104,8 +104,11 @@ export default function DropdownFilter({
                   e.stopPropagation();
                 } }
               >
-                <span className='DropdownFilter__elementText'>{option.value}</span>
-                <span className='DropdownFilter__elementCount'>({option.count})</span>
+                <div>
+                  <span className='DropdownFilter__elementText'>{option.value}</span>
+                  <span className='DropdownFilter__elementCount'>({option.count})</span>
+                </div>
+                {option.description ? <div><p className='DropdownFilter__elementSubtext'>{option.description}</p></div> : ''}
               </div>
             )))}
         </div>
