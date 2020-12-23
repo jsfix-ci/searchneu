@@ -15,6 +15,7 @@ import { populateES } from './scripts/populateES';
 const CHUNK_SIZE = 2000;
 
 type InsertOutcome = []; // PostgreSQL always returns an empty array on insert, unless `returning` fields are specified.
+type BulkInserter<T> = (entries: T[]) => Promise<InsertOutcome>;
 
 interface TermDump {
   classes: Course[];
@@ -23,47 +24,47 @@ interface TermDump {
 }
 
 // FIXME should we use a string or use the Promise interface?
-async function bulkInsertCourses(courses: Course[]): Promise<InsertOutcome> {
+async function bulkInsertCourseChunk(courses: Course[]): Promise<InsertOutcome> {
   return knex('courses').insert(courses).onConflict('id').merge();
 }
 
-async function bulkInsertSections(sections: Section[]): Promise<InsertOutcome> {
+async function bulkInsertSectionChunk(sections: Section[]): Promise<InsertOutcome> {
   return knex('sections').insert(sections).onConflict('id').merge();
 }
 
-async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
+async function bulkInsertProfChunk(profs: Professor[]): Promise<InsertOutcome> {
   return knex('professors').insert(profs).onConflict('id').merge();
 }
 
-async function bulkInsertSubjects(subjects: Subject[]): Promise<InsertOutcome> {
+async function bulkInsertSubjectChunk(subjects: Subject[]): Promise<InsertOutcome> {
   return knex('subjects').insert(subjects).onConflict('abbreviation').ignore();
 }
 
 // TODO what is the right abstraction here? should we have one at all?
-async function bulkInsertInChunks<T>(entries: T[], bulkInsert: (entries: T[]) => Promise<InsertOutcome>): Promise<void> {
+async function bulkInsertInChunks<T>(entries: T[], bulkInsert: BulkInserter<T>): Promise<void> {
   return _.chunk(entries, CHUNK_SIZE).forEach(async (entryChunk: T[]) => await bulkInsert(entryChunk));
 }
 
-export async function bulkInsertCourseDump(courses: Course[]): Promise<void> {
-  return bulkInsertInChunks(courses, bulkInsertCourses);
+export async function bulkInsertCourses(courses: Course[]): Promise<void> {
+  return bulkInsertInChunks(courses, bulkInsertCourseChunk);
 }
 
-export async function bulkInsertSectionDump(sections: Section[]): Promise<void> {
-  return bulkInsertInChunks(sections, bulkInsertSections);
+export async function bulkInsertSections(sections: Section[]): Promise<void> {
+  return bulkInsertInChunks(sections, bulkInsertSectionChunk);
 }
 
-export async function bulkInsertProfDump(profs: Professor[]): Promise<void> {
-  return bulkInsertInChunks(profs, bulkInsertProfs);
+export async function bulkInsertProfs(profs: Professor[]): Promise<void> {
+  return bulkInsertInChunks(profs, bulkInsertProfChunk);
 }
 
-export async function bulkInsertSubjectDump(subjects: Subject[]): Promise<void> {
-  return bulkInsertInChunks(subjects, bulkInsertSubjects);
+export async function bulkInsertSubjects(subjects: Subject[]): Promise<void> {
+  return bulkInsertInChunks(subjects, bulkInsertSubjectChunk);
 }
 
 export async function bulkInsertTermDump({ classes, sections, subjects }: TermDump): Promise<void> {
-  await bulkInsertCourseDump(classes);
-  await bulkInsertSectionDump(sections);
-  await bulkInsertSubjectDump(subjects);
+  await bulkInsertCourses(classes);
+  await bulkInsertSections(sections);
+  await bulkInsertSubjects(subjects);
 }
 
 export async function deleteStaleCourses(terms: string[]): Promise<BatchPayload> {
