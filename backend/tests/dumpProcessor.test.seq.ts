@@ -80,6 +80,15 @@ const COURSE_THREE: Course = {
   url: '',
 }
 
+// TODO to test:
+// [x] bulkInsertCourses
+// [ ] bulkInsertSections --> Mitch
+// [ ] bulkInsertProfs --> Megan
+// [ ] bulkInsertSubjects --> Megan
+// [ ] bulkInsertTermDump --> Mitch
+// [ ] updateCourseTimes --> Megan
+// [ ] deleteStaleCourses --> Mitch
+
 
 // NOTE in theory, could do this all simultaneously...
 beforeEach(async () => {
@@ -117,6 +126,24 @@ describe('bulkInsertCourses', () => {
     expect(await prisma.course.count()).toEqual(3);
     expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' }})).name).toEqual(OOD_NAME);
   });
+});
+
+describe('bulkInsertSections', () => {
+});
+
+describe('bulkInsertProfs', () => {
+});
+
+describe('bulkInsertSubjects', () => {
+});
+
+describe('bulkInsertTermDump', () => {
+});
+
+describe ('updateCourseTimes', () => {
+});
+
+describe('deleteStaleCourses', () => {
 });
 
 // Test for bulkInsertCourses:
