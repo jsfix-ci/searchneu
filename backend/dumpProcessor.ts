@@ -5,7 +5,7 @@
 import fs from 'fs-extra';
 import _ from 'lodash';
 import path from 'path';
-import { Professor, Course, Section } from '@prisma/client';
+import { Professor, Course, Section, Subject, BatchPayload } from '@prisma/client';
 import prisma from './prisma';
 import knex from './knex';
 import Keys from '../common/Keys';
@@ -36,30 +36,27 @@ async function bulkInsertProfs(profs: Professor[]): Promise<InsertOutcome> {
 
 // TODO what is the right abstraction here? should we have one at all?
 async function bulkInsertInChunks<T>(entries: T[], bulkInsert: (entries: T[]) => Promise<InsertOutcome>): Promise<void> {
-  _.chunk(entries, CHUNK_SIZE).forEach(async (entryChunk: T[]) => await bulkInsert(entryChunk));
+  return _.chunk(entries, CHUNK_SIZE).forEach(async (entryChunk: T[]) => await bulkInsert(entryChunk));
 }
 
 export async function bulkInsertCourseDump(courses: Course[]): Promise<void> {
-  await bulkInsertInChunks(courses, bulkInsertCourses);
+  return bulkInsertInChunks(courses, bulkInsertCourses);
 }
 
 export async function bulkInsertSectionDump(sections: Section[]): Promise<void> {
-  await bulkInsertInChunks(sections, bulkInsertSections);
+  return bulkInsertInChunks(sections, bulkInsertSections);
 }
 
 export async function bulkInsertProfDump(profs: Professor[]): Promise<void> {
-  await bulkInsertInChunks(profs, bulkInsertProfs);
+  return bulkInsertInChunks(profs, bulkInsertProfs);
 }
 
-export async function bulkInsertTermDump(termDump: TermDump = { classes: [], sections: [] }): Promise<void> {
-  await bulkInsertCourseDump(termDump.classes);
-  await bulkInsertSectionDump(termDump.sections);
+export async function bulkInsertTermDump({ classes, sections }: TermDump): Promise<void> {
+  await bulkInsertCourseDump(classes);
+  await bulkInsertSectionDump(sections);
 }
 
-// TODO define a term type with the new String API?
-// TODO what does the delete return?
-// TODO updatedAt column?
-export async function deleteStaleCourses(terms: string[]): number {
+export async function deleteStaleCourses(terms: string[]): Promise<BatchPayload> {
   return prisma.course.deleteMany({
     where: {
       termId: { in: Array.from(terms) },
@@ -68,14 +65,6 @@ export async function deleteStaleCourses(terms: string[]): number {
     },
   });
 }
-
-// TODO
-// 1. the `bulkInsert___` methods above shouldn't be exported, they should be wrapped in a chunking interface.
-// 2. re-write the bulkInsertDump function, how should it work?
-// 3. garbage collection also needs to be split out.
-// 4. add lastUpdateTime to sections?
-// 5. move the pre-processors elsewhere (where they're needed).
-
 
 class DumpProcessor {
   CHUNK_SIZE: number;
