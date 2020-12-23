@@ -2,13 +2,14 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-
-import prisma from '../prisma';
 import { Course, CourseCreateInput } from '@prisma/client';
-import { bulkInsertCourses } from '../dumpProcessor';
+import prisma from '../prisma';
+import {
+  bulkInsertCourses, bulkInsertProfs, bulkInsertSubjects, updateCourseTimes, bulkInsertSections,
+} from '../dumpProcessor';
 
 const OOD_NAME = 'Object-Oriented Design';
-const TH_NAME  = 'Tech & Human Values';
+const TH_NAME = 'Tech & Human Values';
 
 // FIXTURES
 const COURSE_ONE: Course = {
@@ -112,7 +113,7 @@ describe('bulkInsertCourses', () => {
 
   it('updates a course on conflict', async () => {
     // FIXME first off, this `set` pattern is ridiculous. second, to make it less ridiculous, maybe we should have a helper function that wraps this?
-    let outdatedCourse: CourseCreateInput = {
+    const outdatedCourse: CourseCreateInput = {
       ...COURSE_THREE,
       name: TH_NAME,
       classAttributes: { set: [] },
@@ -120,11 +121,11 @@ describe('bulkInsertCourses', () => {
     };
 
     prisma.course.create({ data: outdatedCourse });
-    expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' }})).name).toEqual(TH_NAME);
+    expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' } })).name).toEqual(TH_NAME);
 
     await bulkInsertCourses([COURSE_ONE, COURSE_TWO, COURSE_THREE]);
     expect(await prisma.course.count()).toEqual(3);
-    expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' }})).name).toEqual(OOD_NAME);
+    expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' } })).name).toEqual(OOD_NAME);
   });
 });
 
@@ -132,15 +133,205 @@ describe('bulkInsertSections', () => {
 });
 
 describe('bulkInsertProfs', () => {
+  const BLERNER_SHORT = 'Ben Lerner';
+  const BLERNER_LONG = 'Benjamin Lerner';
+
+  const PROF_ONE = {
+    id: 'abcdefg',
+    name: BLERNER_LONG,
+    firstName: 'Benjamin',
+    lastName: 'Lerner',
+    phone: '6173732462',
+    emails: ['be.lerner@northeastern.edu', 'blerner@ccs.neu.edu'],
+    primaryRole: 'Assistant Teaching Professor',
+    primaryDepartment: 'Khoury',
+    url: 'https://www.khoury.northeastern.edu/people/benjamin-lerner/',
+    personalSite: 'http://www.ccs.neu.edu/home/blerner/',
+    bigPictureUrl: 'https://www.khoury.northeastern.edu/wp-content/uploads/2016/02/Benjamin-Lerner-hero-image.jpg',
+    email: null,
+    googleScholarId: null,
+    link: null,
+    officeRoom: null,
+    pic: null,
+    streetAddress: null,
+  };
+  const PROF_TWO = {
+    id: 'hijklmnop',
+    name: 'Neal Lerner',
+    firstName: 'Neal',
+    lastName: 'Lerner',
+    phone: '6173732451',
+    emails: ['n.lerner@northeastern.edu'],
+    primaryRole: 'Professor & Chair',
+    primaryDepartment: 'English',
+    url: 'https://www.khoury.northeastern.edu/people/neal-lerner/',
+    personalSite: 'http://www.ccs.neu.edu/home/nlerner/',
+    bigPictureUrl: null,
+    email: null,
+    googleScholarId: null,
+    link: null,
+    officeRoom: null,
+    pic: null,
+    streetAddress: null,
+  };
+  const PROF_THREE = {
+    id: 'qrstuv',
+    name: 'Alan Mislove',
+    firstName: 'Alan',
+    lastName: 'Mislove',
+    phone: '6173737069',
+    emails: ['a.mislove@northeastern.edu', 'amislove@ccs.neu.edu'],
+    primaryRole: 'Professor',
+    primaryDepartment: 'Khoury',
+    url: 'https://www.khoury.northeastern.edu/people/alan-mislove/',
+    personalSite: 'https://mislove.org',
+    googleScholarId: 'oAqKi9MAAAAJ',
+    bigPictureUrl: 'https://www.khoury.northeastern.edu/wp-content/uploads/2016/02/Alan-Mislove_cropped-hero-image.jpg',
+    email: null,
+    link: null,
+    officeRoom: null,
+    pic: null,
+    streetAddress: null,
+  };
+  it('inserts a single professor', async () => {
+    expect(await prisma.professor.count()).toEqual(0);
+    await bulkInsertProfs([PROF_ONE]);
+    expect(await prisma.professor.count()).toEqual(1);
+    expect((await prisma.professor.findMany())[0].name).toEqual(PROF_ONE.name);
+  });
+
+  it('inserts multiple professors', async () => {
+    await bulkInsertProfs([PROF_ONE, PROF_TWO, PROF_THREE]);
+    expect(await prisma.professor.count()).toEqual(3);
+  });
+
+  it('updates a professor on conflict', async () => {
+    const outdatedProfessor = {
+      ...PROF_ONE,
+      name: BLERNER_SHORT,
+      firstName: 'Ben',
+      emails: null,
+    };
+
+    expect(await prisma.professor.count()).toEqual(0);
+    prisma.professor.create({ data: outdatedProfessor });
+    expect(await prisma.professor.count()).toEqual(1);
+    expect((await prisma.professor.findOne({ where: { id: PROF_ONE.id } })).name).toEqual(BLERNER_SHORT);
+
+    await bulkInsertProfs([PROF_ONE, PROF_TWO, PROF_THREE]);
+    expect(await prisma.professor.count()).toEqual(3);
+    expect((await prisma.professor.findOne({ where: { id: PROF_ONE.id } })).name).toEqual(BLERNER_LONG);
+  });
 });
 
 describe('bulkInsertSubjects', () => {
+  const CS_DESC = 'Computer Science';
+  const CS = { abbreviation: 'CS', description: CS_DESC };
+  const CHEM = { abbreviation: 'CHEM', description: 'Chemistry' };
+  const PHYS = { abbreviation: 'PHYS', description: 'Physics' };
+  it('inserts a single subject', async () => {
+    expect(await prisma.subject.count()).toEqual(0);
+    await bulkInsertSubjects([CS]);
+    expect(await prisma.subject.count()).toEqual(1);
+    expect((await prisma.subject.findMany())[0].abbreviation).toEqual('CS');
+  });
+
+  it('inserts multiple subjects', async () => {
+    await bulkInsertSubjects([CS, CHEM, PHYS]);
+    expect(await prisma.subject.count()).toEqual(3);
+  });
+
+  it('updates a subject on conflict', async () => {
+    const CS_OUTDATED_DESC = 'Computer Sciences';
+    const outdatedSubject = { abbreviation: 'CS', description: CS_OUTDATED_DESC };
+    expect(await prisma.subject.count()).toEqual(0);
+    prisma.subject.create({ data: outdatedSubject });
+    expect(await prisma.subject.count()).toEqual(1);
+    expect((await prisma.subject.findOne({ where: { abbreviation: 'CS' } })).description).toEqual(CS_OUTDATED_DESC);
+
+    await bulkInsertSubjects([CS, CHEM, PHYS]);
+    expect(await prisma.subject.count()).toEqual(3);
+    expect((await prisma.subject.findOne({ where: { abbreviation: 'CS' } })).description).toEqual(CS_DESC);
+  });
 });
 
 describe('bulkInsertTermDump', () => {
 });
 
-describe ('updateCourseTimes', () => {
+describe('updateCourseTimes', () => {
+  const OLD_TIME = new Date(2020, 1, 1);
+  const COURSE_ONE_OLD = {
+    ...COURSE_ONE,
+    lastUpdateTime: OLD_TIME,
+  };
+  const COURSE_TWO_OLD = {
+    ...COURSE_TWO,
+    lastUpdateTime: OLD_TIME,
+  };
+  const COURSE_THREE_OLD = {
+    ...COURSE_THREE,
+    lastUpdateTime: OLD_TIME,
+  };
+  it('does not update courses with no sections', async () => {
+    await bulkInsertCourses([COURSE_ONE_OLD, COURSE_TWO_OLD]);
+    expect(await prisma.course.count()).toEqual(3);
+    expect(await prisma.course.findMany()[0].lastUpdateTime).toEqual(OLD_TIME);
+    expect(await prisma.course.findMany()[1].lastUpdateTime).toEqual(OLD_TIME);
+
+    await updateCourseTimes([COURSE_ONE.termId], new Date());
+    expect(await prisma.course.count()).toEqual(3);
+    expect(await prisma.course.findMany()[0].lastUpdateTime).toEqual(OLD_TIME);
+    expect(await prisma.course.findMany()[1].lastUpdateTime).toEqual(OLD_TIME);
+  })
+
+  it('udpates courses with sections', async () => {
+    const COURSE_ONE_SECTION = {
+      classHash: COURSE_ONE.id,
+      classType: 'Lecture',
+      id: `${COURSE_ONE.id}34567`,
+      seatsCapacity: 2,
+      seatsRemaining: 2,
+      campus : 'Boston',
+      honors: false,
+      crn: '34567',
+      meetings: {},
+      info: null,
+      profs: [],
+      url: null,
+      waitCapacity: 99,
+      waitRemaining: 99,
+    }
+    const COURSE_TWO_SECTION = {
+      classHash: COURSE_TWO.id,
+      classType: 'Lecture',
+      id: `${COURSE_TWO.id}12345`,
+      seatsCapacity: 10,
+      seatsRemaining: 5,
+      campus : 'Boston',
+      honors: false,
+      crn: '12345',
+      meetings: {},
+      info: null,
+      profs: [],
+      url: null,
+      waitCapacity: 99,
+      waitRemaining: 99,
+    }
+    await bulkInsertCourses([COURSE_ONE_OLD, COURSE_TWO_OLD, COURSE_THREE_OLD]);
+    await bulkInsertSections([COURSE_ONE_SECTION, COURSE_TWO_SECTION]);
+    expect(await prisma.course.count()).toEqual(3);
+    expect(await prisma.section.count()).toEqual(2);
+    expect(await prisma.course.findMany()[0].lastUpdateTime).toEqual(OLD_TIME);
+    expect(await prisma.course.findMany()[1].lastUpdateTime).toEqual(OLD_TIME);
+    expect(await prisma.course.findMany()[2].lastUpdateTime).toEqual(OLD_TIME);
+
+    const CURR_TIME = new Date();
+    await updateCourseTimes([COURSE_ONE.termId], CURR_TIME);
+    expect(await prisma.course.count()).toEqual(3);
+    expect(await prisma.course.findMany()[0].lastUpdateTime).toEqual(CURR_TIME);
+    expect(await prisma.course.findMany()[1].lastUpdateTime).toEqual(CURR_TIME);
+    expect(await prisma.course.findMany()[2].lastUpdateTime).toEqual(OLD_TIME);
+  })
 });
 
 describe('deleteStaleCourses', () => {
