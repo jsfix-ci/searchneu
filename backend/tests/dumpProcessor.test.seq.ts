@@ -2,10 +2,10 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import { Course, CourseCreateInput } from '@prisma/client';
+import { Course, Section } from '@prisma/client';
 import prisma from '../prisma';
 import {
-  bulkInsertCourses, bulkInsertProfs, bulkInsertSubjects, updateCourseTimes, bulkInsertSections,
+  bulkInsertCourses, bulkInsertSections, bulkInsertProfs, bulkInsertSubjects, updateCourseTimes,
 } from '../dumpProcessor';
 
 const OOD_NAME = 'Object-Oriented Design';
@@ -83,7 +83,7 @@ const COURSE_THREE: Course = {
 
 // TODO to test:
 // [x] bulkInsertCourses
-// [ ] bulkInsertSections --> Mitch
+// [x] bulkInsertSections --> Mitch
 // [ ] bulkInsertProfs --> Megan
 // [ ] bulkInsertSubjects --> Megan
 // [ ] bulkInsertTermDump --> Mitch
@@ -100,28 +100,13 @@ beforeEach(async () => {
 });
 
 describe('bulkInsertCourses', () => {
-  it('inserts a single course', async () => {
-    await bulkInsertCourses([COURSE_ONE]);
-    expect(await prisma.course.count()).toEqual(1);
-    expect((await prisma.course.findMany())[0].id).toEqual('neu.edu/202030/CS/2500');
-  });
-
   it('inserts multiple courses', async () => {
     await bulkInsertCourses([COURSE_ONE, COURSE_TWO, COURSE_THREE]);
     expect(await prisma.course.count()).toEqual(3);
   });
 
   it('updates a course on conflict', async () => {
-    // FIXME first off, this `set` pattern is ridiculous. second, to make it less ridiculous, maybe we should have a helper function that wraps this?
-    const outdatedCourse: CourseCreateInput = {
-      ...COURSE_THREE,
-      name: TH_NAME,
-      classAttributes: { set: [] },
-      nupath: { set: [] },
-    };
-
-    prisma.course.create({ data: outdatedCourse });
-    expect((await prisma.course.findOne({ where: { id: 'neu.edu/202030/CS/3500' } })).name).toEqual(TH_NAME);
+    await bulkInsertCourses([{ ...COURSE_THREE, name: TH_NAME }]);
 
     await bulkInsertCourses([COURSE_ONE, COURSE_TWO, COURSE_THREE]);
     expect(await prisma.course.count()).toEqual(3);
@@ -130,6 +115,90 @@ describe('bulkInsertCourses', () => {
 });
 
 describe('bulkInsertSections', () => {
+  const SECTION_ONE: Section = {
+    id: 'neu.edu/202030/CS/3500/12345',
+    classHash: 'neu.edu/202030/CS/3500',
+    classType: 'Lecture',
+    info: '',
+    seatsCapacity: 50,
+    seatsRemaining: 0,
+    waitCapacity: 0,
+    waitRemaining: 0,
+    campus: 'Boston',
+    honors: false,
+    crn: '12345',
+    meetings: {},
+    profs: ['Benjamin Lerner'],
+    url: '',
+  }
+
+  const SECTION_TWO: Section = {
+    id: 'neu.edu/202030/CS/3500/23456',
+    classHash: 'neu.edu/202030/CS/3500',
+    classType: 'Lecture',
+    info: '',
+    seatsCapacity: 40,
+    seatsRemaining: 10,
+    waitCapacity: 0,
+    waitRemaining: 0,
+    campus: 'Online',
+    honors: false,
+    crn: '23456',
+    meetings: {},
+    profs: ['Jason Hemann'],
+    url: '',
+  };
+
+  const SECTION_THREE: Section = {
+    id: 'neu.edu/202030/CS/3500/34567',
+    classHash: 'neu.edu/202030/CS/3500',
+    classType: 'Lecture',
+    info: '',
+    seatsCapacity: 2,
+    seatsRemaining: 2,
+    waitCapacity: 0,
+    waitRemaining: 0,
+    campus: 'Seattle, WA',
+    honors: false,
+    crn: '34567',
+    meetings: {},
+    profs: ['Matthias Felleisen'],
+    url: '',
+  };
+
+  const SECTION_FOUR: Section = {
+    id: 'neu.edu/202030/CS/2500/10000',
+    classHash: 'neu.edu/202030/CS/2500',
+    classType: 'Lecture',
+    info: '',
+    seatsCapacity: 2,
+    seatsRemaining: 2,
+    waitCapacity: 0,
+    waitRemaining: 0,
+    campus: 'Boston',
+    honors: false,
+    crn: '10000',
+    meetings: {},
+    profs: ['Stephen Chang'],
+    url: '',
+  };
+
+  beforeEach(async () => {
+    await bulkInsertCourses([COURSE_ONE, COURSE_THREE]);
+  });
+
+  it('inserts multiple sections', async () => {
+    await bulkInsertSections([SECTION_ONE, SECTION_TWO, SECTION_THREE, SECTION_FOUR]);
+    expect(await prisma.section.count()).toEqual(4);
+  });
+
+  it('updates a section', async () => {
+    await bulkInsertSections([{ ...SECTION_FOUR, info: 'Hello World' }]);
+
+    await bulkInsertSections([SECTION_ONE, SECTION_TWO, SECTION_THREE, SECTION_FOUR]);
+    expect(await prisma.section.count()).toEqual(4);
+    expect((await prisma.section.findOne({ where: { id: 'neu.edu/202030/CS/2500/10000' }})).info).toEqual('');
+  });
 });
 
 describe('bulkInsertProfs', () => {
@@ -256,6 +325,10 @@ describe('bulkInsertSubjects', () => {
 });
 
 describe('bulkInsertTermDump', () => {
+  // what's worth testing here?
+  // 1. sections and courses are inserted
+  // 2. sections and courses are updated
+  // 3. same thing with sections
 });
 
 describe('updateCourseTimes', () => {
@@ -335,6 +408,60 @@ describe('updateCourseTimes', () => {
 });
 
 describe('deleteStaleCourses', () => {
+  const STALE_COURSE_ONE: Course = {
+    id: 'neu.edu/202030/CS/4400',
+    maxCredits: 4,
+    minCredits: 4,
+    host: 'neu.edu',
+    classId: '4400',
+    name: 'Programming languages',
+    termId: '202030',
+    subject: 'CS',
+    prereqs: { type: 'and', values: [{ subject: 'CS', classId: '3500' }] },
+    coreqs: { type: 'and', values: [] },
+    prereqsFor: { type: 'and', values: [] },
+    optPrereqsFor: { type: 'and', values: [] },
+    classAttributes: ['crazy class'],
+    // two days and one millisecond in the past
+    lastUpdateTime: new Date(new Date().getTime() - ((48 * 60 * 60 * 1000) + 1)),
+    feeAmount: 0,
+    feeDescription: null,
+    nupath: [],
+    description: 'Introduction to Programming Languages at Northeastern',
+    prettyUrl: '',
+    url: '',
+  };
+
+  const STALE_COURSE_TWO: Course = {
+    id: 'neu.edu/202030/CS/4410',
+    maxCredits: 4,
+    minCredits: 4,
+    host: 'neu.edu',
+    classId: '4410',
+    name: 'Compilers',
+    termId: '202030',
+    subject: 'CS',
+    prereqs: { type: 'and', values: [{ subject: 'CS', classId: '4400' }] },
+    coreqs: { type: 'and', values: [] },
+    prereqsFor: { type: 'and', values: [] },
+    optPrereqsFor: { type: 'and', values: [] },
+    classAttributes: ['even crazier class'],
+    // two days and one millisecond in the past
+    lastUpdateTime: new Date(new Date().getTime() - ((48 * 60 * 60 * 1000) + 1)),
+    feeAmount: 0,
+    feeDescription: null,
+    nupath: [],
+    description: 'Introduction to Programming Languages at Northeastern',
+    prettyUrl: '',
+    url: '',
+  };
+
+
+  it('deletes courses more than two days old', () => {
+    bulkInsertCourses([COURSE_ONE, COURSE_TWO, COURSE_THREE, STALE_COURSE_ONE, STALE_COURSE_TWO]);
+    
+    updateCourseTimes(['202030']);
+  });
 });
 
 // Test for bulkInsertCourses:
