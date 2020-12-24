@@ -187,6 +187,12 @@ describe('bulkInsertSections', () => {
     await bulkInsertCourses([COURSE_ONE, COURSE_THREE]);
   });
 
+  it('inserts a single section', async () => {
+    await bulkInsertSections([SECTION_ONE]);
+    expect(await prisma.section.count()).toEqual(1);
+    expect((await prisma.section.findMany())[0].id).toEqual();
+  });
+
   it('inserts multiple sections', async () => {
     await bulkInsertSections([SECTION_ONE, SECTION_TWO, SECTION_THREE, SECTION_FOUR]);
     expect(await prisma.section.count()).toEqual(4);
@@ -262,8 +268,8 @@ describe('bulkInsertProfs', () => {
     pic: null,
     streetAddress: null,
   };
+
   it('inserts a single professor', async () => {
-    expect(await prisma.professor.count()).toEqual(0);
     await bulkInsertProfs([PROF_ONE]);
     expect(await prisma.professor.count()).toEqual(1);
     expect((await prisma.professor.findMany())[0].name).toEqual(PROF_ONE.name);
@@ -275,17 +281,8 @@ describe('bulkInsertProfs', () => {
   });
 
   it('updates a professor on conflict', async () => {
-    const outdatedProfessor = {
-      ...PROF_ONE,
-      name: BLERNER_SHORT,
-      firstName: 'Ben',
-      emails: null,
-    };
-
-    expect(await prisma.professor.count()).toEqual(0);
-    prisma.professor.create({ data: outdatedProfessor });
+    await bulkInsertProfs([{ ...PROF_ONE, name: BLERNER_SHORT, firstName: 'Ben', emails: null }]);
     expect(await prisma.professor.count()).toEqual(1);
-    expect((await prisma.professor.findOne({ where: { id: PROF_ONE.id } })).name).toEqual(BLERNER_SHORT);
 
     await bulkInsertProfs([PROF_ONE, PROF_TWO, PROF_THREE]);
     expect(await prisma.professor.count()).toEqual(3);
@@ -295,11 +292,13 @@ describe('bulkInsertProfs', () => {
 
 describe('bulkInsertSubjects', () => {
   const CS_DESC = 'Computer Science';
+  const CS_OUTDATED_DESC = 'Computer Sciences';
+
   const CS = { abbreviation: 'CS', description: CS_DESC };
   const CHEM = { abbreviation: 'CHEM', description: 'Chemistry' };
   const PHYS = { abbreviation: 'PHYS', description: 'Physics' };
+
   it('inserts a single subject', async () => {
-    expect(await prisma.subject.count()).toEqual(0);
     await bulkInsertSubjects([CS]);
     expect(await prisma.subject.count()).toEqual(1);
     expect((await prisma.subject.findMany())[0].abbreviation).toEqual('CS');
@@ -311,12 +310,8 @@ describe('bulkInsertSubjects', () => {
   });
 
   it('updates a subject on conflict', async () => {
-    const CS_OUTDATED_DESC = 'Computer Sciences';
-    const outdatedSubject = { abbreviation: 'CS', description: CS_OUTDATED_DESC };
-    expect(await prisma.subject.count()).toEqual(0);
-    prisma.subject.create({ data: outdatedSubject });
+    await bulkInsertSubjects([{ abbreviation: 'CS', description: CS_OUTDATED_DESC }]);
     expect(await prisma.subject.count()).toEqual(1);
-    expect((await prisma.subject.findOne({ where: { abbreviation: 'CS' } })).description).toEqual(CS_OUTDATED_DESC);
 
     await bulkInsertSubjects([CS, CHEM, PHYS]);
     expect(await prisma.subject.count()).toEqual(3);
