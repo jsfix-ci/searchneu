@@ -64,7 +64,7 @@ export default function SearchResult({ aClass } : SearchResultProps) {
             {feeString ? <span>  {feeString}</span> : <span className='empty'> None</span>}
           </div>
           <div className='SearchResult__panel--right'>
-            { notMostRecentTerm(aClass.termId) ? '' : <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />}
+            { notMostRecentTerm(aClass.termId) ? undefined : <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />}
           </div>
         </div>
       </div>
