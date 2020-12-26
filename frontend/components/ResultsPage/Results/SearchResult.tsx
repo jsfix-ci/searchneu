@@ -9,16 +9,18 @@ import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
+import { notMostRecentTerm } from '../../global';
 
 interface SearchResultProps {
   aClass: Course,
 }
+
 export default function SearchResult({ aClass } : SearchResultProps) {
   const { optionalDisplay, creditsString } = useResultDetail(aClass)
   const userIsWatchingClass = useUserChange(aClass)
   const {
     showAll, setShowAll, renderedSections, hideShowAll,
-  } = useShowAll(aClass)
+  } = useShowAll(aClass);
 
   const feeString = aClass.feeDescription && aClass.feeAmount ? `${aClass.feeDescription}- $${aClass.feeAmount}` : null
 
@@ -62,7 +64,7 @@ export default function SearchResult({ aClass } : SearchResultProps) {
             {feeString ? <span>  {feeString}</span> : <span className='empty'> None</span>}
           </div>
           <div className='SearchResult__panel--right'>
-            <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />
+            { notMostRecentTerm(aClass.termId) ? undefined : <SignUpForNotifications aClass={ aClass } userIsWatchingClass={ userIsWatchingClass } />}
           </div>
         </div>
       </div>
