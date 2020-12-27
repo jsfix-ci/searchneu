@@ -4,11 +4,12 @@
  */
 import cx from "classnames";
 import React, { useState } from "react";
+import Image from 'next/image';
 import { StringParam, useQueryParam } from "use-query-params";
 import Footer from "../components/Footer";
 import {
   getLatestTerm,
-  getTermDropdownOptionsForCampus
+  getTermDropdownOptionsForCampus,
 } from "../components/global";
 import HomeSearch from "../components/HomePage/HomeSearch";
 import Boston from "../components/images/boston.svg";
@@ -16,7 +17,6 @@ import HuskyBlue from "../components/images/husky_blue.svg";
 import HuskyRed from "../components/images/husky_red.svg";
 import HuskyYellow from "../components/images/husky_yellow.svg";
 import Logo from "../components/images/Logo";
-import Sandbox from "../components/images/sandbox-logo.svg";
 import macros from "../components/macros";
 import SplashPage from "../components/SplashPage/SplashPage";
 import { Campus } from "../components/types";
@@ -27,8 +27,6 @@ const ATTENTION_SECTION = {
 };
 
 const attentionSectionMode = ATTENTION_SECTION.getInvolved;
-
-
 
 function getResourcesFromCampus(campusType) {
   switch (campusType) {
@@ -123,7 +121,12 @@ export default function Home() {
         rel="noopener noreferrer"
         className="sandboxLogoContainer"
       >
-        <Sandbox className="sandboxLogo" />
+        <Image
+          src="/images/sandbox-logo.png"
+          alt="sandbox logo"
+          width={47}
+          height={61}
+        />
       </a>
       <a
         target="_blank"
@@ -159,8 +162,8 @@ export default function Home() {
           })}
         >
           <div className="centerTextContainer">
-            <Logo className="logo" ariaLabel="logo" fill={logoColor}/>
-            
+            <Logo className="logo" ariaLabel="logo" fill={logoColor} />
+
             <HomeSearch
               setSearchFocused={setSearchFocused}
               setTermId={setTermId}
@@ -171,11 +174,6 @@ export default function Home() {
             />
             {attentionSection}
           </div>
-          <img
-            src={"../components/images/husky_red.svg"}
-            className="husky"
-            alt="husky"
-          />
           <HuskyComponent className="husky" alt="husky" />
           <div className="bostonContainer">
             <Boston className="boston" alt="logo" />
