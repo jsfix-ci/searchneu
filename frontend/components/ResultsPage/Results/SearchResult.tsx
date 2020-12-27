@@ -25,7 +25,6 @@ export default function SearchResult({ aClass } : SearchResultProps) {
   const getLastUpdateString = (course: Course) : string => {
     return course.lastUpdateTime ? moment(course.lastUpdateTime).fromNow() : null;
   }
-  console.log(aClass);
 
   const feeString = aClass.feeDescription && aClass.feeAmount ? `${aClass.feeDescription}- $${aClass.feeAmount}` : null
 

@@ -14,7 +14,6 @@ function DesktopSectionPanel({ section, showNotificationSwitches } : DesktopSect
   const { getSeatsClass } = useSectionPanelDetail(section)
 
   const meetsOnDay = (meeting: Meeting, dayIndex : DayOfWeek) : boolean => {
-    console.log(meeting);
     return meeting.times.some((time) => { return time.start.day() === dayIndex; });
   }
 

@@ -24,7 +24,7 @@ export type MomentTuple = {
   end : Moment
 }
 
-export type TimeToMoment = {
+type TimeToMoment = {
   [key: number] : MomentTuple[];
 }
 
