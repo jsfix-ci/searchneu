@@ -118,7 +118,7 @@ export function SearchResult({ course } : SearchResultProps) {
       {!hideShowAll
       && (
       <div className='SearchResult__showAll' role='button' tabIndex={ 0 } onClick={ () => setShowAll(!showAll) }>
-        <span>{showAll ? 'Collapse sections' : 'Show all sections'}</span>
+        <span>{showAll ? 'Collapse sections' : 'Show all sections (' + (sortedSections.length - 3) + ' more)'}</span>
         <IconArrow className={ showAll ? 'SearchResult__showAll--collapse' : null } />
       </div>
       )}
