@@ -9,10 +9,10 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
 import Footer from '../../components/Footer';
 import {
-  getAllCampusDropdownOptions, getRoundedTerm, getTermDropdownOptionsForCampus
+  getAllCampusDropdownOptions, getCampusByLastDigit, getRoundedTerm, getTermDropdownOptionsForCampus
 } from '../../components/global';
 import FilterButton from '../../components/images/FilterButton.svg';
-import Logo from '../../components/images/logo_red.svg';
+import Logo from '../../components/images/Logo';
 import macros from '../../components/macros';
 import EmptyResultsContainer from '../../components/ResultsPage/EmptyResultsContainer';
 import FeedbackModal from '../../components/ResultsPage/FeedbackModal/FeedbackModal';
@@ -29,6 +29,7 @@ import search from '../../components/search';
 import {
   BLANK_SEARCH_RESULT, Campus, SearchResult
 } from '../../components/types';
+
 
 interface SearchParams {
   termId: string,
@@ -56,72 +57,20 @@ const fetchResults = async ({ query, termId, filters }: SearchParams, page: numb
   return response;
 };
 
-enum ActionType {
-  SET_TERM = 'SET_TERM',
-  SET_CAMPUS = 'SET_CAMPUS',
-}
-
-type Actions = {
-  type: ActionType.SET_CAMPUS,
-  pushTermString: (s: string) => void;
-  nextCampus: string,
-} | {
-  type: ActionType.SET_TERM,
-  pushTermString: (s: string) => void;
-  nextTermString: string
-};
-
-interface CampusTermState {
-  campus: string;
-  termString: string;
-}
-
-function stateReducer(prevState: Readonly<CampusTermState>, action: Actions) {
-  const nextState = { ...prevState };
-
-  switch (action.type) {
-    case ActionType.SET_CAMPUS: {
-      nextState.campus = action.nextCampus;
-      const newTermString = getRoundedTerm(action.nextCampus as Campus, prevState.termString);
-      nextState.termString = newTermString;
-      action.pushTermString(newTermString);
-      break;
-    }
-    case ActionType.SET_TERM: {
-      nextState.termString = action.nextTermString;
-      action.pushTermString(action.nextTermString);
-      break;
-    }
-    default: throw new Error('aiya');
-  }
-
-  return nextState;
-}
-
-/*function initializer(params: ReturnType<typeof useParams>): CampusTermState {
-  const { termId } = params;
-  return {
-    campus: (termId.charAt(termId.length - 1)).toString(),
-    termString: termId,
-  }
-}*/
-
 export default function Results() {
   const atTop = useAtTop();
   const router = useRouter();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
-  const { query = '', termId } = router.query;
-  console.log(router.query);
-  const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
+  const query = router.query.query as string;
+  const termId = router.query.termId as string;
 
-  // TODO: figure out why campus and term dropdowns no longer work
+  if (!query && !termId) {
+    return null;
+  }
   
-
-
-  //const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)).toString())
-  // const [{ campus, termString}, dispatch] = useReducer(stateReducer, router.query, initializer)
-  const campus = Campus.NEU; // have to wait for router query to properly set
-  const allCampuses = getAllCampusDropdownOptions()
+  const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
+  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1)).toString();
+  const allCampuses = getAllCampusDropdownOptions();
 
   const setSearchQuery = (q: string) => { router.push(`/${termId}/${q}${window.location.search}`); }
   const pushTermString = useCallback((t: string) => { router.push(`/${t}/${query}${window.location.search}`); }, [router, query]);
@@ -162,7 +111,9 @@ export default function Results() {
   return (
     <div>
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
-        <Logo className='Results__Logo' alt='logo' onClick={ () => { router.push('/'); } } />
+        <div onClick={ () => { router.push('/'); } }>
+          <Logo className='Results__Logo' ariaLabel='logo' fill="#E63946"/>
+          </div>
         <div className='Results__spacer' />
         {macros.isMobile
         && (
@@ -203,8 +154,7 @@ export default function Results() {
               value={ campus }
               placeholder='Select a campus'
               onChange={ (nextCampus) => {
-                console.log("fuck man")
-                //dispatch({ type: ActionType.SET_CAMPUS, nextCampus, pushTermString })} 
+                pushTermString(getRoundedTerm(nextCampus as Campus, termId));
               }}
               className='searchDropdown'
               compact={ false }
@@ -217,8 +167,7 @@ export default function Results() {
               value={ termId }
               placeholder='Select a term'
               onChange={ (nextTermString) => {
-                console.log("fuck 2")
-                // dispatch({ type: ActionType.SET_TERM, nextTermString, pushTermString }) 
+                pushTermString(nextTermString);
               }}
               className='searchDropdown'
               compact={ false }

@@ -8,7 +8,7 @@ import { StringParam, useQueryParam } from "use-query-params";
 import Footer from "../components/Footer";
 import {
   getLatestTerm,
-  getTermDropdownOptionsForCampus,
+  getTermDropdownOptionsForCampus
 } from "../components/global";
 import HomeSearch from "../components/HomePage/HomeSearch";
 import Boston from "../components/images/boston.svg";
