@@ -121,7 +121,6 @@ class Search {
       this.allLoaded[searchHash] = true;
     }
 
-    console.log("SEARCH");
     // Slice the array, so that if we modify the cache here it doesn't affect the instance we return.
     const retVal = cacheResult.results.slice(0);
 
