@@ -9,6 +9,6 @@ const TestHook = ({ callback }) => {
   return null;
 };
 
-export default function (callback) {
+export default function TestHookComponent(callback) {
   mount(<TestHook callback={ callback } />);
 }
