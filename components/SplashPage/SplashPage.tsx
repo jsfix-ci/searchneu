@@ -3,10 +3,10 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
-import { Grid, Button } from "semantic-ui-react";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import { Button, Grid } from "semantic-ui-react";
 import { getLatestTerm } from "../global";
 import { Campus } from "../types";
 
@@ -39,7 +39,7 @@ function SplashPage() {
               id="cs2510-desktop"
               width={960}
               height={450}
-              src="/images/2500-desktop.png"
+              src="/images/cs2510-desktop.png"
               alt="Example of a result of searching for CS2510"
             />
             <div className="rotated-div" />
