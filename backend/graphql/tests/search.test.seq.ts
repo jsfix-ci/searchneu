@@ -115,7 +115,7 @@ describe('search resolver', () => {
       searchContent: [],
       took: { total: 1, es: 1, hydrate: 0 },
     });
-    const res = await query({
+    await query({
       query: gql`
       query search {
         search(
