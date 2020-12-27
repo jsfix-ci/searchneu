@@ -8,7 +8,7 @@ import randomstring from 'randomstring';
 import _ from 'lodash';
 import request from './request';
 import macros from './macros';
-import Keys from '../../common/Keys';
+import Keys from './Keys';
 
 
 // Manages user data in the frontend

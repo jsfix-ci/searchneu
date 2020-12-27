@@ -1,12 +1,12 @@
+import { useRouter } from 'next/router'
 import React from 'react'
-import SearchBar from '../ResultsPage/SearchBar'
+import { getTermDropdownOptionsForCampus } from '../global'
 import IconGradcap from '../images/IconGradcap'
 import IconScale from '../images/IconScale'
 import IconTie from '../images/IconTie'
+import SearchBar from '../ResultsPage/SearchBar'
 import SearchDropdown from '../ResultsPage/SearchDropdown'
 import { Campus } from '../types'
-import { getTermDropdownOptionsForCampus } from '../global'
-import { useRouter } from 'next/router'
 
 interface HomeSearchProps {
   setTermId: (s: string) => void;

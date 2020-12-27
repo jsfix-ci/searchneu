@@ -2,34 +2,33 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React, { useReducer, useCallback } from 'react';
-import { useRouter } from 'next/router'
 import _ from 'lodash';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import Logo from '../images/logo_red.svg';
-import FilterButton from '../images/FilterButton.svg'
-import search from '../search';
-import macros from '../macros';
-import SearchBar from '../ResultsPage/SearchBar';
-import Footer from '../Footer';
-import useSearch from '../ResultsPage/useSearch';
-import FilterPanel from '../ResultsPage/FilterPanel';
-import FilterPills from '../ResultsPage/FilterPills';
-import FeedbackModal from '../ResultsPage/FeedbackModal/FeedbackModal';
-import EmptyResultsContainer from '../ResultsPage/EmptyResultsContainer';
-import MobileSearchOverlay from '../ResultsPage/MobileSearchOverlay';
-import useAtTop from '../ResultsPage/useAtTop';
+import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
+import Footer from '../../components/Footer';
 import {
-  FilterSelection, QUERY_PARAM_ENCODERS, DEFAULT_FILTER_SELECTION, areFiltersSet,
-} from '../ResultsPage/filters';
-import ResultsLoader from '../ResultsPage/ResultsLoader';
+  getAllCampusDropdownOptions, getRoundedTerm, getTermDropdownOptionsForCampus
+} from '../../components/global';
+import FilterButton from '../../components/images/FilterButton.svg';
+import Logo from '../../components/images/logo_red.svg';
+import macros from '../../components/macros';
+import EmptyResultsContainer from '../../components/ResultsPage/EmptyResultsContainer';
+import FeedbackModal from '../../components/ResultsPage/FeedbackModal/FeedbackModal';
+import FilterPanel from '../../components/ResultsPage/FilterPanel';
+import FilterPills from '../../components/ResultsPage/FilterPills';
+import { areFiltersSet, DEFAULT_FILTER_SELECTION, FilterSelection, QUERY_PARAM_ENCODERS } from '../../components/ResultsPage/filters';
+import MobileSearchOverlay from '../../components/ResultsPage/MobileSearchOverlay';
+import ResultsLoader from '../../components/ResultsPage/ResultsLoader';
+import SearchBar from '../../components/ResultsPage/SearchBar';
+import SearchDropdown from '../../components/ResultsPage/SearchDropdown';
+import useAtTop from '../../components/ResultsPage/useAtTop';
+import useSearch from '../../components/ResultsPage/useSearch';
+import search from '../../components/search';
 import {
-  BLANK_SEARCH_RESULT, SearchResult, Campus,
-} from '../types';
-import SearchDropdown from '../ResultsPage/SearchDropdown';
-import {
-  getAllCampusDropdownOptions, getTermDropdownOptionsForCampus, getCampusByLastDigit, getRoundedTerm,
-} from '../global';
+  BLANK_SEARCH_RESULT, Campus, SearchResult
+} from '../../components/types';
 
 interface SearchParams {
   termId: string,
@@ -99,23 +98,29 @@ function stateReducer(prevState: Readonly<CampusTermState>, action: Actions) {
   return nextState;
 }
 
-function initializer(params: ReturnType<typeof useParams>): CampusTermState {
+/*function initializer(params: ReturnType<typeof useParams>): CampusTermState {
   const { termId } = params;
   return {
-    campus: getCampusByLastDigit(termId.charAt(termId.length - 1)).toString(),
+    campus: (termId.charAt(termId.length - 1)).toString(),
     termString: termId,
   }
-}
+}*/
 
 export default function Results() {
   const atTop = useAtTop();
   const router = useRouter();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
-  const { query = '' } = useParams<{ query: string }>();
+  const { query = '', termId } = router.query;
+  console.log(router.query);
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
 
+  // TODO: figure out why campus and term dropdowns no longer work
+  
+
+
   //const [campus, setCampus] = useState(getCampusByLastDigit(termId.charAt(termId.length - 1)).toString())
-  const [{ campus, termString: termId }, dispatch] = useReducer(stateReducer, useParams(), initializer)
+  // const [{ campus, termString}, dispatch] = useReducer(stateReducer, router.query, initializer)
+  const campus = Campus.NEU; // have to wait for router query to properly set
   const allCampuses = getAllCampusDropdownOptions()
 
   const setSearchQuery = (q: string) => { router.push(`/${termId}/${q}${window.location.search}`); }
@@ -124,7 +129,7 @@ export default function Results() {
   const filters: FilterSelection = _.merge({}, DEFAULT_FILTER_SELECTION, qParams);
 
   const searchParams: SearchParams = {
-    termId, query, filters,
+    termId, query , filters,
   };
 
   const filtersAreSet: Boolean = areFiltersSet(filters);
@@ -197,7 +202,10 @@ export default function Results() {
               options={ allCampuses }
               value={ campus }
               placeholder='Select a campus'
-              onChange={ (nextCampus) => dispatch({ type: ActionType.SET_CAMPUS, nextCampus, pushTermString }) }
+              onChange={ (nextCampus) => {
+                console.log("fuck man")
+                //dispatch({ type: ActionType.SET_CAMPUS, nextCampus, pushTermString })} 
+              }}
               className='searchDropdown'
               compact={ false }
             />
@@ -208,7 +216,10 @@ export default function Results() {
               options={ getTermDropdownOptionsForCampus(Campus[campus.toUpperCase()]) }
               value={ termId }
               placeholder='Select a term'
-              onChange={ (nextTermString) => dispatch({ type: ActionType.SET_TERM, nextTermString, pushTermString }) }
+              onChange={ (nextTermString) => {
+                console.log("fuck 2")
+                // dispatch({ type: ActionType.SET_TERM, nextTermString, pushTermString }) 
+              }}
               className='searchDropdown'
               compact={ false }
               key={ campus }

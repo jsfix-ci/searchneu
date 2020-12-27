@@ -12,7 +12,7 @@ import LogoInput from './images/LogoInput'
 import macros from './macros';
 import facebook from './facebook';
 import user from './user';
-import Keys from '../../common/Keys';
+import Keys from './Keys';
 
 // This file is responsible for the Sign Up for notifications flow.
 // First, this will render a button that will say something along the lines of "Get notified when...!"

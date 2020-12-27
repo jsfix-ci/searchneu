@@ -1,9 +1,9 @@
-import React from 'react'
-import WeekdayBoxes from './WeekdayBoxes'
-import NotifCheckBox from '../../panels/NotifCheckBox'
+import React from 'react';
+import Keys from '../../Keys';
+import NotifCheckBox from '../../panels/NotifCheckBox';
+import { DayOfWeek, Meeting, MomentTuple, Section } from '../../types';
 import useSectionPanelDetail from './useSectionPanelDetail';
-import { Meeting, MomentTuple, Section, DayOfWeek } from '../../types';
-import Keys from '../../../../common/keys';
+import WeekdayBoxes from './WeekdayBoxes';
 
 interface DesktopSectionPanelProps {
   section: Section

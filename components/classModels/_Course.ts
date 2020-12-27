@@ -4,14 +4,15 @@
  * See the license file in the root folder for details.
  */
 
-import _ from 'lodash';
 import he from 'he';
+import _ from 'lodash';
 import moment from 'moment';
-
-import Keys from '../../../common/Keys';
+import Keys from '../Keys';
 import macros from '../macros';
+import RequisiteBranch, { ReqFor, ReqKind, ReqType } from './RequisiteBranch';
 import Section from './Section';
-import RequisiteBranch, { ReqFor, ReqType, ReqKind } from './RequisiteBranch';
+
+
 
 /**
  * Course represents a Course. Contains sections, its id, its name, crn, prereqs/coreqs, etc.

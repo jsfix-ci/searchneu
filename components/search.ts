@@ -3,13 +3,13 @@
  * See the license file in the root folder for details.
  */
 
-import URI from 'urijs';
 import _ from 'lodash';
-
+import URI from 'urijs';
 import macros from './macros';
 import request from './request';
-import { SearchResult, BLANK_SEARCH_RESULT } from './types';
-import { FilterSelection, DEFAULT_FILTER_SELECTION } from './ResultsPage/filters';
+import { DEFAULT_FILTER_SELECTION, FilterSelection } from './ResultsPage/filters';
+import { BLANK_SEARCH_RESULT, SearchResult } from './types';
+
 
 // Every time there is a breaking change in the search api, increment the version
 // This way, the backend will send back the result that frontend is expecting
@@ -77,7 +77,7 @@ class Search {
     macros.log('Requesting terms ', existingTermCount, 'to', termCount);
 
 
-    const url = new URI('/search').query({
+    const url = new URI('https://searchneu.com/search').query({ // TODO: is this how we're gonna access the api in the future?
       query: query,
       termId: termId,
       minIndex: existingTermCount,

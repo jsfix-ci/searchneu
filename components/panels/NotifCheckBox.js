@@ -8,7 +8,7 @@ import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import user from '../user';
-import Keys from '../../../common/Keys';
+import Keys from '../Keys';
 import macros from '../macros';
 import IconCheckMark from '../images/IconCheckmark';
 

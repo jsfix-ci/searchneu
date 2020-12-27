@@ -5,9 +5,10 @@ import macros from '../macros';
 import EmployeePanel from '../panels/EmployeePanel';
 import SearchResult from './Results/SearchResult'
 import MobileSearchResult from './Results/MobileSearchResult'
-import Keys from '../../../common/Keys';
+
 import { Section, SearchItem, Meeting, MomentTuple, TimeToMoment } from '../types';
 import moment from 'moment';
+import Keys from '../Keys';
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 

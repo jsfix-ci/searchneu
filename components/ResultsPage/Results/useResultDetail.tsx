@@ -1,14 +1,14 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import macros from '../../macros'
-import { Course, RequisiteBranch, PrereqType} from '../../types';
-import { CompositeReq, ReqFor, CourseReq, Requisite } from '../../../../common/types';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { CompositeReq, CourseReq, Requisite } from '../../../../common/types';
+import macros from '../../macros';
+import { Course, PrereqType } from '../../types';
 
 
 export default function useResultDetail(aClass: Course) {
-  const history = useHistory();
+  const router = useRouter();
   const onReqClick = (reqType, childBranch, event, hash) => {
-    history.push(hash);
+    router.push(hash);
 
     // Create the React element and add it to retVal
     const searchEvent = new CustomEvent(macros.searchEvent, { detail: `${childBranch.subject} ${childBranch.classId}` });

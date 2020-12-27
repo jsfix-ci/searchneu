@@ -25,7 +25,7 @@ class Macros extends abstractMacros {
       return;
     }
 
-    commonMacros.log(...args);
+    abstractMacros.log(...args);
   }
 
   // Call this to reload the tooltip rendering on the entire page.
@@ -135,7 +135,7 @@ const searchneu = `
  `;
 
 if (Macros.PROD) {
-  commonMacros.log(searchneu);
+  abstractMacros.log(searchneu);
 }
 
 
