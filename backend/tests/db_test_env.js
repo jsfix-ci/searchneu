@@ -3,8 +3,8 @@
 const NodeEnvironment = require('jest-environment-node');
 const { Client } = require('pg');
 const { v4: uuid } = require('uuid');
-const { promisify } = require('util');
-const exec = promisify(require('child_process').exec);
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const prismaBinary = './node_modules/.bin/prisma';
 
@@ -35,7 +35,8 @@ class PrismaTestEnvironment extends NodeEnvironment {
     // Drop the schema after the tests have completed
     const client = new Client({
       connectionString: this.databaseUrl,
-    })
+    });
+
     await client.connect();
     await client.query(`DROP SCHEMA IF EXISTS "${this.schema}" CASCADE`);
     await client.end();

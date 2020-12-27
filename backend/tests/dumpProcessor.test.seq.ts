@@ -178,8 +178,8 @@ beforeEach(async () => {
   await prisma.subject.deleteMany({});
 });
 
-describe('bulkInsertCourses', () => {
-  it('inserts one course', async () => {
+describe.only('bulkInsertCourses', () => {
+  it.only('inserts one course', async () => {
     await bulkInsertCourses([COURSE_ONE]);
     expect(await prisma.course.count()).toEqual(1);
     expect((await prisma.course.findMany())[0].name).toEqual(F1_NAME);
