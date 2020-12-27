@@ -160,7 +160,7 @@ class Employee {
 
   hitWithLetters(lastNameStart, jsessionCookie) {
     return request.get({
-      url: `https://prod-web.neu.edu/wasapp/employeelookup/public/searchEmployees.action?searchBy=Last+Name&queryType=begins+with&searchText=${lastNameStart}&deptText=&addrText=&numText=&divText=&facStaff=1`,
+      url: `https://prod-web.neu.edu/wasapp/employeelookup/public/searchEmployees.action?searchBy=Last+Name&queryType=begins+with&searchText=${lastNameStart}&deptText=&addrText=&numText=&divText=&facStaff=2`,
       headers: {
         Cookie: `JSESSIONID=${jsessionCookie}`,
       },

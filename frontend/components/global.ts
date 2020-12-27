@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { Campus } from './types';
 
@@ -86,6 +87,28 @@ export function getCampusByLastDigit(t: string): Campus {
       return Campus.CPS;
     default:
       throw new Error('unexpected campus digit');
+  }
+}
+
+export function greaterTermExists(dropdownOptions : DropdownItemProps[], termId : number) : boolean {
+  return _.some(dropdownOptions, (option) => {
+    const diff = Number(option.value) - termId;
+    return diff > 0 && diff % 10 === 0;
+  })
+}
+
+export function notMostRecentTerm(termId: string) : boolean {
+  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1));
+  const termIdNum = Number(termId);
+  switch (campus) {
+    case Campus.NEU:
+      return greaterTermExists(neuTermDropdownOptions, termIdNum);
+    case Campus.CPS:
+      return greaterTermExists(cpsTermDropdownOptions, termIdNum);
+    case Campus.LAW:
+      return greaterTermExists(lawTermDropdownOptions, termIdNum);
+    default:
+      throw new Error('Unrecognized campus type.');
   }
 }
 
