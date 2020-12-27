@@ -30,6 +30,7 @@ export interface CompositeReq {
   type: 'and' | 'or';
   values: Requisite[];
 }
+
 export interface CourseReq {
   classId: string;
   subject: string;

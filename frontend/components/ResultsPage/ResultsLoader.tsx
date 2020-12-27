@@ -41,10 +41,10 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 // If the Panels are updated to function components, we can memoize them instead and remove this
 const ResultItemMemoized = React.memo(({ result }:{result}) => {
   if (result.type === 'class') {
-    const aClass = result.class;
+    const course = result.class;
     // TODO: Can we get rid of this clone deep?
-    aClass.sections = getFormattedsections(cloneDeep(result.sections));
-    return macros.isMobile ? <MobileSearchResult aClass={ aClass } /> : <SearchResult aClass={ aClass } />;
+    course.sections = getFormattedsections(cloneDeep(result.sections));
+    return macros.isMobile ? <MobileSearchResult course={ course } /> : <SearchResult course={ course } />;
   }
 
   if (result.type === 'employee') {
@@ -81,9 +81,9 @@ function getGroupedByTimeOfDay(times): MomentTuple[] {
   const timeMoments = [];
 
   if (times) {
-    const dayIndexies = Object.keys(times);
+    const dayIndices = Object.keys(times);
 
-    for (const dayIndex of dayIndexies) {
+    for (const dayIndex of dayIndices) {
       times[dayIndex].forEach((event) => {
         //3 is to set in the second week of 1970
         const day = parseInt(dayIndex, 10) + 3;

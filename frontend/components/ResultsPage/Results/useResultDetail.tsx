@@ -65,7 +65,7 @@ export default function useResultDetail(aClass: Course) {
     return getReqsStringHelper(course, reqType, childNodes);  
   }
 
-  const getReqsStringHelper = (course: Course, reqType: PrereqType, childNodes: Requisite[]) =>  {
+  const getReqsStringHelper = (requisite: Course | CompositeReq, reqType: PrereqType, childNodes: Requisite[]) =>  {
     const retVal = [];
 
     // Keep track of which subject+classId combonations have been used so far.
@@ -111,7 +111,6 @@ export default function useResultDetail(aClass: Course) {
 
         retVal.push(element);
       } else if (reqType === PrereqType.PREREQ && isCompositeReq(childBranch)) {
-        console.log("asdfaskdfh")
         // Figure out how many unique classIds there are in the prereqs.
         const allClassIds = {};
         for (const node of childBranch.values) {
@@ -121,9 +120,9 @@ export default function useResultDetail(aClass: Course) {
 
         // If there is only 1 prereq with a unique classId, don't show the parens.
         if (Object.keys(allClassIds).length === 1) {
-          retVal.push(getReqsStringHelper(course, PrereqType.PREREQ, childBranch.values));
+          retVal.push(getReqsStringHelper(childBranch, PrereqType.PREREQ, childBranch.values));
         } else {
-          retVal.push(['(', getReqsStringHelper(course, PrereqType.PREREQ, childBranch.values), ')']);
+          retVal.push(['(', getReqsStringHelper(childBranch, PrereqType.PREREQ, childBranch.values), ')']);
         }
       } else {
         macros.error('Branch found and parsing coreqs?', childBranch);
@@ -139,11 +138,16 @@ export default function useResultDetail(aClass: Course) {
       }
     } else {
       let type;
-      if (reqType === PrereqType.PREREQ) {
-        type = course.prereqs.type;
-      } else if (reqType === PrereqType.COREQ) {
-        type = course.coreqs.type;
+      if (isCompositeReq(requisite)) {
+        type = requisite.type;
+      } else {
+        if (reqType === PrereqType.PREREQ) { 
+          type = requisite.prereqs.type; 
+        } else if (reqType === PrereqType.COREQ) {
+          type = requisite.coreqs.type; 
+        }
       }
+      
       for (let i = retVal.length - 1; i >= 1; i--) {
         retVal.splice(i, 0, ` ${type} `);
       }
