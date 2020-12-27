@@ -3,9 +3,7 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import macros from '../macros';
 import EmployeePanel from '../panels/EmployeePanel';
-import SearchResult from './Results/SearchResult'
-import MobileSearchResult from './Results/MobileSearchResult'
-
+import { SearchResult, MobileSearchResult} from './Results/SearchResult'
 import { Section, SearchItem, Meeting, MomentTuple, TimeToMoment } from '../types';
 import moment from 'moment';
 import Keys from '../Keys';
@@ -28,7 +26,6 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
       <div className='five column row'>
         <div className='page-home'>
           {results.filter((result) => result !== null && result !== undefined).map((result) => {
-            // FIXME: Do we need to clone deep here? Look into why re-render happens
             return <ResultItemMemoized
               key={ result.type === 'class' ? Keys.getClassHash(result.class) : result.employee.id }
               result={ result }
@@ -45,10 +42,8 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 const ResultItemMemoized = React.memo(({ result }:{result}) => {
   if (result.type === 'class') {
     const aClass = result.class;
+    // TODO: Can we get rid of this clone deep?
     aClass.sections = getFormattedsections(cloneDeep(result.sections));
-
-    // FIXME - do we need to still do this Don't think so...
-    // aClass.loadSectionsFromServerList(result.sections);
     return macros.isMobile ? <MobileSearchResult aClass={ aClass } /> : <SearchResult aClass={ aClass } />;
   }
 

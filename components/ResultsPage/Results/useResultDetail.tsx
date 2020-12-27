@@ -80,7 +80,6 @@ export default function useResultDetail(aClass: Course) {
     const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq =>
       (variableToCheck as CourseReq).classId !== undefined;
 
-    // FIXME
     childNodes.forEach((childBranch) => {
       if (!isCourseReq(childBranch) && !isCompositeReq(childBranch)) {
         if (processedSubjectClassIds[childBranch]) {
