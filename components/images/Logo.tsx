@@ -1,17 +1,21 @@
 import { ReactElement } from "react";
+import { campusToColor } from "../../utils/campusToColor";
+import { Campus } from "../types";
 
-
+interface LogoProp {
+  className: string
+  campus: Campus,
+}
 export default function Logo({
   className,
-  ariaLabel,
-  fill
-}) : ReactElement {
+  campus = Campus.NEU,
+}: LogoProp) : ReactElement {
+  const fill = campusToColor[campus];
   return (
     <svg
       viewBox="0 0 526 113"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label={ariaLabel}
       className={className}
     >
       <path

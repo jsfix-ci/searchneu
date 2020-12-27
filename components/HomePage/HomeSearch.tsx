@@ -13,11 +13,14 @@ interface HomeSearchProps {
   termId: string;
   campus: Campus;
   setCampus: (c: Campus) => void;
-  buttonColor: 'red' | 'yellow' | 'blue';
 }
-
+const campusToColor: Record<Campus, "red"|"yellow"|"blue"> = {
+  [Campus.NEU]: "red",
+  [Campus.CPS]: "yellow",
+  [Campus.LAW]: "blue",
+}
 const HomeSearch = ({
-  setTermId, termId, campus, setCampus, buttonColor,
+  setTermId, termId, campus, setCampus 
 }: HomeSearchProps) => {
   const router = useRouter();
   return (
@@ -57,7 +60,7 @@ const HomeSearch = ({
           <SearchBar
             onSearch={ (q) => { router.push(`${termId}/${q}`); } }
             query=''
-            buttonColor={ buttonColor }
+            buttonColor={campusToColor[campus]}
           />
         </div>
       </div>

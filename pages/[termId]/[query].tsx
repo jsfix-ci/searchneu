@@ -112,7 +112,7 @@ export default function Results() {
     <div>
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
         <div onClick={ () => { router.push('/'); } }>
-          <Logo className='Results__Logo' ariaLabel='logo' fill="#E63946"/>
+          <Logo className='Results__Logo' aria-label='logo' campus={Campus.NEU}/>
           </div>
         <div className='Results__spacer' />
         {macros.isMobile

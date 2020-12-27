@@ -4,7 +4,7 @@
  */
 import cx from "classnames";
 import React, { useState } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import { StringParam, useQueryParam } from "use-query-params";
 import Footer from "../components/Footer";
 import {
@@ -13,13 +13,11 @@ import {
 } from "../components/global";
 import HomeSearch from "../components/HomePage/HomeSearch";
 import Boston from "../components/images/boston.svg";
-import HuskyBlue from "../components/images/husky_blue.svg";
-import HuskyRed from "../components/images/husky_red.svg";
-import HuskyYellow from "../components/images/husky_yellow.svg";
 import Logo from "../components/images/Logo";
 import macros from "../components/macros";
 import SplashPage from "../components/SplashPage/SplashPage";
 import { Campus } from "../components/types";
+import Husky from "../components/images/Husky";
 
 const ATTENTION_SECTION = {
   getInvolved: "getInvolved",
@@ -27,31 +25,6 @@ const ATTENTION_SECTION = {
 };
 
 const attentionSectionMode = ATTENTION_SECTION.getInvolved;
-
-function getResourcesFromCampus(campusType) {
-  switch (campusType) {
-    case Campus.NEU:
-      return {
-        husky: HuskyRed,
-        logoColor: "#E63946",
-        searchBarButtonColor: "red",
-      };
-    case Campus.CPS:
-      return {
-        husky: HuskyYellow,
-        logoColor: "#FF9F1C",
-        searchBarButtonColor: "yellow",
-      };
-    case Campus.LAW:
-      return {
-        husky: HuskyBlue,
-        logoColor: "#457B9D",
-        searchBarButtonColor: "blue",
-      };
-    default:
-      throw new Error("unexpected campus type");
-  }
-}
 
 export default function Home() {
   const [campus, setCampus] = useState(Campus.NEU);
@@ -105,12 +78,6 @@ export default function Home() {
     );
   }
 
-  const {
-    husky: HuskyComponent,
-    logoColor,
-    searchBarButtonColor,
-  } = getResourcesFromCampus(campus);
-
   // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
   // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
   return (
@@ -162,19 +129,21 @@ export default function Home() {
           })}
         >
           <div className="centerTextContainer">
-            <Logo className="logo" ariaLabel="logo" fill={logoColor} />
+            <Logo
+              className="logo"
+              aria-label="logo"
+              campus={campus}
+            />
 
             <HomeSearch
-              setSearchFocused={setSearchFocused}
               setTermId={setTermId}
               termId={termId}
               campus={campus}
               setCampus={setCampus}
-              buttonColor={searchBarButtonColor}
             />
             {attentionSection}
           </div>
-          <HuskyComponent className="husky" alt="husky" />
+          <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
             <Boston className="boston" alt="logo" />
           </div>
