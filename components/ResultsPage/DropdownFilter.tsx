@@ -1,10 +1,10 @@
 import { pull, without } from 'lodash';
 import React, { useRef, useState } from 'react';
-import '../../styles/_DropdownFilter.module.scss';
 import DropdownArrow from '../images/DropdownArrow.svg';
 import PillClose from '../images/pillClose.svg';
 import { Option } from './filters';
 import useClickOutside from './useClickOutside';
+
 
 // todo: figure out why the dropdown styles on the left bar are no longer being applied
 interface DropdownFilter {
