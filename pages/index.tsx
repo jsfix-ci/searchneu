@@ -15,9 +15,7 @@ import Boston from "../components/images/boston.svg";
 import HuskyBlue from "../components/images/husky_blue.svg";
 import HuskyRed from "../components/images/husky_red.svg";
 import HuskyYellow from "../components/images/husky_yellow.svg";
-import LogoBlue from "../components/images/logo_blue.svg";
-import LogoRed from "../components/images/logo_red.svg";
-import LogoYellow from "../components/images/logo_yellow.svg";
+import Logo from "../components/images/Logo";
 import Sandbox from "../components/images/sandbox-logo.svg";
 import macros from "../components/macros";
 import SplashPage from "../components/SplashPage/SplashPage";
@@ -30,24 +28,26 @@ const ATTENTION_SECTION = {
 
 const attentionSectionMode = ATTENTION_SECTION.getInvolved;
 
+
+
 function getResourcesFromCampus(campusType) {
   switch (campusType) {
     case Campus.NEU:
       return {
         husky: HuskyRed,
-        searchLogo: LogoRed,
+        logoColor: "#E63946",
         searchBarButtonColor: "red",
       };
     case Campus.CPS:
       return {
         husky: HuskyYellow,
-        searchLogo: LogoYellow,
+        logoColor: "#FF9F1C",
         searchBarButtonColor: "yellow",
       };
     case Campus.LAW:
       return {
         husky: HuskyBlue,
-        searchLogo: LogoBlue,
+        logoColor: "#457B9D",
         searchBarButtonColor: "blue",
       };
     default:
@@ -109,7 +109,7 @@ export default function Home() {
 
   const {
     husky: HuskyComponent,
-    searchLogo: SearchLogo,
+    logoColor,
     searchBarButtonColor,
   } = getResourcesFromCampus(campus);
 
@@ -159,7 +159,8 @@ export default function Home() {
           })}
         >
           <div className="centerTextContainer">
-            <SearchLogo className="logo" alt="logo" />
+            <Logo className="logo" ariaLabel="logo" fill={logoColor}/>
+            
             <HomeSearch
               setSearchFocused={setSearchFocused}
               setTermId={setTermId}
