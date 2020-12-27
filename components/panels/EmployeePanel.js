@@ -10,9 +10,9 @@ import ReactTooltip from 'react-tooltip';
 
 import macros from '../macros';
 
-import globe from './globe.svg';
-import chevronDown from './chevron-down.svg';
-import chevronRight from './chevron-right.svg';
+import Globe from './globe.svg';
+import ChevronDown from './chevron-down.svg';
+import ChevronRight from './chevron-right.svg';
 
 // On Mobile, display everything in two sections, one below the other, eg:
 // Assistant Teaching Professor
@@ -251,12 +251,12 @@ export default class EmployeePanel extends React.Component {
     let chevron = null;
     if (macros.isMobile) {
       if (this.state.showMoreThanTitle) {
-        chevronSource = chevronDown;
+        chevronSource = ChevronDown;
       } else {
-        chevronSource = chevronRight;
+        chevronSource = ChevronRight;
       }
 
-      chevron = <img className='chevron' src={ chevronSource } alt='' />;
+      chevron = <ChevronSource className='chevron' alt='' />;
     }
 
     // Set up the onclick listener, if this is mobile.
@@ -278,7 +278,7 @@ export default class EmployeePanel extends React.Component {
             className='inlineBlock'
             href={ employee.url }
           >
-            <img src={ globe } alt='globe' />
+            <Globe alt='globe' />
           </a>
         </span>
       );

@@ -6,7 +6,7 @@ import React, { useReducer, useCallback } from 'react';
 import { useRouter } from 'next/router'
 import _ from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import logo from '../images/logo_red.svg';
+import Logo from '../images/logo_red.svg';
 import FilterButton from '../images/FilterButton.svg'
 import search from '../search';
 import macros from '../macros';
@@ -157,7 +157,7 @@ export default function Results() {
   return (
     <div>
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
-        <img src={ logo } className='Results__Logo' alt='logo' onClick={ () => { router.push('/'); } } />
+        <Logo className='Results__Logo' alt='logo' onClick={ () => { router.push('/'); } } />
         <div className='Results__spacer' />
         {macros.isMobile
         && (

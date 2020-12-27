@@ -4,7 +4,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import macros from '../macros';
-import magnifyingGlass from '../images/magnifying-glass.svg';
+import MagnifyingGlass from '../images/magnifying-glass.svg';
 
 interface SearchBarProps {
   query: string;
@@ -62,7 +62,7 @@ export default function SearchBar({
         placeholder={ !macros.isMobile ? 'Class, professor, course number' : undefined }
       />
       <div onClick={ search } className={ `searchbar__button ${buttonColor}` } role='button' tabIndex={ 0 }>
-        <img src={ magnifyingGlass } alt='magnifying glass' className='searchbar__magnifyingGlass' />
+        <MagnifyingGlass alt='magnifying glass' className='searchbar__magnifyingGlass' />
       </div>
     </div>
   );

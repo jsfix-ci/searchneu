@@ -5,14 +5,14 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { useQueryParam, StringParam } from 'use-query-params';
-import logoRed from '../components/images/logo_red.svg';
-import logoBlue from '../components/images/logo_blue.svg';
-import logoYellow from '../components/images/logo_yellow.svg';
-import boston from '../components/images/boston.svg';
-import huskyRed from '../components/images/husky_red.svg';
-import huskyBlue from '../components/images/husky_blue.svg';
-import huskyYellow from '../components/images/husky_yellow.svg';
-import sandbox from '../components/images/sandbox-logo.svg';
+import LogoRed from '../components/images/logo_red.svg';
+import LogoBlue from '../components/images/logo_blue.svg';
+import LogoYellow from '../components/images/logo_yellow.svg';
+import Boston from '../components/images/boston.svg';
+import HuskyRed from '../components/images/husky_red.svg';
+import HuskyBlue from '../components/images/husky_blue.svg';
+import HuskyYellow from '../components/images/husky_yellow.svg';
+import Sandbox from '../components/images/sandbox-logo.svg';
 import macros from '../components/macros';
 import SplashPage from '../components/SplashPage/SplashPage';
 import Footer from '../components/Footer';
@@ -30,18 +30,18 @@ const attentionSectionMode = ATTENTION_SECTION.getInvolved;
 function getResourcesFromCampus(campusType) {
   switch (campusType) {
     case Campus.NEU: return {
-      husky: huskyRed,
-      searchLogo: logoRed,
+      husky: HuskyRed,
+      searchLogo: LogoRed,
       searchBarButtonColor: 'red',
     }
     case Campus.CPS: return {
-      husky: huskyYellow,
-      searchLogo: logoYellow,
+      husky: HuskyYellow,
+      searchLogo: LogoYellow,
       searchBarButtonColor: 'yellow',
     }
     case Campus.LAW: return {
-      husky: huskyBlue,
-      searchLogo: logoBlue,
+      husky: HuskyBlue,
+      searchLogo: LogoBlue,
       searchBarButtonColor: 'blue',
     }
     default: throw new Error('unexpected campus type');
@@ -95,14 +95,14 @@ export default function Home() {
     );
   }
 
-  const { husky, searchLogo, searchBarButtonColor } = getResourcesFromCampus(campus);
+  const { husky: HuskyComponent, searchLogo: SearchLogo, searchBarButtonColor } = getResourcesFromCampus(campus);
 
   // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
   // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
   return (
     <div className={ containerClassnames }>
       <a href='https://www.sandboxnu.com/' target='_blank' rel='noopener noreferrer' className='sandboxLogoContainer'>
-        <img src={ sandbox } alt='sandbox' className='sandboxLogo' />
+        <Sandbox className='sandboxLogo' />
       </a>
       <a
         target='_blank'
@@ -138,7 +138,7 @@ export default function Home() {
           }) }
         >
           <div className='centerTextContainer'>
-            <img src={ searchLogo } className='logo' alt='logo' />
+            <SearchLogo className='logo' alt='logo' />
             <HomeSearch
               setSearchFocused={ setSearchFocused }
               setTermId={ setTermId }
@@ -149,9 +149,9 @@ export default function Home() {
             />
             {attentionSection}
           </div>
-          <img src={ husky } className='husky' alt='husky' />
+          <HuskyComponent className='husky' alt='husky' />
           <div className='bostonContainer'>
-            <img src={ boston } className='boston' alt='logo' />
+            <Boston className='boston' alt='logo'/>
           </div>
         </div>
         <SplashPage />

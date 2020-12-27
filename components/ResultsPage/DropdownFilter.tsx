@@ -3,8 +3,8 @@ import { without, pull } from 'lodash';
 import { Option } from './filters';
 import useClickOutside from './useClickOutside';
 import '../../css/_DropdownFilter.scss';
-import pillClose from '../images/pillClose.svg';
-import dropdownArrow from '../images/DropdownArrow.svg';
+import PillClose from '../images/pillClose.svg';
+import DropdownArrow from '../images/DropdownArrow.svg';
 
 interface DropdownFilter {
   title: string,
@@ -57,8 +57,7 @@ export default function DropdownFilter({
           {selected.map((selectElement) => (
             <span className='DropdownFilter__inputElement' role='button' tabIndex={ 0 } onClick={ (e) => e.stopPropagation() }>
               { selectElement }
-              <img
-                src={ pillClose }
+              <PillClose
                 className='DropdownFilter__inputDelete'
                 alt='X to remove pill'
                 onClick={ () => setActive(without(selected, selectElement)) }
@@ -74,7 +73,7 @@ export default function DropdownFilter({
             onChange={ (event) => setFilterString(event.target.value) }
             onClick={ (e) => { e.stopPropagation(); if (selected.length !== 0 || filteredOptions.length !== 0) { setIsOpen(true); } } }
           />
-          <img src={ dropdownArrow } alt='Dropdown arrow' className={ `DropdownFilter__icon ${getDropdownStatus()}` } />
+          <DropdownArrow alt='Dropdown arrow' className={ `DropdownFilter__icon ${getDropdownStatus()}` } />
         </div>
         <div className='DropdownFilter__selectable'>
           {isOpen && (filteredOptions.length === 0
