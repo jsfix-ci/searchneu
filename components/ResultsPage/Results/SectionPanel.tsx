@@ -4,7 +4,7 @@ import NotifCheckBox from '../../panels/NotifCheckBox';
 import useSectionPanelDetail from './useSectionPanelDetail';
 import { Meeting, MomentTuple, Section, DayOfWeek } from '../../types';
 import Keys from '../../Keys';
-import IconGlobe from '../../images/IconGlobe';
+import IconGlobe from '../../icons/IconGlobe';
 
 interface SectionPanelProps {
   section: Section

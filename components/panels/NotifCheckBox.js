@@ -10,7 +10,7 @@ import _ from 'lodash';
 import user from '../user';
 import Keys from '../Keys';
 import macros from '../macros';
-import IconCheckMark from '../images/IconCheckmark';
+import IconCheckMark from '../icons/IconCheckmark';
 
 
 // This file renders the checkboxes that control which sections a user signs up for

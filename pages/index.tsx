@@ -12,12 +12,11 @@ import {
   getTermDropdownOptionsForCampus,
 } from "../components/global";
 import HomeSearch from "../components/HomePage/HomeSearch";
-import Boston from "../components/images/boston.svg";
-import Logo from "../components/images/Logo";
+import Boston from "../components/icons/boston.svg";
+import Logo from "../components/icons/Logo";
 import macros from "../components/macros";
-import SplashPage from "../components/SplashPage/SplashPage";
 import { Campus } from "../components/types";
-import Husky from "../components/images/Husky";
+import Husky from "../components/icons/Husky";
 import Head from "next/head";
 
 const ATTENTION_SECTION = {
@@ -148,7 +147,6 @@ export default function Home() {
             <Boston className="boston" alt="logo" />
           </div>
         </div>
-        <SplashPage />
         <Footer />
       </div>
     </div>

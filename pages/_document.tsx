@@ -5,10 +5,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name="description" content="Search for Northeastern" />
-          <meta name="author" content="Sandbox" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="theme-color" content="#ffffff" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"

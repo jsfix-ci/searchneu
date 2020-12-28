@@ -4,7 +4,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import macros from '../macros';
-import MagnifyingGlass from '../images/magnifying-glass.svg';
+import MagnifyingGlass from '../icons/magnifying-glass.svg';
 
 interface SearchBarProps {
   query: string;

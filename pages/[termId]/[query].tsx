@@ -12,8 +12,8 @@ import Footer from '../../components/Footer';
 import {
   getAllCampusDropdownOptions, getCampusByLastDigit, getRoundedTerm, getTermDropdownOptionsForCampus
 } from '../../components/global';
-import FilterButton from '../../components/images/FilterButton.svg';
-import Logo from '../../components/images/Logo';
+import FilterButton from '../../components/icons/FilterButton.svg';
+import Logo from '../../components/icons/Logo';
 import macros from '../../components/macros';
 import EmptyResultsContainer from '../../components/ResultsPage/EmptyResultsContainer';
 import FeedbackModal from '../../components/ResultsPage/FeedbackModal/FeedbackModal';

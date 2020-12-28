@@ -1,7 +1,7 @@
 import { pull, without } from 'lodash';
 import React, { useRef, useState } from 'react';
-import DropdownArrow from '../images/DropdownArrow.svg';
-import PillClose from '../images/pillClose.svg';
+import DropdownArrow from '../icons/DropdownArrow.svg';
+import PillClose from '../icons/pillClose.svg';
 import { Option } from './filters';
 import useClickOutside from './useClickOutside';
 

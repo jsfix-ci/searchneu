@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal } from 'semantic-ui-react';
 
 
-import LogoInput from './images/LogoInput'
+import LogoInput from './icons/LogoInput'
 import macros from './macros';
 import facebook from './facebook';
 import user from './user';

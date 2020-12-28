@@ -1,5 +1,5 @@
 import React from 'react'
-import IconCollapseExpand from '../../images/IconCollapseExpand'
+import IconCollapseExpand from '../../icons/IconCollapseExpand'
 
 interface MobileCollapsableDetailProps {
   title: string

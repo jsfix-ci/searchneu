@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import LogoInput from '../../images/LogoInput';
+import LogoInput from '../../icons/LogoInput';
 import FeedbackModalInitial from './FeedbackModalInitial';
 import FeedbackModalCheckboxes from './FeedbackModalCheckboxes';
 import FeedbackModalFree from './FeedbackModalFree';

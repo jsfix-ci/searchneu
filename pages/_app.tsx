@@ -1,5 +1,6 @@
+import Head from "next/head";
 import React from "react";
-import 'semantic-ui-css/semantic.min.css';
+import "semantic-ui-css/semantic.min.css";
 import "../styles/base.scss";
 import { QueryParamProvider } from "../utils/QueryParamProvider";
 
@@ -7,9 +8,17 @@ import { QueryParamProvider } from "../utils/QueryParamProvider";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <QueryParamProvider>
-      <Component {...pageProps} />
-    </QueryParamProvider>
+    <>
+      <Head>
+        <meta name="description" content="Search for Northeastern" />
+        <meta name="author" content="Sandbox" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#ffffff" />
+      </Head>
+      <QueryParamProvider>
+        <Component {...pageProps} />
+      </QueryParamProvider>
+    </>
   );
 }
 

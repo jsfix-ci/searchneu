@@ -3,15 +3,15 @@ import { Markup } from 'interweave'
 import macros from '../../macros'
 import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel'
 import { Course, PrereqType } from '../../types'
-import IconGlobe from '../../images/IconGlobe'
-import IconArrow from '../../images/IconArrow'
+import IconGlobe from '../../icons/IconGlobe'
+import IconArrow from '../../icons/IconArrow'
 import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
 import moment from 'moment';
 import MobileCollapsableDetail from './MobileCollapsableDetail'
-import IconCollapseExpand from '../../images/IconCollapseExpand'
+import IconCollapseExpand from '../../icons/IconCollapseExpand'
 
 interface SearchResultProps {
   aClass: Course,

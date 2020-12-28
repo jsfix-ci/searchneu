@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FilterPanel from './FilterPanel';
 import FilterPills from './FilterPills';
 import macros from '../macros';
-import IconClose from '../images/IconClose';
+import IconClose from '../icons/IconClose';
 import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
 
 /**
