@@ -29,12 +29,6 @@ class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#e75454" />
           <link
-            rel="preload"
-            href="/icons.woff2"
-            as="font"
-            crossOrigin="anonymous"
-          />
-          <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,700"
             rel="stylesheet"
           />
