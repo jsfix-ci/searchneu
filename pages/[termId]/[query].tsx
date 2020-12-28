@@ -62,15 +62,10 @@ export default function Results() {
   const atTop = useAtTop();
   const router = useRouter();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
-  const query = router.query.query as string;
+  const query = router.query.query as string || '';
   const termId = router.query.termId as string;
-
-  if (!query && !termId) {
-    return null;
-  }
   
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
-  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1)).toString();
   const allCampuses = getAllCampusDropdownOptions();
 
   const setSearchQuery = (q: string) => { router.push(`/${termId}/${q}${window.location.search}`); }
@@ -81,8 +76,6 @@ export default function Results() {
   const searchParams: SearchParams = {
     termId, query , filters,
   };
-
-  const filtersAreSet: Boolean = areFiltersSet(filters);
 
   const us = useSearch(searchParams, BLANK_SEARCH_RESULT(), fetchResults);
 
@@ -95,6 +88,13 @@ export default function Results() {
   useDeepCompareEffect(() => {
     doSearch(searchParams);
   }, [searchParams, doSearch]);
+
+  if (!query && !termId) {
+    return null;
+  }
+
+  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1)).toString();
+  const filtersAreSet: Boolean = areFiltersSet(filters);
 
   if (showOverlay && macros.isMobile) {
     return (
