@@ -3,92 +3,9 @@
  * See the license file in the root folder for details.
  */
 
-
-import Course from '../../classModels/Course';
-import Section from '../../classModels/Section';
-
-
 // Contains a couple instances of classes
 // Used for testing files in the frontend
 // Feel free to add more or modify existing ones, as long as the existing tests don't break.
-
-const cs0210 = Course.create({
-  lastUpdateTime: 1511131673768,
-  name: 'Introduction to Search',
-  url: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_listcrse?term_in=201810&subj_in=CS&crse_in=0210&schd_in=%',
-  crns: ['19389'],
-  honors: false,
-  maxCredits: 49,
-
-  // These arn't the actuall prereqs or coreqs for this class
-  prereqs:
-        {
-          type: 'and',
-          values: [
-            {
-              type: 'or',
-              values: [
-                {
-                  subject: 'CHEM',
-                  classId: '2313',
-                },
-                {
-                  subject: 'CHEM',
-                  classId: '2317',
-                }],
-            },
-            {
-              type: 'or',
-              values: [
-                {
-                  subject: 'CHEM',
-                  classId: '2321',
-                },
-                {
-                  subject: 'CHEM',
-                  classId: '2331',
-                }],
-            },
-            {
-              type: 'or',
-              values: [
-                {
-                  subject: 'CHEM',
-                  classId: '3401',
-                },
-                {
-                  classId: '3421',
-                  subject: 'CHEM',
-                  missing: true,
-                },
-                {
-                  subject: 'CHEM',
-                  classId: '3431',
-                }],
-            }],
-        },
-  coreqs:
-        {
-          type: 'and',
-          values: [
-            {
-              subject: 'CHEM',
-              classId: '3506',
-            },
-            {
-              subject: 'CHEM',
-              classId: '3507',
-            }],
-        },
-  minCredits: 1,
-  desc: 'Offers students an opportunity to learn and practice how to search in large amounts of unstructured data. Covers basic concepts in search, retrieval models, indexing, querying and ranking, and evaluation. This is a limited engagement course. 1.800 Continuing Education Units 1.800 Lecture hours',
-  classId: '0210',
-  prettyUrl: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_course_detail?cat_term_in=201810&subj_code_in=CS&crse_numb_in=0210',
-  termId: '201810',
-  host: 'neu.edu',
-  subject: 'CS',
-});
-
 
 const sectionsForcs0210 = [
   {
@@ -192,26 +109,85 @@ const sectionsForcs0210 = [
     classId: '0210',
   }];
 
-cs0210.loadSectionsFromServerList(sectionsForcs0210);
-
-
-const cs1210 = Course.create({
-  lastUpdateTime: 1511131674191,
-  name: 'Computer Science/Information Science Overview 2: Co-op Preparation',
-  url: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_listcrse?term_in=201810&subj_in=CS&crse_in=1210&schd_in=%',
-  crns: ['13502', '13503', '14386', '14404', '14405'],
+const cs0210 = {
+  lastUpdateTime: 1511131673768,
+  name: 'Introduction to Search',
+  url: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_listcrse?term_in=201810&subj_in=CS&crse_in=0210&schd_in=%',
+  crns: ['19389'],
   honors: false,
-  maxCredits: 1,
+  maxCredits: 49,
+
+  // These arn't the actuall prereqs or coreqs for this class
+  prereqs:
+        {
+          type: 'and',
+          values: [
+            {
+              type: 'or',
+              values: [
+                {
+                  subject: 'CHEM',
+                  classId: '2313',
+                },
+                {
+                  subject: 'CHEM',
+                  classId: '2317',
+                }],
+            },
+            {
+              type: 'or',
+              values: [
+                {
+                  subject: 'CHEM',
+                  classId: '2321',
+                },
+                {
+                  subject: 'CHEM',
+                  classId: '2331',
+                }],
+            },
+            {
+              type: 'or',
+              values: [
+                {
+                  subject: 'CHEM',
+                  classId: '3401',
+                },
+                {
+                  classId: '3421',
+                  subject: 'CHEM',
+                  missing: true,
+                },
+                {
+                  subject: 'CHEM',
+                  classId: '3431',
+                }],
+            }],
+        },
+  coreqs:
+        {
+          type: 'and',
+          values: [
+            {
+              subject: 'CHEM',
+              classId: '3506',
+            },
+            {
+              subject: 'CHEM',
+              classId: '3507',
+            }],
+        },
   minCredits: 1,
-  desc: 'Continues the preparation of students for careers in the computing and information fields by discussing co-op and co-op processes. Offers students an opportunity to prepare a professional résumé; practice proper interviewing techniques; explore current job opportunities; learn how to engage in the job and referral process; and to understand co-op policies, procedures, and expectations. Discusses professional behavior and ethical issues in the workplace. 1.000 Lecture hours',
-  classId: '1210',
-  prettyUrl: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_course_detail?cat_term_in=201810&subj_code_in=CS&crse_numb_in=1210',
+  desc: 'Offers students an opportunity to learn and practice how to search in large amounts of unstructured data. Covers basic concepts in search, retrieval models, indexing, querying and ranking, and evaluation. This is a limited engagement course. 1.800 Continuing Education Units 1.800 Lecture hours',
+  classId: '0210',
+  prettyUrl: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_course_detail?cat_term_in=201810&subj_code_in=CS&crse_numb_in=0210',
   termId: '201810',
   host: 'neu.edu',
   subject: 'CS',
-});
+  section: sectionsForcs0210,
+};
 
-const sectionsForcs1210 = [{
+const sectionsForCS1210 = [{
   seatsCapacity: 19,
   seatsRemaining: 0,
   waitCapacity: 0,
@@ -364,11 +340,24 @@ const sectionsForcs1210 = [{
 
 }];
 
+const cs1210 = {
+  lastUpdateTime: 1511131674191,
+  name: 'Computer Science/Information Science Overview 2: Co-op Preparation',
+  url: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_listcrse?term_in=201810&subj_in=CS&crse_in=1210&schd_in=%',
+  crns: ['13502', '13503', '14386', '14404', '14405'],
+  honors: false,
+  maxCredits: 1,
+  minCredits: 1,
+  desc: 'Continues the preparation of students for careers in the computing and information fields by discussing co-op and co-op processes. Offers students an opportunity to prepare a professional résumé; practice proper interviewing techniques; explore current job opportunities; learn how to engage in the job and referral process; and to understand co-op policies, procedures, and expectations. Discusses professional behavior and ethical issues in the workplace. 1.000 Lecture hours',
+  classId: '1210',
+  prettyUrl: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_course_detail?cat_term_in=201810&subj_code_in=CS&crse_numb_in=1210',
+  termId: '201810',
+  host: 'neu.edu',
+  subject: 'CS',
+  sections: sectionsForCS1210,
+};
 
-cs1210.loadSectionsFromServerList(sectionsForcs1210);
-
-
-const WMNS4520section = Section.create({
+const WMNS4520section = {
   seatsCapacity: 5,
   seatsRemaining: 0,
   waitCapacity: 0,
@@ -420,7 +409,7 @@ const WMNS4520section = Section.create({
   host: 'neu.edu',
   subject: 'WMNS',
   classId: '4520',
-});
+};
 
 
 const razzaq = {
@@ -440,7 +429,7 @@ const razzaq = {
 };
 
 
-const cs9999 = Course.create({
+const cs9999 = {
   lastUpdateTime: 1511131674191,
   name: 'Some class that has error prereqs',
   url: 'https://wl11gp.neu.edu/udcprod8/bwckctlg.p_disp_listcrse?term_in=201810&subj_in=CS&crse_in=1210&schd_in=%',
@@ -460,7 +449,7 @@ const cs9999 = Course.create({
       'Error while parsing prerequisites.',
     ],
   },
-});
+};
 
 const probStatsSectionConfig = {
   seatsCapacity: 70,

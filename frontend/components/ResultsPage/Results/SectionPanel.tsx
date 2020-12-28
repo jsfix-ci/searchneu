@@ -2,7 +2,9 @@ import React from 'react';
 import WeekdayBoxes from './WeekdayBoxes';
 import NotifCheckBox from '../../panels/NotifCheckBox';
 import useSectionPanelDetail from './useSectionPanelDetail';
-import { Meeting, MomentTuple, Section, DayOfWeek } from '../../types';
+import {
+  Meeting, MomentTuple, Section, DayOfWeek,
+} from '../../types';
 import Keys from '../../../../common/Keys';
 import IconGlobe from '../../images/IconGlobe';
 
