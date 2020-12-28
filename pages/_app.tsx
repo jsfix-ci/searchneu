@@ -1,7 +1,7 @@
-import Head from "next/head";
-import React from "react";
 import "semantic-ui-css/semantic.min.css";
 import "../styles/base.scss";
+import Head from "next/head";
+import React from "react";
 import { useGoogleAnalyticsOnPageChange } from "../utils/gtag";
 import { QueryParamProvider } from "../utils/QueryParamProvider";
 
