@@ -90,6 +90,10 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          {/* Hack to prevent Flash of Unstyled Content on Firefox 
+          https://github.com/vercel/next.js/issues/18769
+          https://stackoverflow.com/a/57888310 */}
+          <script>0</script>
         </body>
       </Html>
     );
