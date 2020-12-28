@@ -26,18 +26,18 @@ const HomeSearch = ({
   return (
     <div className='HomeSearch'>
       <div className='HomeSearch__campusSelector'>
-        <input type='radio' id='campusSelectorNeu' name='CampusSelector' defaultChecked />
-        <label className='HomeSearch__campusSelector--neu' htmlFor='campusSelectorNeu' onClick={ () => setCampus(Campus.NEU) }>
+        <input type='radio' id='campusSelectorNeu' name='CampusSelector' checked={campus==Campus.NEU} onChange={ () => setCampus(Campus.NEU) } />
+        <label className='HomeSearch__campusSelector--neu' htmlFor='campusSelectorNeu' >
           <IconGradcap />
           <span>NEU</span>
         </label>
-        <input type='radio' id='campusSelectorCps' name='CampusSelector' />
-        <label className='HomeSearch__campusSelector--cps' htmlFor='campusSelectorCps' onClick={ () => setCampus(Campus.CPS) }>
+        <input type='radio' id='campusSelectorCps' name='CampusSelector' checked={campus==Campus.CPS} onChange={ () => setCampus(Campus.CPS) }/>
+        <label className='HomeSearch__campusSelector--cps' htmlFor='campusSelectorCps' >
           <IconTie />
           <span>CPS</span>
         </label>
-        <input type='radio' id='campusSelectorLaw' name='CampusSelector' />
-        <label className='HomeSearch__campusSelector--law' htmlFor='campusSelectorLaw' onClick={ () => setCampus(Campus.LAW) }>
+        <input type='radio' id='campusSelectorLaw' name='CampusSelector' checked={campus==Campus.LAW} onChange={ () => setCampus(Campus.LAW) }/>
+        <label className='HomeSearch__campusSelector--law' htmlFor='campusSelectorLaw' >
           <IconScale />
           <span>Law</span>
         </label>
