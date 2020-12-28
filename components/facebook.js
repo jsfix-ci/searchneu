@@ -43,6 +43,9 @@ class Facebook {
   // This is an private method - don't call from outside or else it may load the api twice.
   // Just use this.fbPromise
   loadFbApi() {
+    if (!process.browser) {
+      return;
+    }
     return new Promise((resolve, reject) => {
       // This code was adapted from Facebook's tracking code
       // I added an error handler to know if the request failed (adblock, ff strict browsing mode, etc)

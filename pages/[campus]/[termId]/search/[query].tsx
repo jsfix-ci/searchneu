@@ -70,7 +70,8 @@ export default function Results() {
   const allCampuses = getAllCampusDropdownOptions();
 
   const setSearchQuery = (q: string) => { router.push(`/${campus}/${termId}/search/${q}${window.location.search}`); }
-  const pushTermString = useCallback((t: string) => { router.push(`${campus}/${t}/search/${query}${window.location.search}`); }, [router, query]);
+  const setTermAndCampus = useCallback((t: string, newCampus: string) => { 
+    router.push(`/${newCampus}/${t}/search/${query}${window.location.search}`); }, [router, query]);
 
   const filters: FilterSelection = _.merge({}, DEFAULT_FILTER_SELECTION, qParams);
 
@@ -156,7 +157,7 @@ export default function Results() {
               value={ campus }
               placeholder='Select a campus'
               onChange={ (nextCampus) => {
-                pushTermString(getRoundedTerm(nextCampus as Campus, termId));
+                setTermAndCampus(getRoundedTerm(nextCampus as Campus, termId), nextCampus);
               }}
               className='searchDropdown'
               compact={ false }
@@ -169,7 +170,7 @@ export default function Results() {
               value={ termId }
               placeholder='Select a term'
               onChange={ (nextTermString) => {
-                pushTermString(nextTermString);
+                setTermAndCampus(nextTermString, campus);
               }}
               className='searchDropdown'
               compact={ false }

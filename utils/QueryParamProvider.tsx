@@ -1,5 +1,5 @@
-import React, { memo, useMemo } from "react";
 import { useRouter } from "next/router";
+import React, { memo, useMemo } from "react";
 import { QueryParamProvider as ContextProvider } from "use-query-params";
 
 export const QueryParamProviderComponent = (props: {
@@ -37,7 +37,6 @@ export const QueryParamProviderComponent = (props: {
     }),
     [pathname, router.pathname, router.query, location.pathname]
   );
-  console.log('location', location)
 
   return (
     <ContextProvider {...rest} history={history} location={location}>
