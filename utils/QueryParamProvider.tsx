@@ -37,6 +37,7 @@ export const QueryParamProviderComponent = (props: {
     }),
     [pathname, router.pathname, router.query, location.pathname]
   );
+  console.log('location', location)
 
   return (
     <ContextProvider {...rest} history={history} location={location}>
