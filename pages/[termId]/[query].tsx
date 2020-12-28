@@ -3,6 +3,7 @@
  * See the license file in the root folder for details.
  */
 import _ from 'lodash';
+import  Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -110,6 +111,9 @@ export default function Results() {
 
   return (
     <div>
+      <Head>
+        <title>Search NEU - {query}</title>
+      </Head>
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
         <div onClick={ () => { router.push('/'); } }>
           <Logo className='Results__Logo' aria-label='logo' campus={Campus.NEU}/>

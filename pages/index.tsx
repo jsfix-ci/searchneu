@@ -18,6 +18,7 @@ import macros from "../components/macros";
 import SplashPage from "../components/SplashPage/SplashPage";
 import { Campus } from "../components/types";
 import Husky from "../components/images/Husky";
+import Head from "next/head";
 
 const ATTENTION_SECTION = {
   getInvolved: "getInvolved",
@@ -82,6 +83,9 @@ export default function Home() {
   // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
   return (
     <div className={containerClassnames}>
+      <Head>
+        <title>Search NEU - {campus} </title>
+      </Head>
       <a
         href="https://www.sandboxnu.com/"
         target="_blank"
@@ -129,11 +133,7 @@ export default function Home() {
           })}
         >
           <div className="centerTextContainer">
-            <Logo
-              className="logo"
-              aria-label="logo"
-              campus={campus}
-            />
+            <Logo className="logo" aria-label="logo" campus={campus} />
 
             <HomeSearch
               setTermId={setTermId}
