@@ -8,20 +8,20 @@ interface UseShowAllReturn {
   hideShowAll: boolean
 }
 
-export default function useShowAll(aClass: Course) : UseShowAllReturn {
+export default function useShowAll(sections: Section[]) : UseShowAllReturn {
   const [showAll, setShowAll] = useState(false)
 
-  const sectionsShownByDefault = aClass.sections.length < 3 ? aClass.sections.length : 3
-  const [renderedSections, setRenderedSections] = useState(aClass.sections.slice(0, sectionsShownByDefault))
-  const hideShowAll = sectionsShownByDefault === aClass.sections.length
+  const sectionsShownByDefault = sections.length < 3 ? sections.length : 3
+  const [renderedSections, setRenderedSections] = useState(sections.slice(0, sectionsShownByDefault))
+  const hideShowAll = sectionsShownByDefault === sections.length
 
   useEffect(() => {
     if (showAll) {
-      setRenderedSections(aClass.sections)
+      setRenderedSections(sections)
     } else {
-      setRenderedSections(aClass.sections.slice(0, sectionsShownByDefault))
+      setRenderedSections(sections.slice(0, sectionsShownByDefault))
     }
-  }, [aClass.sections, sectionsShownByDefault, showAll])
+  }, [sections, sectionsShownByDefault, showAll])
 
   return {
     showAll: showAll,
