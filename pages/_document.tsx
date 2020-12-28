@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Macros from "../components/abstractMacros";
 
 class MyDocument extends Document {
   render() {
@@ -28,6 +29,27 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,700"
             rel="stylesheet"
           />
+          {Macros.PROD && (
+            <>
+              <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${Macros.googleAnalyticsToken}`}
+              />
+              <script
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{
+                  __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${Macros.googleAnalyticsToken}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+                }}
+              />
+            </>
+          )}
         </Head>
         <body>
           <Main />

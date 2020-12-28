@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 5000",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 5000"
   },
   "dependencies": {
     "amplitude-js": "^7.3.3",
@@ -33,6 +33,7 @@
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
     "@types/amplitude-js": "^7.0.0",
+    "@types/gtag.js": "^0.0.4",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
