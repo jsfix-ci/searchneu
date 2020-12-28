@@ -12,6 +12,7 @@ import useShowAll from './useShowAll';
 import moment from 'moment';
 import MobileCollapsableDetail from './MobileCollapsableDetail'
 import IconCollapseExpand from '../../images/IconCollapseExpand'
+import { notMostRecentTerm } from '../../global';
 
 interface SearchResultProps {
   course: Course,
@@ -86,7 +87,7 @@ export function SearchResult({ course } : SearchResultProps) {
             {feeString ? <span>  {feeString}</span> : <span className='empty'> None</span>}
           </div>
           <div className='SearchResult__panel--right'>
-            <SignUpForNotifications aClass={ course } userIsWatchingClass={ userIsWatchingClass } />
+            { notMostRecentTerm(course.termId) ? undefined : <SignUpForNotifications aClass={ course } userIsWatchingClass={ userIsWatchingClass } />}
           </div>
         </div>
       </div>
