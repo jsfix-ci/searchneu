@@ -13,6 +13,7 @@ import abstractMacros from "./abstractMacros";
 // Used for debounceTooltipRebuild
 let tooltipTimer = null;
 
+// Amplitude only works in browser, not on nextjs server side
 let amplitude;
 if (process.browser) {
   amplitude = require("amplitude-js");
