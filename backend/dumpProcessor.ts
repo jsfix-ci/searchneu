@@ -42,11 +42,7 @@ function bulkInsertSubjectChunk(subjects: Subject[]): string {
 
 export async function bulkInsertCourses(courses: Course[]): Promise<void> {
   _.chunk(courses, CHUNK_SIZE).forEach(async (chunk: Course[]) => {
-    await prisma.$executeRaw(bulkInsertCourseChunk(chunk.map((c: Course) => {
-      const newCourse = processCourse(c);
-      console.log(newCourse);
-      return _.mapKeys(newCourse, toSnakeCase) as Course;
-    })));
+    await prisma.$executeRaw(bulkInsertCourseChunk(chunk.map((c: Course) => _.mapKeys(processCourse(c), toSnakeCase) as Course)));
   });
 }
 

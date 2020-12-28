@@ -16,7 +16,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
     // Generate a unique schema identifier for this test context
     this.schema = `test_${uuid()}`
     // Generate the pg connection string for the test schema
-    this.databaseUrl = `postgres://postgres@localhost:5432/searchneu_test?schema=${this.schema}`
+    this.databaseUrl = `postgresql://postgres@localhost:5432/searchneu_test?schema=${this.schema}`
   }
 
   async setup() {
