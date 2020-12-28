@@ -8,7 +8,22 @@
 
 import { Moment } from 'moment';
 import { FilterOptions } from './ResultsPage/filters';
-import { CompositeReq, ReqFor } from '../../common/types';
+
+export type Requisite = string | CompositeReq | CourseReq;
+
+export interface CompositeReq {
+  type: 'and' | 'or';
+  values: Requisite[];
+}
+export interface CourseReq {
+  classId: string;
+  subject: string;
+  missing?: true;
+}
+
+export interface ReqFor {
+  values : CourseReq[]
+}
 
 type TimeTuple = {
   start : number;

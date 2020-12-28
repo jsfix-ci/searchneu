@@ -116,7 +116,7 @@ export default function Home() {
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
-            <Boston className="boston" alt="logo" />
+            <Boston className="boston" aria-label="logo" />
           </div>
         </div>
         <Footer />

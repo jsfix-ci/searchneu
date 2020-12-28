@@ -60,7 +60,7 @@ export default function DropdownFilter({
               { selectElement }
               <PillClose
                 className='DropdownFilter__inputDelete'
-                alt='X to remove pill'
+                aria-label='X to remove pill'
                 onClick={ () => setActive(without(selected, selectElement)) }
               />
             </span>
@@ -74,7 +74,7 @@ export default function DropdownFilter({
             onChange={ (event) => setFilterString(event.target.value) }
             onClick={ (e) => { e.stopPropagation(); if (selected.length !== 0 || filteredOptions.length !== 0) { setIsOpen(true); } } }
           />
-          <DropdownArrow alt='Dropdown arrow' className={ `DropdownFilter__icon ${getDropdownStatus()}` } />
+          <DropdownArrow aria-label='Dropdown arrow' className={ `DropdownFilter__icon ${getDropdownStatus()}` } />
         </div>
         <div className='DropdownFilter__selectable'>
           {isOpen && (filteredOptions.length === 0

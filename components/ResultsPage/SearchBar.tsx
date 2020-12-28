@@ -62,7 +62,7 @@ export default function SearchBar({
         placeholder={ !macros.isMobile ? 'Class, professor, course number' : undefined }
       />
       <div onClick={ search } className={ `searchbar__button ${buttonColor}` } role='button' tabIndex={ 0 }>
-        <MagnifyingGlass alt='magnifying glass' className='searchbar__magnifyingGlass' />
+        <MagnifyingGlass aria-label='magnifying glass' className='searchbar__magnifyingGlass' />
       </div>
     </div>
   );

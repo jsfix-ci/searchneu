@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { CompositeReq, CourseReq, Requisite } from '../../../../common/types';
 import macros from '../../macros';
-import { Course, PrereqType } from '../../types';
+import { CompositeReq, Course, CourseReq, PrereqType, Requisite } from '../../types';
 
 
 export default function useResultDetail(aClass: Course) {

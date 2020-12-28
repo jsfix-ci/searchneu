@@ -128,10 +128,9 @@ export default function Results() {
               buttonColor='red'
             />
           </div>
-          <img
-            src={ FilterButton }
+          <FilterButton
             className='Results__filterButton'
-            alt='filter-button'
+            aria-label='filter-button'
             onClick={ () => {
               if (macros.isMobile) {
                 setShowOverlay(true);

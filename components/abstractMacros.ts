@@ -73,10 +73,10 @@ class Macros {
 }
 
 // Set up the Macros.TEST, Macros.DEV, and Macros.PROD based on some env variables.
-if (process.env.PROD || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod' || (process.env.CI && process.env.NODE_ENV !== 'test')) {
+if (process.env.PROD || process.env.NODE_ENV === 'production' || (process.env.CI && process.env.NODE_ENV !== 'test')) {
   Macros.PROD = true;
   console.log('Running in prod mode.'); // eslint-disable-line no-console
-} else if (process.env.DEV || process.env.NODE_ENV === 'dev') {
+} else if (process.env.DEV) {
   Macros.DEV = true;
   console.log('Running in dev mode.'); // eslint-disable-line no-console
 } else if (process.env.NODE_ENV === 'test') {
