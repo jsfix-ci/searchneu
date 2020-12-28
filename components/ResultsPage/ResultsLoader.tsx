@@ -4,9 +4,12 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import macros from '../macros';
 import EmployeePanel from '../panels/EmployeePanel';
 import { SearchResult, MobileSearchResult} from './Results/SearchResult'
-import { Section, SearchItem, Meeting, MomentTuple, TimeToMoment } from '../types';
-import moment from 'moment';
+import { Section, SearchItem, Meeting, DayjsTuple, TimeToDayjs } from '../types';
 import Keys from '../Keys';
+
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 
@@ -64,8 +67,8 @@ function getFormattedsections(sections: any): Section[] {
     section.meetings.forEach(meeting => {
       formattedMeetings.push({
         location: meeting.where,
-        startDate: moment((meeting.startDate + 1) * DAY_IN_MILLISECONDS),
-        endDate: moment((meeting.endDate + 1) * DAY_IN_MILLISECONDS),
+        startDate: dayjs((meeting.startDate + 1) * DAY_IN_MILLISECONDS),
+        endDate: dayjs((meeting.endDate + 1) * DAY_IN_MILLISECONDS),
         times: getGroupedByTimeOfDay(meeting.times)
       });
     });
@@ -77,7 +80,7 @@ function getFormattedsections(sections: any): Section[] {
   return formattedSections;
 }
 
-function getGroupedByTimeOfDay(times): MomentTuple[] {
+function getGroupedByTimeOfDay(times): DayjsTuple[] {
   const timeMoments = [];
 
   if (times) {
@@ -89,8 +92,8 @@ function getGroupedByTimeOfDay(times): MomentTuple[] {
         const day = parseInt(dayIndex, 10) + 3;
 
         const obj = {
-          start: moment.utc(event.start * 1000).add(day, 'day'),
-          end: moment.utc(event.end * 1000).add(day, 'day'),
+          start: dayjs.utc(event.start * 1000).add(day, 'day'),
+          end: dayjs.utc(event.end * 1000).add(day, 'day'),
         };
 
         if (parseInt(obj.start.format('YYYY'), 10) !== 1970) {
@@ -104,17 +107,17 @@ function getGroupedByTimeOfDay(times): MomentTuple[] {
 
   // returns objects like this: {3540000041400000: Array[3]}
   // if has three meetings per week that meet at the same times
-  const groupedByTimeOfDay: TimeToMoment = groupBy(timeMoments, (event) => {
-    const zero = moment(event.start).startOf('day');
+  const groupedByTimeOfDay: TimeToDayjs = groupBy(timeMoments, (event) => {
+    const zero = dayjs(event.start).startOf('day');
     return `${event.start.diff(zero)}${event.end.diff(zero)}`;
   });
 
   // Get the values of the object returned above
-  const valuesGroupedByTimeOfDay: MomentTuple[][] = values(groupedByTimeOfDay);
+  const valuesGroupedByTimeOfDay: DayjsTuple[][] = values(groupedByTimeOfDay);
 
   // And sort by start time
   valuesGroupedByTimeOfDay.sort((meetingsInAday) => {
-    const zero = moment(meetingsInAday[0].start).startOf('day');
+    const zero = dayjs(meetingsInAday[0].start).startOf('day');
     return meetingsInAday[0].start.diff(zero);
   });
 

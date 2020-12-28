@@ -2,7 +2,7 @@ import React from 'react';
 import WeekdayBoxes from './WeekdayBoxes';
 import NotifCheckBox from '../../panels/NotifCheckBox';
 import useSectionPanelDetail from './useSectionPanelDetail';
-import { Meeting, MomentTuple, Section, DayOfWeek } from '../../types';
+import { Meeting, DayjsTuple, Section, DayOfWeek } from '../../types';
 import Keys from '../../Keys';
 import IconGlobe from '../../icons/IconGlobe';
 
@@ -20,7 +20,7 @@ const getProfs = (section: Section) : string[] => {
   return section.profs.length > 0 ? Array.from(section.profs.map((prof) => unescape(prof))).sort() : ['TBA'];
 }
 
-const getAllMeetingMoments = (section: Section, ignoreExams = true) : MomentTuple[] => {
+const getAllMeetingMoments = (section: Section, ignoreExams = true) : DayjsTuple[] => {
   let retVal = [];
   section.meetings.forEach((meeting) => {
     if (ignoreExams && meeting.startDate.unix() === meeting.endDate.unix()) {
@@ -50,7 +50,7 @@ const getDaysOfWeekAsBooleans = (section: Section) : boolean[] => {
 export function DesktopSectionPanel({ section, showNotificationSwitches } : SectionPanelProps) {
   const { getSeatsClass } = useSectionPanelDetail(section)
 
-  const getUniqueTimes = (times: MomentTuple[]) => {
+  const getUniqueTimes = (times: DayjsTuple[]) => {
     const seenTimes = new Set()
     return times.reduce((acc, t) => {
       if (!seenTimes.has(t.start.format('h:mm'))) {
@@ -127,7 +127,7 @@ export function DesktopSectionPanel({ section, showNotificationSwitches } : Sect
 export function MobileSectionPanel({ section, showNotificationSwitches } : SectionPanelProps) {
   const { getSeatsClass } = useSectionPanelDetail(section)
 
-  const groupedTimesAndDays = (times: MomentTuple[]) => {
+  const groupedTimesAndDays = (times: DayjsTuple[]) => {
     const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S']
     return times.reduce((acc, t) => {
       const timeString = `${t.start.format('h:mm')}-${t.end.format('h:mm a')}`

@@ -5,8 +5,7 @@
  *
  * ONLY PUT COMMONLY USED TYPES HERE
  */
-
-import { Moment } from 'moment';
+import {Dayjs} from 'dayjs';
 import { FilterOptions } from './ResultsPage/filters';
 
 export type Requisite = string | CompositeReq | CourseReq;
@@ -30,13 +29,13 @@ type TimeTuple = {
   end : number;
 }
 
-export type MomentTuple = {
-  start : Moment,
-  end : Moment
+export type DayjsTuple = {
+  start : Dayjs,
+  end : Dayjs
 }
 
-export type TimeToMoment = {
-  [key: number] : MomentTuple[];
+export type TimeToDayjs = {
+  [key: number] : DayjsTuple[];
 }
 
 export enum PrereqType {
@@ -100,9 +99,9 @@ export interface Section {
 
 export interface Meeting {
   location: string;
-  startDate: Moment;
-  endDate: Moment;
-  times: MomentTuple[];
+  startDate: Dayjs;
+  endDate: Dayjs;
+  times: DayjsTuple[];
 }
 
 // ======= Search Results ========

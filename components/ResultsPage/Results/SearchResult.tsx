@@ -9,17 +9,20 @@ import SignUpForNotifications from '../../SignUpForNotifications'
 import useResultDetail from './useResultDetail'
 import useUserChange from './useUserChange';
 import useShowAll from './useShowAll';
-import moment from 'moment';
 import MobileCollapsableDetail from './MobileCollapsableDetail'
 import IconCollapseExpand from '../../icons/IconCollapseExpand'
 import { notMostRecentTerm } from '../../global';
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime)
 
 interface SearchResultProps {
   course: Course,
 }
 
 const getLastUpdateString = (course: Course) : string => {
-  return course.lastUpdateTime ? moment(course.lastUpdateTime).fromNow() : null;
+  return course.lastUpdateTime ? dayjs(course.lastUpdateTime).fromNow() : null;
 }
 
 const sortSections = (sections: Section[]) : Section[] => {
