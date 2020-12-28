@@ -4,8 +4,9 @@
  */
 
 import {
-  Requisite, isCourseReq, BooleanReq, isBooleanReq,
+  isCourseReq, isBooleanReq,
 } from '../../../types';
+import { Requisite, CompositeReq } from '../../../../common/types';
 
 //this is given the output of formatRequirements, where data.type and data.values exist
 // if there is an or embedded in another or, merge them (and and's too)
@@ -57,7 +58,7 @@ function simplifyRequirementsBase(data: Requisite): Requisite {
 }
 
 
-export default function simplifyRequirements(data: Requisite): BooleanReq {
+export default function simplifyRequirements(data: Requisite): CompositeReq {
   data = simplifyRequirementsBase(data);
   if (!isBooleanReq(data)) {
     return {
