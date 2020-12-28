@@ -5,10 +5,11 @@
 import cx from "classnames";
 import React, { useState } from "react";
 import Image from "next/image";
-import { StringParam, useQueryParam } from "use-query-params";
+import { StringParam, useQueryParams } from "use-query-params";
 import Footer from "../components/Footer";
 import {
   getLatestTerm,
+  getRoundedTerm,
   getTermDropdownOptionsForCampus,
 } from "../components/global";
 import HomeSearch from "../components/HomePage/HomeSearch";
@@ -20,15 +21,13 @@ import Husky from "../components/icons/Husky";
 import Head from "next/head";
 
 export default function Home() {
-  const [campus, setCampus] = useState(Campus.NEU);
-
-  // The latest term
+  const [qp, setQueryParams] = useQueryParams({
+    termId: StringParam,
+    campus: StringParam,
+  });
+  const campus = qp.campus as Campus || Campus.NEU;
   const LATEST_TERM = getLatestTerm(campus);
-
-  const [termId = LATEST_TERM, setTermId] = useQueryParam(
-    "termId",
-    StringParam
-  ); // Default to LATEST if term not in params
+  const termId = qp.termId || LATEST_TERM;
 
   const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
     (t) => {
@@ -38,9 +37,10 @@ export default function Home() {
 
   // Redirect to latest if we're at an old term
   if (!AVAILABLE_TERM_IDS.includes(termId)) {
-    setTermId(LATEST_TERM);
+    setQueryParams({termId:LATEST_TERM});
   }
 
+  // TODO: This appears to be broken, since HomeSearch doesn't accept a setfocused
   const [searchFocused, setSearchFocused] = useState(false);
 
   // On mobile only show the logo and the github corner if there are no results and the search box is not focused (the virtual keyboard is not on the screen).
@@ -49,8 +49,6 @@ export default function Home() {
     containerClassnames += " mobileCompact";
   }
 
-  // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
-  // Actually it only removes the extra whitespace on chrome. Need to come up with a better solution for other browsers.
   return (
     <div className={containerClassnames}>
       <Head>
@@ -106,10 +104,14 @@ export default function Home() {
             <Logo className="logo" aria-label="logo" campus={campus} />
 
             <HomeSearch
-              setTermId={setTermId}
+              setTermId={(i) => {
+                setQueryParams({termId:i});
+              }}
               termId={termId}
               campus={campus}
-              setCampus={setCampus}
+              setCampus={(c) => {
+                setQueryParams({termId:getRoundedTerm(c, termId), campus:c})
+              }}
             />
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />

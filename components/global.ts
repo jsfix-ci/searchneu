@@ -107,6 +107,7 @@ function tryGetMatchingSecondToLastDigitOption(
   return undefined;
 }
 
+// Get the term within the given campus that is closest to the given term (in a diff campus)
 export function getRoundedTerm(nextCampus: Campus, prevTerm: string): string {
   // what's the logic
   // get the second to last digit
