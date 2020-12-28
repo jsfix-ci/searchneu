@@ -2,7 +2,6 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import cx from "classnames";
 import React, { useState } from "react";
 import Image from "next/image";
 import { StringParam, useQueryParams } from "use-query-params";
@@ -88,18 +87,8 @@ export default function Home() {
       </a>
 
       <div>
-        <div
-          className={cx({
-            // TODO: Take this out and restyle this monstrosity from scratch
-            ui: true,
-            center: true,
-            spacing: true,
-            aligned: true,
-            icon: true,
-            header: true,
-            topHeader: true,
-          })}
-        >
+        <div // TODO: Take this out and restyle this monstrosity from scratch
+          className="ui center spacing aligned icon header topHeader" >
           <div className="centerTextContainer">
             <Logo className="logo" aria-label="logo" campus={campus} />
 

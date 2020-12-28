@@ -3,12 +3,11 @@
  * See the license file in the root folder for details.
  */
 
-import randomstring from 'randomstring';
-
 import _ from 'lodash';
 import request from './request';
 import macros from './macros';
 import Keys from './Keys';
+import { v4 } from 'uuid';
 
 
 // Manages user data in the frontend
@@ -127,7 +126,7 @@ class User {
 
     // Init the loginKey if it dosen't exist
     if (!loginKey) {
-      loginKey = randomstring.generate(100);
+      loginKey = v4();
       window.localStorage.loginKey = loginKey;
     }
 

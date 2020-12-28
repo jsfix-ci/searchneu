@@ -3,11 +3,8 @@
  * See the license file in the root folder for details.
  */
 
-import util from 'util';
-
 // Setup environmental constants. This is used in both the frontend and the backend. The process.env is set in webpack and in package.json
 // These are setup in the webpack config
-
 
 // This class is never instantiated.
 // So there is no point in adding a constructor.
@@ -60,9 +57,7 @@ class Macros {
       return;
     }
 
-    const fullArgs: string[] = args.map((a: any) => util.inspect(a, false, null, !Macros.PROD));
-
-    console.error('Error: ', ...fullArgs); // eslint-disable-line no-console
+    console.error('Error: ', args); // eslint-disable-line no-console
     console.trace(); // eslint-disable-line no-console
   }
 
