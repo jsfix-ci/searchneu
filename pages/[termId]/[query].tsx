@@ -83,8 +83,6 @@ export default function Results() {
     isReady, loadMore, doSearch,
   } = us;
 
-  const { results, filterOptions } = us.results;
-
   useDeepCompareEffect(() => {
     doSearch(searchParams);
   }, [searchParams, doSearch]);
@@ -95,6 +93,7 @@ export default function Results() {
 
   const campus = getCampusByLastDigit(termId.charAt(termId.length - 1)).toString();
   const filtersAreSet: Boolean = areFiltersSet(filters);
+  const { results, filterOptions } = us.results;
 
   if (showOverlay && macros.isMobile) {
     return (
