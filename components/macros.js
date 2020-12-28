@@ -133,7 +133,7 @@ const searchneu = `
  Contact us at hey@searchneu.com :)
  `;
 
-if (Macros.PROD) {
+if (Macros.PROD && process.browser) {
   abstractMacros.log(searchneu);
 }
 
