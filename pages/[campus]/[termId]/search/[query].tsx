@@ -114,7 +114,7 @@ export default function Results() {
         <title>Search NEU - {query}</title>
       </Head>
       <div className={ `Results_Header ${atTop ? 'Results_Header-top' : ''}` }>
-        <div onClick={ () => { router.push('/'); } }>
+        <div onClick={ () => { router.push(`/${campus}/${termId}`); } }>
           <Logo className='Results__Logo' aria-label='logo' campus={Campus.NEU}/>
           </div>
         <div className='Results__spacer' />
