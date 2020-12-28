@@ -19,13 +19,6 @@ import { Campus } from "../components/types";
 import Husky from "../components/icons/Husky";
 import Head from "next/head";
 
-const ATTENTION_SECTION = {
-  getInvolved: "getInvolved",
-  none: "none",
-};
-
-const attentionSectionMode = ATTENTION_SECTION.getInvolved;
-
 export default function Home() {
   const [campus, setCampus] = useState(Campus.NEU);
 
@@ -54,28 +47,6 @@ export default function Home() {
   let containerClassnames = "home-container";
   if (macros.isMobile && searchFocused) {
     containerClassnames += " mobileCompact";
-  }
-
-  let attentionSection = null;
-  const actionCenterStyle = { opacity: 1 };
-
-  if (attentionSectionMode === ATTENTION_SECTION.getInvolved) {
-    attentionSection = (
-      <div style={actionCenterStyle} className="attentionContainer">
-        <p className="helpFistRow" />
-        Help improve Search NEU
-        <p>
-          <a
-            href="https://forms.gle/HNJ1AWTCXnu3XovKA"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="getInvolvedText"
-          >
-            Take our survey &gt;
-          </a>
-        </p>
-      </div>
-    );
   }
 
   // Not totally sure why, but this height: 100% removes the extra whitespace at the bottom of the page caused by the upward translate animation.
@@ -140,7 +111,6 @@ export default function Home() {
               campus={campus}
               setCampus={setCampus}
             />
-            {attentionSection}
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
