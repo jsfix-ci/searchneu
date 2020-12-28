@@ -2,31 +2,31 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React, { useState } from "react";
+import { GetStaticPathsResult, GetStaticProps } from "next";
+import Head from "next/head";
 import Image from "next/image";
-import { StringParam, useQueryParams } from "use-query-params";
-import Footer from "../components/Footer";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import Footer from "../../components/Footer";
 import {
   getLatestTerm,
   getRoundedTerm,
-  getTermDropdownOptionsForCampus,
-} from "../components/global";
-import HomeSearch from "../components/HomePage/HomeSearch";
-import Boston from "../components/icons/boston.svg";
-import Logo from "../components/icons/Logo";
-import macros from "../components/macros";
-import { Campus } from "../components/types";
-import Husky from "../components/icons/Husky";
-import Head from "next/head";
+  getTermDropdownOptionsForCampus
+} from "../../components/global";
+import HomeSearch from "../../components/HomePage/HomeSearch";
+import Boston from "../../components/icons/boston.svg";
+import Husky from "../../components/icons/Husky";
+import Logo from "../../components/icons/Logo";
+import macros from "../../components/macros";
+import { Campus } from "../../components/types";
 
 export default function Home() {
-  const [qp, setQueryParams] = useQueryParams({
-    termId: StringParam,
-    campus: StringParam,
-  });
-  const campus = qp.campus as Campus || Campus.NEU;
+
+  const router = useRouter();
+
+  const campus = router.query.campus as Campus || Campus.NEU;
   const LATEST_TERM = getLatestTerm(campus);
-  const termId = qp.termId || LATEST_TERM;
+  const termId = router.query.termId as string || LATEST_TERM;
 
   const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
     (t) => {
@@ -36,7 +36,7 @@ export default function Home() {
 
   // Redirect to latest if we're at an old term
   if (!AVAILABLE_TERM_IDS.includes(termId)) {
-    setQueryParams({termId:LATEST_TERM});
+    router.push(`/${campus}/${LATEST_TERM}`);
   }
 
   // TODO: This appears to be broken, since HomeSearch doesn't accept a setfocused
@@ -93,13 +93,13 @@ export default function Home() {
             <Logo className="logo" aria-label="logo" campus={campus} />
 
             <HomeSearch
-              setTermId={(i) => {
-                setQueryParams({termId:i});
+              setTermId={(newTermId) => {
+                router.push(`/${campus}/${newTermId}`);
               }}
               termId={termId}
               campus={campus}
               setCampus={(c) => {
-                setQueryParams({termId:getRoundedTerm(c, termId), campus:c})
+                router.push(`/${c}/${getRoundedTerm(c, termId)}`);
               }}
             />
           </div>
@@ -112,4 +112,22 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+// Tells Next what to statically optimize
+export function getStaticPaths() : GetStaticPathsResult {
+  const result : GetStaticPathsResult = {paths: [], fallback: false};
+
+  for (const campus of Object.values(Campus)) {
+    for (const termId of getTermDropdownOptionsForCampus(campus)) {
+      result.paths.push({
+        params: {campus, termId: termId.value as string}
+      });
+    }
+  }
+  return result;
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {props: {}};
 }

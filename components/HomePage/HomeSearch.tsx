@@ -58,7 +58,7 @@ const HomeSearch = ({
           className='HomeSearch__searchBar--input'
         >
           <SearchBar
-            onSearch={ (q) => { router.push(`${termId}/${q}`); } }
+            onSearch={ (q) => { router.push(`/${campus}/${termId}/search/${q}`); } }
             query=''
             buttonColor={campusToColor[campus]}
           />

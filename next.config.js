@@ -19,4 +19,13 @@ module.exports = withPlugins([
 
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/NEU',
+        permanent: true
+      }
+    ]
+  }
 })

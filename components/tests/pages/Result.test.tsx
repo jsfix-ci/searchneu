@@ -8,7 +8,7 @@ import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Results from '../../../pages/[termId]/[query]';
+import Results from '../../../pages/[campus]/[termId]/[query]';
 
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({

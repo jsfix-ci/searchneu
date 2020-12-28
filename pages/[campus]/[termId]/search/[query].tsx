@@ -3,33 +3,33 @@
  * See the license file in the root folder for details.
  */
 import _ from 'lodash';
-import  Head from 'next/head';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
-import Footer from '../../components/Footer';
+import Footer from '../../../../components/Footer';
 import {
-  getAllCampusDropdownOptions, getCampusByLastDigit, getRoundedTerm, getTermDropdownOptionsForCampus
-} from '../../components/global';
-import FilterButton from '../../components/icons/FilterButton.svg';
-import Logo from '../../components/icons/Logo';
-import macros from '../../components/macros';
-import EmptyResultsContainer from '../../components/ResultsPage/EmptyResultsContainer';
-import FeedbackModal from '../../components/ResultsPage/FeedbackModal/FeedbackModal';
-import FilterPanel from '../../components/ResultsPage/FilterPanel';
-import FilterPills from '../../components/ResultsPage/FilterPills';
-import { areFiltersSet, DEFAULT_FILTER_SELECTION, FilterSelection, QUERY_PARAM_ENCODERS } from '../../components/ResultsPage/filters';
-import MobileSearchOverlay from '../../components/ResultsPage/MobileSearchOverlay';
-import ResultsLoader from '../../components/ResultsPage/ResultsLoader';
-import SearchBar from '../../components/ResultsPage/SearchBar';
-import SearchDropdown from '../../components/ResultsPage/SearchDropdown';
-import useAtTop from '../../components/ResultsPage/useAtTop';
-import useSearch from '../../components/ResultsPage/useSearch';
-import search from '../../components/search';
+  getAllCampusDropdownOptions, getRoundedTerm, getTermDropdownOptionsForCampus
+} from '../../../../components/global';
+import FilterButton from '../../../../components/icons/FilterButton.svg';
+import Logo from '../../../../components/icons/Logo';
+import macros from '../../../../components/macros';
+import EmptyResultsContainer from '../../../../components/ResultsPage/EmptyResultsContainer';
+import FeedbackModal from '../../../../components/ResultsPage/FeedbackModal/FeedbackModal';
+import FilterPanel from '../../../../components/ResultsPage/FilterPanel';
+import FilterPills from '../../../../components/ResultsPage/FilterPills';
+import { areFiltersSet, DEFAULT_FILTER_SELECTION, FilterSelection, QUERY_PARAM_ENCODERS } from '../../../../components/ResultsPage/filters';
+import MobileSearchOverlay from '../../../../components/ResultsPage/MobileSearchOverlay';
+import ResultsLoader from '../../../../components/ResultsPage/ResultsLoader';
+import SearchBar from '../../../../components/ResultsPage/SearchBar';
+import SearchDropdown from '../../../../components/ResultsPage/SearchDropdown';
+import useAtTop from '../../../../components/ResultsPage/useAtTop';
+import useSearch from '../../../../components/ResultsPage/useSearch';
+import search from '../../../../components/search';
 import {
   BLANK_SEARCH_RESULT, Campus, SearchResult
-} from '../../components/types';
+} from '../../../../components/types';
 
 
 interface SearchParams {
@@ -64,12 +64,13 @@ export default function Results() {
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
   const query = router.query.query as string || '';
   const termId = router.query.termId as string;
+  const campus = router.query.campus as string;
   
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const allCampuses = getAllCampusDropdownOptions();
 
-  const setSearchQuery = (q: string) => { router.push(`/${termId}/${q}${window.location.search}`); }
-  const pushTermString = useCallback((t: string) => { router.push(`/${t}/${query}${window.location.search}`); }, [router, query]);
+  const setSearchQuery = (q: string) => { router.push(`/${campus}/${termId}/search/${q}${window.location.search}`); }
+  const pushTermString = useCallback((t: string) => { router.push(`${campus}/${t}/search/${query}${window.location.search}`); }, [router, query]);
 
   const filters: FilterSelection = _.merge({}, DEFAULT_FILTER_SELECTION, qParams);
 
@@ -91,7 +92,6 @@ export default function Results() {
     return null;
   }
 
-  const campus = getCampusByLastDigit(termId.charAt(termId.length - 1)).toString();
   const filtersAreSet: Boolean = areFiltersSet(filters);
   const { results, filterOptions } = us.results;
 
