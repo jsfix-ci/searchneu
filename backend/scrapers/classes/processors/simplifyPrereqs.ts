@@ -4,7 +4,7 @@
  */
 
 import {
-  isCourseReq, isBooleanReq,
+  isCourseReq, isCompositeReq,
 } from '../../../types';
 import { Requisite, CompositeReq } from '../../../../common/types';
 
@@ -30,7 +30,7 @@ function simplifyRequirementsBase(data: Requisite): Requisite {
   data.values.forEach((subData) => {
     subData = simplifyRequirementsBase(subData);
 
-    if (isBooleanReq(subData)) {
+    if (isCompositeReq(subData)) {
       //if same type, merge
       if (subData.type === data.type) {
         retVal.values = retVal.values.concat(subData.values);
@@ -60,7 +60,7 @@ function simplifyRequirementsBase(data: Requisite): Requisite {
 
 export default function simplifyRequirements(data: Requisite): CompositeReq {
   data = simplifyRequirementsBase(data);
-  if (!isBooleanReq(data)) {
+  if (!isCompositeReq(data)) {
     return {
       type: 'and',
       values: [data],

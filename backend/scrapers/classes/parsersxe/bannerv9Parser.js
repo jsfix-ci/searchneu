@@ -17,7 +17,8 @@ const request = new Request('bannerv9Parser');
  * Top level parser. Exposes nice interface to rest of app.
  */
 class Bannerv9Parser {
-  async main() {
+  async main(termsUrl) {
+    macros.log(termsUrl);
     // const termIds = (await this.getTermList(termsUrl)).map((t) => { return t.termId; });
     // const suffixes = ['10', '12', '14', '15', '18', '25', '28', '30', '32', '34', '35', '38', '40', '50', '52', '54', '55', '58', '60'];
     // const undergradIds = termIds.filter((t) => { return suffixes.includes(t.slice(-2)); }).slice(0, suffixes.length);

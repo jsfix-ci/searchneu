@@ -52,7 +52,7 @@ export interface Course {
   prereqs: Requisite,
 }
 
-export function isBooleanReq(req: Requisite): req is CompositeReq {
+export function isCompositeReq(req: Requisite): req is CompositeReq {
   return (req as CompositeReq).type !== undefined;
 }
 
