@@ -129,6 +129,7 @@ describe('Updater', () => {
   const FUNDIES_ONE_S1: SectionType = {
     crn: '1234',
     classId: '2500',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 1,
@@ -142,6 +143,7 @@ describe('Updater', () => {
   const FUNDIES_ONE_S2: SectionType = {
     crn: '5678',
     classId: '2500',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 100,
@@ -155,6 +157,7 @@ describe('Updater', () => {
   const FUNDIES_TWO_S1: SectionType = {
     crn: '0248',
     classId: '2510',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 200,
@@ -168,6 +171,7 @@ describe('Updater', () => {
   const FUNDIES_TWO_S2: SectionType = {
     crn: '1357',
     classId: '2510',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 150,
@@ -181,6 +185,7 @@ describe('Updater', () => {
   const FUNDIES_TWO_S3: SectionType = {
     crn: '9753',
     classId: '2510',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 150,
@@ -194,6 +199,7 @@ describe('Updater', () => {
   const PL_S1: SectionType = {
     crn: '0987',
     classId: '4400',
+    classType: 'lecture',
     termId: '202030',
     subject: 'CS',
     seatsCapacity: 80,
