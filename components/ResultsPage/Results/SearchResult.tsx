@@ -168,8 +168,9 @@ export function MobileSearchResult({ course }: SearchResultProps) {
   const [showPrereq, setShowPrereq] = useState(false);
   const [showCoreq, setShowCoreq] = useState(false);
   const userIsWatchingClass = useUserChange(course);
+  const sortedSections = useMemo(() => sortSections(course.sections), [course]);
   const { showAll, setShowAll, renderedSections, hideShowAll } = useShowAll(
-    sortSections(course.sections)
+    sortedSections
   );
 
   const { optionalDisplay, creditsString } = useResultDetail(course);
