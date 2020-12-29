@@ -1,4 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { ReactElement } from 'react';
 import Macros from '../components/abstractMacros';
 
 const googleAnalyticsScript = `
@@ -43,7 +44,7 @@ const fullstoryScript = `
 `;
 
 class MyDocument extends Document {
-  render() {
+  render(): ReactElement {
     return (
       <Html>
         <Head>

@@ -6,7 +6,7 @@ import { GetStaticPathsResult, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { ReactElement } from 'react';
 import Footer from '../../components/Footer';
 import {
   getLatestTerm,
@@ -20,7 +20,7 @@ import Logo from '../../components/icons/Logo';
 import macros from '../../components/macros';
 import { Campus } from '../../components/types';
 
-export default function Home() {
+export default function Home(): ReactElement {
   const router = useRouter();
 
   const campus = (router.query.campus as Campus) || Campus.NEU;
@@ -38,12 +38,10 @@ export default function Home() {
     router.push(`/${campus}/${LATEST_TERM}`);
   }
 
-  // TODO: This appears to be broken, since HomeSearch doesn't accept a setfocused
-  const [searchFocused, setSearchFocused] = useState(false);
-
   // On mobile only show the logo and the github corner if there are no results and the search box is not focused (the virtual keyboard is not on the screen).
   let containerClassnames = 'home-container';
-  if (macros.isMobile && searchFocused) {
+  // TODO: figure out macros.isMobile + next
+  if (macros.isMobile) {
     containerClassnames += ' mobileCompact';
   }
 

@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import useSearch from '../../ResultsPage/useSearch';
 import testHook from '../testHook';
 
-async function stall(stallTime = 3000) {
+async function stall(stallTime = 3000): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, stallTime));
 }
 
@@ -14,7 +14,7 @@ const fetchStuff = jest.fn(({ mult }, page) => {
 describe('useSearch', () => {
   let search;
   let timings = [];
-  async function asyncFetch(params, page) {
+  async function asyncFetch(params, page): Promise<number[]> {
     if (timings.length > 0) {
       await stall(timings.pop());
     }

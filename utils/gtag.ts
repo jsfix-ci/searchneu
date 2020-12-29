@@ -23,11 +23,11 @@ export const event = ({ action, category, label, value }: GTagEvent): void => {
 /**
  * Send page views to google analytics. Track when router changes and log.
  */
-export function useGoogleAnalyticsOnPageChange() {
+export function useGoogleAnalyticsOnPageChange(): void {
   const router = useRouter();
 
   useEffect(() => {
-    const handleRouteChange = (url: URL) => {
+    const handleRouteChange = (url: URL): void => {
       if (Macros.PROD) {
         window.gtag('config', GA_TRACKING_ID, {
           page_path: url,
@@ -35,7 +35,7 @@ export function useGoogleAnalyticsOnPageChange() {
       }
     };
     router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
+    return (): void => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
