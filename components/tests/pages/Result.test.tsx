@@ -3,25 +3,26 @@
  * See the license file in the root folder for details.
  */
 
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import React from 'react';
-import { QueryParamProvider } from 'use-query-params';
-import Results from '../../../pages/[campus]/[termId]/search/[query]';
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import Enzyme, { mount } from "enzyme";
+import React from "react";
+import { QueryParamProvider } from "use-query-params";
+import Results from "../../../pages/[campus]/[termId]/search/[query]";
 
-
-
-
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter: () => ({
-    query: { campus: 'NEU', termId:'202030', query: 'cs' }
+    query: { campus: "NEU", termId: "202030", query: "cs" },
   }),
   useQueryParam: () => false,
 }));
 
 Enzyme.configure({ adapter: new Adapter() });
 
-it('should render a section', () => {
-  const result = mount(<QueryParamProvider><Results /></QueryParamProvider>);
+it("should render a section", () => {
+  const result = mount(
+    <QueryParamProvider>
+      <Results />
+    </QueryParamProvider>
+  );
   expect(result.debug()).toMatchSnapshot();
 });

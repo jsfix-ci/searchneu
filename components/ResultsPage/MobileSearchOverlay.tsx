@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import FilterPanel from './FilterPanel';
-import FilterPills from './FilterPills';
-import macros from '../macros';
-import IconClose from '../icons/IconClose';
-import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
+import React, { useState, useEffect } from "react";
+import FilterPanel from "./FilterPanel";
+import FilterPills from "./FilterPills";
+import macros from "../macros";
+import IconClose from "../icons/IconClose";
+import { FilterSelection, FilterOptions, areFiltersSet } from "./filters";
 
 /**
  * setFilterPills sets the selected filters
@@ -15,16 +15,21 @@ import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
  * query is the search query
  */
 interface MobileSearchOverlayProps {
-  setFilterPills: (f: FilterSelection) => void,
-  setQuery: (q: string) => void,
-  onExecute: () => void,
-  filterSelection: FilterSelection,
-  filterOptions: FilterOptions,
-  query: string,
+  setFilterPills: (f: FilterSelection) => void;
+  setQuery: (q: string) => void;
+  onExecute: () => void;
+  filterSelection: FilterSelection;
+  filterOptions: FilterOptions;
+  query: string;
 }
 
 export default function MobileSearchOverlay({
-  setFilterPills, setQuery, filterSelection, filterOptions, query, onExecute,
+  setFilterPills,
+  setQuery,
+  filterSelection,
+  filterOptions,
+  query,
+  onExecute,
 }: MobileSearchOverlayProps) {
   // controlledQuery represents what's typed into the searchbar - even BEFORE enter is hit
   const [controlledQuery, setControlledQuery] = useState(query);
@@ -37,7 +42,10 @@ export default function MobileSearchOverlay({
   // Hide keyboard and execute search
   const search = () => {
     if (macros.isMobile) {
-      if (document.activeElement && document.activeElement instanceof HTMLElement) {
+      if (
+        document.activeElement &&
+        document.activeElement instanceof HTMLElement
+      ) {
         document.activeElement.blur();
       }
     }
@@ -45,38 +53,38 @@ export default function MobileSearchOverlay({
     onExecute();
   };
   return (
-    <div className='msearch-overlay'>
-      <div className='msearch-overlay__content'>
-        <div className='msearch-overlay__pills'>
+    <div className="msearch-overlay">
+      <div className="msearch-overlay__content">
+        <div className="msearch-overlay__pills">
           {areFiltersSet(filterSelection) && (
             <FilterPills
-              filters={ filterSelection }
-              setFilters={ setFilterPills }
+              filters={filterSelection}
+              setFilters={setFilterPills}
             />
           )}
         </div>
         <div
-          className='msearch-overlay__back'
-          role='button'
-          tabIndex={ 0 }
-          onClick={ search }
+          className="msearch-overlay__back"
+          role="button"
+          tabIndex={0}
+          onClick={search}
         >
-          <IconClose fill='#d41b2c' />
+          <IconClose fill="#d41b2c" />
         </div>
         <FilterPanel
-          options={ filterOptions }
-          selected={ filterSelection }
-          setActive={ setFilterPills }
+          options={filterOptions}
+          selected={filterSelection}
+          setActive={setFilterPills}
         />
       </div>
       <div
-        tabIndex={ 0 }
-        className='msearch-overlay__execute'
-        onClick={ search }
-        role='button'
+        tabIndex={0}
+        className="msearch-overlay__execute"
+        onClick={search}
+        role="button"
       >
         View all results
       </div>
     </div>
-  )
+  );
 }

@@ -3,33 +3,32 @@
  * See the license file in the root folder for details.
  */
 
-import React from 'react';
+import React from "react";
 
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import macros from '../../macros';
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import macros from "../../macros";
 
-import mockData from './mockData';
-import EmployeePanel from '../EmployeePanel';
+import mockData from "./mockData";
+import EmployeePanel from "../EmployeePanel";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-it('should render a desktop employee panel', () => {
+it("should render a desktop employee panel", () => {
   const orig = macros.isMobile;
   macros.isMobile = false;
 
-  const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
+  const result = shallow(<EmployeePanel employee={mockData.razzaq} />);
   expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;
 });
 
-
-it('should render a mobile employee panel', () => {
+it("should render a mobile employee panel", () => {
   const orig = macros.isMobile;
   macros.isMobile = true;
 
-  const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
+  const result = shallow(<EmployeePanel employee={mockData.razzaq} />);
   expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;

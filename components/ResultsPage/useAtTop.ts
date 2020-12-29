@@ -5,19 +5,20 @@
  * Little hook just to keep state on whether you're at the top of the screen
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function useAtTop(): boolean {
   const [atTop, setAtTop] = useState(true);
   useEffect(() => {
     const handleScroll = () => {
-      const pageY = document.body.scrollTop || document.documentElement.scrollTop;
+      const pageY =
+        document.body.scrollTop || document.documentElement.scrollTop;
       setAtTop(pageY === 0);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   return atTop;

@@ -46,7 +46,7 @@ class Macros extends abstractMacros {
     if (!Macros.PROD || !process.browser) {
       return;
     }
-    console.log('log amplitude')
+    console.log("log amplitude");
     amplitude.getInstance().logEvent(type, event, (statusCode) => {
       if (statusCode !== 200) {
         Macros.log("Amplitude logging failed", statusCode);

@@ -11,7 +11,7 @@ import Footer from "../../components/Footer";
 import {
   getLatestTerm,
   getRoundedTerm,
-  getTermDropdownOptionsForCampus
+  getTermDropdownOptionsForCampus,
 } from "../../components/global";
 import HomeSearch from "../../components/HomePage/HomeSearch";
 import Boston from "../../components/icons/boston.svg";
@@ -21,12 +21,11 @@ import macros from "../../components/macros";
 import { Campus } from "../../components/types";
 
 export default function Home() {
-
   const router = useRouter();
 
-  const campus = router.query.campus as Campus || Campus.NEU;
+  const campus = (router.query.campus as Campus) || Campus.NEU;
   const LATEST_TERM = getLatestTerm(campus);
-  const termId = router.query.termId as string || LATEST_TERM;
+  const termId = (router.query.termId as string) || LATEST_TERM;
 
   const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
     (t) => {
@@ -88,7 +87,8 @@ export default function Home() {
 
       <div>
         <div // TODO: Take this out and restyle this monstrosity from scratch
-          className="ui center spacing aligned icon header topHeader" >
+          className="ui center spacing aligned icon header topHeader"
+        >
           <div className="centerTextContainer">
             <Logo className="logo" aria-label="logo" campus={campus} />
 
@@ -115,13 +115,13 @@ export default function Home() {
 }
 
 // Tells Next what to statically optimize
-export function getStaticPaths() : GetStaticPathsResult {
-  const result : GetStaticPathsResult = {paths: [], fallback: false};
+export function getStaticPaths(): GetStaticPathsResult {
+  const result: GetStaticPathsResult = { paths: [], fallback: false };
 
   for (const campus of Object.values(Campus)) {
     for (const termId of getTermDropdownOptionsForCampus(campus)) {
       result.paths.push({
-        params: {campus, termId: termId.value as string}
+        params: { campus, termId: termId.value as string },
       });
     }
   }
@@ -129,5 +129,5 @@ export function getStaticPaths() : GetStaticPathsResult {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  return {props: {}};
-}
+  return { props: {} };
+};

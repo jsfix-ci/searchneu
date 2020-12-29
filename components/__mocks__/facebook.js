@@ -4,18 +4,16 @@
  */
 
 // import request from './request';
-import macros from '../macros';
+import macros from "../macros";
 // import user from './user';
 
 // This file mocks out facebook.js
 // Provides stubs for all the methods.
 
-
 // // in DEV and PROD, we want to load the FB library and attach error handelers and success handelers to the script
 // // so we can run code if it fails to load, or works
 // // In TEST, we want to run the code as if this request had failed.
 // // (code that runs when the request passes depends on FB's API, which will not be available in testing)
-
 
 class MockFacebook {
   // quick resolve to null
@@ -24,7 +22,7 @@ class MockFacebook {
   }
 
   pluginFailedToRender() {
-    macros.error('pluginFailedToRender called in testing?');
+    macros.error("pluginFailedToRender called in testing?");
   }
 
   // Nope, it didn't work in testing
@@ -41,6 +39,5 @@ class MockFacebook {
     return Promise.resolve(false);
   }
 }
-
 
 export default new MockFacebook();

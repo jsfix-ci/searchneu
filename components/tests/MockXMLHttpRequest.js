@@ -3,22 +3,20 @@
  * See the license file in the root folder for details.
  */
 
-import macros from '../macros';
+import macros from "../macros";
 
 // Enum for state
 const XMLHttpRequestState = {
-  UNOPENED: 'UNOPENED',
-  OPEN_CALLED: 'OPEN_CALLED',
-  SEND_CALLED: 'SEND_CALLED',
-  RESPONDED: 'RESPONDED',
+  UNOPENED: "UNOPENED",
+  OPEN_CALLED: "OPEN_CALLED",
+  SEND_CALLED: "SEND_CALLED",
+  RESPONDED: "RESPONDED",
 };
-
 
 class MockXMLHttpRequest {
   constructor() {
     // Main callback function that a real XMLHttpRequest would call when the network request comes back.
     this.onreadystatechange = null;
-
 
     // Possible values of readyState
     // These are also on the XMLHttpRequest in a real XMLHttpRequest
@@ -36,7 +34,6 @@ class MockXMLHttpRequest {
     this.statusCode = null;
     this.response = null;
 
-
     // Some additional properties, for tests
     this.method = null;
     this.url = null;
@@ -50,22 +47,19 @@ class MockXMLHttpRequest {
     this.constructor.instance = this;
   }
 
-  addEventListener() {
+  addEventListener() {}
 
-  }
-
-  setRequestHeader() {
-
-  }
+  setRequestHeader() {}
 
   open(method, url, isAsync) {
     if (this.state !== XMLHttpRequestState.UNOPENED) {
-      macros.critical('mock XMLHttpRequest open called when not in unopened state');
+      macros.critical(
+        "mock XMLHttpRequest open called when not in unopened state"
+      );
       return;
     }
 
     this.state = XMLHttpRequestState.OPEN_CALLED;
-
 
     this.method = method;
     this.url = url;
@@ -74,7 +68,9 @@ class MockXMLHttpRequest {
 
   send(body) {
     if (this.state !== XMLHttpRequestState.OPEN_CALLED) {
-      macros.critical('mock XMLHttpRequest open called when not in unopened state');
+      macros.critical(
+        "mock XMLHttpRequest open called when not in unopened state"
+      );
       return;
     }
 
@@ -86,7 +82,7 @@ class MockXMLHttpRequest {
   // Method for the testing code to call from the test code to complete the request
   respondToRequest(statusCode, responseBody) {
     if (this.state !== XMLHttpRequestState.SEND_CALLED) {
-      macros.critical('respondToRequest called out of order');
+      macros.critical("respondToRequest called out of order");
       return;
     }
 

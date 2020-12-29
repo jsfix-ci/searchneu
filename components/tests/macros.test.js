@@ -3,12 +3,12 @@
  * See the license file in the root folder for details.
  */
 
-import macros from '../macros';
+import macros from "../macros";
 
-it('should run without crashing', () => {
+it("should run without crashing", () => {
   // This should not print anything to the console.
-  macros.log('Test.');
+  macros.log("Test.");
 
   // This shoudn't send anything to amplitude.
-  macros.logAmplitudeEvent('test', {});
+  macros.logAmplitudeEvent("test", {});
 });

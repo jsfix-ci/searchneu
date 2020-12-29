@@ -10,17 +10,16 @@
 // Yes, this hash isn't actually a hash - there is information about the input in the output to help debug - but lets treat it as though it is.
 // So like, don't do hash.splice('/') - just create another hash with the info and compare them
 
-
 // This file is used to manage the {host:, termId: subject:...} objects used to get more data.
 // This is used in both the backend and the frontend.
 // So anything that is required is is added many different places.
-import macros from './abstractMacros';
+import macros from "./abstractMacros";
 
 const KEYS_REGEX = /[^A-Za-z0-9.]/g;
 
 class Keys {
   // The five keys to track the five different data structures
-  static allKeys = ['host', 'termId', 'subject', 'classId', 'crn']
+  static allKeys = ["host", "termId", "subject", "classId", "crn"];
 
   // Internal use only.
   // Gets a hash from the object from 0 to the given key index
@@ -41,14 +40,14 @@ class Keys {
         return null;
       }
 
-      output.push(obj[key].replace(KEYS_REGEX, '_'));
+      output.push(obj[key].replace(KEYS_REGEX, "_"));
     }
 
     if (output.length > 0) {
-      return output.join('/');
+      return output.join("/");
     }
 
-    return '';
+    return "";
   }
 
   // Takes in an object with a host field and returns a host hash
@@ -87,7 +86,6 @@ class Keys {
     return hash;
   }
 
-
   // Takes in an object with a host,termId,subject,classId field and returns a class hash
   static getClassHash(obj) {
     const hash = this.getHashWithKeysSlice(obj, 4);
@@ -112,6 +110,5 @@ class Keys {
     return hash;
   }
 }
-
 
 export default Keys;

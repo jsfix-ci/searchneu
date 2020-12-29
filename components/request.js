@@ -3,10 +3,10 @@
  * See the license file in the root folder for details.
  */
 
-import URI from 'urijs';
+import URI from "urijs";
 
-import retry from 'async-retry';
-import macros from './macros';
+import retry from "async-retry";
+import macros from "./macros";
 
 // All the requests from the frontend to the backend go through this file.
 // There used to be a lot of logic in here for loading the term dump from the service worker cache/IDB, etc
@@ -43,7 +43,7 @@ class Request {
         }
 
         const requestTime = Date.now() - startTime;
-        macros.log('Downloading took ', requestTime, 'for url', config.url);
+        macros.log("Downloading took ", requestTime, "for url", config.url);
 
         if (xmlhttp.status !== 200) {
           let err;
@@ -57,7 +57,12 @@ class Request {
 
           err += `config = ${JSON.stringify(config.url)}`;
 
-          macros.warn('error, bad code recievied', xmlhttp.status, err, config.url);
+          macros.warn(
+            "error, bad code recievied",
+            xmlhttp.status,
+            err,
+            config.url
+          );
 
           reject(err);
           return;
@@ -66,29 +71,33 @@ class Request {
         const startParse = Date.now();
         const response = JSON.parse(xmlhttp.response);
         const parsingTime = Date.now() - startParse;
-        macros.log('Parsing took ', parsingTime, 'for url', config.url);
+        macros.log("Parsing took ", parsingTime, "for url", config.url);
 
         if (response.error) {
-          macros.warn('ERROR networking error bad reqeust?', config.url);
+          macros.warn("ERROR networking error bad reqeust?", config.url);
         }
 
         resolve(response);
       };
 
       if (config.progressCallback) {
-        xmlhttp.addEventListener('progress', (evt) => {
-          if (evt.lengthComputable) {
-            config.progressCallback(evt.loaded, evt.total);
-          }
-        }, false);
+        xmlhttp.addEventListener(
+          "progress",
+          (evt) => {
+            if (evt.lengthComputable) {
+              config.progressCallback(evt.loaded, evt.total);
+            }
+          },
+          false
+        );
       }
 
       // Add the session token to the request.
       const url = new URI(config.url);
       xmlhttp.open(config.method, url.toString(), true);
 
-      if (config.method === 'POST') {
-        xmlhttp.setRequestHeader('Content-Type', 'application/json');
+      if (config.method === "POST") {
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify(config.body));
       } else {
         xmlhttp.send();
@@ -96,44 +105,55 @@ class Request {
     });
   }
 
-
   async getFromInternetWithRetry(config) {
     let times = 3;
     if (config.retryTimes !== undefined) {
       times = config.retryTimes;
     }
 
-    return retry(async () => {
-      return this.getFromInternet(config);
-    }, {
-      retries: times,
-      minTimeout: 500,
-      maxTimeout: 500,
-    });
+    return retry(
+      async () => {
+        return this.getFromInternet(config);
+      },
+      {
+        retries: times,
+        minTimeout: 500,
+        maxTimeout: 500,
+      }
+    );
   }
 
-
   async get(config) {
-    if (typeof config === 'string') {
+    if (typeof config === "string") {
       config = {
         url: config,
       };
     } else if (Object.keys(config).length > 1 || !config.url) {
-      macros.error('Nothing is supported except JSON GET requests to a url.', config);
+      macros.error(
+        "Nothing is supported except JSON GET requests to a url.",
+        config
+      );
     }
 
-    config.method = 'GET';
+    config.method = "GET";
 
     return this.getFromInternetWithRetry(config);
   }
 
-
   async post(config) {
-    if (typeof config === 'string' || Object.keys(config).length > 2 || !config.url || !config.body) {
-      macros.error('Nothing is supported except JSON POST requests to a url.', config);
+    if (
+      typeof config === "string" ||
+      Object.keys(config).length > 2 ||
+      !config.url ||
+      !config.body
+    ) {
+      macros.error(
+        "Nothing is supported except JSON POST requests to a url.",
+        config
+      );
     }
 
-    config.method = 'POST';
+    config.method = "POST";
 
     return this.getFromInternetWithRetry(config);
   }

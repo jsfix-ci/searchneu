@@ -3,16 +3,16 @@
  * See the license file in the root folder for details.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import ReactTooltip from 'react-tooltip';
+import ReactTooltip from "react-tooltip";
 
-import macros from '../macros';
+import macros from "../macros";
 
-import Globe from './globe.svg';
-import ChevronDown from './chevron-down.svg';
-import ChevronRight from './chevron-right.svg';
+import Globe from "./globe.svg";
+import ChevronDown from "./chevron-down.svg";
+import ChevronRight from "./chevron-right.svg";
 
 // On Mobile, display everything in two sections, one below the other, eg:
 // Assistant Teaching Professor
@@ -23,7 +23,6 @@ import ChevronRight from './chevron-right.svg';
 // 617-373-5797
 //
 // Personal Website
-
 
 // And on desktop, display two equally sized sections right next to each other, eg:
 
@@ -36,7 +35,6 @@ import ChevronRight from './chevron-right.svg';
 // l.razzaq@northeastern.edu
 // lrazzaq@ccs.neu.edu
 // 617-373-5797
-
 
 // name, id, phone, emails, primaryRole, primaryDepartment, url, officeRoom, officeStreetAddress are all standardized across different data sources.
 // The other fields may be present for one (eg, COE), but are not common enough to be used.
@@ -72,7 +70,7 @@ export default class EmployeePanel extends React.Component {
       const element = arr[i];
       retVal.push(element);
       if (arr.length - 1 !== i) {
-        retVal.push(<br key={ i } />);
+        retVal.push(<br key={i} />);
       }
     }
 
@@ -89,7 +87,7 @@ export default class EmployeePanel extends React.Component {
 
   // Shows the Copied! tooltip, starts the hide timeout, and copies the text.
   copyOnClick(event) {
-    event.target.setAttribute('data-tip', 'Copied!');
+    event.target.setAttribute("data-tip", "Copied!");
 
     const target = event.target;
 
@@ -103,13 +101,12 @@ export default class EmployeePanel extends React.Component {
       }
     }, 1250);
 
-
     macros.copyToClipboard(target.innerText);
   }
 
   showTooltipOnEvent(event) {
     clearTimeout(this.hideTimeout);
-    event.target.setAttribute('data-tip', 'Click to copy');
+    event.target.setAttribute("data-tip", "Click to copy");
     ReactTooltip.show(event.target);
   }
 
@@ -161,35 +158,33 @@ export default class EmployeePanel extends React.Component {
           events = copyOnClickEvents;
         }
 
-
         contactRows.push(
           <a
-            key={ email }
-            className='employeeEmail'
-            data-tip=''
-            role='button'
-            tabIndex={ 0 }
-            onClick={ events.onClick }
-            onMouseEnter={ events.onMouseEnter }
-            onMouseLeave={ events.onMouseLeave }
-            href={ events.href }
+            key={email}
+            className="employeeEmail"
+            data-tip=""
+            role="button"
+            tabIndex={0}
+            onClick={events.onClick}
+            onMouseEnter={events.onMouseEnter}
+            onMouseLeave={events.onMouseLeave}
+            href={events.href}
           >
             {email}
-          </a>,
+          </a>
         );
       });
     }
 
-
     if (employee.phone) {
       const phone = [];
       phone.push(employee.phone.slice(0, 3));
-      phone.push('-');
+      phone.push("-");
       phone.push(employee.phone.slice(3, 6));
-      phone.push('-');
+      phone.push("-");
       phone.push(employee.phone.slice(6, 11));
 
-      const phoneText = phone.join('');
+      const phoneText = phone.join("");
 
       let events;
       if (macros.isMobile) {
@@ -200,21 +195,20 @@ export default class EmployeePanel extends React.Component {
         events = copyOnClickEvents;
       }
 
-
       contactRows.push(
         <a
-          key='tel'
-          data-tip=''
-          className='employeePhone'
-          role='button'
-          tabIndex={ 0 }
-          onClick={ events.onClick }
-          onMouseEnter={ events.onMouseEnter }
-          onMouseLeave={ events.onMouseLeave }
-          href={ events.href }
+          key="tel"
+          data-tip=""
+          className="employeePhone"
+          role="button"
+          tabIndex={0}
+          onClick={events.onClick}
+          onMouseEnter={events.onMouseEnter}
+          onMouseLeave={events.onMouseLeave}
+          href={events.href}
         >
           {phoneText}
-        </a>,
+        </a>
       );
     }
 
@@ -226,15 +220,25 @@ export default class EmployeePanel extends React.Component {
 
     if (employee.url && !macros.isMobile) {
       firstColumn.push(
-        <a key='link' target='_blank' rel='noopener noreferrer' href={ employee.url }>
+        <a
+          key="link"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={employee.url}
+        >
           NEU Profile
-        </a>,
+        </a>
       );
     }
 
     if (employee.personalSite) {
       const element = (
-        <a key='personalSite' target='_blank' rel='noopener noreferrer' href={ employee.personalSite }>
+        <a
+          key="personalSite"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={employee.personalSite}
+        >
           Personal Website
         </a>
       );
@@ -244,7 +248,6 @@ export default class EmployeePanel extends React.Component {
         firstColumn.push(element);
       }
     }
-
 
     // Decide which chevron to use based on whether the panel is expanded or not. (Mobile only)
     let ChevronSource = null;
@@ -256,7 +259,7 @@ export default class EmployeePanel extends React.Component {
         ChevronSource = ChevronRight;
       }
 
-      chevron = <ChevronSource className='chevron' alt='' />;
+      chevron = <ChevronSource className="chevron" alt="" />;
     }
 
     // Set up the onclick listener, if this is mobile.
@@ -265,51 +268,48 @@ export default class EmployeePanel extends React.Component {
       titleClickListener = this.toggleShowMoreThanTitle;
     }
 
-
     let linkElement = null;
     if (employee.url && !macros.isMobile) {
       linkElement = (
-        <span className='classGlobeLink'>
+        <span className="classGlobeLink">
           <a
-            data-tip={ `View on ${macros.collegeHost}` }
-            key='0'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='inlineBlock'
-            href={ employee.url }
+            data-tip={`View on ${macros.collegeHost}`}
+            key="0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inlineBlock"
+            href={employee.url}
           >
-            <Globe alt='globe' />
+            <Globe alt="globe" />
           </a>
         </span>
       );
     }
 
     return (
-      <div className='employee-panel-container ui segment'>
+      <div className="employee-panel-container ui segment">
         <div
-          className='header'
-          onClick={ titleClickListener }
-          role='button'
-          tabIndex={ 0 }
+          className="header"
+          onClick={titleClickListener}
+          role="button"
+          tabIndex={0}
         >
           {chevron}
-          <span className='titleText'>
-            {employee.name}
-          </span>
+          <span className="titleText">{employee.name}</span>
           {linkElement}
         </div>
 
         <div
-          className='body'
+          className="body"
           style={{
-            display: (!this.state.showMoreThanTitle && macros.isMobile) && 'none',
+            display: !this.state.showMoreThanTitle && macros.isMobile && "none",
             padding: 20,
           }}
         >
-          <div className='inlineBlock contact-box'>
+          <div className="inlineBlock contact-box">
             {this.injectBRs(firstColumn)}
           </div>
-          <div className='employee-panel-second-column'>
+          <div className="employee-panel-second-column">
             {this.injectBRs(secondColumn)}
           </div>
         </div>

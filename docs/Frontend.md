@@ -4,20 +4,19 @@ The frontend was made with React and Webpack. Redux isn't used at the moment but
 
 ### Home.js
 
-Home.js is the main React component in Search NEU. It handles many different event listeners such as the back and forward buttons in the browser, the search box events, and the term selector events. When a user searches for a query, Home.js fetches the results from the server with `Search.js` and then sends the results to `ResultsLoader.js` to be rendered. 
+Home.js is the main React component in Search NEU. It handles many different event listeners such as the back and forward buttons in the browser, the search box events, and the term selector events. When a user searches for a query, Home.js fetches the results from the server with `Search.js` and then sends the results to `ResultsLoader.js` to be rendered.
 
 # The Panels
 
 ## Classes
 
-The class panels are responsible for rendering one class results on either mobile or desktop. 
+The class panels are responsible for rendering one class results on either mobile or desktop.
 
 ### Desktop Class Panel
 
 The desktop class panel renders one class and all the sections in the class on desktop. Example:
 
 ![Desktop Class Panel screenshot](https://i.imgur.com/h93IlBP.png)
-
 
 ### Mobile Class Panel
 
@@ -49,16 +48,8 @@ The location link component renders the location of a section. If it is a valid 
 
 ![Location Link screenshot](https://i.imgur.com/tQ849bd.png)
 
-
 ### Weekday boxes
 
 The Weekday boxes component renders the boxes of when a section meets. Screenshot:
 
 ![Weekday boxes screenshot](https://i.imgur.com/SIEeiCP.png)
-
-
-
-
-
-
-

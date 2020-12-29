@@ -3,13 +3,15 @@
  * See the license file in the root folder for details.
  */
 
-import _ from 'lodash';
-import URI from 'urijs';
-import macros from './macros';
-import request from './request';
-import { DEFAULT_FILTER_SELECTION, FilterSelection } from './ResultsPage/filters';
-import { BLANK_SEARCH_RESULT, SearchResult } from './types';
-
+import _ from "lodash";
+import URI from "urijs";
+import macros from "./macros";
+import request from "./request";
+import {
+  DEFAULT_FILTER_SELECTION,
+  FilterSelection,
+} from "./ResultsPage/filters";
+import { BLANK_SEARCH_RESULT, SearchResult } from "./types";
 
 // Every time there is a breaking change in the search api, increment the version
 // This way, the backend will send back the result that frontend is expecting
@@ -18,11 +20,10 @@ import { BLANK_SEARCH_RESULT, SearchResult } from './types';
 // Old versions don't stay around for too long, though.
 const apiVersion = 2;
 
-
 class Search {
-  cache: {[id: string]: SearchResult}
+  cache: { [id: string]: SearchResult };
 
-  allLoaded: {[id: string]: boolean}
+  allLoaded: { [id: string]: boolean };
 
   constructor() {
     // Mapping of search term to an object which contains three fields,
@@ -34,7 +35,6 @@ class Search {
     this.allLoaded = {};
   }
 
-
   // Clears the cache stored in this module.
   // Used for testing.
   clearCache() {
@@ -45,16 +45,31 @@ class Search {
   // Min terms is the minimum number of terms needed.
   // When this function is called for the first time for a given query, it will be 4.
   // Then, on subsequent calls, it will be 14, 24, etc. (if increasing by 10) (set by termCount)
-  async search(query: string, termId: string, filters: FilterSelection, termCount: number): Promise<SearchResult> {
+  async search(
+    query: string,
+    termId: string,
+    filters: FilterSelection,
+    termCount: number
+  ): Promise<SearchResult> {
     // Searches are case insensitive.
     query = query.trim().toLowerCase();
 
     if (!termId || termId.length !== 6) {
-      macros.log('No termId given in frontend/search.js. Returning empty array.', termId, termCount);
+      macros.log(
+        "No termId given in frontend/search.js. Returning empty array.",
+        termId,
+        termCount
+      );
       return BLANK_SEARCH_RESULT();
     }
 
-    const stringFilters = JSON.stringify(_.pickBy(filters, (v, k: keyof FilterSelection) => !_.isEqual(v, DEFAULT_FILTER_SELECTION[k])));
+    const stringFilters = JSON.stringify(
+      _.pickBy(
+        filters,
+        (v, k: keyof FilterSelection) =>
+          !_.isEqual(v, DEFAULT_FILTER_SELECTION[k])
+      )
+    );
 
     const searchHash = termId + query + stringFilters;
 
@@ -65,8 +80,11 @@ class Search {
     }
 
     // Cache hit
-    if (termCount <= existingTermCount && existingTermCount > 0 || this.allLoaded[searchHash]) {
-      macros.log('Cache hit.', this.allLoaded[searchHash]);
+    if (
+      (termCount <= existingTermCount && existingTermCount > 0) ||
+      this.allLoaded[searchHash]
+    ) {
+      macros.log("Cache hit.", this.allLoaded[searchHash]);
       return {
         results: this.cache[searchHash].results.slice(0, termCount),
         filterOptions: this.cache[searchHash].filterOptions,
@@ -74,24 +92,26 @@ class Search {
     }
 
     // If we got here, we need to hit the network.
-    macros.log('Requesting terms ', existingTermCount, 'to', termCount);
+    macros.log("Requesting terms ", existingTermCount, "to", termCount);
 
-
-    const url = new URI('https://searchneu.com/search').query({ // TODO: is this how we're gonna access the api in the future?
-      query: query,
-      termId: termId,
-      minIndex: existingTermCount,
-      maxIndex: termCount,
-      apiVersion: apiVersion,
-      filters: stringFilters,
-    }).toString();
+    const url = new URI("https://searchneu.com/search")
+      .query({
+        // TODO: is this how we're gonna access the api in the future?
+        query: query,
+        termId: termId,
+        minIndex: existingTermCount,
+        maxIndex: termCount,
+        apiVersion: apiVersion,
+        filters: stringFilters,
+      })
+      .toString();
 
     // gets results
     const startTime = Date.now();
     const waitedRequest = await request.get(url);
 
     const results = waitedRequest.results;
-    macros.logAmplitudeEvent('Search Timing', {
+    macros.logAmplitudeEvent("Search Timing", {
       query: query.toLowerCase(),
       time: Date.now() - startTime,
       startIndex: existingTermCount,
@@ -99,7 +119,7 @@ class Search {
     });
 
     if (results.error) {
-      macros.error('Error with networking request', results.error);
+      macros.error("Error with networking request", results.error);
       return BLANK_SEARCH_RESULT();
     }
 
@@ -109,7 +129,7 @@ class Search {
       this.cache[searchHash] = BLANK_SEARCH_RESULT();
     }
 
-    const cacheResult:SearchResult = this.cache[searchHash];
+    const cacheResult: SearchResult = this.cache[searchHash];
 
     // Add to the end of exiting results.
     cacheResult.results = cacheResult.results.concat(results);

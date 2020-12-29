@@ -5,13 +5,13 @@
  *
  * ONLY PUT COMMONLY USED TYPES HERE
  */
-import {Dayjs} from 'dayjs';
-import { FilterOptions } from './ResultsPage/filters';
+import { Dayjs } from "dayjs";
+import { FilterOptions } from "./ResultsPage/filters";
 
 export type Requisite = string | CompositeReq | CourseReq;
 
 export interface CompositeReq {
-  type: 'and' | 'or';
+  type: "and" | "or";
   values: Requisite[];
 }
 export interface CourseReq {
@@ -21,38 +21,38 @@ export interface CourseReq {
 }
 
 export interface ReqFor {
-  values : CourseReq[]
+  values: CourseReq[];
 }
 
 type TimeTuple = {
-  start : number;
-  end : number;
-}
+  start: number;
+  end: number;
+};
 
 export type DayjsTuple = {
-  start : Dayjs,
-  end : Dayjs
-}
+  start: Dayjs;
+  end: Dayjs;
+};
 
 export type TimeToDayjs = {
-  [key: number] : DayjsTuple[];
-}
+  [key: number]: DayjsTuple[];
+};
 
 export enum PrereqType {
-  PREREQ = 'prereq',
-  COREQ = 'coreq',
-  PREREQ_FOR = 'prereqFor',
-  OPT_PREREQ_FOR = 'optPrereqFor'
+  PREREQ = "prereq",
+  COREQ = "coreq",
+  PREREQ_FOR = "prereqFor",
+  OPT_PREREQ_FOR = "optPrereqFor",
 }
 
 export enum ReqKind {
-  AND = 'and',
-  OR = 'or'
+  AND = "and",
+  OR = "or",
 }
 
 export interface ReqType {
-  type: ReqKind,
-  values: Course[]
+  type: ReqKind;
+  values: Course[];
 }
 
 export interface RequisiteBranch {
@@ -62,18 +62,18 @@ export interface RequisiteBranch {
 
 export interface Course {
   sections: Section[];
-  prereqs : CompositeReq;
-  coreqs : CompositeReq;
+  prereqs: CompositeReq;
+  coreqs: CompositeReq;
   host: string;
   termId: string;
-  desc : string;
-  name : string;
-  prettyUrl : string;
-  classId : string;
-  subject : string;
-  lastUpdateTime : number;
-  prereqsFor : ReqFor;
-  optPrereqsFor : ReqFor;
+  desc: string;
+  name: string;
+  prettyUrl: string;
+  classId: string;
+  subject: string;
+  lastUpdateTime: number;
+  prereqsFor: ReqFor;
+  optPrereqsFor: ReqFor;
   minCredits: number;
   maxCredits: number;
   feeDescription: string;
@@ -82,15 +82,15 @@ export interface Course {
 }
 
 export interface Section {
-  lastUpdateTime : number;
+  lastUpdateTime: number;
   meetings: Meeting[];
-  profs : string[];
-  waitCapacity : number;
-  waitRemaining : number;
-  online : boolean;
+  profs: string[];
+  waitCapacity: number;
+  waitRemaining: number;
+  online: boolean;
   seatsRemaining: number;
-  seatsCapacity : number;
-  honors : boolean;
+  seatsCapacity: number;
+  honors: boolean;
   crn: string;
   campus: string;
   campusDescription: string;
@@ -107,15 +107,15 @@ export interface Meeting {
 // ======= Search Results ========
 // Represents the course and employee data returned by /search
 export interface SearchResult {
-  results: SearchItem[],
-  filterOptions: FilterOptions,
+  results: SearchItem[];
+  filterOptions: FilterOptions;
 }
 
 export type CourseResult = {
-  class: Course,
-  sections: Section[]
-  type: string
-}
+  class: Course;
+  sections: Section[];
+  type: string;
+};
 export type Employee = any;
 export type SearchItem = CourseResult | Employee;
 
@@ -123,9 +123,12 @@ export function BLANK_SEARCH_RESULT(): SearchResult {
   return {
     results: [],
     filterOptions: {
-      nupath: [], subject: [], classType: [], campus: [],
+      nupath: [],
+      subject: [],
+      classType: [],
+      campus: [],
     },
-  }
+  };
 }
 
 export enum DayOfWeek {
@@ -135,11 +138,11 @@ export enum DayOfWeek {
   WEDNESDAY,
   THURSDAY,
   FRIDAY,
-  SATURDAY
+  SATURDAY,
 }
 
 export enum Campus {
-  NEU = 'NEU',
-  CPS = 'CPS',
-  LAW = 'LAW'
+  NEU = "NEU",
+  CPS = "CPS",
+  LAW = "LAW",
 }

@@ -1,22 +1,27 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { cloneDeep, flatten, groupBy, values } from 'lodash';
-import React from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import Keys from '../Keys';
-import macros from '../macros';
-import EmployeePanel from '../panels/EmployeePanel';
-import { DayjsTuple, Meeting, SearchItem, Section, TimeToDayjs } from '../types';
-import { MobileSearchResult, SearchResult } from './Results/SearchResult';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { cloneDeep, flatten, groupBy, values } from "lodash";
+import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Keys from "../Keys";
+import macros from "../macros";
+import EmployeePanel from "../panels/EmployeePanel";
+import {
+  DayjsTuple,
+  Meeting,
+  SearchItem,
+  Section,
+  TimeToDayjs,
+} from "../types";
+import { MobileSearchResult, SearchResult } from "./Results/SearchResult";
 
-
-dayjs.extend(utc)
+dayjs.extend(utc);
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 
 interface ResultsLoaderProps {
-  results: SearchItem[],
-  loadMore: () => void
+  results: SearchItem[];
+  loadMore: () => void;
 }
 
 const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
@@ -31,11 +36,11 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
         const day = parseInt(dayIndex, 10) + 3;
 
         const obj = {
-          start: dayjs.utc(event.start * 1000).add(day, 'day'),
-          end: dayjs.utc(event.end * 1000).add(day, 'day'),
+          start: dayjs.utc(event.start * 1000).add(day, "day"),
+          end: dayjs.utc(event.end * 1000).add(day, "day"),
         };
 
-        if (parseInt(obj.start.format('YYYY'), 10) !== 1970) {
+        if (parseInt(obj.start.format("YYYY"), 10) !== 1970) {
           macros.error();
         }
 
@@ -47,7 +52,7 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
   // returns objects like this: {3540000041400000: Array[3]}
   // if has three meetings per week that meet at the same times
   const groupedByTimeOfDay: TimeToDayjs = groupBy(timeMoments, (event) => {
-    const zero = dayjs(event.start).startOf('day');
+    const zero = dayjs(event.start).startOf("day");
     return `${event.start.diff(zero)}${event.end.diff(zero)}`;
   });
 
@@ -56,12 +61,12 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
 
   // And sort by start time
   valuesGroupedByTimeOfDay.sort((meetingsInAday) => {
-    const zero = dayjs(meetingsInAday[0].start).startOf('day');
+    const zero = dayjs(meetingsInAday[0].start).startOf("day");
     return meetingsInAday[0].start.diff(zero);
   });
 
   return flatten(valuesGroupedByTimeOfDay);
-}
+};
 
 const getFormattedSections = (sections: any): Section[] => {
   const formattedSections: Section[] = [];
@@ -83,47 +88,57 @@ const getFormattedSections = (sections: any): Section[] => {
   });
 
   return formattedSections;
-}
+};
 
 function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
   return (
     <InfiniteScroll
-      dataLength={ results.length }
-      next={ loadMore }
+      dataLength={results.length}
+      next={loadMore}
       hasMore
-      loader={ null }
+      loader={null}
     >
-      <div className='five column row'>
-        <div className='page-home'>
-          {results.filter((result) => result !== null && result !== undefined).map((result) => {
-            return (
-              <ResultItemMemoized
-                key={ result.type === 'class' ? Keys.getClassHash(result.class) : result.employee.id }
-                result={ result }
-              />
-            )
-          })}
+      <div className="five column row">
+        <div className="page-home">
+          {results
+            .filter((result) => result !== null && result !== undefined)
+            .map((result) => {
+              return (
+                <ResultItemMemoized
+                  key={
+                    result.type === "class"
+                      ? Keys.getClassHash(result.class)
+                      : result.employee.id
+                  }
+                  result={result}
+                />
+              );
+            })}
         </div>
       </div>
     </InfiniteScroll>
-  )
+  );
 }
 
 // Memoize result items to avoid unneeded re-renders and to reuse
 // If the Panels are updated to function components, we can memoize them instead and remove this
-const ResultItemMemoized = React.memo(({ result }:{result}) => {
-  if (result.type === 'class') {
+const ResultItemMemoized = React.memo(({ result }: { result }) => {
+  if (result.type === "class") {
     const course = result.class;
     // TODO: Can we get rid of this clone deep?
     course.sections = getFormattedSections(cloneDeep(result.sections));
-    return macros.isMobile ? <MobileSearchResult course={ course } /> : <SearchResult course={ course } />;
+    return macros.isMobile ? (
+      <MobileSearchResult course={course} />
+    ) : (
+      <SearchResult course={course} />
+    );
   }
 
-  if (result.type === 'employee') {
-    return <EmployeePanel employee={ result.employee } />;
+  if (result.type === "employee") {
+    return <EmployeePanel employee={result.employee} />;
   }
 
-  macros.log('Unknown type', result.type);
+  macros.log("Unknown type", result.type);
   return null;
 });
 
