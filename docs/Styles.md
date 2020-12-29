@@ -6,7 +6,7 @@ If you're unfamiliar with Sass, I'd highly recommend checking out their [getting
 
 ## Layout
 
-All our styling files are in `/frontend/css`, and are parallel to the content in `/frontend/components`. For example, `/frontend/components/panels/BaseClassPanel.js` has a corresponding `.sass` file in `/frontend/css/panels/_BaseClassPanel.scss`. Partials, `.scss` files whose first character is an underscore `_`, should never affect styles outside that specific file. To resolve this, we must namespace and ecapsulate our styles. Practically, this means that every partial should have one root style, and all styling is nested within that style.
+All our styling files are in `/styles`, and are parallel to the content in `/components`. Partials, `.scss` files whose first character is an underscore `_`, should never affect styles outside that specific file. To resolve this, we must namespace and ecapsulate our styles. Practically, this means that every partial should have one root style, and all styling is nested within that style.
 
 ### Exceptions
 
