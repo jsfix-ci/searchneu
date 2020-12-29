@@ -3,12 +3,13 @@
  * See the license file in the root folder for details.
  */
 
-import React from 'react';
-
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import Results from '../../../pages/[campus]/[termId]/search/[query]';
 
-import Results from '../../../pages/[campus]/[termId]/[query]';
+
+
 
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({

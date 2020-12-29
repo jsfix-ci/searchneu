@@ -5,7 +5,7 @@
 
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 import mockData from './mockData';
 import NotifCheckBox from '../NotifCheckBox';
@@ -13,11 +13,11 @@ import NotifCheckBox from '../NotifCheckBox';
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render the default notification checkbox', () => {
-  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[0] } />);
+  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[0] } />).debug();
   expect(result).toMatchSnapshot();
 });
 
 it('render the read only notification checkbox', () => {
-  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[2] } />);
+  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[2] } />).debug();
   expect(result).toMatchSnapshot();
 });
