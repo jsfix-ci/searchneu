@@ -19,7 +19,7 @@ it('should render a desktop employee panel', () => {
   macros.isMobile = false;
 
   const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
-  expect(result).toMatchSnapshot();
+  expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;
 });
@@ -30,7 +30,7 @@ it('should render a mobile employee panel', () => {
   macros.isMobile = true;
 
   const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
-  expect(result).toMatchSnapshot();
+  expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;
 });

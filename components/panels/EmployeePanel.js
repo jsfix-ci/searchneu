@@ -247,13 +247,13 @@ export default class EmployeePanel extends React.Component {
 
 
     // Decide which chevron to use based on whether the panel is expanded or not. (Mobile only)
-    let chevronSource = null;
+    let ChevronSource = null;
     let chevron = null;
     if (macros.isMobile) {
       if (this.state.showMoreThanTitle) {
-        chevronSource = ChevronDown;
+        ChevronSource = ChevronDown;
       } else {
-        chevronSource = ChevronRight;
+        ChevronSource = ChevronRight;
       }
 
       chevron = <ChevronSource className='chevron' alt='' />;

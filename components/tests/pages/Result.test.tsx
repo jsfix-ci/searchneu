@@ -4,23 +4,24 @@
  */
 
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import React from 'react';
+import { QueryParamProvider } from 'use-query-params';
 import Results from '../../../pages/[campus]/[termId]/search/[query]';
 
 
 
 
-jest.mock('react-router-dom', () => ({
-  useHistory: () => ({
-    push: jest.fn(),
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    query: { campus: 'NEU', termId:'202030', query: 'cs' }
   }),
-  useParams: () => ({ campus: 'NEU', termId:'202030', query: 'cs' }),
+  useQueryParam: () => false,
 }));
 
 Enzyme.configure({ adapter: new Adapter() });
 
 it('should render a section', () => {
-  const result = shallow(<Results />);
-  expect(result).toMatchSnapshot();
+  const result = mount(<QueryParamProvider><Results /></QueryParamProvider>);
+  expect(result.debug()).toMatchSnapshot();
 });

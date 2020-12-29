@@ -8,12 +8,12 @@ import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import Home from '../../pages/Home';
+import Home from '../../../pages/[campus]/[termId]';
+import { Campus } from '../../types';
 
-jest.mock('react-router-dom', () => ({
-  useHistory: () => ({
-    push: jest.fn(),
-  }),
+jest.mock('next/router', () => ({
+  useRouter: () => ({query: {campus: 'NEU'}}),
+
 }));
 
 jest.mock('use-query-params', () => ({
@@ -24,5 +24,5 @@ Enzyme.configure({ adapter: new Adapter() });
 
 it('should render a section', () => {
   const result = shallow(<Home />);
-  expect(result).toMatchSnapshot();
+  expect(result.debug()).toMatchSnapshot();
 });

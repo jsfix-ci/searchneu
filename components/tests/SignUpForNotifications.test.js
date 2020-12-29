@@ -24,13 +24,13 @@ afterEach(() => {
 });
 
 it('should render', () => {
-  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass={ false } />);
+  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass={ false } />).debug();
   expect(result).toMatchSnapshot();
 });
 
 
 it('should render', () => {
-  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass />);
+  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass />).debug();
   expect(result).toMatchSnapshot();
 });
 
@@ -43,6 +43,6 @@ it('should render the fb button after the button is clicked', async (done) => {
 
   wrapper.update();
 
-  expect(wrapper).toMatchSnapshot();
+  expect(wrapper.contains("Click this button to continue")).toBeTruthy();
   done();
 });
