@@ -43,28 +43,7 @@ export default function useResultDetail(aClass: Course) {
     });
   }
 
-  // returns an array made to be rendered by react to display the prereqs
-  const getReqsString = (reqType: PrereqType, course: Course) => {
-    
-
-    let childNodes: Requisite[];
-
-    if (reqType === PrereqType.PREREQ) {
-      childNodes = course.prereqs.values;
-    } else if (reqType === PrereqType.COREQ) {
-      childNodes = course.coreqs.values;
-    } else if (reqType === PrereqType.PREREQ_FOR) {
-      childNodes = course.prereqsFor.values;
-    } else if (reqType === PrereqType.OPT_PREREQ_FOR) {
-      childNodes = course.optPrereqsFor.values;
-    } else {
-      macros.error('Invalid prereqType', reqType);
-    }
-
-    return getReqsStringHelper(course, reqType, childNodes);  
-  }
-
-  const getReqsStringHelper = (requisite: Course | CompositeReq, reqType: PrereqType, childNodes: Requisite[]) =>  {
+  const getReqsStringHelper = (requisite: Course | CompositeReq, reqType: PrereqType, childNodes: Requisite[]) => {
     const retVal = [];
 
     // Keep track of which subject+classId combonations have been used so far.
@@ -72,12 +51,10 @@ export default function useResultDetail(aClass: Course) {
     // This is because there is no need to show (eg. CS 2500 and CS 2500 (hon)) in the same group
     // because only the subject and the classId are going to be shown.
     const processedSubjectClassIds = {};
-    
-    const isCompositeReq = (variableToCheck: any): variableToCheck is CompositeReq =>
-    (variableToCheck as CompositeReq).type !== undefined;
 
-    const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq =>
-      (variableToCheck as CourseReq).classId !== undefined;
+    const isCompositeReq = (variableToCheck: any): variableToCheck is CompositeReq => (variableToCheck as CompositeReq).type !== undefined;
+
+    const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq => (variableToCheck as CourseReq).classId !== undefined;
 
     childNodes.forEach((childBranch) => {
       if (!isCourseReq(childBranch) && !isCompositeReq(childBranch)) {
@@ -113,8 +90,7 @@ export default function useResultDetail(aClass: Course) {
         // Figure out how many unique classIds there are in the prereqs.
         const allClassIds = {};
         for (const node of childBranch.values) {
-          if (isCourseReq(node))
-            allClassIds[node.classId] = true;
+          if (isCourseReq(node)) allClassIds[node.classId] = true;
         }
 
         // If there is only 1 prereq with a unique classId, don't show the parens.
@@ -139,14 +115,12 @@ export default function useResultDetail(aClass: Course) {
       let type;
       if (isCompositeReq(requisite)) {
         type = requisite.type;
-      } else {
-        if (reqType === PrereqType.PREREQ) { 
-          type = requisite.prereqs.type; 
-        } else if (reqType === PrereqType.COREQ) {
-          type = requisite.coreqs.type; 
-        }
+      } else if (reqType === PrereqType.PREREQ) {
+        type = requisite.prereqs.type;
+      } else if (reqType === PrereqType.COREQ) {
+        type = requisite.coreqs.type;
       }
-      
+
       for (let i = retVal.length - 1; i >= 1; i--) {
         retVal.splice(i, 0, ` ${type} `);
       }
@@ -160,6 +134,25 @@ export default function useResultDetail(aClass: Course) {
       );
     }
     return retVal;
+  }
+
+  // returns an array made to be rendered by react to display the prereqs
+  const getReqsString = (reqType: PrereqType, course: Course) => {
+    let childNodes: Requisite[];
+
+    if (reqType === PrereqType.PREREQ) {
+      childNodes = course.prereqs.values;
+    } else if (reqType === PrereqType.COREQ) {
+      childNodes = course.coreqs.values;
+    } else if (reqType === PrereqType.PREREQ_FOR) {
+      childNodes = course.prereqsFor.values;
+    } else if (reqType === PrereqType.OPT_PREREQ_FOR) {
+      childNodes = course.optPrereqsFor.values;
+    } else {
+      macros.error('Invalid prereqType', reqType);
+    }
+
+    return getReqsStringHelper(course, reqType, childNodes);
   }
 
   const optionalDisplay = (prereqType: PrereqType, course: Course) => {

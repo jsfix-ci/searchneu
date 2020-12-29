@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash';
 import React, { useState, useMemo } from 'react'
 import { Markup } from 'interweave'
+import moment from 'moment';
 import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel'
 import { Course, PrereqType, Section } from '../../types'
 import IconGlobe from '../../icons/IconGlobe'
@@ -26,16 +27,14 @@ const getLastUpdateString = (course: Course) : string => {
 }
 
 const sortSections = (sections: Section[]) : Section[] => {
-  let sortedSections = cloneDeep(sections);
+  const sortedSections = cloneDeep(sections);
   sortedSections.sort((a: Section, b: Section) => {
-    if (!a.profs ||!a.profs[0]) 
-      return -1;
-    else if (!b.profs ||!b.profs[0])
-      return 1;
-    
+    if (!a.profs || !a.profs[0]) { return -1; }
+    if (!b.profs || !b.profs[0]) return 1;
+
     if (a.profs[0] === b.profs[0]) return 0;
 
-    return a.profs[0] < b.profs[0] ? - 1 : 1;
+    return a.profs[0] < b.profs[0] ? -1 : 1;
   })
   return sortedSections;
 }
@@ -122,7 +121,7 @@ export function SearchResult({ course } : SearchResultProps) {
       {!hideShowAll
       && (
       <div className='SearchResult__showAll' role='button' tabIndex={ 0 } onClick={ () => setShowAll(!showAll) }>
-        <span>{showAll ? 'Collapse sections' : 'Show all sections (' + (sortedSections.length - 3) + ' more)'}</span>
+        <span>{showAll ? 'Collapse sections' : `Show all sections (${sortedSections.length - 3} more)`}</span>
         <IconArrow className={ showAll ? 'SearchResult__showAll--collapse' : null } />
       </div>
       )}

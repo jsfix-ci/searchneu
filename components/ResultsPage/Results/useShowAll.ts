@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Course, Section } from '../../types'
+import { Section } from '../../types'
 
 interface UseShowAllReturn {
   showAll: boolean
