@@ -5,8 +5,6 @@ import PillClose from '../icons/pillClose.svg';
 import { Option } from './filters';
 import useClickOutside from './useClickOutside';
 
-
-// todo: figure out why the dropdown styles on the left bar are no longer being applied
 interface DropdownFilter {
   title: string,
   options: Option[],

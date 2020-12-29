@@ -6,8 +6,8 @@ import { CompositeReq, Course, CourseReq, PrereqType, Requisite } from '../../ty
 
 export default function useResultDetail(aClass: Course) {
   const router = useRouter();
-  const onReqClick = (reqType, childBranch, event, hash) => {
-    router.push(hash);
+  const onReqClick = (reqType, childBranch, event, searchQuery) => {
+    router.push(`/${router.query.campus}/${router.query.termId}/search/${searchQuery}`);
 
     // Create the React element and add it to retVal
     const searchEvent = new CustomEvent(macros.searchEvent, { detail: `${childBranch.subject} ${childBranch.classId}` });
@@ -79,7 +79,7 @@ export default function useResultDetail(aClass: Course) {
             role='link'
             key={ hash }
             tabIndex={ 0 }
-            onClick={ (event) => { onReqClick(reqType, childBranch, event, hash); } }
+            onClick={ (event) => { onReqClick(reqType, childBranch, event, childBranch.subject + childBranch.classId); } }
           >
             {`${childBranch.subject} ${childBranch.classId}`}
           </a>
