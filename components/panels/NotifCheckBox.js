@@ -7,11 +7,10 @@ import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import user from '../user';
 import Keys from '../Keys';
 import macros from '../macros';
 import IconCheckMark from '../icons/IconCheckmark';
-
+import user from '../user';
 
 // This file renders the checkboxes that control which sections a user signs up for
 // notifications.

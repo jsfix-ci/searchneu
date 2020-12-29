@@ -4,8 +4,8 @@ import { Course } from '../../types';
 import user from '../../user';
 
 
-export default function useUserChange(aClass : Course) : boolean {
-  const [userIsWatchingClass, setUserIsWatchingClass] = useState(user.isWatchingClass(Keys.getClassHash(aClass)))
+export default function useUserChange(aClass : Course) : boolean {    
+  const [userIsWatchingClass, setUserIsWatchingClass] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onUserUpdate = () => {
@@ -17,6 +17,7 @@ export default function useUserChange(aClass : Course) : boolean {
   }
 
   useEffect(() => {
+    setUserIsWatchingClass(user.isWatchingClass(Keys.getClassHash(aClass)));
     user.registerUserChangeHandler(onUserUpdate)
     return () => user.unregisterUserChangeHandler(onUserUpdate)
   }, [onUserUpdate])

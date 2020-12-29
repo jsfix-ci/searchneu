@@ -1,20 +1,22 @@
-import { cloneDeep } from 'lodash';
-import React, { useState, useMemo } from 'react'
-import { Markup } from 'interweave'
-import moment from 'moment';
-import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel'
-import { Course, PrereqType, Section } from '../../types'
-import IconGlobe from '../../icons/IconGlobe'
-import IconArrow from '../../icons/IconArrow'
-import SignUpForNotifications from '../../SignUpForNotifications'
-import useResultDetail from './useResultDetail'
-import useUserChange from './useUserChange';
-import useShowAll from './useShowAll';
-import MobileCollapsableDetail from './MobileCollapsableDetail'
-import IconCollapseExpand from '../../icons/IconCollapseExpand'
-import { notMostRecentTerm } from '../../global';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Markup } from 'interweave';
+import { cloneDeep } from 'lodash';
+import dynamic from 'next/dynamic';
+import React, { useMemo, useState } from 'react';
+import { notMostRecentTerm } from '../../global';
+import IconArrow from '../../icons/IconArrow';
+import IconCollapseExpand from '../../icons/IconCollapseExpand';
+import IconGlobe from '../../icons/IconGlobe';
+import { Course, PrereqType, Section } from '../../types';
+import MobileCollapsableDetail from './MobileCollapsableDetail';
+import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel';
+import useResultDetail from './useResultDetail';
+import useShowAll from './useShowAll';
+import useUserChange from './useUserChange';
+
+const SignUpForNotifications = dynamic(() => 
+import('../../SignUpForNotifications'), {ssr: false})
 
 dayjs.extend(relativeTime)
 

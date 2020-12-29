@@ -62,6 +62,7 @@ class User {
 
     // If we have sender id, send that up too
     // (will make the server respond faster)
+
     if (window.localStorage.senderId) {
       body.senderId = window.localStorage.senderId;
     }

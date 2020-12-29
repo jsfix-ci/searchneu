@@ -1,10 +1,15 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
-import WeekdayBoxes from './WeekdayBoxes';
-import NotifCheckBox from '../../panels/NotifCheckBox';
-import useSectionPanelDetail from './useSectionPanelDetail';
-import { Meeting, DayjsTuple, Section, DayOfWeek } from '../../types';
-import Keys from '../../Keys';
 import IconGlobe from '../../icons/IconGlobe';
+import Keys from '../../Keys';
+import { DayjsTuple, DayOfWeek, Meeting, Section } from '../../types';
+import useSectionPanelDetail from './useSectionPanelDetail';
+import WeekdayBoxes from './WeekdayBoxes';
+
+const NotifCheckBox = dynamic(
+  () => import('../../panels/NotifCheckBox'),
+  {ssr: false}
+)
 
 interface SectionPanelProps {
   section: Section

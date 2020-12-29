@@ -7,13 +7,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'semantic-ui-react';
 
-
 import LogoInput from './icons/LogoInput'
 import macros from './macros';
+import Keys from './Keys';
 import facebook from './facebook';
 import user from './user';
-import Keys from './Keys';
-
 // This file is responsible for the Sign Up for notifications flow.
 // First, this will render a button that will say something along the lines of "Get notified when...!"
 // Then, if that button is clicked, the Facebook Send To Messenger button will be rendered.
