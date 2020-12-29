@@ -3,14 +3,14 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
-import { Icon } from "semantic-ui-react";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import Keys from "../Keys";
-import macros from "../macros";
-import IconCheckMark from "../icons/IconCheckmark";
-import user from "../user";
+import React from 'react';
+import { Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import Keys from '../Keys';
+import macros from '../macros';
+import IconCheckMark from '../icons/IconCheckmark';
+import user from '../user';
 
 // This file renders the checkboxes that control which sections a user signs up for
 // notifications.
@@ -30,7 +30,7 @@ export default class NotifCheckBox extends React.Component {
     this.state = {
       // Whether a user already signed up for notifications on this section.
       checked: user.isWatchingSection(Keys.getSectionHash(this.props.section)),
-      notifSwitchId: _.uniqueId("notifSwitch-"),
+      notifSwitchId: _.uniqueId('notifSwitch-'),
     };
 
     this.onCheckboxClick = this.onCheckboxClick.bind(this);
@@ -81,7 +81,7 @@ export default class NotifCheckBox extends React.Component {
     if (this.props.section.seatsRemaining > 5) {
       return (
         <div
-          style={{ color: "#d3d3d3" }}
+          style={{ color: '#d3d3d3' }}
           data-tip="There are still seats remaining for this section"
           className="inlineBlock"
         >
@@ -99,15 +99,15 @@ export default class NotifCheckBox extends React.Component {
           <div
             className={
               this.state.checked
-                ? "notifSubscribeButton--checked"
-                : "notifSubscribeButton"
+                ? 'notifSubscribeButton--checked'
+                : 'notifSubscribeButton'
             }
             role="button"
             tabIndex={0}
             onClick={this.onCheckboxClick}
           >
             {this.state.checked && <IconCheckMark />}
-            <span>{this.state.checked ? "Subscribed" : "Subscribe"}</span>
+            <span>{this.state.checked ? 'Subscribed' : 'Subscribe'}</span>
           </div>
         ) : (
           <div className="notifSwitch">

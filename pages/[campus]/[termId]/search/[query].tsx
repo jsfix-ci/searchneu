@@ -2,43 +2,43 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import _ from "lodash";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useCallback } from "react";
-import useDeepCompareEffect from "use-deep-compare-effect";
-import { BooleanParam, useQueryParam, useQueryParams } from "use-query-params";
-import Footer from "../../../../components/Footer";
+import _ from 'lodash';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
+import useDeepCompareEffect from 'use-deep-compare-effect';
+import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
+import Footer from '../../../../components/Footer';
 import {
   getAllCampusDropdownOptions,
   getRoundedTerm,
   getTermDropdownOptionsForCampus,
-} from "../../../../components/global";
-import FilterButton from "../../../../components/icons/FilterButton.svg";
-import Logo from "../../../../components/icons/Logo";
-import macros from "../../../../components/macros";
-import EmptyResultsContainer from "../../../../components/ResultsPage/EmptyResultsContainer";
-import FeedbackModal from "../../../../components/ResultsPage/FeedbackModal/FeedbackModal";
-import FilterPanel from "../../../../components/ResultsPage/FilterPanel";
-import FilterPills from "../../../../components/ResultsPage/FilterPills";
+} from '../../../../components/global';
+import FilterButton from '../../../../components/icons/FilterButton.svg';
+import Logo from '../../../../components/icons/Logo';
+import macros from '../../../../components/macros';
+import EmptyResultsContainer from '../../../../components/ResultsPage/EmptyResultsContainer';
+import FeedbackModal from '../../../../components/ResultsPage/FeedbackModal/FeedbackModal';
+import FilterPanel from '../../../../components/ResultsPage/FilterPanel';
+import FilterPills from '../../../../components/ResultsPage/FilterPills';
 import {
   areFiltersSet,
   DEFAULT_FILTER_SELECTION,
   FilterSelection,
   QUERY_PARAM_ENCODERS,
-} from "../../../../components/ResultsPage/filters";
-import MobileSearchOverlay from "../../../../components/ResultsPage/MobileSearchOverlay";
-import ResultsLoader from "../../../../components/ResultsPage/ResultsLoader";
-import SearchBar from "../../../../components/ResultsPage/SearchBar";
-import SearchDropdown from "../../../../components/ResultsPage/SearchDropdown";
-import useAtTop from "../../../../components/ResultsPage/useAtTop";
-import useSearch from "../../../../components/ResultsPage/useSearch";
-import search from "../../../../components/search";
+} from '../../../../components/ResultsPage/filters';
+import MobileSearchOverlay from '../../../../components/ResultsPage/MobileSearchOverlay';
+import ResultsLoader from '../../../../components/ResultsPage/ResultsLoader';
+import SearchBar from '../../../../components/ResultsPage/SearchBar';
+import SearchDropdown from '../../../../components/ResultsPage/SearchDropdown';
+import useAtTop from '../../../../components/ResultsPage/useAtTop';
+import useSearch from '../../../../components/ResultsPage/useSearch';
+import search from '../../../../components/search';
 import {
   BLANK_SEARCH_RESULT,
   Campus,
   SearchResult,
-} from "../../../../components/types";
+} from '../../../../components/types';
 
 interface SearchParams {
   termId: string;
@@ -53,7 +53,7 @@ function logSearch(searchQuery: string) {
 
   if (searchQuery) {
     count++;
-    macros.logAmplitudeEvent("Search", {
+    macros.logAmplitudeEvent('Search', {
       query: searchQuery.toLowerCase(),
       sessionCount: count,
     });
@@ -80,8 +80,8 @@ const fetchResults = async (
 export default function Results() {
   const atTop = useAtTop();
   const router = useRouter();
-  const [showOverlay, setShowOverlay] = useQueryParam("overlay", BooleanParam);
-  const query = (router.query.query as string) || "";
+  const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
+  const query = (router.query.query as string) || '';
   const termId = router.query.termId as string;
   const campus = router.query.campus as string;
 
@@ -145,7 +145,7 @@ export default function Results() {
       <Head>
         <title>Search NEU - {query}</title>
       </Head>
-      <div className={`Results_Header ${atTop ? "Results_Header-top" : ""}`}>
+      <div className={`Results_Header ${atTop ? 'Results_Header-top' : ''}`}>
         <div
           onClick={() => {
             router.push(`/${campus}/${termId}`);
@@ -239,7 +239,7 @@ export default function Results() {
           {filtersAreSet && (
             <FilterPills filters={filters} setFilters={setQParams} />
           )}
-          {!isReady && <div style={{ visibility: "hidden" }} />}
+          {!isReady && <div style={{ visibility: 'hidden' }} />}
           {isReady && results.length === 0 && (
             <EmptyResultsContainer
               query={query}

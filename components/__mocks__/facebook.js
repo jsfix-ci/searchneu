@@ -4,7 +4,7 @@
  */
 
 // import request from './request';
-import macros from "../macros";
+import macros from '../macros';
 // import user from './user';
 
 // This file mocks out facebook.js
@@ -22,7 +22,7 @@ class MockFacebook {
   }
 
   pluginFailedToRender() {
-    macros.error("pluginFailedToRender called in testing?");
+    macros.error('pluginFailedToRender called in testing?');
   }
 
   // Nope, it didn't work in testing

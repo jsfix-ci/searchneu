@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const IconArrow = ({
-  width = "11",
-  height = "10",
-  fill = "#505050",
+  width = '11',
+  height = '10',
+  fill = '#505050',
   className,
 }: {
   width?: string;

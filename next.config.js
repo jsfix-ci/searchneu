@@ -1,6 +1,6 @@
-const withPlugins = require("next-compose-plugins");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
+const withPlugins = require('next-compose-plugins');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
 });
 
 module.exports = withPlugins(
@@ -16,7 +16,7 @@ module.exports = withPlugins(
         issuer: {
           test: /\.(js|ts)x?$/,
         },
-        use: ["@svgr/webpack"],
+        use: ['@svgr/webpack'],
       });
 
       return config;
@@ -24,8 +24,8 @@ module.exports = withPlugins(
     async redirects() {
       return [
         {
-          source: "/",
-          destination: "/NEU",
+          source: '/',
+          destination: '/NEU',
           permanent: true,
         },
       ];

@@ -1,5 +1,5 @@
-import { Dropdown, DropdownItemProps } from "semantic-ui-react";
-import React from "react";
+import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
+import React from 'react';
 
 interface DropdownProps {
   options: DropdownItemProps[];
@@ -15,7 +15,7 @@ function SearchDropdown({
   value,
   placeholder,
   onChange,
-  className = "searchDropdown",
+  className = 'searchDropdown',
   compact = false,
 }: DropdownProps) {
   return (
@@ -25,7 +25,7 @@ function SearchDropdown({
       compact={compact}
       value={value}
       placeholder={placeholder}
-      className={`${className} ${compact ? `${className}--compact` : ""}`}
+      className={`${className} ${compact ? `${className}--compact` : ''}`}
       options={options}
       onChange={(e, data) => onChange(data.value as string)}
     />

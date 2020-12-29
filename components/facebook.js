@@ -3,9 +3,9 @@
  * See the license file in the root folder for details.
  */
 
-import request from "./request";
-import macros from "./macros";
-import user from "./user";
+import request from './request';
+import macros from './macros';
+import user from './user';
 
 // This file is a wrapper around Facebook's API.
 // Call through this file if you need anything related to FB API
@@ -21,9 +21,9 @@ import user from "./user";
 // It is possible to require it directly with jest.requireActual, but then the loadFbApi still runs which you would need to make not run.
 
 const MESSENGER_PLUGIN_STATE = {
-  UNTESTED: "Untested",
-  FAILED: "Failed",
-  RENDERED: "Rendered",
+  UNTESTED: 'Untested',
+  FAILED: 'Failed',
+  RENDERED: 'Rendered',
 };
 
 class Facebook {
@@ -46,8 +46,8 @@ class Facebook {
     return new Promise((resolve, reject) => {
       // This code was adapted from Facebook's tracking code
       // I added an error handler to know if the request failed (adblock, ff strict browsing mode, etc)
-      const id = "facebook-jssdk";
-      const firstJavascript = window.document.getElementsByTagName("script")[0];
+      const id = 'facebook-jssdk';
+      const firstJavascript = window.document.getElementsByTagName('script')[0];
 
       // If it already exists, don't add it again
       if (window.document.getElementById(id)) {
@@ -55,11 +55,11 @@ class Facebook {
         return;
       }
 
-      const js = window.document.createElement("script");
+      const js = window.document.createElement('script');
       js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
 
-      js.addEventListener("error", () => {
+      js.addEventListener('error', () => {
         // Also change the state of the plugin to failed.
         this.messengerRenderState = MESSENGER_PLUGIN_STATE.FAILED;
 
@@ -71,14 +71,14 @@ class Facebook {
       // If the FB JS loaded succesfully, it will call window.fbAsyncInit
       window.fbAsyncInit = () => {
         window.FB.init({
-          appId: "1979224428978082",
+          appId: '1979224428978082',
           autoLogAppEvents: false,
           xfbml: false,
-          version: "v4.0",
+          version: 'v4.0',
         });
 
         window.FB.Event.subscribe(
-          "send_to_messenger",
+          'send_to_messenger',
           this.onSendToMessengerClick
         );
 
@@ -116,20 +116,20 @@ class Facebook {
   // so this will only work on searchneu.com (and subdomains) and will return true for all other domains (eg http://localhost)
   // You can use localhost.searchneu.com:5000 to bypass this.
   async getIsLoggedIn() {
-    if (!window.location.hostname.endsWith("searchneu.com")) {
+    if (!window.location.hostname.endsWith('searchneu.com')) {
       return true;
     }
 
     return new Promise((resolve) => {
       window.FB.getLoginStatus((response) => {
-        if (response.status === "connected") {
+        if (response.status === 'connected') {
           // the user is logged in and has authenticated your
           // app, and response.authResponse supplies
           // the user's ID, a valid access token, a signed
           // request, and the time the access token
           // and signed request each expire
           resolve(true);
-        } else if (response.status === "not_authorized") {
+        } else if (response.status === 'not_authorized') {
           // the user is logged in to Facebook,
           // but has not authenticated your app
           resolve(true);
@@ -143,31 +143,31 @@ class Facebook {
 
   // handles button events
   async onSendToMessengerClick(e) {
-    if (e.event === "rendered") {
-      macros.log("Plugin was rendered");
+    if (e.event === 'rendered') {
+      macros.log('Plugin was rendered');
 
       if (this.messengerRenderState === MESSENGER_PLUGIN_STATE.FAILED) {
-        macros.error("state was failed but it just worked.");
+        macros.error('state was failed but it just worked.');
       }
 
       this.messengerRenderState = MESSENGER_PLUGIN_STATE.RENDERED;
-    } else if (e.event === "checkbox") {
+    } else if (e.event === 'checkbox') {
       const checkboxState = e.state;
       macros.log(`Checkbox state: ${checkboxState}`);
-    } else if (e.event === "not_you") {
+    } else if (e.event === 'not_you') {
       macros.log("User clicked 'not you'");
       user.logOut();
-    } else if (e.event === "hidden") {
-      macros.log("Plugin was hidden");
-    } else if (e.event === "opt_in") {
-      macros.log("Opt in was clicked!", e);
+    } else if (e.event === 'hidden') {
+      macros.log('Plugin was hidden');
+    } else if (e.event === 'opt_in') {
+      macros.log('Opt in was clicked!', e);
 
       // User is now authenticated with Facebook.
       // Download any potential user data from the backend.
       user.downloadUserData();
 
-      macros.logAmplitudeEvent("FB Send to Messenger", {
-        message: "Sign up clicked",
+      macros.logAmplitudeEvent('FB Send to Messenger', {
+        message: 'Sign up clicked',
         hash: JSON.parse(atob(e.ref)).classHash,
       });
 
@@ -179,27 +179,27 @@ class Facebook {
         fbMessengerId = String(process.env.fbMessengerId);
       } else {
         // These 0's and the 1's below don't mean anything - they are just filler values.
-        fbMessengerId = "0000000000000000";
+        fbMessengerId = '0000000000000000';
       }
 
       // When the Send To Messenger button is clicked in development, the webhook is still sent to prod by Facebook
       // In this case, send the data to the development server directly.
       // These 1s don't mean anything - they are just filler values.
       if (macros.DEV) {
-        macros.log("Your FB id is:", fbMessengerId, typeof fbMessengerId);
+        macros.log('Your FB id is:', fbMessengerId, typeof fbMessengerId);
 
         request.post({
-          url: "/webhook",
+          url: '/webhook',
           body: {
-            object: "page",
+            object: 'page',
             entry: [
               {
-                id: "111111111111111",
+                id: '111111111111111',
                 time: Date.now(),
                 messaging: [
                   {
                     recipient: {
-                      id: "111111111111111",
+                      id: '111111111111111',
                     },
                     timestamp: Date.now(),
                     sender: {
@@ -215,7 +215,7 @@ class Facebook {
           },
         });
       } else {
-        macros.log(e, "other message");
+        macros.log(e, 'other message');
       }
     }
   }

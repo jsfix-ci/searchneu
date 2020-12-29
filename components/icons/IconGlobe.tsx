@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const IconGlobe = ({
-  width = "14",
-  height = "14",
-  fill = "#505050",
+  width = '14',
+  height = '14',
+  fill = '#505050',
   className,
 }: {
   width?: string;

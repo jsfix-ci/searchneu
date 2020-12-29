@@ -3,16 +3,16 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
+import React from 'react';
 
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import FeedbackModal from "../FeedbackModal";
+import FeedbackModal from '../FeedbackModal';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-it("should render the form", () => {
+it('should render the form', () => {
   function closeForm() {}
 
   const result = shallow(
@@ -25,7 +25,7 @@ it("should render the form", () => {
   expect(result).toMatchSnapshot();
 });
 
-it("should render form is closed", () => {
+it('should render form is closed', () => {
   function closeForm() {}
 
   const result = shallow(

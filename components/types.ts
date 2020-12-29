@@ -5,13 +5,13 @@
  *
  * ONLY PUT COMMONLY USED TYPES HERE
  */
-import { Dayjs } from "dayjs";
-import { FilterOptions } from "./ResultsPage/filters";
+import { Dayjs } from 'dayjs';
+import { FilterOptions } from './ResultsPage/filters';
 
 export type Requisite = string | CompositeReq | CourseReq;
 
 export interface CompositeReq {
-  type: "and" | "or";
+  type: 'and' | 'or';
   values: Requisite[];
 }
 export interface CourseReq {
@@ -39,15 +39,15 @@ export type TimeToDayjs = {
 };
 
 export enum PrereqType {
-  PREREQ = "prereq",
-  COREQ = "coreq",
-  PREREQ_FOR = "prereqFor",
-  OPT_PREREQ_FOR = "optPrereqFor",
+  PREREQ = 'prereq',
+  COREQ = 'coreq',
+  PREREQ_FOR = 'prereqFor',
+  OPT_PREREQ_FOR = 'optPrereqFor',
 }
 
 export enum ReqKind {
-  AND = "and",
-  OR = "or",
+  AND = 'and',
+  OR = 'or',
 }
 
 export interface ReqType {
@@ -142,7 +142,7 @@ export enum DayOfWeek {
 }
 
 export enum Campus {
-  NEU = "NEU",
-  CPS = "CPS",
-  LAW = "LAW",
+  NEU = 'NEU',
+  CPS = 'CPS',
+  LAW = 'LAW',
 }

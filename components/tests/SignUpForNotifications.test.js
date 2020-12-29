@@ -3,25 +3,25 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
+import React from 'react';
 
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import SignUpForNotifications from "../SignUpForNotifications";
-import mockData from "../panels/tests/mockData";
+import SignUpForNotifications from '../SignUpForNotifications';
+import mockData from '../panels/tests/mockData';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 beforeEach(() => {
-  window.location.hash = "#fbtest";
+  window.location.hash = '#fbtest';
 });
 
 afterEach(() => {
-  window.location.hash = "#";
+  window.location.hash = '#';
 });
 
-it("should render", () => {
+it('should render', () => {
   const result = shallow(
     <SignUpForNotifications
       aClass={mockData.cs1210}
@@ -31,14 +31,14 @@ it("should render", () => {
   expect(result).toMatchSnapshot();
 });
 
-it("should render", () => {
+it('should render', () => {
   const result = shallow(
     <SignUpForNotifications aClass={mockData.cs1210} userIsWatchingClass />
   ).debug();
   expect(result).toMatchSnapshot();
 });
 
-it("should render the fb button after the button is clicked", async (done) => {
+it('should render the fb button after the button is clicked', async (done) => {
   const wrapper = shallow(
     <SignUpForNotifications
       aClass={mockData.cs1210}
@@ -51,6 +51,6 @@ it("should render the fb button after the button is clicked", async (done) => {
 
   wrapper.update();
 
-  expect(wrapper.contains("Click this button to continue")).toBeTruthy();
+  expect(wrapper.contains('Click this button to continue')).toBeTruthy();
   done();
 });

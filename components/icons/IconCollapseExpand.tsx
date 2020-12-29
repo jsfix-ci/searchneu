@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const IconCollapseExpand = ({
-  width = "11",
-  height = "18",
-  fill = "#646464",
+  width = '11',
+  height = '18',
+  fill = '#646464',
   className,
 }: {
   width?: string;

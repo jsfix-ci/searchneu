@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Section } from "../../types";
+import { useState, useEffect } from 'react';
+import { Section } from '../../types';
 
 interface UseShowAllReturn {
   showAll: boolean;

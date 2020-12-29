@@ -3,15 +3,15 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Modal } from "semantic-ui-react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Modal } from 'semantic-ui-react';
 
-import LogoInput from "./icons/LogoInput";
-import macros from "./macros";
-import Keys from "./Keys";
-import facebook from "./facebook";
-import user from "./user";
+import LogoInput from './icons/LogoInput';
+import macros from './macros';
+import Keys from './Keys';
+import facebook from './facebook';
+import user from './user';
 // This file is responsible for the Sign Up for notifications flow.
 // First, this will render a button that will say something along the lines of "Get notified when...!"
 // Then, if that button is clicked, the Facebook Send To Messenger button will be rendered.
@@ -67,21 +67,21 @@ class SignUpForNotifications extends React.Component {
 
     FB.XFBML.parse(this.facebookScopeRef);
 
-    const iframe = this.facebookScopeRef.querySelector("iframe");
+    const iframe = this.facebookScopeRef.querySelector('iframe');
 
     if (!iframe) {
-      macros.logAmplitudeEvent("FB Send to Messenger", {
-        message: "Unable to load iframe for send to messenger plugin.",
+      macros.logAmplitudeEvent('FB Send to Messenger', {
+        message: 'Unable to load iframe for send to messenger plugin.',
         hash: Keys.getClassHash(this.props.aClass),
       });
-      macros.error("No iframe?");
+      macros.error('No iframe?');
       return;
     }
 
     iframe.onload = () => {
       // Check to see if the plugin was successfully rendered
       const ele = this.facebookScopeRef.querySelector(
-        ".sendToMessengerButton > span"
+        '.sendToMessengerButton > span'
       );
 
       const classHash = Keys.getClassHash(this.props.aClass);
@@ -93,14 +93,14 @@ class SignUpForNotifications extends React.Component {
         !facebook.didPluginRender()
       ) {
         if (macros.isMobile) {
-          macros.error("Unable to render on mobile?", classHash);
+          macros.error('Unable to render on mobile?', classHash);
 
-          macros.logAmplitudeEvent("FB Send to Messenger", {
-            message: "Unable to render on mobile?.",
+          macros.logAmplitudeEvent('FB Send to Messenger', {
+            message: 'Unable to render on mobile?.',
             hash: classHash,
           });
         } else {
-          macros.logAmplitudeEvent("FB Send to Messenger", {
+          macros.logAmplitudeEvent('FB Send to Messenger', {
             message:
               "User has adblock or isn't logged in. Showing adblock/login popup.",
             hash: classHash,
@@ -112,8 +112,8 @@ class SignUpForNotifications extends React.Component {
           facebook.pluginFailedToRender();
         }
       } else {
-        macros.logAmplitudeEvent("FB Send to Messenger", {
-          message: "Successfully rendered",
+        macros.logAmplitudeEvent('FB Send to Messenger', {
+          message: 'Successfully rendered',
           hash: classHash,
         });
       }
@@ -124,7 +124,7 @@ class SignUpForNotifications extends React.Component {
   async onSubscribeToggleChange() {
     // if a user exists already, we can show the notification checkboxes too
     if (user.user) {
-      macros.log("user exists already", user.user);
+      macros.log('user exists already', user.user);
 
       const aClass = this.props.aClass;
 
@@ -139,8 +139,8 @@ class SignUpForNotifications extends React.Component {
         user.addSection(aClass.sections[0]);
       }
     } else {
-      macros.logAmplitudeEvent("FB Send to Messenger", {
-        message: "First button click",
+      macros.logAmplitudeEvent('FB Send to Messenger', {
+        message: 'First button click',
         hash: Keys.getClassHash(this.props.aClass),
       });
 
@@ -295,8 +295,8 @@ class SignUpForNotifications extends React.Component {
 
     const actions = [
       {
-        key: "done",
-        content: "Ok",
+        key: 'done',
+        content: 'Ok',
         positive: true,
         onClick: this.closeModal,
       },

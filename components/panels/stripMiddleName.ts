@@ -18,7 +18,7 @@ export default function stripMiddleName(
 ) {
   if ((!firstName && lastName) || (firstName && !lastName)) {
     this.error(
-      "Need either first and last name or neither first nor last name for stripeMiddleName."
+      'Need either first and last name or neither first nor last name for stripeMiddleName.'
     );
     return null;
   }
@@ -27,7 +27,7 @@ export default function stripMiddleName(
     return null;
   }
 
-  const indexOfFirstSpace = fullName.indexOf(" ");
+  const indexOfFirstSpace = fullName.indexOf(' ');
 
   // If there are no spaces in this name, just return the full name.
   if (indexOfFirstSpace === -1) {
@@ -39,18 +39,18 @@ export default function stripMiddleName(
   if (firstName && lastName) {
     if (!fullName.startsWith(firstName)) {
       this.log(
-        "Full name does not start with first name?",
+        'Full name does not start with first name?',
         fullName,
-        "|",
+        '|',
         firstName
       );
     }
 
     if (!fullName.endsWith(lastName)) {
       this.log(
-        "Full name does not end with last name?",
+        'Full name does not end with last name?',
         fullName,
-        "|",
+        '|',
         lastName
       );
     }
@@ -58,7 +58,7 @@ export default function stripMiddleName(
     // Find the last name and first name by splitting the name by spaces
   } else {
     const indexOfLastSpace =
-      fullName.length - fullName.split("").reverse().join("").indexOf(" ");
+      fullName.length - fullName.split('').reverse().join('').indexOf(' ');
 
     firstName = fullName.slice(0, indexOfFirstSpace);
     lastName = fullName.slice(indexOfLastSpace);
@@ -73,30 +73,30 @@ export default function stripMiddleName(
   // This prevents profs like Stacy C. Marsella from coming up when you type in [C]
   // First, remove the first and last names and toLowerCase()
   nameWithoutFirstAndLastName = fullName
-    .replace(firstName, "")
-    .replace(lastName, "");
+    .replace(firstName, '')
+    .replace(lastName, '');
 
   // Then remove symbols.
   nameWithoutFirstAndLastName = nameWithoutFirstAndLastName.replace(
     /[^a-z0-9]/gi,
-    ""
+    ''
   );
 
   // If little to nothing remains, just index the first and last names.
   if (keepIfMoreThanOneChar && nameWithoutFirstAndLastName.length > 1) {
     // Purge middle names that are only one char long
-    let fullNameSplit = fullName.split(" ");
+    let fullNameSplit = fullName.split(' ');
 
     // Of the names that remain, remove the ones that are only 1 letter long (not including symbols)
     fullNameSplit = fullNameSplit.filter((word) => {
-      if (word.replace(/[^a-zA-Z0-9]/gi, "").length < 2) {
+      if (word.replace(/[^a-zA-Z0-9]/gi, '').length < 2) {
         return false;
       }
 
       return true;
     });
 
-    return fullNameSplit.join(" ");
+    return fullNameSplit.join(' ');
   }
 
   return `${firstName} ${lastName}`;

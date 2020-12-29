@@ -1,7 +1,7 @@
-import _ from "lodash";
-import { act } from "react-dom/test-utils";
-import useSearch from "../../ResultsPage/useSearch";
-import testHook from "../testHook";
+import _ from 'lodash';
+import { act } from 'react-dom/test-utils';
+import useSearch from '../../ResultsPage/useSearch';
+import testHook from '../testHook';
 
 async function stall(stallTime = 3000) {
   await new Promise((resolve) => setTimeout(resolve, stallTime));
@@ -11,7 +11,7 @@ const fetchStuff = jest.fn(({ mult }, page) => {
   return _.range((page + 1) * 2).map((a) => a * mult);
 });
 
-describe("useSearch", () => {
+describe('useSearch', () => {
   let search;
   let timings = [];
   async function asyncFetch(params, page) {
@@ -27,33 +27,33 @@ describe("useSearch", () => {
     });
   });
 
-  it("initially loads page 0", () => {
+  it('initially loads page 0', () => {
     expect(search.results).toEqual([0, 1]);
   });
 
-  it("initially sets ready to true", () => {
+  it('initially sets ready to true', () => {
     expect(search.isReady).toEqual(true);
   });
 
-  it("loads more", async () => {
+  it('loads more', async () => {
     await act(async () => search.loadMore());
     expect(search.results).toEqual([0, 1, 2, 3]);
   });
 
-  it("executes new search", async () => {
+  it('executes new search', async () => {
     await act(async () => search.doSearch({ mult: 2 }));
     expect(search.results).toEqual([0, 2]);
   });
 
-  it("resets page after new search", async () => {
+  it('resets page after new search', async () => {
     await act(async () => search.loadMore());
     expect(search.results).toEqual([0, 1, 2, 3]);
     await act(async () => search.doSearch({ mult: 2 }));
     expect(search.results).toEqual([0, 2]);
   });
 
-  describe("race conditions", () => {
-    it("does not load more if other load currently mid-flight", async () => {
+  describe('race conditions', () => {
+    it('does not load more if other load currently mid-flight', async () => {
       timings = [50];
       await act(async () => search.loadMore());
       await act(async () => search.loadMore());
@@ -65,7 +65,7 @@ describe("useSearch", () => {
       ]);
     });
 
-    it("discards an old search result", async () => {
+    it('discards an old search result', async () => {
       timings = [50];
       await act(async () => {
         search.doSearch({ mult: 2 });
@@ -83,7 +83,7 @@ describe("useSearch", () => {
       ]);
     });
 
-    it("discards old load more results when search changes", async () => {
+    it('discards old load more results when search changes', async () => {
       timings = [50];
       await act(async () => {
         search.loadMore();

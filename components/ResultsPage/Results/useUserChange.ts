@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import Keys from "../../Keys";
-import { Course } from "../../types";
-import user from "../../user";
+import { useEffect, useState } from 'react';
+import Keys from '../../Keys';
+import { Course } from '../../types';
+import user from '../../user';
 
 export default function useUserChange(aClass: Course): boolean {
   const [userIsWatchingClass, setUserIsWatchingClass] = useState(false);

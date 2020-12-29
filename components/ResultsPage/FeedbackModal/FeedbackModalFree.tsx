@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface FreeResponseProps {
   feedbackQuery: string;
@@ -30,7 +30,7 @@ export default function FeedbackModalFree({
           <label
             className="FeedbackModal__freeSelectorLeft"
             htmlFor="freeSelectorLeft"
-            onClick={() => setFeedbackType("bug")}
+            onClick={() => setFeedbackType('bug')}
           >
             Bug
           </label>
@@ -43,7 +43,7 @@ export default function FeedbackModalFree({
           <label
             className="FeedbackModal__freeSelectorCenter"
             htmlFor="freeSelectorCenter"
-            onClick={() => setFeedbackType("filter")}
+            onClick={() => setFeedbackType('filter')}
           >
             Filter
           </label>
@@ -55,7 +55,7 @@ export default function FeedbackModalFree({
           <label
             className="FeedbackModal__freeSelectorRight"
             htmlFor="freeSelectorRight"
-            onClick={() => setFeedbackType("other")}
+            onClick={() => setFeedbackType('other')}
           >
             Other
           </label>

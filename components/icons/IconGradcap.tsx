@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const IconGradcap = ({
-  width = "27",
-  height = "18",
+  width = '27',
+  height = '18',
   className,
 }: {
   width?: string;

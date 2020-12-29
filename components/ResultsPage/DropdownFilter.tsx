@@ -1,9 +1,9 @@
-import { pull, without } from "lodash";
-import React, { useRef, useState } from "react";
-import DropdownArrow from "../icons/DropdownArrow.svg";
-import PillClose from "../icons/pillClose.svg";
-import { Option } from "./filters";
-import useClickOutside from "./useClickOutside";
+import { pull, without } from 'lodash';
+import React, { useRef, useState } from 'react';
+import DropdownArrow from '../icons/DropdownArrow.svg';
+import PillClose from '../icons/pillClose.svg';
+import { Option } from './filters';
+import useClickOutside from './useClickOutside';
 
 interface DropdownFilter {
   title: string;
@@ -17,7 +17,7 @@ export default function DropdownFilter({
   selected,
   setActive,
 }: DropdownFilter) {
-  const [filterString, setFilterString] = useState("");
+  const [filterString, setFilterString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const dropdown = useRef(null);
@@ -38,22 +38,22 @@ export default function DropdownFilter({
 
   function getDropdownStatus() {
     if (selected.length === 0 && filteredOptions.length === 0 && !isOpen) {
-      return "disabled";
+      return 'disabled';
     }
     if (isOpen) {
-      return "expanded";
+      return 'expanded';
     }
-    return "";
+    return '';
   }
 
   function choosePlaceholder() {
     if (selected.length === 0) {
       if (filteredOptions.length > 0) {
-        return "Choose one or multiple";
+        return 'Choose one or multiple';
       }
-      return "No filters apply";
+      return 'No filters apply';
     }
-    return "";
+    return '';
   }
 
   return (
@@ -85,8 +85,8 @@ export default function DropdownFilter({
           <input
             className={`DropdownFilter__input ${
               selected.length === 0 && filteredOptions.length === 0 && !isOpen
-                ? "disabled"
-                : ""
+                ? 'disabled'
+                : ''
             }`}
             tabIndex={0}
             type="text"
@@ -135,7 +135,7 @@ export default function DropdownFilter({
                         ? pull(selected, option.value)
                         : [...selected, option.value]
                     );
-                    setFilterString("");
+                    setFilterString('');
                     e.stopPropagation();
                   }}
                 >
@@ -154,7 +154,7 @@ export default function DropdownFilter({
                       </p>
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
               ))

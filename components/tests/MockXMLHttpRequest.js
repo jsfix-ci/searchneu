@@ -3,14 +3,14 @@
  * See the license file in the root folder for details.
  */
 
-import macros from "../macros";
+import macros from '../macros';
 
 // Enum for state
 const XMLHttpRequestState = {
-  UNOPENED: "UNOPENED",
-  OPEN_CALLED: "OPEN_CALLED",
-  SEND_CALLED: "SEND_CALLED",
-  RESPONDED: "RESPONDED",
+  UNOPENED: 'UNOPENED',
+  OPEN_CALLED: 'OPEN_CALLED',
+  SEND_CALLED: 'SEND_CALLED',
+  RESPONDED: 'RESPONDED',
 };
 
 class MockXMLHttpRequest {
@@ -54,7 +54,7 @@ class MockXMLHttpRequest {
   open(method, url, isAsync) {
     if (this.state !== XMLHttpRequestState.UNOPENED) {
       macros.critical(
-        "mock XMLHttpRequest open called when not in unopened state"
+        'mock XMLHttpRequest open called when not in unopened state'
       );
       return;
     }
@@ -69,7 +69,7 @@ class MockXMLHttpRequest {
   send(body) {
     if (this.state !== XMLHttpRequestState.OPEN_CALLED) {
       macros.critical(
-        "mock XMLHttpRequest open called when not in unopened state"
+        'mock XMLHttpRequest open called when not in unopened state'
       );
       return;
     }
@@ -82,7 +82,7 @@ class MockXMLHttpRequest {
   // Method for the testing code to call from the test code to complete the request
   respondToRequest(statusCode, responseBody) {
     if (this.state !== XMLHttpRequestState.SEND_CALLED) {
-      macros.critical("respondToRequest called out of order");
+      macros.critical('respondToRequest called out of order');
       return;
     }
 

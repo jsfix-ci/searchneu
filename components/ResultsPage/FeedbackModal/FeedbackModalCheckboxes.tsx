@@ -1,5 +1,5 @@
-import React from "react";
-import CheckboxGroup from "../CheckboxGroup";
+import React from 'react';
+import CheckboxGroup from '../CheckboxGroup';
 
 interface CheckboxProps {
   feedbackOptions: string[];

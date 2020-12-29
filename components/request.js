@@ -3,10 +3,10 @@
  * See the license file in the root folder for details.
  */
 
-import URI from "urijs";
+import URI from 'urijs';
 
-import retry from "async-retry";
-import macros from "./macros";
+import retry from 'async-retry';
+import macros from './macros';
 
 // All the requests from the frontend to the backend go through this file.
 // There used to be a lot of logic in here for loading the term dump from the service worker cache/IDB, etc
@@ -43,7 +43,7 @@ class Request {
         }
 
         const requestTime = Date.now() - startTime;
-        macros.log("Downloading took ", requestTime, "for url", config.url);
+        macros.log('Downloading took ', requestTime, 'for url', config.url);
 
         if (xmlhttp.status !== 200) {
           let err;
@@ -58,7 +58,7 @@ class Request {
           err += `config = ${JSON.stringify(config.url)}`;
 
           macros.warn(
-            "error, bad code recievied",
+            'error, bad code recievied',
             xmlhttp.status,
             err,
             config.url
@@ -71,10 +71,10 @@ class Request {
         const startParse = Date.now();
         const response = JSON.parse(xmlhttp.response);
         const parsingTime = Date.now() - startParse;
-        macros.log("Parsing took ", parsingTime, "for url", config.url);
+        macros.log('Parsing took ', parsingTime, 'for url', config.url);
 
         if (response.error) {
-          macros.warn("ERROR networking error bad reqeust?", config.url);
+          macros.warn('ERROR networking error bad reqeust?', config.url);
         }
 
         resolve(response);
@@ -82,7 +82,7 @@ class Request {
 
       if (config.progressCallback) {
         xmlhttp.addEventListener(
-          "progress",
+          'progress',
           (evt) => {
             if (evt.lengthComputable) {
               config.progressCallback(evt.loaded, evt.total);
@@ -96,8 +96,8 @@ class Request {
       const url = new URI(config.url);
       xmlhttp.open(config.method, url.toString(), true);
 
-      if (config.method === "POST") {
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
+      if (config.method === 'POST') {
+        xmlhttp.setRequestHeader('Content-Type', 'application/json');
         xmlhttp.send(JSON.stringify(config.body));
       } else {
         xmlhttp.send();
@@ -124,36 +124,36 @@ class Request {
   }
 
   async get(config) {
-    if (typeof config === "string") {
+    if (typeof config === 'string') {
       config = {
         url: config,
       };
     } else if (Object.keys(config).length > 1 || !config.url) {
       macros.error(
-        "Nothing is supported except JSON GET requests to a url.",
+        'Nothing is supported except JSON GET requests to a url.',
         config
       );
     }
 
-    config.method = "GET";
+    config.method = 'GET';
 
     return this.getFromInternetWithRetry(config);
   }
 
   async post(config) {
     if (
-      typeof config === "string" ||
+      typeof config === 'string' ||
       Object.keys(config).length > 2 ||
       !config.url ||
       !config.body
     ) {
       macros.error(
-        "Nothing is supported except JSON POST requests to a url.",
+        'Nothing is supported except JSON POST requests to a url.',
         config
       );
     }
 
-    config.method = "POST";
+    config.method = 'POST';
 
     return this.getFromInternetWithRetry(config);
   }

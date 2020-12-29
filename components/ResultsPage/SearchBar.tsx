@@ -2,15 +2,15 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React, { useState, useEffect } from "react";
-import macros from "../macros";
-import MagnifyingGlass from "../icons/magnifying-glass.svg";
+import React, { useState, useEffect } from 'react';
+import macros from '../macros';
+import MagnifyingGlass from '../icons/magnifying-glass.svg';
 
 interface SearchBarProps {
   query: string;
   onSearch: (q: string) => void;
   onClick?: () => void;
-  buttonColor: "red" | "yellow" | "blue";
+  buttonColor: 'red' | 'yellow' | 'blue';
 }
 
 /**
@@ -56,7 +56,7 @@ export default function SearchBar({
         className="searchbar__input"
         size={10}
         onKeyDown={(event) => {
-          if (event.key === "Enter") {
+          if (event.key === 'Enter') {
             search();
           }
         }}
@@ -66,7 +66,7 @@ export default function SearchBar({
         }}
         value={controlledQuery}
         placeholder={
-          !macros.isMobile ? "Class, professor, course number" : undefined
+          !macros.isMobile ? 'Class, professor, course number' : undefined
         }
       />
       <div

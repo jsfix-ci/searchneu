@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const IconCheckmark = ({
-  width = "12",
-  height = "9",
+  width = '12',
+  height = '9',
   className,
 }: {
   width?: string;

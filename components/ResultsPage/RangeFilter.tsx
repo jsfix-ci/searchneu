@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ClassRange } from "./filters";
+import React, { useEffect, useState } from 'react';
+import { ClassRange } from './filters';
 
 interface RangeFilterProps {
   title: string;
@@ -59,8 +59,8 @@ export default function RangeFilter({
           className="RangeFilter__apply-input"
           onClick={() =>
             setActive({
-              min: controlledInput.min || "0",
-              max: controlledInput.max || "9999",
+              min: controlledInput.min || '0',
+              max: controlledInput.max || '9999',
             })
           }
         >

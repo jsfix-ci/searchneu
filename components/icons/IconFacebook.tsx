@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const IconFacebook = ({
-  width = "15",
-  height = "15",
-  fill = "#0084FF",
+  width = '15',
+  height = '15',
+  fill = '#0084FF',
   className,
 }: {
   width?: string;

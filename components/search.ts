@@ -3,15 +3,15 @@
  * See the license file in the root folder for details.
  */
 
-import _ from "lodash";
-import URI from "urijs";
-import macros from "./macros";
-import request from "./request";
+import _ from 'lodash';
+import URI from 'urijs';
+import macros from './macros';
+import request from './request';
 import {
   DEFAULT_FILTER_SELECTION,
   FilterSelection,
-} from "./ResultsPage/filters";
-import { BLANK_SEARCH_RESULT, SearchResult } from "./types";
+} from './ResultsPage/filters';
+import { BLANK_SEARCH_RESULT, SearchResult } from './types';
 
 // Every time there is a breaking change in the search api, increment the version
 // This way, the backend will send back the result that frontend is expecting
@@ -56,7 +56,7 @@ class Search {
 
     if (!termId || termId.length !== 6) {
       macros.log(
-        "No termId given in frontend/search.js. Returning empty array.",
+        'No termId given in frontend/search.js. Returning empty array.',
         termId,
         termCount
       );
@@ -84,7 +84,7 @@ class Search {
       (termCount <= existingTermCount && existingTermCount > 0) ||
       this.allLoaded[searchHash]
     ) {
-      macros.log("Cache hit.", this.allLoaded[searchHash]);
+      macros.log('Cache hit.', this.allLoaded[searchHash]);
       return {
         results: this.cache[searchHash].results.slice(0, termCount),
         filterOptions: this.cache[searchHash].filterOptions,
@@ -92,9 +92,9 @@ class Search {
     }
 
     // If we got here, we need to hit the network.
-    macros.log("Requesting terms ", existingTermCount, "to", termCount);
+    macros.log('Requesting terms ', existingTermCount, 'to', termCount);
 
-    const url = new URI("https://searchneu.com/search")
+    const url = new URI('https://searchneu.com/search')
       .query({
         // TODO: is this how we're gonna access the api in the future?
         query: query,
@@ -111,7 +111,7 @@ class Search {
     const waitedRequest = await request.get(url);
 
     const results = waitedRequest.results;
-    macros.logAmplitudeEvent("Search Timing", {
+    macros.logAmplitudeEvent('Search Timing', {
       query: query.toLowerCase(),
       time: Date.now() - startTime,
       startIndex: existingTermCount,
@@ -119,7 +119,7 @@ class Search {
     });
 
     if (results.error) {
-      macros.error("Error with networking request", results.error);
+      macros.error('Error with networking request', results.error);
       return BLANK_SEARCH_RESULT();
     }
 

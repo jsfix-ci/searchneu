@@ -1,10 +1,10 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 import {
   FILTERS_BY_CATEGORY,
   FilterSelection,
   DEFAULT_FILTER_SELECTION,
-} from "./filters";
+} from './filters';
 
 interface PillProps {
   verbose: string; // for desktop

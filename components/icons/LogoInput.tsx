@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const LogoInput = ({
-  fill = "#fff",
-  height = "18",
-  width = "21",
+  fill = '#fff',
+  height = '18',
+  width = '21',
 }: {
   fill?: string;
   height?: string;

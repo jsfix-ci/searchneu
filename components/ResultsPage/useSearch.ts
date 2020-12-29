@@ -2,8 +2,8 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import { useEffect, useState, useCallback } from "react";
-import macros from "../macros";
+import { useEffect, useState, useCallback } from 'react';
+import macros from '../macros';
 
 enum Status {
   FETCHING_NEW = 1,
@@ -54,7 +54,7 @@ export default function useSearch<P, R>(
       const data = await fetchResults(params, page);
       // Ignore will be true if out of order because useEffect is cleaned up before executing the next effect
       if (ignore) {
-        macros.log("Did not come back in order, discarding");
+        macros.log('Did not come back in order, discarding');
       } else {
         updateState({ results: data, status: Status.SUCCESS });
       }

@@ -1,5 +1,5 @@
-import React from "react";
-import IconCollapseExpand from "../../icons/IconCollapseExpand";
+import React from 'react';
+import IconCollapseExpand from '../../icons/IconCollapseExpand';
 
 interface MobileCollapsableDetailProps {
   title: string;
@@ -26,7 +26,7 @@ function MobileCollapsableDetail({
           width="6"
           height="12"
           fill="#000000"
-          className={expand ? "MobileSearchResult__panel--rotatedIcon" : ""}
+          className={expand ? 'MobileSearchResult__panel--rotatedIcon' : ''}
         />
         <span>{title}</span>
       </div>

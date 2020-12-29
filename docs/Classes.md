@@ -108,7 +108,7 @@ These are all stored hierarchically: Sections are a part of a class, classes are
 ```javascript
 {
   // The id of the college itself
-  host: "neu.edu";
+  host: 'neu.edu';
 }
 ```
 
@@ -117,10 +117,10 @@ These are all stored hierarchically: Sections are a part of a class, classes are
 ```javascript
 {
   // Keep track of which college this term is a part of
-  host: "neu.edu";
+  host: 'neu.edu';
 
   // The id of the term itself
-  termId: "201830";
+  termId: '201830';
 }
 ```
 
@@ -129,13 +129,13 @@ These are all stored hierarchically: Sections are a part of a class, classes are
 ```javascript
 {
   // Keep track of which college this subject is a part of
-  host: "neu.edu";
+  host: 'neu.edu';
 
   // Keep track of which term this subject is a part of
-  termId: "201830";
+  termId: '201830';
 
   // The id of the subject itself
-  subject: "CS";
+  subject: 'CS';
 }
 ```
 

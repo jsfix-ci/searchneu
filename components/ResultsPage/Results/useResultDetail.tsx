@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import React from "react";
-import macros from "../../macros";
+import { useRouter } from 'next/router';
+import React from 'react';
+import macros from '../../macros';
 import {
   CompositeReq,
   Course,
   CourseReq,
   PrereqType,
   Requisite,
-} from "../../types";
+} from '../../types';
 
 export default function useResultDetail(aClass: Course) {
   const router = useRouter();
@@ -29,22 +29,22 @@ export default function useResultDetail(aClass: Course) {
 
     switch (reqType) {
       case PrereqType.PREREQ:
-        reqTypeString = "Prerequisite";
+        reqTypeString = 'Prerequisite';
         break;
       case PrereqType.COREQ:
-        reqTypeString = "Corequisite";
+        reqTypeString = 'Corequisite';
         break;
       case PrereqType.PREREQ_FOR:
-        reqTypeString = "Required Prerequisite For";
+        reqTypeString = 'Required Prerequisite For';
         break;
       case PrereqType.OPT_PREREQ_FOR:
-        reqTypeString = "Optional Prerequisite For";
+        reqTypeString = 'Optional Prerequisite For';
         break;
       default:
-        macros.error("unknown type.", reqType);
+        macros.error('unknown type.', reqType);
     }
 
-    macros.logAmplitudeEvent("Requisite Click", {
+    macros.logAmplitudeEvent('Requisite Click', {
       type: reqTypeString,
       subject: childBranch.subject,
       classId: childBranch.classId,
@@ -132,17 +132,17 @@ export default function useResultDetail(aClass: Course) {
           );
         } else {
           retVal.push([
-            "(",
+            '(',
             getReqsStringHelper(
               childBranch,
               PrereqType.PREREQ,
               childBranch.values
             ),
-            ")",
+            ')',
           ]);
         }
       } else {
-        macros.error("Branch found and parsing coreqs?", childBranch);
+        macros.error('Branch found and parsing coreqs?', childBranch);
       }
     });
 
@@ -154,7 +154,7 @@ export default function useResultDetail(aClass: Course) {
       reqType === PrereqType.OPT_PREREQ_FOR
     ) {
       for (let i = retVal.length - 1; i >= 1; i--) {
-        retVal.splice(i, 0, ", ");
+        retVal.splice(i, 0, ', ');
       }
     } else {
       let type;
@@ -190,7 +190,7 @@ export default function useResultDetail(aClass: Course) {
     } else if (reqType === PrereqType.OPT_PREREQ_FOR) {
       childNodes = course.optPrereqsFor.values;
     } else {
-      macros.error("Invalid prereqType", reqType);
+      macros.error('Invalid prereqType', reqType);
     }
 
     return getReqsStringHelper(course, reqType, childNodes);
@@ -204,7 +204,7 @@ export default function useResultDetail(aClass: Course) {
 
   const creditsString = () => {
     const creditDescriptor =
-      aClass.maxCredits > 1 || aClass.maxCredits === 0 ? "CREDITS" : "CREDIT";
+      aClass.maxCredits > 1 || aClass.maxCredits === 0 ? 'CREDITS' : 'CREDIT';
     return aClass.maxCredits === aClass.minCredits
       ? `${aClass.maxCredits} ${creditDescriptor}`
       : `${aClass.maxCredits}-${aClass.maxCredits} ${creditDescriptor}`;

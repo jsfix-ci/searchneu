@@ -1,26 +1,26 @@
-import { Dropdown } from "semantic-ui-react";
-import React from "react";
+import { Dropdown } from 'semantic-ui-react';
+import React from 'react';
 
 export const termDropDownOptions = [
   {
-    text: "Spring 2021",
-    value: "202130",
+    text: 'Spring 2021',
+    value: '202130',
   },
   {
-    text: "Fall 2020",
-    value: "202110",
+    text: 'Fall 2020',
+    value: '202110',
   },
   {
-    text: "Summer I 2020",
-    value: "202040",
+    text: 'Summer I 2020',
+    value: '202040',
   },
   {
-    text: "Summer II 2020",
-    value: "202060",
+    text: 'Summer II 2020',
+    value: '202060',
   },
   {
-    text: "Summer Full 2020",
-    value: "202050",
+    text: 'Summer Full 2020',
+    value: '202050',
   },
 ];
 
@@ -42,7 +42,7 @@ function TermDropdown({
       compact={compact}
       value={termId}
       placeholder="Spring 2020"
-      className={`termdropdown ${compact ? "termdropdown--compact" : ""}`}
+      className={`termdropdown ${compact ? 'termdropdown--compact' : ''}`}
       options={termDropDownOptions}
       onChange={(e, data) => onChange(data.value as string)}
     />

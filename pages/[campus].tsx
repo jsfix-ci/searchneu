@@ -1,3 +1,3 @@
-import Home from "./[campus]/[termId]";
+import Home from './[campus]/[termId]';
 
 export default Home;

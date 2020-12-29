@@ -3,16 +3,16 @@
  * See the license file in the root folder for details.
  */
 
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import ReactTooltip from "react-tooltip";
+import ReactTooltip from 'react-tooltip';
 
-import macros from "../macros";
+import macros from '../macros';
 
-import Globe from "./globe.svg";
-import ChevronDown from "./chevron-down.svg";
-import ChevronRight from "./chevron-right.svg";
+import Globe from './globe.svg';
+import ChevronDown from './chevron-down.svg';
+import ChevronRight from './chevron-right.svg';
 
 // On Mobile, display everything in two sections, one below the other, eg:
 // Assistant Teaching Professor
@@ -87,7 +87,7 @@ export default class EmployeePanel extends React.Component {
 
   // Shows the Copied! tooltip, starts the hide timeout, and copies the text.
   copyOnClick(event) {
-    event.target.setAttribute("data-tip", "Copied!");
+    event.target.setAttribute('data-tip', 'Copied!');
 
     const target = event.target;
 
@@ -106,7 +106,7 @@ export default class EmployeePanel extends React.Component {
 
   showTooltipOnEvent(event) {
     clearTimeout(this.hideTimeout);
-    event.target.setAttribute("data-tip", "Click to copy");
+    event.target.setAttribute('data-tip', 'Click to copy');
     ReactTooltip.show(event.target);
   }
 
@@ -179,12 +179,12 @@ export default class EmployeePanel extends React.Component {
     if (employee.phone) {
       const phone = [];
       phone.push(employee.phone.slice(0, 3));
-      phone.push("-");
+      phone.push('-');
       phone.push(employee.phone.slice(3, 6));
-      phone.push("-");
+      phone.push('-');
       phone.push(employee.phone.slice(6, 11));
 
-      const phoneText = phone.join("");
+      const phoneText = phone.join('');
 
       let events;
       if (macros.isMobile) {
@@ -302,7 +302,7 @@ export default class EmployeePanel extends React.Component {
         <div
           className="body"
           style={{
-            display: !this.state.showMoreThanTitle && macros.isMobile && "none",
+            display: !this.state.showMoreThanTitle && macros.isMobile && 'none',
             padding: 20,
           }}
         >

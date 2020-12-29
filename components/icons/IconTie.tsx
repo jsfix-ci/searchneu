@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const IconTie = ({
-  width = "24",
-  height = "21",
+  width = '24',
+  height = '21',
   className,
 }: {
   width?: string;

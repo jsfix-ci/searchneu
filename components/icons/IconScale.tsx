@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const IconScale = ({
-  width = "24",
-  height = "24",
+  width = '24',
+  height = '24',
   className,
 }: {
   width?: string;

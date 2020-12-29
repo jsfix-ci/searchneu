@@ -2,8 +2,8 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React, { useState, memo } from "react";
-import FeedbackModal from "./FeedbackModal";
+import React, { useState, memo } from 'react';
+import FeedbackModal from './FeedbackModal';
 
 function Footer() {
   const [modalOpen, setModalOpen] = useState(false);

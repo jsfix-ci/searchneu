@@ -16,26 +16,26 @@ class Macros {
   static PROD: boolean;
 
   // XXX: This is stuff that is hardcoded for now, need to change when expanding to other schools.
-  static collegeName: string = "Northeastern University";
+  static collegeName: string = 'Northeastern University';
 
-  static collegeHost: string = "neu.edu";
+  static collegeHost: string = 'neu.edu';
 
   // This is the same token in the frontend and the backend, and does not need to be kept private.
-  static amplitudeToken: string = "e0801e33a10c3b66a3c1ac8ebff53359";
+  static amplitudeToken: string = 'e0801e33a10c3b66a3c1ac8ebff53359';
 
   // Also decided to keep all the other tracker Id's here because the amplitude one needs to be here and might as well keep them all in the same place.
-  static fullStoryToken: string = "4ZDGH";
+  static fullStoryToken: string = '4ZDGH';
 
   // Rollbar token
-  static rollbarToken: string = "3a76015293344e6f9c47e35c9ce4c84c";
+  static rollbarToken: string = '3a76015293344e6f9c47e35c9ce4c84c';
 
   // Google analytics token
-  static googleAnalyticsToken: string = "UA-85376897-3";
+  static googleAnalyticsToken: string = 'UA-85376897-3';
 
   // Use this for normal logging
   // Will log as normal, but stays silent during testing
   static log(...args: any) {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.NODE_ENV === 'test') {
       return;
     }
 
@@ -43,11 +43,11 @@ class Macros {
   }
 
   static warn(...args: any) {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.NODE_ENV === 'test') {
       return;
     }
 
-    args = ["Warn:"].concat(args);
+    args = ['Warn:'].concat(args);
     console.warn(...args); // eslint-disable-line no-console
   }
 
@@ -56,7 +56,7 @@ class Macros {
       return;
     }
 
-    console.error("Error: ", args); // eslint-disable-line no-console
+    console.error('Error: ', args); // eslint-disable-line no-console
     console.trace(); // eslint-disable-line no-console
   }
 
@@ -69,15 +69,15 @@ class Macros {
 // Set up the Macros.TEST, Macros.DEV, and Macros.PROD based on some env variables.
 if (
   process.env.PROD ||
-  process.env.NODE_ENV === "production" ||
-  (process.env.CI && process.env.NODE_ENV !== "test")
+  process.env.NODE_ENV === 'production' ||
+  (process.env.CI && process.env.NODE_ENV !== 'test')
 ) {
   Macros.PROD = true;
-  console.log("Running in prod mode."); // eslint-disable-line no-console
+  console.log('Running in prod mode.'); // eslint-disable-line no-console
 } else if (process.env.DEV) {
   Macros.DEV = true;
-  console.log("Running in dev mode."); // eslint-disable-line no-console
-} else if (process.env.NODE_ENV === "test") {
+  console.log('Running in dev mode.'); // eslint-disable-line no-console
+} else if (process.env.NODE_ENV === 'test') {
   Macros.TEST = true;
 } else {
   console.log(`Unknown env! (${process.env.NODE_ENV}) Setting to dev.`); // eslint-disable-line no-console

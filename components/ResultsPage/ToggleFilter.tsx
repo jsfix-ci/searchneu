@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import "../../css/_Filters.scss";
-import _ from "lodash";
+import React, { useState } from 'react';
+import '../../css/_Filters.scss';
+import _ from 'lodash';
 
 interface ToggleFilterProps {
   title: string;
@@ -13,7 +13,7 @@ export default function ToggleFilter({
   selected,
   setActive,
 }: ToggleFilterProps) {
-  const [id] = useState(_.uniqueId("react-switch-"));
+  const [id] = useState(_.uniqueId('react-switch-'));
   return (
     <div className="toggleFilter">
       <div className="filter__title">

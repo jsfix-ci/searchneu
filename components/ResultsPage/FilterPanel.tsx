@@ -1,11 +1,11 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 
-import CheckboxFilter from "./CheckboxFilter";
-import DropdownFilter from "./DropdownFilter";
-import RangeFilter from "./RangeFilter";
+import CheckboxFilter from './CheckboxFilter';
+import DropdownFilter from './DropdownFilter';
+import RangeFilter from './RangeFilter';
 
-import { FilterOptions, FilterSelection, FILTERS_IN_ORDER } from "./filters";
+import { FilterOptions, FilterSelection, FILTERS_IN_ORDER } from './filters';
 
 export interface FilterPanelProps {
   options: FilterOptions;
@@ -22,7 +22,7 @@ function FilterPanel({ options, selected, setActive }: FilterPanelProps) {
 
         return (
           <>
-            {category === "Dropdown" && (
+            {category === 'Dropdown' && (
               <DropdownFilter
                 title={display}
                 options={options[key]}
@@ -30,7 +30,7 @@ function FilterPanel({ options, selected, setActive }: FilterPanelProps) {
                 setActive={setActiveFilter}
               />
             )}
-            {category === "Checkboxes" && (
+            {category === 'Checkboxes' && (
               <CheckboxFilter
                 title={display}
                 options={options[key]}
@@ -38,7 +38,7 @@ function FilterPanel({ options, selected, setActive }: FilterPanelProps) {
                 setActive={setActiveFilter}
               />
             )}
-            {category === "Range" && (
+            {category === 'Range' && (
               <RangeFilter
                 title={display}
                 selected={aFilter}

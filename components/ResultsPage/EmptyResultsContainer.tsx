@@ -2,9 +2,9 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React from "react";
-import macros from "../macros";
-import { FilterSelection, DEFAULT_FILTER_SELECTION } from "./filters";
+import React from 'react';
+import macros from '../macros';
+import { FilterSelection, DEFAULT_FILTER_SELECTION } from './filters';
 
 interface EmptyResultsProps {
   query: string;
@@ -24,10 +24,10 @@ export default function EmptyResultsContainer({
 }: EmptyResultsProps) {
   return (
     <div className="Results_EmptyContainer">
-      <h3> No Results Found </h3>{" "}
+      <h3> No Results Found </h3>{' '}
       {filtersAreSet ? (
         <div className="Results_EmptyBottomLine">
-          {" "}
+          {' '}
           Try
           <div
             className="no-results__clear"

@@ -6,7 +6,7 @@
 // This file is responsible for mocking out the randomstring module.
 // This will always return the same string for a given input.
 
-import macros from "../../macros";
+import macros from '../../macros';
 
 export default {
   generate: (length) => {
@@ -14,9 +14,9 @@ export default {
       length = 10;
     }
 
-    let output = "";
+    let output = '';
     while (output.length < length) {
-      output += "0";
+      output += '0';
     }
     return output;
   },

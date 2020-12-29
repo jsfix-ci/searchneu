@@ -1,22 +1,22 @@
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { Markup } from "interweave";
-import { cloneDeep } from "lodash";
-import dynamic from "next/dynamic";
-import React, { useMemo, useState } from "react";
-import { notMostRecentTerm } from "../../global";
-import IconArrow from "../../icons/IconArrow";
-import IconCollapseExpand from "../../icons/IconCollapseExpand";
-import IconGlobe from "../../icons/IconGlobe";
-import { Course, PrereqType, Section } from "../../types";
-import MobileCollapsableDetail from "./MobileCollapsableDetail";
-import { DesktopSectionPanel, MobileSectionPanel } from "./SectionPanel";
-import useResultDetail from "./useResultDetail";
-import useShowAll from "./useShowAll";
-import useUserChange from "./useUserChange";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { Markup } from 'interweave';
+import { cloneDeep } from 'lodash';
+import dynamic from 'next/dynamic';
+import React, { useMemo, useState } from 'react';
+import { notMostRecentTerm } from '../../global';
+import IconArrow from '../../icons/IconArrow';
+import IconCollapseExpand from '../../icons/IconCollapseExpand';
+import IconGlobe from '../../icons/IconGlobe';
+import { Course, PrereqType, Section } from '../../types';
+import MobileCollapsableDetail from './MobileCollapsableDetail';
+import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel';
+import useResultDetail from './useResultDetail';
+import useShowAll from './useShowAll';
+import useUserChange from './useUserChange';
 
 const SignUpForNotifications = dynamic(
-  () => import("../../SignUpForNotifications"),
+  () => import('../../SignUpForNotifications'),
   { ssr: false }
 );
 
@@ -89,7 +89,7 @@ export function SearchResult({ course }: SearchResultProps) {
           <div className="SearchResult__panel--left">
             NUPaths:
             {course.nupath.length > 0 ? (
-              <span> {course.nupath.join(", ")}</span>
+              <span> {course.nupath.join(', ')}</span>
             ) : (
               <span className="empty"> None</span>
             )}
@@ -149,11 +149,11 @@ export function SearchResult({ course }: SearchResultProps) {
         >
           <span>
             {showAll
-              ? "Collapse sections"
+              ? 'Collapse sections'
               : `Show all sections (${sortedSections.length - 3} more)`}
           </span>
           <IconArrow
-            className={showAll ? "SearchResult__showAll--collapse" : null}
+            className={showAll ? 'SearchResult__showAll--collapse' : null}
           />
         </div>
       )}
@@ -178,7 +178,7 @@ export function MobileSearchResult({ course }: SearchResultProps) {
     // eslint-disable-next-line react/prop-types
     <div>
       {course.nupath.length > 0 ? (
-        <div> {course.nupath.join(", ")}</div>
+        <div> {course.nupath.join(', ')}</div>
       ) : (
         <span className="empty"> None</span>
       )}
@@ -190,8 +190,8 @@ export function MobileSearchResult({ course }: SearchResultProps) {
       <div
         className={
           expanded
-            ? "MobileSearchResult__header--expanded"
-            : "MobileSearchResult__header"
+            ? 'MobileSearchResult__header--expanded'
+            : 'MobileSearchResult__header'
         }
         role="button"
         tabIndex={0}
@@ -216,8 +216,8 @@ export function MobileSearchResult({ course }: SearchResultProps) {
             <div
               className={
                 showMore
-                  ? "MobileSearchResult__panel--description"
-                  : "MobileSearchResult__panel--descriptionHidden"
+                  ? 'MobileSearchResult__panel--description'
+                  : 'MobileSearchResult__panel--descriptionHidden'
               }
             >
               {course.desc}
@@ -228,7 +228,7 @@ export function MobileSearchResult({ course }: SearchResultProps) {
               tabIndex={0}
               onClick={() => setShowMore(!showMore)}
             >
-              {showMore ? "Show less" : "Show more"}
+              {showMore ? 'Show less' : 'Show more'}
             </div>
             <MobileCollapsableDetail
               title="NUPATH"
@@ -271,10 +271,10 @@ export function MobileSearchResult({ course }: SearchResultProps) {
               tabIndex={0}
               onClick={() => setShowAll(!showAll)}
             >
-              <span>{showAll ? "Collapse sections" : "Show all sections"}</span>
+              <span>{showAll ? 'Collapse sections' : 'Show all sections'}</span>
               <IconArrow
                 className={
-                  showAll ? "MobileSearchResult__showAll--collapse" : ""
+                  showAll ? 'MobileSearchResult__showAll--collapse' : ''
                 }
               />
             </div>

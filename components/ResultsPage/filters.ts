@@ -10,8 +10,8 @@ import {
   BooleanParam,
   ArrayParam,
   NumericObjectParam,
-} from "use-query-params";
-import _ from "lodash";
+} from 'use-query-params';
+import _ from 'lodash';
 
 // Neat utility to get a union type of the keys of T that extend type U.
 type FilteredKeys<T, U> = {
@@ -23,10 +23,10 @@ type ValueOf<T> = T[keyof T];
 // ============== Filter categories ================
 // Filter categoriesrepresents the different categories of filters that are possible
 export const FilterCategories = {
-  Toggle: "Toggle" as "Toggle",
-  Dropdown: "Dropdown" as "Dropdown",
-  Checkboxes: "Checkboxes" as "Checkboxes",
-  Range: "Range" as "Range",
+  Toggle: 'Toggle' as 'Toggle',
+  Dropdown: 'Dropdown' as 'Dropdown',
+  Checkboxes: 'Checkboxes' as 'Checkboxes',
+  Range: 'Range' as 'Range',
 };
 export type FilterCategory = ValueOf<typeof FilterCategories>;
 
@@ -37,7 +37,7 @@ type TypeForCat = {
   Checkboxes: string[];
   Range: ClassRange;
 };
-export type ClassRange = { min: string | ""; max: string | "" };
+export type ClassRange = { min: string | ''; max: string | '' };
 
 // Query param encoders for each category of filter
 const ENCODERS_FOR_CAT: Record<FilterCategory, QueryParamConfig<any, any>> = {
@@ -49,34 +49,34 @@ const ENCODERS_FOR_CAT: Record<FilterCategory, QueryParamConfig<any, any>> = {
 
 // ============== Filter specifications ================
 // Specify which filters exist, and which category they are
-const NUPATH_SPEC: FilterSpec<"Dropdown"> = {
+const NUPATH_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown,
   default: [],
-  display: "NU Path",
+  display: 'NU Path',
   order: 2,
 };
-const SUBJECT_SPEC: FilterSpec<"Dropdown"> = {
+const SUBJECT_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown,
   default: [],
-  display: "Subject",
+  display: 'Subject',
   order: 1,
 };
-const CAMPUS_SPEC: FilterSpec<"Dropdown"> = {
+const CAMPUS_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown,
   default: [],
-  display: "Campus",
+  display: 'Campus',
   order: 3,
 };
-const CLASSTYPE_SPEC: FilterSpec<"Checkboxes"> = {
+const CLASSTYPE_SPEC: FilterSpec<'Checkboxes'> = {
   category: FilterCategories.Checkboxes,
   default: [],
-  display: "Class Type",
+  display: 'Class Type',
   order: 4,
 };
-const CLASSIDRANGE_SPEC: FilterSpec<"Range"> = {
+const CLASSIDRANGE_SPEC: FilterSpec<'Range'> = {
   category: FilterCategories.Range,
-  default: { min: "", max: "" },
-  display: "Course Number",
+  default: { min: '', max: '' },
+  display: 'Course Number',
   order: 5,
 };
 export const FILTER_SPECS = {
@@ -106,7 +106,7 @@ export type FilterSelection = {
 
 // Represents the options for all filters
 export type FilterOptions = Record<
-  FilteredKeys<FilterSpecs, FilterSpec<"Dropdown"> | FilterSpec<"Checkboxes">>,
+  FilteredKeys<FilterSpecs, FilterSpec<'Dropdown'> | FilterSpec<'Checkboxes'>>,
   Option[]
 >;
 
@@ -135,7 +135,7 @@ export const FILTERS_BY_CATEGORY: Record<
 export const FILTERS_IN_ORDER = _(FILTER_SPECS)
   .toPairs()
   .map(([key, spec]) => ({ key, ...spec }))
-  .sortBy(["order"])
+  .sortBy(['order'])
   .value();
 export const areFiltersSet = (f: FilterSelection) =>
   !_.isMatch(DEFAULT_FILTER_SELECTION, f);

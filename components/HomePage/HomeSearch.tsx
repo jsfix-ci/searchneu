@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
-import React from "react";
-import { getTermDropdownOptionsForCampus } from "../global";
-import IconGradcap from "../icons/IconGradcap";
-import IconScale from "../icons/IconScale";
-import IconTie from "../icons/IconTie";
-import SearchBar from "../ResultsPage/SearchBar";
-import SearchDropdown from "../ResultsPage/SearchDropdown";
-import { Campus } from "../types";
+import { useRouter } from 'next/router';
+import React from 'react';
+import { getTermDropdownOptionsForCampus } from '../global';
+import IconGradcap from '../icons/IconGradcap';
+import IconScale from '../icons/IconScale';
+import IconTie from '../icons/IconTie';
+import SearchBar from '../ResultsPage/SearchBar';
+import SearchDropdown from '../ResultsPage/SearchDropdown';
+import { Campus } from '../types';
 
 interface HomeSearchProps {
   setTermId: (s: string) => void;
@@ -14,10 +14,10 @@ interface HomeSearchProps {
   campus: Campus;
   setCampus: (c: Campus) => void;
 }
-const campusToColor: Record<Campus, "red" | "yellow" | "blue"> = {
-  [Campus.NEU]: "red",
-  [Campus.CPS]: "yellow",
-  [Campus.LAW]: "blue",
+const campusToColor: Record<Campus, 'red' | 'yellow' | 'blue'> = {
+  [Campus.NEU]: 'red',
+  [Campus.CPS]: 'yellow',
+  [Campus.LAW]: 'blue',
 };
 const HomeSearch = ({
   setTermId,

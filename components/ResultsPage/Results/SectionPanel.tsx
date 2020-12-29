@@ -1,12 +1,12 @@
-import dynamic from "next/dynamic";
-import React from "react";
-import IconGlobe from "../../icons/IconGlobe";
-import Keys from "../../Keys";
-import { DayjsTuple, DayOfWeek, Meeting, Section } from "../../types";
-import useSectionPanelDetail from "./useSectionPanelDetail";
-import WeekdayBoxes from "./WeekdayBoxes";
+import dynamic from 'next/dynamic';
+import React from 'react';
+import IconGlobe from '../../icons/IconGlobe';
+import Keys from '../../Keys';
+import { DayjsTuple, DayOfWeek, Meeting, Section } from '../../types';
+import useSectionPanelDetail from './useSectionPanelDetail';
+import WeekdayBoxes from './WeekdayBoxes';
 
-const NotifCheckBox = dynamic(() => import("../../panels/NotifCheckBox"), {
+const NotifCheckBox = dynamic(() => import('../../panels/NotifCheckBox'), {
   ssr: false,
 });
 
@@ -25,7 +25,7 @@ const meetsOnDay = (meeting: Meeting, dayIndex: DayOfWeek): boolean => {
 const getProfs = (section: Section): string[] => {
   return section.profs.length > 0
     ? Array.from(section.profs.map((prof) => unescape(prof))).sort()
-    : ["TBA"];
+    : ['TBA'];
 };
 
 const getAllMeetingMoments = (
@@ -67,10 +67,10 @@ export function DesktopSectionPanel({
   const getUniqueTimes = (times: DayjsTuple[]) => {
     const seenTimes = new Set();
     return times.reduce((acc, t) => {
-      if (!seenTimes.has(t.start.format("h:mm"))) {
+      if (!seenTimes.has(t.start.format('h:mm'))) {
         acc.push(t);
       }
-      seenTimes.add(t.start.format("h:mm"));
+      seenTimes.add(t.start.format('h:mm'));
       return acc;
     }, []);
   };
@@ -84,8 +84,8 @@ export function DesktopSectionPanel({
             {getUniqueTimes(meeting.times).map((time) => (
               <>
                 <span>
-                  {`${time.start.format("h:mm")}-${time.end.format(
-                    "h:mm a"
+                  {`${time.start.format('h:mm')}-${time.end.format(
+                    'h:mm a'
                   )} | ${meeting.location}`}
                 </span>
                 <br />
@@ -119,7 +119,7 @@ export function DesktopSectionPanel({
           {section.crn}
         </a>
       </td>
-      <td>{getProfs(section).join(", ")}</td>
+      <td>{getProfs(section).join(', ')}</td>
       <td>
         {section.online ? <span>Online Class</span> : getMeetings(section)}
       </td>
@@ -151,9 +151,9 @@ export function MobileSectionPanel({
   const { getSeatsClass } = useSectionPanelDetail(section);
 
   const groupedTimesAndDays = (times: DayjsTuple[]) => {
-    const daysOfWeek = ["Su", "M", "T", "W", "Th", "F", "S"];
+    const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S'];
     return times.reduce((acc, t) => {
-      const timeString = `${t.start.format("h:mm")}-${t.end.format("h:mm a")}`;
+      const timeString = `${t.start.format('h:mm')}-${t.end.format('h:mm a')}`;
       acc.set(
         timeString,
         acc.get(timeString)
@@ -181,7 +181,7 @@ export function MobileSectionPanel({
   return (
     <div className="MobileSectionPanel">
       <div className="MobileSectionPanel__header">
-        <span>{getProfs(section).join(", ")}</span>
+        <span>{getProfs(section).join(', ')}</span>
         <span>Boston</span>
       </div>
       <div className="MobileSectionPanel__firstRow">

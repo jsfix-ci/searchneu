@@ -1,19 +1,19 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import { cloneDeep, flatten, groupBy, values } from "lodash";
-import React from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import Keys from "../Keys";
-import macros from "../macros";
-import EmployeePanel from "../panels/EmployeePanel";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { cloneDeep, flatten, groupBy, values } from 'lodash';
+import React from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Keys from '../Keys';
+import macros from '../macros';
+import EmployeePanel from '../panels/EmployeePanel';
 import {
   DayjsTuple,
   Meeting,
   SearchItem,
   Section,
   TimeToDayjs,
-} from "../types";
-import { MobileSearchResult, SearchResult } from "./Results/SearchResult";
+} from '../types';
+import { MobileSearchResult, SearchResult } from './Results/SearchResult';
 
 dayjs.extend(utc);
 
@@ -36,11 +36,11 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
         const day = parseInt(dayIndex, 10) + 3;
 
         const obj = {
-          start: dayjs.utc(event.start * 1000).add(day, "day"),
-          end: dayjs.utc(event.end * 1000).add(day, "day"),
+          start: dayjs.utc(event.start * 1000).add(day, 'day'),
+          end: dayjs.utc(event.end * 1000).add(day, 'day'),
         };
 
-        if (parseInt(obj.start.format("YYYY"), 10) !== 1970) {
+        if (parseInt(obj.start.format('YYYY'), 10) !== 1970) {
           macros.error();
         }
 
@@ -52,7 +52,7 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
   // returns objects like this: {3540000041400000: Array[3]}
   // if has three meetings per week that meet at the same times
   const groupedByTimeOfDay: TimeToDayjs = groupBy(timeMoments, (event) => {
-    const zero = dayjs(event.start).startOf("day");
+    const zero = dayjs(event.start).startOf('day');
     return `${event.start.diff(zero)}${event.end.diff(zero)}`;
   });
 
@@ -61,7 +61,7 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
 
   // And sort by start time
   valuesGroupedByTimeOfDay.sort((meetingsInAday) => {
-    const zero = dayjs(meetingsInAday[0].start).startOf("day");
+    const zero = dayjs(meetingsInAday[0].start).startOf('day');
     return meetingsInAday[0].start.diff(zero);
   });
 
@@ -106,7 +106,7 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
               return (
                 <ResultItemMemoized
                   key={
-                    result.type === "class"
+                    result.type === 'class'
                       ? Keys.getClassHash(result.class)
                       : result.employee.id
                   }
@@ -123,7 +123,7 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 // Memoize result items to avoid unneeded re-renders and to reuse
 // If the Panels are updated to function components, we can memoize them instead and remove this
 const ResultItemMemoized = React.memo(({ result }: { result }) => {
-  if (result.type === "class") {
+  if (result.type === 'class') {
     const course = result.class;
     // TODO: Can we get rid of this clone deep?
     course.sections = getFormattedSections(cloneDeep(result.sections));
@@ -134,11 +134,11 @@ const ResultItemMemoized = React.memo(({ result }: { result }) => {
     );
   }
 
-  if (result.type === "employee") {
+  if (result.type === 'employee') {
     return <EmployeePanel employee={result.employee} />;
   }
 
-  macros.log("Unknown type", result.type);
+  macros.log('Unknown type', result.type);
   return null;
 });
 

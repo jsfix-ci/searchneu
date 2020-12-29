@@ -3,9 +3,9 @@
  * See the license file in the root folder for details.
  */
 
-import isMobile from "is-mobile";
-import ReactTooltip from "react-tooltip";
-import abstractMacros from "./abstractMacros";
+import isMobile from 'is-mobile';
+import ReactTooltip from 'react-tooltip';
+import abstractMacros from './abstractMacros';
 
 // This file contains a bunch of utility functions and constants that are used all throughout the frontend.
 // It inherets from ../common/macros, so things there will also be here too
@@ -16,7 +16,7 @@ let tooltipTimer = null;
 // Amplitude only works in browser, not on nextjs server side
 let amplitude;
 if (process.browser) {
-  amplitude = require("amplitude-js");
+  amplitude = require('amplitude-js');
   amplitude.getInstance().init(abstractMacros.amplitudeToken);
 }
 class Macros extends abstractMacros {
@@ -46,10 +46,10 @@ class Macros extends abstractMacros {
     if (!Macros.PROD || !process.browser) {
       return;
     }
-    console.log("log amplitude");
+    console.log('log amplitude');
     amplitude.getInstance().logEvent(type, event, (statusCode) => {
       if (statusCode !== 200) {
-        Macros.log("Amplitude logging failed", statusCode);
+        Macros.log('Amplitude logging failed', statusCode);
       }
     });
   }
@@ -61,7 +61,7 @@ class Macros extends abstractMacros {
   static copyToClipboard(input) {
     const suppotsNewAPI = navigator.clipboard && navigator.clipboard.writeText;
 
-    this.logAmplitudeEvent("copy event", {
+    this.logAmplitudeEvent('copy event', {
       text: input,
       suppotsNewAPI: suppotsNewAPI,
     });
@@ -73,28 +73,28 @@ class Macros extends abstractMacros {
     }
 
     // If not, use a much longer process...
-    const isRTL = document.documentElement.getAttribute("dir") === "rtl";
+    const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 
     if (!this.copyTextArea) {
-      this.copyTextArea = document.createElement("textarea");
+      this.copyTextArea = document.createElement('textarea');
     }
 
-    this.copyTextArea.style.display = "";
+    this.copyTextArea.style.display = '';
 
     // Prevent zooming on iOS
-    this.copyTextArea.style.fontSize = "12pt";
+    this.copyTextArea.style.fontSize = '12pt';
     // Reset box model
-    this.copyTextArea.style.border = "0";
-    this.copyTextArea.style.padding = "0";
-    this.copyTextArea.style.margin = "0";
+    this.copyTextArea.style.border = '0';
+    this.copyTextArea.style.padding = '0';
+    this.copyTextArea.style.margin = '0';
     // Move element out of screen horizontally
-    this.copyTextArea.style.position = "absolute";
-    this.copyTextArea.style[isRTL ? "right" : "left"] = "-9999px";
+    this.copyTextArea.style.position = 'absolute';
+    this.copyTextArea.style[isRTL ? 'right' : 'left'] = '-9999px';
     // Move element to the same position vertically
     const yPosition = window.pageYOffset || document.documentElement.scrollTop;
     this.copyTextArea.style.top = `${yPosition}px`;
 
-    this.copyTextArea.setAttribute("readonly", "");
+    this.copyTextArea.setAttribute('readonly', '');
     this.copyTextArea.value = input;
 
     if (!document.body.contains(this.copyTextArea)) {
@@ -105,12 +105,12 @@ class Macros extends abstractMacros {
     this.copyTextArea.setSelectionRange(0, this.copyTextArea.value.length);
 
     try {
-      document.execCommand("copy");
+      document.execCommand('copy');
     } catch (err) {
-      this.error("Cannot copy", err);
+      this.error('Cannot copy', err);
     }
 
-    this.copyTextArea.style.display = "none";
+    this.copyTextArea.style.display = 'none';
   }
 }
 
@@ -146,7 +146,7 @@ Macros.sectionsAddedWhenShowMoreClicked = 5;
 // If this number of section is shown, the show more button will just show the rest of them instead of showing just a couple more.
 Macros.sectionsShowAllThreshold = 15;
 
-Macros.searchEvent = "customSearch";
+Macros.searchEvent = 'customSearch';
 
 // True if is a Phone or other mobile device (iPod). Will be false for iPads.
 Macros.isMobile = isMobile();
