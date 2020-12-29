@@ -1,173 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should render form is closed 1`] = `
-<div
-  className="feedback-container"
->
-  <Transition
-    appear={false}
-    enter={true}
-    exit={true}
-    in={false}
-    mountOnEnter={false}
-    onEnter={[Function]}
-    onEntered={[Function]}
-    onEntering={[Function]}
-    onExit={[Function]}
-    onExited={[Function]}
-    onExiting={[Function]}
-    timeout={500}
-    unmountOnExit={false}
-  >
-    <Component />
+"<div className=\\"feedback-container\\">
+  <Transition in={false} timeout={500} mountOnEnter={false} unmountOnExit={false} appear={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
+    [function]
   </Transition>
-  <Modal
-    centered={true}
-    className="feedback-modal-container"
-    closeOnDimmerClick={true}
-    closeOnDocumentClick={false}
-    dimmer={true}
-    eventPool="Modal"
-    open={false}
-    size="small"
-  >
-    <Header
-      content="Get Involved with Search NEU!"
-      icon="mail"
-    />
-    <ModalContent
-      className="formModalContent"
-    >
-      <Form
-        as="form"
-      >
-        <div
-          className="feedbackParagraph"
-        >
-          Thanks for your interest! We'd love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There's a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don't have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!
+  <Modal open={false} onClose={[Function: toggleForm]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
+    <Header icon=\\"mail\\" content=\\"Get Involved with Search NEU!\\" />
+    <ModalContent className=\\"formModalContent\\">
+      <Form as=\\"form\\">
+        <div className=\\"feedbackParagraph\\">
+          Thanks for your interest! We&#39;d love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There&#39;s a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don&#39;t have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!
         </div>
-        <TextArea
-          as="textarea"
-          className="feedbackTextbox"
-          form="feedbackForm"
-          name="response"
-          onChange={[Function]}
-          rows={3}
-        />
+        <TextArea name=\\"response\\" form=\\"feedbackForm\\" className=\\"feedbackTextbox\\" onChange={[Function: bound onTextAreaChange]} as=\\"textarea\\" rows={3} />
       </Form>
     </ModalContent>
     <ModalActions>
-      <Button
-        as="button"
-        basic={true}
-        color="red"
-      >
-        <Icon
-          as="i"
-          name="remove"
-        />
+      <Button basic={true} color=\\"red\\" onClick={[Function: toggleForm]} as=\\"button\\">
+        <Icon name=\\"remove\\" as=\\"i\\" />
         Cancel
       </Button>
-      <Button
-        as="button"
-        color="green"
-        form="feedbackForm"
-        onClick={[Function]}
-        type="submit"
-      >
-        <Icon
-          as="i"
-          name="checkmark"
-        />
+      <Button type=\\"submit\\" color=\\"green\\" form=\\"feedbackForm\\" onClick={[Function: bound onSubmit]} as=\\"button\\">
+        <Icon name=\\"checkmark\\" as=\\"i\\" />
         Submit
       </Button>
     </ModalActions>
   </Modal>
-</div>
+</div>"
 `;
 
 exports[`should render the form 1`] = `
-<div
-  className="feedback-container"
->
-  <Transition
-    appear={false}
-    enter={true}
-    exit={true}
-    in={false}
-    mountOnEnter={false}
-    onEnter={[Function]}
-    onEntered={[Function]}
-    onEntering={[Function]}
-    onExit={[Function]}
-    onExited={[Function]}
-    onExiting={[Function]}
-    timeout={500}
-    unmountOnExit={false}
-  >
-    <Component />
+"<div className=\\"feedback-container\\">
+  <Transition in={false} timeout={500} mountOnEnter={false} unmountOnExit={false} appear={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
+    [function]
   </Transition>
-  <Modal
-    centered={true}
-    className="feedback-modal-container"
-    closeOnDimmerClick={true}
-    closeOnDocumentClick={false}
-    dimmer={true}
-    eventPool="Modal"
-    open={true}
-    size="small"
-  >
-    <Header
-      content="Get Involved with Search NEU!"
-      icon="mail"
-    />
-    <ModalContent
-      className="formModalContent"
-    >
-      <Form
-        as="form"
-      >
-        <div
-          className="feedbackParagraph"
-        >
-          Thanks for your interest! We'd love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There's a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don't have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!
+  <Modal open={true} onClose={[Function: toggleForm]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
+    <Header icon=\\"mail\\" content=\\"Get Involved with Search NEU!\\" />
+    <ModalContent className=\\"formModalContent\\">
+      <Form as=\\"form\\">
+        <div className=\\"feedbackParagraph\\">
+          Thanks for your interest! We&#39;d love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There&#39;s a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don&#39;t have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!
         </div>
-        <TextArea
-          as="textarea"
-          className="feedbackTextbox"
-          form="feedbackForm"
-          name="response"
-          onChange={[Function]}
-          rows={3}
-        />
+        <TextArea name=\\"response\\" form=\\"feedbackForm\\" className=\\"feedbackTextbox\\" onChange={[Function: bound onTextAreaChange]} as=\\"textarea\\" rows={3} />
       </Form>
     </ModalContent>
     <ModalActions>
-      <Button
-        as="button"
-        basic={true}
-        color="red"
-      >
-        <Icon
-          as="i"
-          name="remove"
-        />
+      <Button basic={true} color=\\"red\\" onClick={[Function: toggleForm]} as=\\"button\\">
+        <Icon name=\\"remove\\" as=\\"i\\" />
         Cancel
       </Button>
-      <Button
-        as="button"
-        color="green"
-        form="feedbackForm"
-        onClick={[Function]}
-        type="submit"
-      >
-        <Icon
-          as="i"
-          name="checkmark"
-        />
+      <Button type=\\"submit\\" color=\\"green\\" form=\\"feedbackForm\\" onClick={[Function: bound onSubmit]} as=\\"button\\">
+        <Icon name=\\"checkmark\\" as=\\"i\\" />
         Submit
       </Button>
     </ModalActions>
   </Modal>
-</div>
+</div>"
 `;

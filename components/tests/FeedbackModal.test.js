@@ -6,7 +6,7 @@
 import React from 'react';
 
 import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 import FeedbackModal from '../FeedbackModal';
 
@@ -17,7 +17,7 @@ it('should render the form', () => {
 
   }
 
-  const result = shallow(<FeedbackModal closeForm={ closeForm } feedbackModalOpen />);
+  const result = shallow(<FeedbackModal closeForm={ closeForm } feedbackModalOpen toggleForm={() => {}} />).debug();
   expect(result).toMatchSnapshot();
 });
 
@@ -27,6 +27,6 @@ it('should render form is closed', () => {
 
   }
 
-  const result = shallow(<FeedbackModal closeForm={ closeForm } feedbackModalOpen={ false } />);
+  const result = shallow(<FeedbackModal closeForm={ closeForm } feedbackModalOpen={ false } toggleForm={() => {}} />).debug();
   expect(result).toMatchSnapshot();
 });
