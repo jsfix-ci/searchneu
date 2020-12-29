@@ -18,6 +18,6 @@ it('render the default notification checkbox', () => {
 });
 
 it('render the read only notification checkbox', () => {
-  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[1] } />);
+  const result = shallow(<NotifCheckBox section={ mockData.cs1210.sections[2] } />);
   expect(result).toMatchSnapshot();
 });

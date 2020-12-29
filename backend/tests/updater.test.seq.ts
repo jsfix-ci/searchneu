@@ -2,7 +2,8 @@ import { InputJsonValue } from '@prisma/client';
 import pMap from 'p-map';
 import _ from 'lodash';
 
-import { Course as CourseType, Section as SectionType, Requisite } from '../types';
+import { Course as CourseType, Section as SectionType } from '../types';
+import { Requisite } from '../../common/types';
 import prisma from '../prisma';
 import Updater, { Notification } from '../updater';
 import Keys from '../../common/Keys';

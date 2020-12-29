@@ -12,6 +12,7 @@ import LogoInput from './images/LogoInput'
 import macros from './macros';
 import facebook from './facebook';
 import user from './user';
+import Keys from '../../common/Keys';
 
 // This file is responsible for the Sign Up for notifications flow.
 // First, this will render a button that will say something along the lines of "Get notified when...!"
@@ -74,7 +75,7 @@ class SignUpForNotifications extends React.Component {
     if (!iframe) {
       macros.logAmplitudeEvent('FB Send to Messenger', {
         message: 'Unable to load iframe for send to messenger plugin.',
-        hash: this.props.aClass.getHash(),
+        hash: Keys.getClassHash(this.props.aClass),
       });
       macros.error('No iframe?');
       return;
@@ -84,7 +85,7 @@ class SignUpForNotifications extends React.Component {
       // Check to see if the plugin was successfully rendered
       const ele = this.facebookScopeRef.querySelector('.sendToMessengerButton > span');
 
-      const classHash = this.props.aClass.getHash();
+      const classHash = Keys.getClassHash(this.props.aClass);
 
       // If has adblock and haven't shown the warning yet, show the warning.
       if (ele.offsetHeight === 0 && ele.offsetWidth === 0 && !facebook.didPluginRender()) {
@@ -132,7 +133,7 @@ class SignUpForNotifications extends React.Component {
     } else {
       macros.logAmplitudeEvent('FB Send to Messenger', {
         message: 'First button click',
-        hash: this.props.aClass.getHash(),
+        hash: Keys.getClassHash(this.props.aClass),
       });
 
       // Check the status of the FB plugin
@@ -163,7 +164,7 @@ class SignUpForNotifications extends React.Component {
     // If there is exactly one section in the class and the seats are all taken
     // automatically sign the user up for it.
     if (aClass.sections.length === 1 && aClass.sections[0].seatsRemaining <= 0) {
-      sectionHashes.push(aClass.sections[0].getHash());
+      sectionHashes.push(Keys.getSectionHash(aClass.sections[0]));
     }
 
     // JSON stringify it and then base64 encode the data that we want to pass to the backend.
@@ -171,7 +172,7 @@ class SignUpForNotifications extends React.Component {
     // So base64 enocode it and then decode it on the server. Without the base64 encoding, the button will not render.
 
     const payload = { //TODO add type FBUserPayload
-      classHash: aClass.getHash(),
+      classHash: Keys.getClassHash(this.props.aClass),
       sectionHashes: sectionHashes,
       dev: macros.DEV,
       loginKey: loginKey,
@@ -195,6 +196,12 @@ class SignUpForNotifications extends React.Component {
   closeModal() {
     this.setState({
       showAdblockModal: false,
+    });
+  }
+
+  hasAtLeastOneSectionFull() {
+    return this.props.aClass.sections.some((e) => {
+      return e.seatsRemaining <= 0 && e.seatsCapacity > 0
     });
   }
 
@@ -229,7 +236,7 @@ class SignUpForNotifications extends React.Component {
       }
     } else if (this.props.aClass.sections.length === 0) {
       content = <Button basic onClick={ this.onSubscribeToggleChange } content='Get notified when sections are added!' className='notificationButton' />;
-    } else if (this.props.aClass.hasAtLeastOneSectionFull()) {
+    } else if (this.hasAtLeastOneSectionFull()) {
       content = (
         <div className='initialNotificationButton' role='button' focusable='true' tabIndex={ 0 } onClick={ this.onSubscribeToggleChange }>
           <LogoInput height='14' width='18' fill='#d41b2c' />

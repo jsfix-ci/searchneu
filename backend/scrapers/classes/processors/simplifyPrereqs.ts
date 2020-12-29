@@ -4,8 +4,9 @@
  */
 
 import {
-  Requisite, isCourseReq, BooleanReq, isBooleanReq,
+  isCourseReq, isCompositeReq,
 } from '../../../types';
+import { Requisite, CompositeReq } from '../../../../common/types';
 
 //this is given the output of formatRequirements, where data.type and data.values exist
 // if there is an or embedded in another or, merge them (and and's too)
@@ -29,7 +30,7 @@ function simplifyRequirementsBase(data: Requisite): Requisite {
   data.values.forEach((subData) => {
     subData = simplifyRequirementsBase(subData);
 
-    if (isBooleanReq(subData)) {
+    if (isCompositeReq(subData)) {
       //if same type, merge
       if (subData.type === data.type) {
         retVal.values = retVal.values.concat(subData.values);
@@ -57,9 +58,9 @@ function simplifyRequirementsBase(data: Requisite): Requisite {
 }
 
 
-export default function simplifyRequirements(data: Requisite): BooleanReq {
+export default function simplifyRequirements(data: Requisite): CompositeReq {
   data = simplifyRequirementsBase(data);
-  if (!isBooleanReq(data)) {
+  if (!isCompositeReq(data)) {
     return {
       type: 'and',
       values: [data],

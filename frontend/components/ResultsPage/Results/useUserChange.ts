@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Course from '../../classModels/Course'
+import { Course } from '../../types'
 import user from '../../user'
 import Keys from '../../../../common/Keys'
 

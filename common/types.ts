@@ -22,3 +22,21 @@ export interface FBUserPayload {
   dev: boolean;
   loginKey: string;
 }
+
+// A co or pre requisite object.
+export type Requisite = string | CompositeReq | CourseReq;
+
+export interface CompositeReq {
+  type: 'and' | 'or';
+  values: Requisite[];
+}
+
+export interface CourseReq {
+  classId: string;
+  subject: string;
+  missing?: true;
+}
+
+export interface ReqFor {
+  values : CourseReq[]
+}

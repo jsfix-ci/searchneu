@@ -6,7 +6,9 @@
 
 // An NU employee
 
-import { BackendMeeting } from '../common/types';
+import {
+  BackendMeeting, Requisite, CompositeReq, CourseReq,
+} from '../common/types';
 
 export const NEU_COLLEGE = 'NEU';
 export const CPS_COLLEGE = 'CPS';
@@ -50,20 +52,8 @@ export interface Course {
   prereqs: Requisite,
 }
 
-// A co or pre requisite object.
-export type Requisite = string | BooleanReq | CourseReq;
-export interface BooleanReq {
-  type: 'and' | 'or';
-  values: Requisite[];
-}
-export interface CourseReq {
-  classId: string;
-  subject: string;
-  missing?: true;
-}
-
-export function isBooleanReq(req: Requisite): req is BooleanReq {
-  return (req as BooleanReq).type !== undefined;
+export function isCompositeReq(req: Requisite): req is CompositeReq {
+  return (req as CompositeReq).type !== undefined;
 }
 
 export function isCourseReq(req: Requisite): req is CourseReq {
