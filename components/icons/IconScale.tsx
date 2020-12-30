@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const IconScale = ({
   width = '24',
@@ -8,7 +8,7 @@ const IconScale = ({
   width?: string;
   height?: string;
   className?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

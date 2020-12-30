@@ -5,13 +5,13 @@
  * Types and constants for filters. One source of truth for frontend filters
  */
 
+import _, { isMatch, mapValues, pickBy } from 'lodash';
 import {
-  QueryParamConfig,
-  BooleanParam,
   ArrayParam,
+  BooleanParam,
   NumericObjectParam,
+  QueryParamConfig,
 } from 'use-query-params';
-import _ from 'lodash';
 
 // Neat utility to get a union type of the keys of T that extend type U.
 type FilteredKeys<T, U> = {
@@ -23,10 +23,10 @@ type ValueOf<T> = T[keyof T];
 // ============== Filter categories ================
 // Filter categoriesrepresents the different categories of filters that are possible
 export const FilterCategories = {
-  Toggle: 'Toggle' as 'Toggle',
-  Dropdown: 'Dropdown' as 'Dropdown',
-  Checkboxes: 'Checkboxes' as 'Checkboxes',
-  Range: 'Range' as 'Range',
+  Toggle: 'Toggle' as const,
+  Dropdown: 'Dropdown' as const,
+  Checkboxes: 'Checkboxes' as const,
+  Range: 'Range' as const,
 };
 export type FilterCategory = ValueOf<typeof FilterCategories>;
 
@@ -121,21 +121,21 @@ export type Option = {
 export const QUERY_PARAM_ENCODERS: Record<
   keyof FilterSpecs,
   QueryParamConfig<any, any>
-> = _.mapValues(FILTER_SPECS, (spec) => ENCODERS_FOR_CAT[spec.category]);
-export const DEFAULT_FILTER_SELECTION: FilterSelection = _.mapValues<FilterSelection>(
+> = mapValues(FILTER_SPECS, (spec) => ENCODERS_FOR_CAT[spec.category]);
+export const DEFAULT_FILTER_SELECTION: FilterSelection = mapValues<FilterSelection>(
   FILTER_SPECS,
   (spec) => spec.default
 );
 export const FILTERS_BY_CATEGORY: Record<
   FilterCategory,
   Partial<FilterSpecs>
-> = _.mapValues(FilterCategories, (cat: FilterCategory) => {
-  return _.pickBy(FILTER_SPECS, (spec) => spec.category === cat);
+> = mapValues(FilterCategories, (cat: FilterCategory) => {
+  return pickBy(FILTER_SPECS, (spec) => spec.category === cat);
 });
 export const FILTERS_IN_ORDER = _(FILTER_SPECS)
   .toPairs()
   .map(([key, spec]) => ({ key, ...spec }))
   .sortBy(['order'])
   .value();
-export const areFiltersSet = (f: FilterSelection) =>
-  !_.isMatch(DEFAULT_FILTER_SELECTION, f);
+export const areFiltersSet = (f: FilterSelection): boolean =>
+  !isMatch(DEFAULT_FILTER_SELECTION, f);

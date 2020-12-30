@@ -1,9 +1,9 @@
-import React from 'react';
 import _ from 'lodash';
+import React, { ReactElement } from 'react';
 import {
-  FILTERS_BY_CATEGORY,
-  FilterSelection,
   DEFAULT_FILTER_SELECTION,
+  FilterSelection,
+  FILTERS_BY_CATEGORY,
 } from './filters';
 
 interface PillProps {
@@ -12,7 +12,7 @@ interface PillProps {
   onClose: () => void;
 }
 
-function FilterPill({ verbose, compact, onClose }: PillProps) {
+function FilterPill({ verbose, compact, onClose }: PillProps): ReactElement {
   return (
     <div className="FilterPill">
       <button className="FilterPill__close" type="button" onClick={onClose}>
@@ -34,7 +34,10 @@ const OPTIONS_FILTERS = {
   ...FILTERS_BY_CATEGORY.Checkboxes,
 };
 
-export default function FilterPills({ filters, setFilters }: FilterPillsProps) {
+export default function FilterPills({
+  filters,
+  setFilters,
+}: FilterPillsProps): ReactElement {
   const crumbs: PillProps[] = [];
 
   // Add all the selected option filters

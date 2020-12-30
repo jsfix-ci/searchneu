@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Hook for enabling a component to only render at scheduled intervals
@@ -11,7 +11,7 @@ export default function useFeedbackSchedule(
 ): [boolean, () => void] {
   const [show, setShow] = useState(true);
 
-  const setFinished = () => {
+  const setFinished = (): void => {
     setTimeout(() => {
       localStorage.setItem(keyString, 'true');
     }, 2000);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const IconCheckmark = ({
   width = '12',
@@ -8,7 +8,7 @@ const IconCheckmark = ({
   width?: string;
   height?: string;
   className?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

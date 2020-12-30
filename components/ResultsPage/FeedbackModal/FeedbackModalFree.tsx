@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface FreeResponseProps {
   feedbackQuery: string;
@@ -14,7 +14,7 @@ export default function FeedbackModalFree({
   feedbackQuery,
   setFeedbackQuery,
   setFeedbackType,
-}: FreeResponseProps) {
+}: FreeResponseProps): ReactElement {
   return (
     <>
       <div className="FeedbackModal__popoutSubHeader">
@@ -63,7 +63,7 @@ export default function FeedbackModalFree({
         <textarea
           className="FeedbackModal__freeQuery"
           autoComplete="off"
-          // eslint-disable-next-line jsx-a11y/no-autofocus
+          // aaaaaaaaaaaahhhhhhhhh eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           value={feedbackQuery}
           onChange={(event) => {

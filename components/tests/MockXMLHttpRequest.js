@@ -47,10 +47,6 @@ class MockXMLHttpRequest {
     this.constructor.instance = this;
   }
 
-  addEventListener() {}
-
-  setRequestHeader() {}
-
   open(method, url, isAsync) {
     if (this.state !== XMLHttpRequestState.UNOPENED) {
       macros.critical(

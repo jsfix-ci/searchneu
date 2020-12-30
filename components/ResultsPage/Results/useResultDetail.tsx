@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import macros from '../../macros';
 import {
   CompositeReq,
@@ -9,9 +9,14 @@ import {
   Requisite,
 } from '../../types';
 
-export default function useResultDetail(aClass: Course) {
+export default function useResultDetail(
+  aClass: Course
+): {
+  optionalDisplay: (PreqreqType, Course) => ReactElement | ReactElement[];
+  creditsString: () => string;
+} {
   const router = useRouter();
-  const onReqClick = (reqType, childBranch, event, searchQuery) => {
+  const onReqClick = (reqType, childBranch, event, searchQuery): void => {
     router.push(
       `/${router.query.campus}/${router.query.termId}/search/${searchQuery}`
     );
@@ -56,7 +61,7 @@ export default function useResultDetail(aClass: Course) {
     requisite: Course | CompositeReq,
     reqType: PrereqType,
     childNodes: Requisite[]
-  ) => {
+  ): ReactElement | ReactElement[] => {
     const retVal = [];
 
     // Keep track of which subject+classId combonations have been used so far.
@@ -178,7 +183,10 @@ export default function useResultDetail(aClass: Course) {
   };
 
   // returns an array made to be rendered by react to display the prereqs
-  const getReqsString = (reqType: PrereqType, course: Course) => {
+  const getReqsString = (
+    reqType: PrereqType,
+    course: Course
+  ): ReactElement | ReactElement[] => {
     let childNodes: Requisite[];
 
     if (reqType === PrereqType.PREREQ) {
@@ -196,13 +204,16 @@ export default function useResultDetail(aClass: Course) {
     return getReqsStringHelper(course, reqType, childNodes);
   };
 
-  const optionalDisplay = (prereqType: PrereqType, course: Course) => {
+  const optionalDisplay = (
+    prereqType: PrereqType,
+    course: Course
+  ): ReactElement | ReactElement[] => {
     const data = getReqsString(prereqType, course);
 
     return data;
   };
 
-  const creditsString = () => {
+  const creditsString = (): string => {
     const creditDescriptor =
       aClass.maxCredits > 1 || aClass.maxCredits === 0 ? 'CREDITS' : 'CREDIT';
     return aClass.maxCredits === aClass.minCredits

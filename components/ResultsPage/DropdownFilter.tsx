@@ -1,5 +1,5 @@
 import { pull, without } from 'lodash';
-import React, { useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import DropdownArrow from '../icons/DropdownArrow.svg';
 import PillClose from '../icons/pillClose.svg';
 import { Option } from './filters';
@@ -16,7 +16,7 @@ export default function DropdownFilter({
   options,
   selected,
   setActive,
-}: DropdownFilter) {
+}: DropdownFilter): ReactElement {
   const [filterString, setFilterString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,13 +30,13 @@ export default function DropdownFilter({
 
   useClickOutside(dropdown, isOpen, setIsOpen);
 
-  function handleClickOnTheDropdown() {
+  function handleClickOnTheDropdown(): void {
     if (selected.length !== 0 || filteredOptions.length !== 0) {
       setIsOpen(!isOpen);
     }
   }
 
-  function getDropdownStatus() {
+  function getDropdownStatus(): string {
     if (selected.length === 0 && filteredOptions.length === 0 && !isOpen) {
       return 'disabled';
     }
@@ -46,7 +46,7 @@ export default function DropdownFilter({
     return '';
   }
 
-  function choosePlaceholder() {
+  function choosePlaceholder(): string {
     if (selected.length === 0) {
       if (filteredOptions.length > 0) {
         return 'Choose one or multiple';
@@ -67,12 +67,13 @@ export default function DropdownFilter({
         onClick={handleClickOnTheDropdown}
       >
         <div className={`DropdownFilter__search ${getDropdownStatus()}`}>
-          {selected.map((selectElement) => (
+          {selected.map((selectElement, i) => (
             <span
               className="DropdownFilter__inputElement"
               role="button"
               tabIndex={0}
               onClick={(e) => e.stopPropagation()}
+              key={i}
             >
               {selectElement}
               <PillClose

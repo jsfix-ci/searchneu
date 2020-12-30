@@ -7,7 +7,7 @@ interface UseSectionPanelDetailReturn {
 export default function useSectionPanelDetail(
   section: Section
 ): UseSectionPanelDetailReturn {
-  const getSeatsClass = () => {
+  const getSeatsClass = (): string => {
     const seatingPercentage = section.seatsRemaining / section.seatsCapacity;
     if (seatingPercentage > 2 / 3) {
       return 'green';

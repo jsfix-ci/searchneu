@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Markup } from 'interweave';
 import { cloneDeep } from 'lodash';
 import dynamic from 'next/dynamic';
-import React, { useMemo, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { notMostRecentTerm } from '../../global';
 import IconArrow from '../../icons/IconArrow';
 import IconCollapseExpand from '../../icons/IconCollapseExpand';
@@ -45,7 +45,7 @@ const sortSections = (sections: Section[]): Section[] => {
   return sortedSections;
 };
 
-export function SearchResult({ course }: SearchResultProps) {
+export function SearchResult({ course }: SearchResultProps): ReactElement {
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);
   const { optionalDisplay, creditsString } = useResultDetail(course);
   const userIsWatchingClass = useUserChange(course);
@@ -161,7 +161,9 @@ export function SearchResult({ course }: SearchResultProps) {
   );
 }
 
-export function MobileSearchResult({ course }: SearchResultProps) {
+export function MobileSearchResult({
+  course,
+}: SearchResultProps): ReactElement {
   const [expanded, setExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showNUPath, setShowNUPath] = useState(false);
@@ -175,7 +177,7 @@ export function MobileSearchResult({ course }: SearchResultProps) {
 
   const { optionalDisplay, creditsString } = useResultDetail(course);
 
-  const renderNUPaths = () => (
+  const renderNUPaths = (): ReactElement => (
     // eslint-disable-next-line react/prop-types
     <div>
       {course.nupath.length > 0 ? (

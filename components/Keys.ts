@@ -25,7 +25,7 @@ class Keys {
   // Gets a hash from the object from 0 to the given key index
   // eg if key index is 3 it would be a subject hash - host, termId, subject
   // returns the hash - a string
-  static getHashWithKeysSlice(obj, endIndex) {
+  static getHashWithKeysSlice(obj, endIndex): string {
     if (!obj) {
       return null;
     }
@@ -51,7 +51,7 @@ class Keys {
   }
 
   // Takes in an object with a host field and returns a host hash
-  static getHostHash(obj) {
+  static getHostHash(obj): string {
     const hash = this.getHashWithKeysSlice(obj, 1);
 
     if (!hash) {
@@ -63,7 +63,7 @@ class Keys {
   }
 
   // Takes in an object with a host,termId field and returns a term hash
-  static getTermHash(obj) {
+  static getTermHash(obj): string {
     const hash = this.getHashWithKeysSlice(obj, 2);
 
     if (!hash) {
@@ -75,7 +75,7 @@ class Keys {
   }
 
   // Takes in an object with a host,termId,subject field and returns a subject hash
-  static getSubjectHash(obj) {
+  static getSubjectHash(obj): string {
     const hash = this.getHashWithKeysSlice(obj, 3);
 
     if (!hash) {
@@ -87,7 +87,7 @@ class Keys {
   }
 
   // Takes in an object with a host,termId,subject,classId field and returns a class hash
-  static getClassHash(obj) {
+  static getClassHash(obj): string {
     const hash = this.getHashWithKeysSlice(obj, 4);
 
     if (!hash) {
@@ -99,7 +99,7 @@ class Keys {
   }
 
   // Takes in an object with a host,termId,subject,classId,crn field and returns a section hash
-  static getSectionHash(obj) {
+  static getSectionHash(obj): string {
     const hash = this.getHashWithKeysSlice(obj, 5);
 
     if (!hash) {

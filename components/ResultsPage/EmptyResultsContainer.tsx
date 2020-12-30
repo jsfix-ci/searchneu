@@ -2,13 +2,13 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React from 'react';
+import React, { ReactElement } from 'react';
 import macros from '../macros';
-import { FilterSelection, DEFAULT_FILTER_SELECTION } from './filters';
+import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
 
 interface EmptyResultsProps {
   query: string;
-  filtersAreSet: Boolean;
+  filtersAreSet: boolean;
   setFilters: (f: FilterSelection) => void;
 }
 
@@ -21,7 +21,7 @@ export default function EmptyResultsContainer({
   query,
   filtersAreSet,
   setFilters,
-}: EmptyResultsProps) {
+}: EmptyResultsProps): ReactElement {
   return (
     <div className="Results_EmptyContainer">
       <h3> No Results Found </h3>{' '}

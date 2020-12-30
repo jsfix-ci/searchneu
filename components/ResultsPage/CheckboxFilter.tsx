@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import CheckboxGroup from './CheckboxGroup';
 import { Option } from './filters';
 
@@ -14,7 +14,7 @@ export default function CheckboxFilter({
   options,
   selected,
   setActive,
-}: CheckboxFilterProps) {
+}: CheckboxFilterProps): ReactElement {
   return (
     <div className="CheckboxFilter">
       <span className="CheckboxFilter__title">{title}</span>

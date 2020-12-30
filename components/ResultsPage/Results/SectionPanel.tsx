@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import IconGlobe from '../../icons/IconGlobe';
 import Keys from '../../Keys';
 import { DayjsTuple, DayOfWeek, Meeting, Section } from '../../types';
@@ -61,10 +61,10 @@ const getDaysOfWeekAsBooleans = (section: Section): boolean[] => {
 export function DesktopSectionPanel({
   section,
   showNotificationSwitches,
-}: SectionPanelProps) {
+}: SectionPanelProps): ReactElement {
   const { getSeatsClass } = useSectionPanelDetail(section);
 
-  const getUniqueTimes = (times: DayjsTuple[]) => {
+  const getUniqueTimes = (times: DayjsTuple[]): DayjsTuple[] => {
     const seenTimes = new Set();
     return times.reduce((acc, t) => {
       if (!seenTimes.has(t.start.format('h:mm'))) {
@@ -75,7 +75,10 @@ export function DesktopSectionPanel({
     }, []);
   };
 
-  const singleMeeting = (daysMet: boolean[], meeting: Meeting) => {
+  const singleMeeting = (
+    daysMet: boolean[],
+    meeting: Meeting
+  ): ReactElement => {
     if (daysMet.some((d) => d)) {
       return (
         <div className="DesktopSectionPanel__meetings">
@@ -102,7 +105,7 @@ export function DesktopSectionPanel({
     return null;
   };
 
-  const getMeetings = (s: Section) => {
+  const getMeetings = (s: Section): ReactElement[] => {
     return s.meetings.map((m) => {
       const meetingDays = Array(7).fill(false);
       meetingDays.forEach((d, index) => {
@@ -147,10 +150,10 @@ export function DesktopSectionPanel({
 export function MobileSectionPanel({
   section,
   showNotificationSwitches,
-}: SectionPanelProps) {
+}: SectionPanelProps): ReactElement {
   const { getSeatsClass } = useSectionPanelDetail(section);
 
-  const groupedTimesAndDays = (times: DayjsTuple[]) => {
+  const groupedTimesAndDays = (times: DayjsTuple[]): Map<string, string[]> => {
     const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S'];
     return times.reduce((acc, t) => {
       const timeString = `${t.start.format('h:mm')}-${t.end.format('h:mm a')}`;
@@ -165,7 +168,7 @@ export function MobileSectionPanel({
     }, new Map());
   };
 
-  const getMeetings = (s: Section) => {
+  const getMeetings = (s: Section): ReactElement[][] => {
     return s.meetings.map((m) =>
       Array.from(groupedTimesAndDays(m.times)).map(([time, days]) => (
         <>

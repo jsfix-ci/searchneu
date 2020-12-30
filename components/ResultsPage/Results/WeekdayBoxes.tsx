@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface WeekdayBoxesProps {
   meetingDays: boolean[];
 }
 
-function WeekdayBoxes({ meetingDays }: WeekdayBoxesProps) {
+function WeekdayBoxes({ meetingDays }: WeekdayBoxesProps): ReactElement {
   const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   return (

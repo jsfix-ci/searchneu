@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface InitialStepProps {
   setYes: (b: boolean) => void;
@@ -7,7 +7,9 @@ interface InitialStepProps {
  *  Initial form for feedback modal, yes or no radio buttons
  */
 
-export default function FeedbackModalInitial({ setYes }: InitialStepProps) {
+export default function FeedbackModalInitial({
+  setYes,
+}: InitialStepProps): ReactElement {
   return (
     <>
       <div className="FeedbackModal__popoutSubHeader">

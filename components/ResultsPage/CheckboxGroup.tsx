@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 
 interface ICheckboxProps {
@@ -8,16 +9,16 @@ interface ICheckboxGroupProps {
   children: (Checkbox: React.FC<ICheckboxProps>) => JSX.Element;
   name: string;
   value: any[];
-  onChange: (newValue: any[]) => any;
+  onChange: (newValue) => any;
 }
 
 const CheckboxGroup: React.FC<ICheckboxGroupProps> = (props) => {
   const { children, name, value: checkedValues, onChange } = props;
 
   const onCheckboxChange = (
-    checkboxValue: any,
+    checkboxValue,
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void => {
     if (event.target.checked) {
       onChange(checkedValues.concat(checkboxValue));
     } else {

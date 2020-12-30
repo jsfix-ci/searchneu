@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { ClassRange } from './filters';
 
 interface RangeFilterProps {
@@ -11,14 +11,13 @@ export default function RangeFilter({
   title,
   selected,
   setActive,
-}: RangeFilterProps) {
+}: RangeFilterProps): ReactElement {
   const [controlledInput, setControlledInput] = useState(selected);
 
   useEffect(() => {
     setControlledInput(selected);
   }, [selected]);
 
-  // @ts-ignore
   return (
     <div className="RangeFilter">
       <div className="RangeFilter__title">

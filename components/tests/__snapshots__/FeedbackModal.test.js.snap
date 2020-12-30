@@ -5,7 +5,7 @@ exports[`should render form is closed 1`] = `
   <Transition in={false} timeout={500} mountOnEnter={false} unmountOnExit={false} appear={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
     [function]
   </Transition>
-  <Modal open={false} onClose={[Function: toggleForm]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
+  <Modal open={false} onClose={[Function: Function]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
     <Header icon=\\"mail\\" content=\\"Get Involved with Search NEU!\\" />
     <ModalContent className=\\"formModalContent\\">
       <Form as=\\"form\\">
@@ -16,7 +16,7 @@ exports[`should render form is closed 1`] = `
       </Form>
     </ModalContent>
     <ModalActions>
-      <Button basic={true} color=\\"red\\" onClick={[Function: toggleForm]} as=\\"button\\">
+      <Button basic={true} color=\\"red\\" onClick={[Function: Function]} as=\\"button\\">
         <Icon name=\\"remove\\" as=\\"i\\" />
         Cancel
       </Button>
@@ -34,7 +34,7 @@ exports[`should render the form 1`] = `
   <Transition in={false} timeout={500} mountOnEnter={false} unmountOnExit={false} appear={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
     [function]
   </Transition>
-  <Modal open={true} onClose={[Function: toggleForm]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
+  <Modal open={true} onClose={[Function: Function]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
     <Header icon=\\"mail\\" content=\\"Get Involved with Search NEU!\\" />
     <ModalContent className=\\"formModalContent\\">
       <Form as=\\"form\\">
@@ -45,7 +45,7 @@ exports[`should render the form 1`] = `
       </Form>
     </ModalContent>
     <ModalActions>
-      <Button basic={true} color=\\"red\\" onClick={[Function: toggleForm]} as=\\"button\\">
+      <Button basic={true} color=\\"red\\" onClick={[Function: Function]} as=\\"button\\">
         <Icon name=\\"remove\\" as=\\"i\\" />
         Cancel
       </Button>

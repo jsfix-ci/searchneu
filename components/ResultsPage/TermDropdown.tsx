@@ -1,5 +1,5 @@
+import React, { ReactElement } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import React from 'react';
 
 export const termDropDownOptions = [
   {
@@ -34,7 +34,7 @@ function TermDropdown({
   termId,
   onChange,
   compact = false,
-}: TermDropdownProps) {
+}: TermDropdownProps): ReactElement {
   return (
     <Dropdown
       selection

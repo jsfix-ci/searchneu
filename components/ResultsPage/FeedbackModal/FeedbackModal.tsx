@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import LogoInput from '../../icons/LogoInput';
-import FeedbackModalInitial from './FeedbackModalInitial';
+import macros from '../../macros';
+import useClickOutside from '../useClickOutside';
+import useFeedbackSchedule from '../useFeedbackSchedule';
 import FeedbackModalCheckboxes from './FeedbackModalCheckboxes';
 import FeedbackModalFree from './FeedbackModalFree';
-import macros from '../../macros';
-import useFeedbackSchedule from '../useFeedbackSchedule';
-import useClickOutside from '../useClickOutside';
+import FeedbackModalInitial from './FeedbackModalInitial';
 
 enum FeedbackStep {
   initial,
@@ -13,7 +13,7 @@ enum FeedbackStep {
   free,
 }
 
-export default function FeedbackModal() {
+export default function FeedbackModal(): ReactElement {
   const [open, setOpen] = useState(false);
   const [yes, setYes] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState([]);
@@ -35,7 +35,7 @@ export default function FeedbackModal() {
     'Something else',
   ];
 
-  function handleSubmit() {
+  function handleSubmit(): void {
     switch (step) {
       case FeedbackStep.initial:
         if (yes) {
@@ -70,7 +70,7 @@ export default function FeedbackModal() {
     }
   }
 
-  function buttonText() {
+  function buttonText(): string {
     if (yes && submitted) {
       return 'HOLLA HOLLA';
     }
@@ -80,7 +80,7 @@ export default function FeedbackModal() {
     return 'SEND FEEDBACK';
   }
 
-  function renderFeedback() {
+  function renderFeedback(): ReactElement {
     switch (step) {
       case FeedbackStep.initial:
         return <FeedbackModalInitial setYes={setYes} />;

@@ -15,7 +15,7 @@ export default function stripMiddleName(
   keepIfMoreThanOneChar = false,
   firstName = null,
   lastName = null
-) {
+): string {
   if ((!firstName && lastName) || (firstName && !lastName)) {
     this.error(
       'Need either first and last name or neither first nor last name for stripeMiddleName.'

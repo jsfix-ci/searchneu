@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const LogoInput = ({
   fill = '#fff',
@@ -8,7 +8,7 @@ const LogoInput = ({
   fill?: string;
   height?: string;
   width?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

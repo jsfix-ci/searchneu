@@ -115,7 +115,7 @@ export function notMostRecentTerm(termId: string): boolean {
   }
 }
 
-function getSecondToLastDigit(s: string) {
+function getSecondToLastDigit(s: string): string {
   return s.charAt(s.length - 2);
 }
 

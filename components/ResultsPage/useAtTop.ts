@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 export default function useAtTop(): boolean {
   const [atTop, setAtTop] = useState(true);
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const pageY =
         document.body.scrollTop || document.documentElement.scrollTop;
       setAtTop(pageY === 0);
