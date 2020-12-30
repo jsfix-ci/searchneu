@@ -21,6 +21,5 @@ export default function useUserChange(aClass: Course): boolean {
     return () => user.unregisterUserChangeHandler(onUserUpdate);
   }, [aClass, onUserUpdate]);
 
-  console.log(userIsWatchingClass);
   return userIsWatchingClass;
 }

@@ -3,7 +3,7 @@
  * See the license file in the root folder for details.
  */
 
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 import facebook from './facebook';
 import LogoInput from './icons/LogoInput';
@@ -39,9 +39,12 @@ export default function SignUpForNotifications({
   // This will tell FB's SDK to scan all the child elements of this.facebookScopeRef to look for fb-send-to-messenger buttons.
   // If the user goes to this page and is not logged into Facebook, a send to messenger button will still appear and they
   // will be asked to sign in after clicking it.
+
+  const facebookScopeRef = useRef(null);
+
   useEffect(() => {
     (async () => {
-      if (!this.facebookScopeRef) {
+      if (!facebookScopeRef.current) {
         return;
       }
 
@@ -50,13 +53,13 @@ export default function SignUpForNotifications({
       // Check for this.facebookScopeRef again because some rollbar errors were coming in that it was changed to null
       // while the await above was running
       // https://rollbar.com/ryanhugh/searchneu/items/373/
-      if (!FB || !this.facebookScopeRef) {
+      if (!FB || !facebookScopeRef.current) {
         return;
       }
 
-      FB.XFBML.parse(this.facebookScopeRef);
+      FB.XFBML.parse(facebookScopeRef.current);
 
-      const iframe = this.facebookScopeRef.querySelector('iframe');
+      const iframe = facebookScopeRef.current.querySelector('iframe');
 
       if (!iframe) {
         macros.logAmplitudeEvent('FB Send to Messenger', {
@@ -69,7 +72,7 @@ export default function SignUpForNotifications({
 
       iframe.onload = () => {
         // Check to see if the plugin was successfully rendered
-        const ele = this.facebookScopeRef.querySelector(
+        const ele = facebookScopeRef.current.querySelector(
           '.sendToMessengerButton > span'
         );
 
@@ -106,7 +109,7 @@ export default function SignUpForNotifications({
         }
       };
     })().catch((e) => macros.error(e));
-  }, [course]);
+  }, [course, showMessengerButton]);
 
   // Updates the state to show the button.
   const onSubscribeToggleChange = async (): Promise<void> => {
@@ -171,12 +174,7 @@ export default function SignUpForNotifications({
     const dataRef = btoa(JSON.stringify(payload));
 
     return (
-      <div
-        ref={(ele) => {
-          this.facebookScopeRef = ele;
-        }}
-        className="inlineBlock"
-      >
+      <div ref={facebookScopeRef} className="inlineBlock">
         <div
           className="fb-send-to-messenger sendToMessengerButton"
           data-ref={dataRef}
