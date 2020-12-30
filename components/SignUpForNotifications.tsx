@@ -123,7 +123,7 @@ export default function SignUpForNotifications({
         course.sections.length === 1 &&
         course.sections[0].seatsRemaining <= 0
       ) {
-        subscribeToSection(course.sections[0], course);
+        subscribeToSection(course.sections[0]);
       }
     } else {
       macros.logAmplitudeEvent('FB Send to Messenger', {

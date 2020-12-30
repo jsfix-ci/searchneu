@@ -9,7 +9,7 @@ import { useLocalStorage } from './useLocalStorage';
 type UseUserReturn = {
   user: any;
   subscribeToCourse: (course: Course) => Promise<void>;
-  subscribeToSection: (section: Section, course: Course) => Promise<void>;
+  subscribeToSection: (section: Section) => Promise<void>;
   unsubscribeFromSection: (section: Section) => Promise<void>;
 };
 
@@ -38,13 +38,9 @@ export default function useUser(): UseUserReturn {
       })
   );
 
-  const subscribeToCourse = async (course: Course): Promise<void> => {
-    const courseHash = Keys.getClassHash(course);
-    if (user?.user.watchingClasses?.includes(courseHash)) {
-      macros.error('user already watching class?', courseHash, user.user);
-      return;
-    }
-
+  const subscribeToCourseUsingHash = async (
+    courseHash: string
+  ): Promise<void> => {
     const body = {
       loginKey,
       senderId,
@@ -55,13 +51,20 @@ export default function useUser(): UseUserReturn {
       url: 'https://searchneu.com/subscription',
       body: body,
     });
+  };
+
+  const subscribeToCourse = async (course: Course): Promise<void> => {
+    const courseHash = Keys.getClassHash(course);
+    if (user?.user.watchingClasses?.includes(courseHash)) {
+      macros.error('user already watching class?', courseHash, user.user);
+      return;
+    }
+
+    await subscribeToCourseUsingHash(courseHash);
     mutate();
   };
 
-  const subscribeToSection = async (
-    section: Section,
-    course: Course
-  ): Promise<void> => {
+  const subscribeToSection = async (section: Section): Promise<void> => {
     if (section.seatsRemaining > 5) {
       macros.error('Not signing up for section that has over 5 seats open.');
       return;
@@ -73,16 +76,16 @@ export default function useUser(): UseUserReturn {
       return;
     }
 
-    const classHash = Keys.getClassHash(section);
+    const courseHash = Keys.getClassHash(section);
 
     const body = {
       loginKey,
       senderId,
-      sectionHash: sectionHash,
+      sectionHash,
     };
 
-    if (!user.user.watchingClasses.includes(classHash)) {
-      await subscribeToCourse(course);
+    if (!user.user.watchingClasses.includes(courseHash)) {
+      await subscribeToCourseUsingHash(courseHash);
     }
 
     macros.log('Adding section to user', user.user, sectionHash, body);
