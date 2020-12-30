@@ -14,6 +14,8 @@ import Globe from './globe.svg';
 import ChevronDown from './chevron-down.svg';
 import ChevronRight from './chevron-right.svg';
 
+import 'semantic-ui-css/components/segment.min.css';
+
 // On Mobile, display everything in two sections, one below the other, eg:
 // Assistant Teaching Professor
 // CCIS

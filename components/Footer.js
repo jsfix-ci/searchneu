@@ -4,6 +4,8 @@
  */
 import React, { useState, memo } from 'react';
 import FeedbackModal from './FeedbackModal';
+import 'semantic-ui-css/components/segment.min.css';
+import 'semantic-ui-css/components/divider.min.css';
 
 function Footer() {
   const [modalOpen, setModalOpen] = useState(false);

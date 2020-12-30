@@ -5,6 +5,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import 'semantic-ui-css/components/button.min.css';
+import 'semantic-ui-css/components/modal.min.css';
+import 'semantic-ui-css/components/dimmer.min.css';
 import { Button, Modal } from 'semantic-ui-react';
 
 import LogoInput from './icons/LogoInput';

@@ -1,4 +1,6 @@
 import React, { ReactElement } from 'react';
+import 'semantic-ui-css/components/dropdown.min.css';
+import 'semantic-ui-css/components/transition.min.css';
 import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
 
 interface DropdownProps {

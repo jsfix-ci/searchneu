@@ -7,6 +7,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 
+import 'semantic-ui-css/components/button.min.css';
+import 'semantic-ui-css/components/icon.min.css';
+import 'semantic-ui-css/components/modal.min.css';
+import 'semantic-ui-css/components/header.min.css';
+import 'semantic-ui-css/components/input.min.css';
+import 'semantic-ui-css/components/form.min.css';
+import 'semantic-ui-css/components/message.min.css';
+import 'semantic-ui-css/components/dimmer.min.css';
 import {
   Button,
   Icon,

@@ -6,6 +6,7 @@ import React, { ReactElement } from 'react';
 import macros from '../macros';
 import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
 
+import 'semantic-ui-css/components/segment.min.css';
 interface EmptyResultsProps {
   query: string;
   filtersAreSet: boolean;
