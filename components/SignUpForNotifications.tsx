@@ -198,8 +198,6 @@ export default function SignUpForNotifications({
 
   let content = null;
 
-  // TODO: not properly mutating yet
-  console.log(user, course);
   if (user?.user?.watchingClasses.includes(courseHash)) {
     if (course.sections.length === 0) {
       content = (

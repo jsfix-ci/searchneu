@@ -4,6 +4,7 @@ import Keys from '../components/Keys';
 import macros from '../components/macros';
 import request from '../components/request';
 import { Course, Section } from '../components/types';
+import { useLocalStorage } from './useLocalStorage';
 
 type UseUserReturn = {
   user: any;
@@ -12,15 +13,27 @@ type UseUserReturn = {
   unsubscribeFromSection: (section: Section) => Promise<void>;
 };
 
+type UserCredentials = {
+  loginKey: string;
+  senderId: string;
+};
+
 export default function useUser(): UseUserReturn {
+  const [
+    { loginKey, senderId },
+    setUserCredentials,
+  ] = useLocalStorage<UserCredentials>('userCredentials', {
+    loginKey: '',
+    senderId: '',
+  });
+
   const { data: user, mutate } = useSWR(
     `https://searchneu.com/user`,
     async () =>
       request.post({
         url: 'https://searchneu.com/user',
         body: {
-          loginKey:
-            '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
+          loginKey: loginKey,
         },
       })
   );
@@ -33,9 +46,8 @@ export default function useUser(): UseUserReturn {
     }
 
     const body = {
-      loginKey:
-        '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
-      senderId: '2178896222126069',
+      loginKey,
+      senderId,
       classHash: courseHash,
     };
 
@@ -64,9 +76,8 @@ export default function useUser(): UseUserReturn {
     const classHash = Keys.getClassHash(section);
 
     const body = {
-      loginKey:
-        '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
-      senderId: '2178896222126069',
+      loginKey,
+      senderId,
       sectionHash: sectionHash,
     };
 
@@ -99,8 +110,8 @@ export default function useUser(): UseUserReturn {
     pull(user.watchingSections, sectionHash);
 
     const body = {
-      loginKey: this.getLoginKey(),
-      senderId: window.localStorage.senderId,
+      loginKey: loginKey,
+      senderId: senderId,
       sectionHash: sectionHash,
       notifData: {
         classId: '', // TODO: when delete works on the backend, figure out how to get these LMAO. Check out `user.js` in older search commits
