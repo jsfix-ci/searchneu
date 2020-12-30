@@ -33,6 +33,7 @@ export default function SignUpForNotifications({
   // Firefox strict browsing also blocks this plugin from working
   // If the plugin failed to load for whatever reason, show this message and ask the user to allow FB plugins
   const [showAdblockModal, setShowAdblockModal] = useState(false);
+  const courseHash = Keys.getClassHash(course);
 
   // After the button is added to the DOM, we need to tell FB's SDK that it was added to the code and should be processed.
   // This will tell FB's SDK to scan all the child elements of this.facebookScopeRef to look for fb-send-to-messenger buttons.
@@ -54,13 +55,12 @@ export default function SignUpForNotifications({
   );
 
   const addClassToUser = async (user, course): Promise<void> => {
-    const courseHash = Keys.getClassHash(course);
-    if (user?.watchingClasses?.includes(courseHash)) {
+    if (user?.user.watchingClasses?.includes(courseHash)) {
       macros.error('user already watching class?', courseHash, user.user);
       return;
     }
 
-    user.watchingClasses.push(courseHash);
+    user.user.watchingClasses.push(courseHash);
 
     const body = {
       loginKey:
@@ -151,7 +151,7 @@ export default function SignUpForNotifications({
     if (user?.user) {
       macros.log('user exists already', user.user);
 
-      await addClassToUser(user.user, course);
+      await addClassToUser(user, course);
 
       // If this class only has 1 section, sign the user for it automatically.
       if (
@@ -233,7 +233,8 @@ export default function SignUpForNotifications({
 
   let content = null;
 
-  if (userIsWatchingClass) {
+  // TODO: not properly mutating yet
+  if (user?.user?.watchingClasses.includes(courseHash)) {
     if (course.sections.length === 0) {
       content = (
         <Button
