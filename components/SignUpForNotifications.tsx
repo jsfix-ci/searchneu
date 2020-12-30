@@ -5,12 +5,13 @@
 
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
+import useSWR from 'swr';
 import facebook from './facebook';
 import LogoInput from './icons/LogoInput';
 import Keys from './Keys';
 import macros from './macros';
+import request from './request';
 import { Course } from './types';
-import user from './user';
 
 // This file is responsible for the Sign Up for notifications flow.
 // First, this will render a button that will say something along the lines of "Get notified when...!"
@@ -33,14 +34,47 @@ export default function SignUpForNotifications({
   // If the plugin failed to load for whatever reason, show this message and ask the user to allow FB plugins
   const [showAdblockModal, setShowAdblockModal] = useState(false);
 
-  // this.facebookScopeRef = null;
-
   // After the button is added to the DOM, we need to tell FB's SDK that it was added to the code and should be processed.
   // This will tell FB's SDK to scan all the child elements of this.facebookScopeRef to look for fb-send-to-messenger buttons.
   // If the user goes to this page and is not logged into Facebook, a send to messenger button will still appear and they
   // will be asked to sign in after clicking it.
 
   const facebookScopeRef = useRef(null);
+
+  const { data: user, error, mutate } = useSWR(
+    `https://searchneu.com/user`,
+    async () =>
+      request.post({
+        url: 'https://searchneu.com/user',
+        body: {
+          loginKey:
+            '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
+        },
+      })
+  );
+
+  const addClassToUser = async (user, course): Promise<void> => {
+    const courseHash = Keys.getClassHash(course);
+    if (user?.watchingClasses?.includes(courseHash)) {
+      macros.error('user already watching class?', courseHash, user.user);
+      return;
+    }
+
+    user.watchingClasses.push(courseHash);
+
+    const body = {
+      loginKey:
+        '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
+      senderId: '2178896222126069',
+      classHash: courseHash,
+    };
+
+    await request.post({
+      url: 'https://searchneu.com/subscription',
+      body: body,
+    });
+    mutate(user, false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -114,10 +148,10 @@ export default function SignUpForNotifications({
   // Updates the state to show the button.
   const onSubscribeToggleChange = async (): Promise<void> => {
     // if a user exists already, we can show the notification checkboxes too
-    if (user.user) {
+    if (user?.user) {
       macros.log('user exists already', user.user);
 
-      user.addClass(course);
+      await addClassToUser(user.user, course);
 
       // If this class only has 1 section, sign the user for it automatically.
       if (
