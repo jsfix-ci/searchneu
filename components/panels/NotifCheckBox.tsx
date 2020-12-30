@@ -4,13 +4,13 @@
  */
 
 import { uniqueId } from 'lodash';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Icon } from 'semantic-ui-react';
+import useUser from '../../utils/useUser';
 import IconCheckMark from '../icons/IconCheckmark';
 import Keys from '../Keys';
 import macros from '../macros';
 import { Section } from '../types';
-import user from '../user';
 
 type NotifCheckBoxProps = {
   section: Section;
@@ -19,28 +19,23 @@ type NotifCheckBoxProps = {
 export default function NotifCheckBox({
   section,
 }: NotifCheckBoxProps): ReactElement {
-  const [checked, setChecked] = useState(
-    user.isWatchingSection(Keys.getSectionHash(section))
-  );
+  const {
+    user,
+    subscribeToCourse,
+    subscribeToSection,
+    unsubscribeFromSection,
+  } = useUser();
+
+  const checked = user?.user.isWatchingSection(Keys.getSectionHash(section));
   const [notifSwitchId] = useState(uniqueId('notifSwitch-'));
 
   function onCheckboxClick(): void {
     if (checked) {
-      user.removeSection(section);
-      setChecked(false);
+      unsubscribeFromSection(section);
     } else {
-      user.addSection(section);
-      setChecked(true);
+      subscribeToSection(section);
     }
   }
-
-  useEffect(() => {
-    function onUserUpdate(): void {
-      setChecked(user.isWatchingSection(Keys.getSectionHash(section)));
-    }
-    user.registerUserChangeHandler(onUserUpdate);
-    return () => user.unregisterUserChangeHandler(onUserUpdate);
-  }, [section]);
 
   if (section.seatsRemaining > 5) {
     return (
