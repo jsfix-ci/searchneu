@@ -4,16 +4,17 @@ import { Markup } from 'interweave';
 import { cloneDeep } from 'lodash';
 import dynamic from 'next/dynamic';
 import React, { ReactElement, useMemo, useState } from 'react';
+import useUser from '../../../utils/useUser';
 import { notMostRecentTerm } from '../../global';
 import IconArrow from '../../icons/IconArrow';
 import IconCollapseExpand from '../../icons/IconCollapseExpand';
 import IconGlobe from '../../icons/IconGlobe';
+import Keys from '../../Keys';
 import { Course, PrereqType, Section } from '../../types';
 import MobileCollapsableDetail from './MobileCollapsableDetail';
 import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel';
 import useResultDetail from './useResultDetail';
 import useShowAll from './useShowAll';
-import useUserChange from './useUserChange';
 
 const SignUpForNotifications = dynamic(
   () => import('../../SignUpForNotifications'),
@@ -48,7 +49,11 @@ const sortSections = (sections: Section[]): Section[] => {
 export function SearchResult({ course }: SearchResultProps): ReactElement {
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);
   const { optionalDisplay, creditsString } = useResultDetail(course);
-  const userIsWatchingClass = useUserChange(course);
+
+  const { user } = useUser();
+  const userIsWatchingClass = user?.user.watchingClasses.includes(
+    Keys.getClassHash(course)
+  );
   const { showAll, setShowAll, renderedSections, hideShowAll } = useShowAll(
     sortedSections
   );
@@ -166,7 +171,10 @@ export function MobileSearchResult({
   const [showNUPath, setShowNUPath] = useState(false);
   const [showPrereq, setShowPrereq] = useState(false);
   const [showCoreq, setShowCoreq] = useState(false);
-  const userIsWatchingClass = useUserChange(course);
+  const { user } = useUser();
+  const userIsWatchingClass = user?.user.watchingClasses.includes(
+    Keys.getClassHash(course)
+  );
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);
   const { showAll, setShowAll, renderedSections, hideShowAll } = useShowAll(
     sortedSections
