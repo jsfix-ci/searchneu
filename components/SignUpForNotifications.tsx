@@ -5,12 +5,11 @@
 
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
-import useSWR from 'swr';
+import useUser from '../utils/useUser';
 import facebook from './facebook';
 import LogoInput from './icons/LogoInput';
 import Keys from './Keys';
 import macros from './macros';
-import request from './request';
 import { Course } from './types';
 
 // This file is responsible for the Sign Up for notifications flow.
@@ -20,12 +19,10 @@ import { Course } from './types';
 
 type SignUpForNotificationsProps = {
   course: Course;
-  userIsWatchingClass: boolean;
 };
 
 export default function SignUpForNotifications({
   course,
-  userIsWatchingClass,
 }: SignUpForNotificationsProps): ReactElement {
   const [showMessengerButton, setShowMessengerButton] = useState(false);
   // Keeps track of whether the adblock modal is being shown or not
@@ -39,42 +36,9 @@ export default function SignUpForNotifications({
   // This will tell FB's SDK to scan all the child elements of this.facebookScopeRef to look for fb-send-to-messenger buttons.
   // If the user goes to this page and is not logged into Facebook, a send to messenger button will still appear and they
   // will be asked to sign in after clicking it.
-
   const facebookScopeRef = useRef(null);
 
-  const { data: user, error, mutate } = useSWR(
-    `https://searchneu.com/user`,
-    async () =>
-      request.post({
-        url: 'https://searchneu.com/user',
-        body: {
-          loginKey:
-            '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
-        },
-      })
-  );
-
-  const addClassToUser = async (user, course): Promise<void> => {
-    if (user?.user.watchingClasses?.includes(courseHash)) {
-      macros.error('user already watching class?', courseHash, user.user);
-      return;
-    }
-
-    user.user.watchingClasses.push(courseHash);
-
-    const body = {
-      loginKey:
-        '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn',
-      senderId: '2178896222126069',
-      classHash: courseHash,
-    };
-
-    await request.post({
-      url: 'https://searchneu.com/subscription',
-      body: body,
-    });
-    mutate(user, false);
-  };
+  const { user, subscribeToCourse, subscribeToSection } = useUser();
 
   useEffect(() => {
     (async () => {
@@ -151,7 +115,7 @@ export default function SignUpForNotifications({
     if (user?.user) {
       macros.log('user exists already', user.user);
 
-      await addClassToUser(user, course);
+      await subscribeToCourse(course);
 
       // If this class only has 1 section, sign the user for it automatically.
       if (
@@ -159,7 +123,7 @@ export default function SignUpForNotifications({
         course.sections.length === 1 &&
         course.sections[0].seatsRemaining <= 0
       ) {
-        user.addSection(course.sections[0]);
+        subscribeToSection(course.sections[0], course);
       }
     } else {
       macros.logAmplitudeEvent('FB Send to Messenger', {
@@ -180,7 +144,8 @@ export default function SignUpForNotifications({
 
   // Return the FB button itself.
   const getSendToMessengerButton = () => {
-    const loginKey = user.getLoginKey();
+    const loginKey =
+      '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn';
 
     // Get a list of all the sections that don't have seats remaining
     const sectionHashes = [];
@@ -234,6 +199,7 @@ export default function SignUpForNotifications({
   let content = null;
 
   // TODO: not properly mutating yet
+  console.log(user, course);
   if (user?.user?.watchingClasses.includes(courseHash)) {
     if (course.sections.length === 0) {
       content = (
