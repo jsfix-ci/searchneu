@@ -71,9 +71,11 @@ class User {
     // Keep track of the status of this call, so future calls that
     // modify the user and update the backend
     // can wait for this to finish before running.
+    body.loginKey =
+      '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn';
     this.userDataPromise = request
       .post({
-        url: '/user',
+        url: 'https://searchneu.com/user',
         body: body,
       })
       .then((response) => {
@@ -124,6 +126,7 @@ class User {
 
   // gets a user's (as in browser) loginKey, or generates one if it doesn't exist yet
   getLoginKey() {
+    return '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn';
     let loginKey = window.localStorage.loginKey;
 
     // Init the loginKey if it dosen't exist
@@ -191,7 +194,7 @@ class User {
     };
 
     await request.delete({
-      url: '/subscription',
+      url: 'https://searchneu.com/subscription',
       body: body,
     });
 
@@ -252,7 +255,7 @@ class User {
     macros.log('Adding section to user', this.user, sectionHash, body);
 
     await request.post({
-      url: '/subscription',
+      url: 'https://searchneu.com/subscription',
       body: body,
     });
 
@@ -291,7 +294,7 @@ class User {
     };
 
     await request.post({
-      url: '/subscription',
+      url: 'https://searchneu.com/subscription',
       body: body,
     });
 

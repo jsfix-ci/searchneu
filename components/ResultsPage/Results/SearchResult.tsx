@@ -108,7 +108,7 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
           <div className="SearchResult__panel--right">
             {notMostRecentTerm(course.termId) ? undefined : (
               <SignUpForNotifications
-                aClass={course}
+                course={course}
                 userIsWatchingClass={userIsWatchingClass}
               />
             )}
@@ -253,7 +253,7 @@ export function MobileSearchResult({
             />
             <div className="MobileSearchResult__panel--notifContainer">
               <SignUpForNotifications
-                aClass={course}
+                course={course}
                 userIsWatchingClass={userIsWatchingClass}
               />
             </div>
