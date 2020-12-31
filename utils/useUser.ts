@@ -1,13 +1,14 @@
 import { pull } from 'lodash';
 import useSWR from 'swr';
+import { v4 } from 'uuid';
 import Keys from '../components/Keys';
 import macros from '../components/macros';
 import request from '../components/request';
-import { Course, Section } from '../components/types';
+import { Course, Section, User } from '../components/types';
 import { useLocalStorage } from './useLocalStorage';
 
 type UseUserReturn = {
-  user: any;
+  user: User;
   subscribeToCourse: (course: Course) => Promise<void>;
   subscribeToSection: (section: Section) => Promise<void>;
   unsubscribeFromSection: (section: Section) => Promise<void>;
@@ -27,16 +28,38 @@ export default function useUser(): UseUserReturn {
     senderId: '',
   });
 
-  const { data: user, mutate } = useSWR(
+  if (!loginKey) {
+    setUserCredentials({
+      loginKey: v4(),
+      senderId,
+    });
+  }
+
+  const { data: user, error, mutate } = useSWR(
     `https://searchneu.com/user`,
-    async () =>
-      request.post({
+    async (): Promise<User> =>
+      await request.post({
         url: 'https://searchneu.com/user',
         body: {
-          loginKey: loginKey,
+          loginKey,
         },
       })
   );
+
+  if (error) {
+    macros.log('Data in localStorage is invalid, deleting');
+    setUserCredentials({
+      loginKey: '',
+      senderId: '',
+    });
+  }
+
+  if (!senderId && user?.user?.facebookMessengerId) {
+    setUserCredentials({
+      loginKey,
+      senderId: user.user.facebookMessengerId,
+    });
+  }
 
   const subscribeToCourseUsingHash = async (
     courseHash: string
@@ -55,7 +78,7 @@ export default function useUser(): UseUserReturn {
 
   const subscribeToCourse = async (course: Course): Promise<void> => {
     const courseHash = Keys.getClassHash(course);
-    if (user?.user.watchingClasses?.includes(courseHash)) {
+    if (user?.user?.watchingClasses?.includes(courseHash)) {
       macros.error('user already watching class?', courseHash, user.user);
       return;
     }
@@ -71,7 +94,7 @@ export default function useUser(): UseUserReturn {
     }
     const sectionHash = Keys.getSectionHash(section);
 
-    if (user.user.watchingSections.includes(sectionHash)) {
+    if (user?.user?.watchingSections.includes(sectionHash)) {
       macros.error('user already watching section?', section, user.user);
       return;
     }
@@ -84,7 +107,7 @@ export default function useUser(): UseUserReturn {
       sectionHash,
     };
 
-    if (!user.user.watchingClasses.includes(courseHash)) {
+    if (!user?.user?.watchingClasses.includes(courseHash)) {
       await subscribeToCourseUsingHash(courseHash);
     }
 
@@ -101,7 +124,7 @@ export default function useUser(): UseUserReturn {
   const unsubscribeFromSection = async (section: Section): Promise<void> => {
     const sectionHash = Keys.getSectionHash(section);
 
-    if (!user?.user.watchingSections.includes(sectionHash)) {
+    if (!user?.user?.watchingSections?.includes(sectionHash)) {
       macros.error(
         "removed section that doesn't exist on user?",
         section,
@@ -110,7 +133,7 @@ export default function useUser(): UseUserReturn {
       return;
     }
 
-    pull(user.watchingSections, sectionHash);
+    pull(user?.user?.watchingSections, sectionHash);
 
     const body = {
       loginKey: loginKey,

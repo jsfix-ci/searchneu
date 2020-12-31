@@ -51,7 +51,7 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
   const { optionalDisplay, creditsString } = useResultDetail(course);
 
   const { user } = useUser();
-  const userIsWatchingClass = user?.user.watchingClasses.includes(
+  const userIsWatchingClass = user?.user?.watchingClasses.includes(
     Keys.getClassHash(course)
   );
   const { showAll, setShowAll, renderedSections, hideShowAll } = useShowAll(
@@ -172,7 +172,7 @@ export function MobileSearchResult({
   const [showPrereq, setShowPrereq] = useState(false);
   const [showCoreq, setShowCoreq] = useState(false);
   const { user } = useUser();
-  const userIsWatchingClass = user?.user.watchingClasses.includes(
+  const userIsWatchingClass = user?.user?.watchingClasses.includes(
     Keys.getClassHash(course)
   );
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);

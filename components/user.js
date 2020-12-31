@@ -126,7 +126,6 @@ class User {
 
   // gets a user's (as in browser) loginKey, or generates one if it doesn't exist yet
   getLoginKey() {
-    return '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn';
     let loginKey = window.localStorage.loginKey;
 
     // Init the loginKey if it dosen't exist
