@@ -3,7 +3,7 @@
  * See the license file in the root folder for details.
  */
 
-@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700");
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 
 .home-container {
   height: 100%;
@@ -41,15 +41,14 @@
     height: 100vh;
     position: relative;
     pointer-events: none;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(168, 218, 220, 0.66) 3.86%,
-        rgba(168, 218, 220, 0.66) 54.45%,
-        rgba(189, 204, 174, 0.538607) 68.57%,
-        rgba(208, 191, 131, 0.424862) 78.28%,
-        rgba(255, 159, 28, 0.67) 103.17%
-      );
+    background: linear-gradient(
+      180deg,
+      rgba(168, 218, 220, 0.66) 3.86%,
+      rgba(168, 218, 220, 0.66) 54.45%,
+      rgba(189, 204, 174, 0.538607) 68.57%,
+      rgba(208, 191, 131, 0.424862) 78.28%,
+      rgba(255, 159, 28, 0.67) 103.17%
+    );
   }
 
   .centerTextContainer {
@@ -192,7 +191,6 @@
       width: 47px;
     }
   }
-
 
   .octopusArm {
     transform-origin: 130px 106px;

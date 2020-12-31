@@ -25,22 +25,26 @@ export const termDropDownOptions = [
 ];
 
 interface TermDropdownProps {
-  termId: string,
-  onChange: (t: string) => void,
-  compact: boolean
+  termId: string;
+  onChange: (t: string) => void;
+  compact: boolean;
 }
 
-function TermDropdown({ termId, onChange, compact = false }: TermDropdownProps) {
+function TermDropdown({
+  termId,
+  onChange,
+  compact = false,
+}: TermDropdownProps) {
   return (
     <Dropdown
       selection
       fluid
-      compact={ compact }
-      value={ termId }
-      placeholder='Spring 2020'
-      className={ `termdropdown ${compact ? 'termdropdown--compact' : ''}` }
-      options={ termDropDownOptions }
-      onChange={ (e, data) => onChange(data.value as string) }
+      compact={compact}
+      value={termId}
+      placeholder="Spring 2020"
+      className={`termdropdown ${compact ? 'termdropdown--compact' : ''}`}
+      options={termDropDownOptions}
+      onChange={(e, data) => onChange(data.value as string)}
     />
   );
 }

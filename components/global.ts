@@ -48,7 +48,7 @@ export function getAllCampusDropdownOptions(): DropdownItemProps[] {
 }
 
 export function getTermDropdownOptionsForCampus(
-  c: Campus,
+  c: Campus
 ): DropdownItemProps[] {
   switch (c) {
     case Campus.NEU:
@@ -90,14 +90,17 @@ export function getCampusByLastDigit(t: string): Campus {
   }
 }
 
-export function greaterTermExists(dropdownOptions : DropdownItemProps[], termId : number) : boolean {
+export function greaterTermExists(
+  dropdownOptions: DropdownItemProps[],
+  termId: number
+): boolean {
   return _.some(dropdownOptions, (option) => {
     const diff = Number(option.value) - termId;
     return diff > 0 && diff % 10 === 0;
-  })
+  });
 }
 
-export function notMostRecentTerm(termId: string) : boolean {
+export function notMostRecentTerm(termId: string): boolean {
   const campus = getCampusByLastDigit(termId.charAt(termId.length - 1));
   const termIdNum = Number(termId);
   switch (campus) {
@@ -118,7 +121,7 @@ function getSecondToLastDigit(s: string) {
 
 function tryGetMatchingSecondToLastDigitOption(
   secondToLast: string,
-  options: DropdownItemProps[],
+  options: DropdownItemProps[]
 ): DropdownItemProps | undefined {
   for (const option of options) {
     const secondToLastOfOption = getSecondToLastDigit(option.value as string);
@@ -149,7 +152,7 @@ export function getRoundedTerm(nextCampus: Campus, prevTerm: string): string {
   const roundedDownDigit = String(Number(secondToLast) - 1);
   const result2 = tryGetMatchingSecondToLastDigitOption(
     roundedDownDigit,
-    options,
+    options
   );
   return result2.value as string;
 }

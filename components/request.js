@@ -57,7 +57,12 @@ class Request {
 
           err += `config = ${JSON.stringify(config.url)}`;
 
-          macros.warn('error, bad code recievied', xmlhttp.status, err, config.url);
+          macros.warn(
+            'error, bad code recievied',
+            xmlhttp.status,
+            err,
+            config.url
+          );
 
           reject(err);
           return;
@@ -76,11 +81,15 @@ class Request {
       };
 
       if (config.progressCallback) {
-        xmlhttp.addEventListener('progress', (evt) => {
-          if (evt.lengthComputable) {
-            config.progressCallback(evt.loaded, evt.total);
-          }
-        }, false);
+        xmlhttp.addEventListener(
+          'progress',
+          (evt) => {
+            if (evt.lengthComputable) {
+              config.progressCallback(evt.loaded, evt.total);
+            }
+          },
+          false
+        );
       }
 
       // Add the session token to the request.
@@ -96,22 +105,23 @@ class Request {
     });
   }
 
-
   async getFromInternetWithRetry(config) {
     let times = 3;
     if (config.retryTimes !== undefined) {
       times = config.retryTimes;
     }
 
-    return retry(async () => {
-      return this.getFromInternet(config);
-    }, {
-      retries: times,
-      minTimeout: 500,
-      maxTimeout: 500,
-    });
+    return retry(
+      async () => {
+        return this.getFromInternet(config);
+      },
+      {
+        retries: times,
+        minTimeout: 500,
+        maxTimeout: 500,
+      }
+    );
   }
-
 
   async get(config) {
     if (typeof config === 'string') {
@@ -119,7 +129,10 @@ class Request {
         url: config,
       };
     } else if (Object.keys(config).length > 1 || !config.url) {
-      macros.error('Nothing is supported except JSON GET requests to a url.', config);
+      macros.error(
+        'Nothing is supported except JSON GET requests to a url.',
+        config
+      );
     }
 
     config.method = 'GET';
@@ -127,10 +140,17 @@ class Request {
     return this.getFromInternetWithRetry(config);
   }
 
-
   async post(config) {
-    if (typeof config === 'string' || Object.keys(config).length > 2 || !config.url || !config.body) {
-      macros.error('Nothing is supported except JSON POST requests to a url.', config);
+    if (
+      typeof config === 'string' ||
+      Object.keys(config).length > 2 ||
+      !config.url ||
+      !config.body
+    ) {
+      macros.error(
+        'Nothing is supported except JSON POST requests to a url.',
+        config
+      );
     }
 
     config.method = 'POST';

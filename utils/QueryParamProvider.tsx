@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
-import React, { memo, useMemo } from "react";
-import { QueryParamProvider as ContextProvider } from "use-query-params";
+import { useRouter } from 'next/router';
+import React, { memo, useMemo } from 'react';
+import { QueryParamProvider as ContextProvider } from 'use-query-params';
 
 export const QueryParamProviderComponent = (props: {
   children?: React.ReactNode;
@@ -15,7 +15,7 @@ export const QueryParamProviderComponent = (props: {
       process.browser
         ? window.location
         : ({
-            search: router.asPath.replace(/[^?]+/u, ""),
+            search: router.asPath.replace(/[^?]+/u, ''),
           } as Location),
     [router.asPath]
   );

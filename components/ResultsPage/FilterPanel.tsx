@@ -1,4 +1,3 @@
-
 import React from 'react';
 import _ from 'lodash';
 
@@ -6,33 +5,48 @@ import CheckboxFilter from './CheckboxFilter';
 import DropdownFilter from './DropdownFilter';
 import RangeFilter from './RangeFilter';
 
-import {
-  FilterOptions, FilterSelection, FILTERS_IN_ORDER,
-} from './filters';
+import { FilterOptions, FilterSelection, FILTERS_IN_ORDER } from './filters';
 
 export interface FilterPanelProps {
-  options: FilterOptions,
-  selected: FilterSelection,
-  setActive: (f: FilterSelection) => void,
+  options: FilterOptions;
+  selected: FilterSelection;
+  setActive: (f: FilterSelection) => void;
 }
 
 function FilterPanel({ options, selected, setActive }: FilterPanelProps) {
   return (
-    <div className='FilterPanel'>
+    <div className="FilterPanel">
       {FILTERS_IN_ORDER.map(({ key, display, category }) => {
         const aFilter = selected[key];
         const setActiveFilter = (a) => setActive({ [key]: a });
 
         return (
           <>
-            {category === 'Dropdown'
-          && <DropdownFilter title={ display } options={ options[key] } selected={ aFilter } setActive={ setActiveFilter } />}
-            {category === 'Checkboxes'
-          && <CheckboxFilter title={ display } options={ options[key] } selected={ aFilter } setActive={ setActiveFilter } />}
-            {category === 'Range'
-          && <RangeFilter title={ display } selected={ aFilter } setActive={ setActiveFilter } />}
+            {category === 'Dropdown' && (
+              <DropdownFilter
+                title={display}
+                options={options[key]}
+                selected={aFilter}
+                setActive={setActiveFilter}
+              />
+            )}
+            {category === 'Checkboxes' && (
+              <CheckboxFilter
+                title={display}
+                options={options[key]}
+                selected={aFilter}
+                setActive={setActiveFilter}
+              />
+            )}
+            {category === 'Range' && (
+              <RangeFilter
+                title={display}
+                selected={aFilter}
+                setActive={setActiveFilter}
+              />
+            )}
           </>
-        )
+        );
       })}
     </div>
   );

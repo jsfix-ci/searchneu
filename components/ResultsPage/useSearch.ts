@@ -2,22 +2,20 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import {
-  useEffect, useState, useCallback,
-} from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import macros from '../macros';
 
 enum Status {
   FETCHING_NEW = 1,
   FETCHING_MORE = 2,
-  SUCCESS = 3
+  SUCCESS = 3,
 }
 
 interface UseSearchReturn<P, R> {
-  results: R,
-  isReady: boolean,
-  loadMore: () => void,
-  doSearch: (p: P) => void
+  results: R;
+  isReady: boolean;
+  loadMore: () => void;
+  doSearch: (p: P) => void;
 }
 /**
  * P is the type of the search params, R is the type of the result item
@@ -30,20 +28,25 @@ interface UseSearchReturn<P, R> {
  *  loadMore is a function that triggers loading the next page when invoked
  *  doSearch triggers search execution. Expects a object containing search params
  */
-export default function useSearch<P, R>(initialParams: P, initialResults: R, fetchResults: (params:P, page:number)=>Promise<R>): UseSearchReturn<P, R> {
-  type State = {params:P, page: number, results: R, status: Status};
+export default function useSearch<P, R>(
+  initialParams: P,
+  initialResults: R,
+  fetchResults: (params: P, page: number) => Promise<R>
+): UseSearchReturn<P, R> {
+  type State = { params: P; page: number; results: R; status: Status };
 
   // Batch all into one state to avoid multiple rerender
   const [state, setState] = useState<State>({
-    params: initialParams, page: 0, results: initialResults, status: Status.FETCHING_NEW,
+    params: initialParams,
+    page: 0,
+    results: initialResults,
+    status: Status.FETCHING_NEW,
   });
   // Equivalent of setState in class components.
   function updateState(changes: Partial<State>) {
     setState((prev) => ({ ...prev, ...changes }));
   }
-  const {
-    params, page, results, status,
-  } = state;
+  const { params, page, results, status } = state;
 
   useEffect(() => {
     let ignore = false;
@@ -57,7 +60,9 @@ export default function useSearch<P, R>(initialParams: P, initialResults: R, fet
       }
     };
     searchWrap();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, [params, page, fetchResults]);
 
   const loadMore = useCallback(() => {
@@ -72,7 +77,9 @@ export default function useSearch<P, R>(initialParams: P, initialResults: R, fet
 
   const doSearch = useCallback((p) => {
     updateState({
-      params: p, page: 0, status: Status.FETCHING_NEW,
+      params: p,
+      page: 0,
+      status: Status.FETCHING_NEW,
     });
   }, []);
 

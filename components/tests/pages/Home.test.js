@@ -11,12 +11,11 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Home from '../../../pages/[campus]/[termId]';
 
 jest.mock('next/router', () => ({
-  useRouter: () => ({query: {campus: 'NEU'}}),
-
+  useRouter: () => ({ query: { campus: 'NEU' } }),
 }));
 
 jest.mock('use-query-params', () => ({
-  useQueryParam: () => (['202030', () => {}]),
+  useQueryParam: () => ['202030', () => {}],
 }));
 
 Enzyme.configure({ adapter: new Adapter() });

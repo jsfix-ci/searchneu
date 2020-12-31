@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
-import { campusToColor } from "../../utils/campusToColor";
-import { Campus } from "../types";
+import { ReactElement } from 'react';
+import { campusToColor } from '../../utils/campusToColor';
+import { Campus } from '../types';
 
 interface HuskyProps {
   className: string;

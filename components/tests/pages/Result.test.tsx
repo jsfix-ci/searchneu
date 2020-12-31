@@ -9,12 +9,9 @@ import React from 'react';
 import { QueryParamProvider } from 'use-query-params';
 import Results from '../../../pages/[campus]/[termId]/search/[query]';
 
-
-
-
 jest.mock('next/router', () => ({
   useRouter: () => ({
-    query: { campus: 'NEU', termId:'202030', query: 'cs' }
+    query: { campus: 'NEU', termId: '202030', query: 'cs' },
   }),
   useQueryParam: () => false,
 }));
@@ -22,6 +19,10 @@ jest.mock('next/router', () => ({
 Enzyme.configure({ adapter: new Adapter() });
 
 it('should render a section', () => {
-  const result = mount(<QueryParamProvider><Results /></QueryParamProvider>);
+  const result = mount(
+    <QueryParamProvider>
+      <Results />
+    </QueryParamProvider>
+  );
   expect(result.debug()).toMatchSnapshot();
 });

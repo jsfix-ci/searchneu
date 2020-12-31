@@ -8,10 +8,8 @@ import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-
 import SignUpForNotifications from '../SignUpForNotifications';
 import mockData from '../panels/tests/mockData';
-
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -24,25 +22,35 @@ afterEach(() => {
 });
 
 it('should render', () => {
-  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass={ false } />).debug();
+  const result = shallow(
+    <SignUpForNotifications
+      aClass={mockData.cs1210}
+      userIsWatchingClass={false}
+    />
+  ).debug();
   expect(result).toMatchSnapshot();
 });
-
 
 it('should render', () => {
-  const result = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass />).debug();
+  const result = shallow(
+    <SignUpForNotifications aClass={mockData.cs1210} userIsWatchingClass />
+  ).debug();
   expect(result).toMatchSnapshot();
 });
 
-
 it('should render the fb button after the button is clicked', async (done) => {
-  const wrapper = shallow(<SignUpForNotifications aClass={ mockData.cs1210 } userIsWatchingClass={ false } />);
+  const wrapper = shallow(
+    <SignUpForNotifications
+      aClass={mockData.cs1210}
+      userIsWatchingClass={false}
+    />
+  );
   const instance = wrapper.instance();
 
   await instance.onSubscribeToggleChange();
 
   wrapper.update();
 
-  expect(wrapper.contains("Click this button to continue")).toBeTruthy();
+  expect(wrapper.contains('Click this button to continue')).toBeTruthy();
   done();
 });

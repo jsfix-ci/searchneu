@@ -1,4 +1,3 @@
-
 // Strips the middle name from a name.
 // The given full name is the person's full name, including first, middle, and last names
 // Full name is often not equal to first + ' ' + middle + ' ' + last because many people have foreign names and nicknames.
@@ -11,16 +10,22 @@
 // https://www.npmjs.com/package/parse-full-name
 // Might help.
 // Also, could merge the name functions from employees.js into this.
-export default function stripMiddleName(fullName: string, keepIfMoreThanOneChar = false, firstName = null, lastName = null) {
+export default function stripMiddleName(
+  fullName: string,
+  keepIfMoreThanOneChar = false,
+  firstName = null,
+  lastName = null
+) {
   if ((!firstName && lastName) || (firstName && !lastName)) {
-    this.error('Need either first and last name or neither first nor last name for stripeMiddleName.');
+    this.error(
+      'Need either first and last name or neither first nor last name for stripeMiddleName.'
+    );
     return null;
   }
 
   if (!fullName) {
     return null;
   }
-
 
   const indexOfFirstSpace = fullName.indexOf(' ');
 
@@ -29,21 +34,31 @@ export default function stripMiddleName(fullName: string, keepIfMoreThanOneChar 
     return fullName;
   }
 
-
   let nameWithoutFirstAndLastName: string;
 
   if (firstName && lastName) {
     if (!fullName.startsWith(firstName)) {
-      this.log('Full name does not start with first name?', fullName, '|', firstName);
+      this.log(
+        'Full name does not start with first name?',
+        fullName,
+        '|',
+        firstName
+      );
     }
 
     if (!fullName.endsWith(lastName)) {
-      this.log('Full name does not end with last name?', fullName, '|', lastName);
+      this.log(
+        'Full name does not end with last name?',
+        fullName,
+        '|',
+        lastName
+      );
     }
 
     // Find the last name and first name by splitting the name by spaces
   } else {
-    const indexOfLastSpace = fullName.length - fullName.split('').reverse().join('').indexOf(' ');
+    const indexOfLastSpace =
+      fullName.length - fullName.split('').reverse().join('').indexOf(' ');
 
     firstName = fullName.slice(0, indexOfFirstSpace);
     lastName = fullName.slice(indexOfLastSpace);
@@ -54,14 +69,18 @@ export default function stripMiddleName(fullName: string, keepIfMoreThanOneChar 
     return `${firstName} ${lastName}`;
   }
 
-
   // If their middle name is one character (not including symbols), don't add it to the search index.
   // This prevents profs like Stacy C. Marsella from coming up when you type in [C]
   // First, remove the first and last names and toLowerCase()
-  nameWithoutFirstAndLastName = fullName.replace(firstName, '').replace(lastName, '');
+  nameWithoutFirstAndLastName = fullName
+    .replace(firstName, '')
+    .replace(lastName, '');
 
   // Then remove symbols.
-  nameWithoutFirstAndLastName = nameWithoutFirstAndLastName.replace(/[^a-z0-9]/gi, '');
+  nameWithoutFirstAndLastName = nameWithoutFirstAndLastName.replace(
+    /[^a-z0-9]/gi,
+    ''
+  );
 
   // If little to nothing remains, just index the first and last names.
   if (keepIfMoreThanOneChar && nameWithoutFirstAndLastName.length > 1) {

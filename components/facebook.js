@@ -71,14 +71,16 @@ class Facebook {
       // If the FB JS loaded succesfully, it will call window.fbAsyncInit
       window.fbAsyncInit = () => {
         window.FB.init({
-          appId            : '1979224428978082',
-          autoLogAppEvents : false,
-          xfbml            : false,
-          version          : 'v4.0',
+          appId: '1979224428978082',
+          autoLogAppEvents: false,
+          xfbml: false,
+          version: 'v4.0',
         });
 
-
-        window.FB.Event.subscribe('send_to_messenger', this.onSendToMessengerClick);
+        window.FB.Event.subscribe(
+          'send_to_messenger',
+          this.onSendToMessengerClick
+        );
 
         // And finally, resolve the promise with window.FB
         resolve(window.FB);
@@ -97,7 +99,6 @@ class Facebook {
 
     this.messengerRenderState = MESSENGER_PLUGIN_STATE.FAILED;
   }
-
 
   // Return if the plugin has successfully rendered at least once.
   // This can be used to tell if there any adblock on the page that is blocking the plugin.
@@ -197,21 +198,20 @@ class Facebook {
                 time: Date.now(),
                 messaging: [
                   {
-                    recipient:
-                      {
-                        id: '111111111111111',
-                      },
+                    recipient: {
+                      id: '111111111111111',
+                    },
                     timestamp: Date.now(),
-                    sender:
-                      {
-                        id: fbMessengerId,
-                      },
-                    optin:
-                      {
-                        ref: e.ref,
-                      },
-                  }],
-              }],
+                    sender: {
+                      id: fbMessengerId,
+                    },
+                    optin: {
+                      ref: e.ref,
+                    },
+                  },
+                ],
+              },
+            ],
           },
         });
       } else {
@@ -220,6 +220,5 @@ class Facebook {
     }
   }
 }
-
 
 export default new Facebook();

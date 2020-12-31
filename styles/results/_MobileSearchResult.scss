@@ -86,14 +86,18 @@
       position: relative;
 
       &::after {
-        content: "";
+        content: '';
         text-align: right;
         position: absolute;
         bottom: 0;
         right: 0;
         width: 90%;
         height: 18px;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 1) 90%
+        );
       }
     }
 

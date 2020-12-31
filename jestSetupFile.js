@@ -1,4 +1,3 @@
-
 // Fix to hide this warning until jsdom adds support for requestAnimationFrame
 // https://github.com/facebook/jest/issues/4545
 
@@ -6,16 +5,13 @@
 import 'mock-local-storage';
 import 'regenerator-runtime/runtime';
 
-
 if (process.env.PROD !== 'true') {
   if (process.env.NODE_ENV === 'test') {
     global.requestAnimationFrame = (callback) => {
       setTimeout(() => callback(), 0);
     };
 
-    window.ga = function ga() {
-
-    };
+    window.ga = function ga() {};
   }
 
   // Mock out this file on all tests/

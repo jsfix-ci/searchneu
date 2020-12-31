@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import Macros from "../components/macros";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import Macros from '../components/macros';
 
-export const GA_TRACKING_ID = "<INSERT_TAG_ID>";
+export const GA_TRACKING_ID = '<INSERT_TAG_ID>';
 
 type GTagEvent = {
   action: string;
@@ -13,7 +13,7 @@ type GTagEvent = {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const event = ({ action, category, label, value }: GTagEvent): void => {
-  window.gtag("event", action, {
+  window.gtag('event', action, {
     event_category: category,
     event_label: label,
     value,
@@ -29,14 +29,14 @@ export function useGoogleAnalyticsOnPageChange() {
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
       if (Macros.PROD) {
-        window.gtag("config", GA_TRACKING_ID, {
+        window.gtag('config', GA_TRACKING_ID, {
           page_path: url,
         });
       }
     };
-    router.events.on("routeChangeComplete", handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
 }

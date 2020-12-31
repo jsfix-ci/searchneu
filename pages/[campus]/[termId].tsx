@@ -2,31 +2,30 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import { GetStaticPathsResult, GetStaticProps } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import Footer from "../../components/Footer";
+import { GetStaticPathsResult, GetStaticProps } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import Footer from '../../components/Footer';
 import {
   getLatestTerm,
   getRoundedTerm,
-  getTermDropdownOptionsForCampus
-} from "../../components/global";
-import HomeSearch from "../../components/HomePage/HomeSearch";
-import Boston from "../../components/icons/boston.svg";
-import Husky from "../../components/icons/Husky";
-import Logo from "../../components/icons/Logo";
-import macros from "../../components/macros";
-import { Campus } from "../../components/types";
+  getTermDropdownOptionsForCampus,
+} from '../../components/global';
+import HomeSearch from '../../components/HomePage/HomeSearch';
+import Boston from '../../components/icons/boston.svg';
+import Husky from '../../components/icons/Husky';
+import Logo from '../../components/icons/Logo';
+import macros from '../../components/macros';
+import { Campus } from '../../components/types';
 
 export default function Home() {
-
   const router = useRouter();
 
-  const campus = router.query.campus as Campus || Campus.NEU;
+  const campus = (router.query.campus as Campus) || Campus.NEU;
   const LATEST_TERM = getLatestTerm(campus);
-  const termId = router.query.termId as string || LATEST_TERM;
+  const termId = (router.query.termId as string) || LATEST_TERM;
 
   const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
     (t) => {
@@ -43,9 +42,9 @@ export default function Home() {
   const [searchFocused, setSearchFocused] = useState(false);
 
   // On mobile only show the logo and the github corner if there are no results and the search box is not focused (the virtual keyboard is not on the screen).
-  let containerClassnames = "home-container";
+  let containerClassnames = 'home-container';
   if (macros.isMobile && searchFocused) {
-    containerClassnames += " mobileCompact";
+    containerClassnames += ' mobileCompact';
   }
 
   return (
@@ -88,7 +87,8 @@ export default function Home() {
 
       <div>
         <div // TODO: Take this out and restyle this monstrosity from scratch
-          className="ui center spacing aligned icon header topHeader" >
+          className="ui center spacing aligned icon header topHeader"
+        >
           <div className="centerTextContainer">
             <Logo className="logo" aria-label="logo" campus={campus} />
 
@@ -115,13 +115,13 @@ export default function Home() {
 }
 
 // Tells Next what to statically optimize
-export function getStaticPaths() : GetStaticPathsResult {
-  const result : GetStaticPathsResult = {paths: [], fallback: false};
+export function getStaticPaths(): GetStaticPathsResult {
+  const result: GetStaticPathsResult = { paths: [], fallback: false };
 
   for (const campus of Object.values(Campus)) {
     for (const termId of getTermDropdownOptionsForCampus(campus)) {
       result.paths.push({
-        params: {campus, termId: termId.value as string}
+        params: { campus, termId: termId.value as string },
       });
     }
   }
@@ -129,5 +129,5 @@ export function getStaticPaths() : GetStaticPathsResult {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  return {props: {}};
-}
+  return { props: {} };
+};

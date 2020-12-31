@@ -1,5 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import Macros from "../components/abstractMacros";
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Macros from '../components/abstractMacros';
 
 const googleAnalyticsScript = `
 window.dataLayer = window.dataLayer || [];

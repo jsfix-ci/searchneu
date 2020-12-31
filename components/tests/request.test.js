@@ -6,7 +6,6 @@
 import request from '../request';
 import MockXMLHttpRequest from './MockXMLHttpRequest';
 
-
 const realXMLHttpRequest = window.XMLHttpRequest;
 
 // Make sure to reset the mock request module after each test.
@@ -17,7 +16,6 @@ afterEach(() => {
 beforeEach(() => {
   window.XMLHttpRequest = MockXMLHttpRequest;
 });
-
 
 it('should work', async (done) => {
   const promise = request.get('/request');
@@ -31,12 +29,14 @@ it('should work', async (done) => {
   done();
 });
 
-
 it('should error or something', async (done) => {
   // Retry times must be 1, because async.js doesn't play well with Jest
   const promise = request.get({ url: '/request', retryTimes: 0 });
 
-  MockXMLHttpRequest.instance.respondToRequest(404, JSON.stringify('this is a 404'))
+  MockXMLHttpRequest.instance.respondToRequest(
+    404,
+    JSON.stringify('this is a 404')
+  );
 
   try {
     await promise;
@@ -49,12 +49,14 @@ it('should error or something', async (done) => {
   done();
 });
 
-
 it('responds with a json error', async (done) => {
   // Retry times must be 1, because async.js doesn't play well with Jest
   const promise = request.get({ url: '/requestt' });
 
-  MockXMLHttpRequest.instance.respondToRequest(200, JSON.stringify({ error: 'this is an error' }));
+  MockXMLHttpRequest.instance.respondToRequest(
+    200,
+    JSON.stringify({ error: 'this is an error' })
+  );
 
   const response = await promise;
 
@@ -62,16 +64,17 @@ it('responds with a json error', async (done) => {
 
   expect(response.error).toBe('this is an error');
 
-
   done();
 });
-
 
 it('responds to a post', async (done) => {
   // Retry times must be 1, because async.js doesn't play well with Jest
   const promise = request.post({ url: '/postt', body: 'body here' });
 
-  MockXMLHttpRequest.instance.respondToRequest(200, JSON.stringify({ someKey: 'some value' }));
+  MockXMLHttpRequest.instance.respondToRequest(
+    200,
+    JSON.stringify({ someKey: 'some value' })
+  );
 
   const response = await promise;
 

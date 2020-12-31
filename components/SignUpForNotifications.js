@@ -7,7 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'semantic-ui-react';
 
-import LogoInput from './icons/LogoInput'
+import LogoInput from './icons/LogoInput';
 import macros from './macros';
 import Keys from './Keys';
 import facebook from './facebook';
@@ -32,7 +32,6 @@ class SignUpForNotifications extends React.Component {
     super(props);
 
     this.state = {
-
       // Whether to show the Facebook messenger button or not.
       showMessengerButton: false,
 
@@ -81,12 +80,18 @@ class SignUpForNotifications extends React.Component {
 
     iframe.onload = () => {
       // Check to see if the plugin was successfully rendered
-      const ele = this.facebookScopeRef.querySelector('.sendToMessengerButton > span');
+      const ele = this.facebookScopeRef.querySelector(
+        '.sendToMessengerButton > span'
+      );
 
       const classHash = Keys.getClassHash(this.props.aClass);
 
       // If has adblock and haven't shown the warning yet, show the warning.
-      if (ele.offsetHeight === 0 && ele.offsetWidth === 0 && !facebook.didPluginRender()) {
+      if (
+        ele.offsetHeight === 0 &&
+        ele.offsetWidth === 0 &&
+        !facebook.didPluginRender()
+      ) {
         if (macros.isMobile) {
           macros.error('Unable to render on mobile?', classHash);
 
@@ -96,7 +101,8 @@ class SignUpForNotifications extends React.Component {
           });
         } else {
           macros.logAmplitudeEvent('FB Send to Messenger', {
-            message: "User has adblock or isn't logged in. Showing adblock/login popup.",
+            message:
+              "User has adblock or isn't logged in. Showing adblock/login popup.",
             hash: classHash,
           });
 
@@ -125,7 +131,11 @@ class SignUpForNotifications extends React.Component {
       user.addClass(aClass);
 
       // If this class only has 1 section, sign the user for it automatically.
-      if (aClass.sections && aClass.sections.length === 1 && aClass.sections[0].seatsRemaining <= 0) {
+      if (
+        aClass.sections &&
+        aClass.sections.length === 1 &&
+        aClass.sections[0].seatsRemaining <= 0
+      ) {
         user.addSection(aClass.sections[0]);
       }
     } else {
@@ -161,7 +171,10 @@ class SignUpForNotifications extends React.Component {
 
     // If there is exactly one section in the class and the seats are all taken
     // automatically sign the user up for it.
-    if (aClass.sections.length === 1 && aClass.sections[0].seatsRemaining <= 0) {
+    if (
+      aClass.sections.length === 1 &&
+      aClass.sections[0].seatsRemaining <= 0
+    ) {
       sectionHashes.push(Keys.getSectionHash(aClass.sections[0]));
     }
 
@@ -169,23 +182,29 @@ class SignUpForNotifications extends React.Component {
     // Many characters arn't allowed to be in the ref attribute, including open and closing braces.
     // So base64 enocode it and then decode it on the server. Without the base64 encoding, the button will not render.
 
-    const payload = { //TODO add type FBUserPayload
+    const payload = {
+      //TODO add type FBUserPayload
       classHash: Keys.getClassHash(this.props.aClass),
       sectionHashes: sectionHashes,
       dev: macros.DEV,
       loginKey: loginKey,
-    }
+    };
     const dataRef = btoa(JSON.stringify(payload));
 
     return (
-      <div ref={ (ele) => { this.facebookScopeRef = ele; } } className='inlineBlock'>
+      <div
+        ref={(ele) => {
+          this.facebookScopeRef = ele;
+        }}
+        className="inlineBlock"
+      >
         <div
-          className='fb-send-to-messenger sendToMessengerButton'
-          messenger_app_id='1979224428978082'
-          page_id='807584642748179'
-          data-ref={ dataRef }
-          color='white'
-          size='large'
+          className="fb-send-to-messenger sendToMessengerButton"
+          messenger_app_id="1979224428978082"
+          page_id="807584642748179"
+          data-ref={dataRef}
+          color="white"
+          size="large"
         />
       </div>
     );
@@ -199,7 +218,7 @@ class SignUpForNotifications extends React.Component {
 
   hasAtLeastOneSectionFull() {
     return this.props.aClass.sections.some((e) => {
-      return e.seatsRemaining <= 0 && e.seatsCapacity > 0
+      return e.seatsRemaining <= 0 && e.seatsCapacity > 0;
     });
   }
 
@@ -208,24 +227,35 @@ class SignUpForNotifications extends React.Component {
 
     if (this.props.userIsWatchingClass) {
       if (this.props.aClass.sections.length === 0) {
-        content = <Button basic disabled content="You're now signed up for notifications on this class" className='notificationButton' />;
+        content = (
+          <Button
+            basic
+            disabled
+            content="You're now signed up for notifications on this class"
+            className="notificationButton"
+          />
+        );
       } else {
-        content = <div className='toggleCTA'><span>Toggle the sections you want to be notified for!</span></div>;
+        content = (
+          <div className="toggleCTA">
+            <span>Toggle the sections you want to be notified for!</span>
+          </div>
+        );
       }
     } else if (this.state.showMessengerButton) {
       if (facebook.didPluginFail()) {
         content = (
           <Button
             basic
-            content='Disable adblock to continue'
-            className='diableAdblockButton'
+            content="Disable adblock to continue"
+            className="diableAdblockButton"
             disabled
           />
         );
       } else {
         content = (
-          <div className='facebookButtonContainer'>
-            <div className='sendToMessengerButtonLabel'>
+          <div className="facebookButtonContainer">
+            <div className="sendToMessengerButtonLabel">
               Click this button to continue
             </div>
             {this.getSendToMessengerButton()}
@@ -233,18 +263,31 @@ class SignUpForNotifications extends React.Component {
         );
       }
     } else if (this.props.aClass.sections.length === 0) {
-      content = <Button basic onClick={ this.onSubscribeToggleChange } content='Get notified when sections are added!' className='notificationButton' />;
+      content = (
+        <Button
+          basic
+          onClick={this.onSubscribeToggleChange}
+          content="Get notified when sections are added!"
+          className="notificationButton"
+        />
+      );
     } else if (this.hasAtLeastOneSectionFull()) {
       content = (
-        <div className='initialNotificationButton' role='button' focusable='true' tabIndex={ 0 } onClick={ this.onSubscribeToggleChange }>
-          <LogoInput height='14' width='18' fill='#d41b2c' />
+        <div
+          className="initialNotificationButton"
+          role="button"
+          focusable="true"
+          tabIndex={0}
+          onClick={this.onSubscribeToggleChange}
+        >
+          <LogoInput height="14" width="18" fill="#d41b2c" />
           <span>Get notified when seats open up!</span>
         </div>
       );
     } else {
       // Show a button that says there are currently seats available.
       content = (
-        <div className='allSeatsAvailable'>
+        <div className="allSeatsAvailable">
           <span>There are seats available in all sections.</span>
         </div>
       );
@@ -260,13 +303,13 @@ class SignUpForNotifications extends React.Component {
     ];
 
     return (
-      <div className='sign-up-for-notifications-container'>
+      <div className="sign-up-for-notifications-container">
         {content}
         <Modal
-          header='Please disable adblock and sign into Facebook.'
-          open={ this.state.showAdblockModal }
+          header="Please disable adblock and sign into Facebook."
+          open={this.state.showAdblockModal}
           content="Please disable any ad blocking extentions for this site because this feature does not work when adblock is enabled. If you are using Firefox in strict blocking mode, you will need to add an exception for this site for this feature to work. You will also have to uninstall Facebook Container for Firefox, if you have that installed. You can also try using a different browser. If you can't get it working send us a message at hey@searchneu.com."
-          actions={ actions }
+          actions={actions}
         />
       </div>
     );

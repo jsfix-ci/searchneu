@@ -6,17 +6,22 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Keys from '../Keys';
 import macros from '../macros';
 import EmployeePanel from '../panels/EmployeePanel';
-import { DayjsTuple, Meeting, SearchItem, Section, TimeToDayjs } from '../types';
+import {
+  DayjsTuple,
+  Meeting,
+  SearchItem,
+  Section,
+  TimeToDayjs,
+} from '../types';
 import { MobileSearchResult, SearchResult } from './Results/SearchResult';
 
-
-dayjs.extend(utc)
+dayjs.extend(utc);
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 
 interface ResultsLoaderProps {
-  results: SearchItem[],
-  loadMore: () => void
+  results: SearchItem[];
+  loadMore: () => void;
 }
 
 const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
@@ -61,7 +66,7 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
   });
 
   return flatten(valuesGroupedByTimeOfDay);
-}
+};
 
 const getFormattedSections = (sections: any): Section[] => {
   const formattedSections: Section[] = [];
@@ -83,44 +88,54 @@ const getFormattedSections = (sections: any): Section[] => {
   });
 
   return formattedSections;
-}
+};
 
 function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
   return (
     <InfiniteScroll
-      dataLength={ results.length }
-      next={ loadMore }
+      dataLength={results.length}
+      next={loadMore}
       hasMore
-      loader={ null }
+      loader={null}
     >
-      <div className='five column row'>
-        <div className='page-home'>
-          {results.filter((result) => result !== null && result !== undefined).map((result) => {
-            return (
-              <ResultItemMemoized
-                key={ result.type === 'class' ? Keys.getClassHash(result.class) : result.employee.id }
-                result={ result }
-              />
-            )
-          })}
+      <div className="five column row">
+        <div className="page-home">
+          {results
+            .filter((result) => result !== null && result !== undefined)
+            .map((result) => {
+              return (
+                <ResultItemMemoized
+                  key={
+                    result.type === 'class'
+                      ? Keys.getClassHash(result.class)
+                      : result.employee.id
+                  }
+                  result={result}
+                />
+              );
+            })}
         </div>
       </div>
     </InfiniteScroll>
-  )
+  );
 }
 
 // Memoize result items to avoid unneeded re-renders and to reuse
 // If the Panels are updated to function components, we can memoize them instead and remove this
-const ResultItemMemoized = React.memo(({ result }:{result}) => {
+const ResultItemMemoized = React.memo(({ result }: { result }) => {
   if (result.type === 'class') {
     const course = result.class;
     // TODO: Can we get rid of this clone deep?
     course.sections = getFormattedSections(cloneDeep(result.sections));
-    return macros.isMobile ? <MobileSearchResult course={ course } /> : <SearchResult course={ course } />;
+    return macros.isMobile ? (
+      <MobileSearchResult course={course} />
+    ) : (
+      <SearchResult course={course} />
+    );
   }
 
   if (result.type === 'employee') {
-    return <EmployeePanel employee={ result.employee } />;
+    return <EmployeePanel employee={result.employee} />;
   }
 
   macros.log('Unknown type', result.type);

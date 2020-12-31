@@ -18,18 +18,17 @@ it('should render a desktop employee panel', () => {
   const orig = macros.isMobile;
   macros.isMobile = false;
 
-  const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
+  const result = shallow(<EmployeePanel employee={mockData.razzaq} />);
   expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;
 });
 
-
 it('should render a mobile employee panel', () => {
   const orig = macros.isMobile;
   macros.isMobile = true;
 
-  const result = shallow(<EmployeePanel employee={ mockData.razzaq } />);
+  const result = shallow(<EmployeePanel employee={mockData.razzaq} />);
   expect(result.debug()).toMatchSnapshot();
 
   macros.isMobile = orig;

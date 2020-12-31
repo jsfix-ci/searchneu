@@ -6,26 +6,32 @@ import { DayjsTuple, DayOfWeek, Meeting, Section } from '../../types';
 import useSectionPanelDetail from './useSectionPanelDetail';
 import WeekdayBoxes from './WeekdayBoxes';
 
-const NotifCheckBox = dynamic(
-  () => import('../../panels/NotifCheckBox'),
-  {ssr: false}
-)
+const NotifCheckBox = dynamic(() => import('../../panels/NotifCheckBox'), {
+  ssr: false,
+});
 
 interface SectionPanelProps {
-  section: Section
-  showNotificationSwitches: boolean
+  section: Section;
+  showNotificationSwitches: boolean;
 }
 
-const meetsOnDay = (meeting: Meeting, dayIndex : DayOfWeek) : boolean => {
-  return meeting.times.some((time) => { return time.start.day() === dayIndex; });
-}
+const meetsOnDay = (meeting: Meeting, dayIndex: DayOfWeek): boolean => {
+  return meeting.times.some((time) => {
+    return time.start.day() === dayIndex;
+  });
+};
 
 // Unique list of all professors in all meetings, sorted alphabetically, unescape html entity decoding
-const getProfs = (section: Section) : string[] => {
-  return section.profs.length > 0 ? Array.from(section.profs.map((prof) => unescape(prof))).sort() : ['TBA'];
-}
+const getProfs = (section: Section): string[] => {
+  return section.profs.length > 0
+    ? Array.from(section.profs.map((prof) => unescape(prof))).sort()
+    : ['TBA'];
+};
 
-const getAllMeetingMoments = (section: Section, ignoreExams = true) : DayjsTuple[] => {
+const getAllMeetingMoments = (
+  section: Section,
+  ignoreExams = true
+): DayjsTuple[] => {
   let retVal = [];
   section.meetings.forEach((meeting) => {
     if (ignoreExams && meeting.startDate.unix() === meeting.endDate.unix()) {
@@ -40,9 +46,9 @@ const getAllMeetingMoments = (section: Section, ignoreExams = true) : DayjsTuple
   });
 
   return retVal;
-}
+};
 
-const getDaysOfWeekAsBooleans = (section: Section) : boolean[] => {
+const getDaysOfWeekAsBooleans = (section: Section): boolean[] => {
   const retVal = [false, false, false, false, false, false, false];
 
   getAllMeetingMoments(section).forEach((time) => {
@@ -50,72 +56,76 @@ const getDaysOfWeekAsBooleans = (section: Section) : boolean[] => {
   });
 
   return retVal;
-}
+};
 
-export function DesktopSectionPanel({ section, showNotificationSwitches } : SectionPanelProps) {
-  const { getSeatsClass } = useSectionPanelDetail(section)
+export function DesktopSectionPanel({
+  section,
+  showNotificationSwitches,
+}: SectionPanelProps) {
+  const { getSeatsClass } = useSectionPanelDetail(section);
 
   const getUniqueTimes = (times: DayjsTuple[]) => {
-    const seenTimes = new Set()
+    const seenTimes = new Set();
     return times.reduce((acc, t) => {
       if (!seenTimes.has(t.start.format('h:mm'))) {
-        acc.push(t)
+        acc.push(t);
       }
-      seenTimes.add(t.start.format('h:mm'))
-      return acc
-    }, [])
-  }
+      seenTimes.add(t.start.format('h:mm'));
+      return acc;
+    }, []);
+  };
 
   const singleMeeting = (daysMet: boolean[], meeting: Meeting) => {
     if (daysMet.some((d) => d)) {
       return (
-        <div className='DesktopSectionPanel__meetings'>
-          <WeekdayBoxes meetingDays={ daysMet } />
-          <div className='DesktopSectionPanel__meetings--times'>
+        <div className="DesktopSectionPanel__meetings">
+          <WeekdayBoxes meetingDays={daysMet} />
+          <div className="DesktopSectionPanel__meetings--times">
             {getUniqueTimes(meeting.times).map((time) => (
               <>
                 <span>
-                  {`${time.start.format('h:mm')}-${time.end.format('h:mm a')} | ${meeting.location}`}
+                  {`${time.start.format('h:mm')}-${time.end.format(
+                    'h:mm a'
+                  )} | ${meeting.location}`}
                 </span>
                 <br />
               </>
             ))}
           </div>
         </div>
-      )
+      );
       // eslint-disable-next-line react/prop-types
-    } if (section.meetings.length <= 1) {
-      return <span>See syllabus</span>
     }
-    return null
-  }
+    if (section.meetings.length <= 1) {
+      return <span>See syllabus</span>;
+    }
+    return null;
+  };
 
   const getMeetings = (s: Section) => {
     return s.meetings.map((m) => {
-      const meetingDays = Array(7).fill(false)
-      meetingDays.forEach((d, index) => { if (meetsOnDay(m, index)) meetingDays[index] = true })
-      return singleMeeting(meetingDays, m)
-    })
-  }
-
+      const meetingDays = Array(7).fill(false);
+      meetingDays.forEach((d, index) => {
+        if (meetsOnDay(m, index)) meetingDays[index] = true;
+      });
+      return singleMeeting(meetingDays, m);
+    });
+  };
 
   return (
-    <tr className='DesktopSectionPanel' key={ Keys.getSectionHash(section) }>
+    <tr className="DesktopSectionPanel" key={Keys.getSectionHash(section)}>
       <td>
-        <a href={ section.url } target='_blank' rel='noopener noreferrer'>{section.crn}</a>
+        <a href={section.url} target="_blank" rel="noopener noreferrer">
+          {section.crn}
+        </a>
       </td>
+      <td>{getProfs(section).join(', ')}</td>
       <td>
-        {getProfs(section).join(', ')}
+        {section.online ? <span>Online Class</span> : getMeetings(section)}
       </td>
+      <td>{section.campus}</td>
       <td>
-        {section.online ? <span>Online Class</span>
-          : getMeetings(section)}
-      </td>
-      <td>
-        {section.campus}
-      </td>
-      <td>
-        <span className={ getSeatsClass() }>
+        <span className={getSeatsClass()}>
           {section.seatsRemaining}/{section.seatsCapacity}
         </span>
         <br />
@@ -123,67 +133,83 @@ export function DesktopSectionPanel({ section, showNotificationSwitches } : Sect
           {`${section.waitRemaining}/${section.waitCapacity} Waitlist Seats`}
         </span>
       </td>
-      {showNotificationSwitches && <td><div className='DesktopSectionPanel__notifs'><NotifCheckBox section={ section } /></div></td>}
+      {showNotificationSwitches && (
+        <td>
+          <div className="DesktopSectionPanel__notifs">
+            <NotifCheckBox section={section} />
+          </div>
+        </td>
+      )}
     </tr>
-
-  )
+  );
 }
 
-export function MobileSectionPanel({ section, showNotificationSwitches } : SectionPanelProps) {
-  const { getSeatsClass } = useSectionPanelDetail(section)
+export function MobileSectionPanel({
+  section,
+  showNotificationSwitches,
+}: SectionPanelProps) {
+  const { getSeatsClass } = useSectionPanelDetail(section);
 
   const groupedTimesAndDays = (times: DayjsTuple[]) => {
-    const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S']
+    const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S'];
     return times.reduce((acc, t) => {
-      const timeString = `${t.start.format('h:mm')}-${t.end.format('h:mm a')}`
-      acc.set(timeString, acc.get(timeString) ? acc.get(timeString) + daysOfWeek[t.start.day()] : daysOfWeek[t.start.day()])
+      const timeString = `${t.start.format('h:mm')}-${t.end.format('h:mm a')}`;
+      acc.set(
+        timeString,
+        acc.get(timeString)
+          ? acc.get(timeString) + daysOfWeek[t.start.day()]
+          : daysOfWeek[t.start.day()]
+      );
 
-      return acc
-    }, new Map())
-  }
+      return acc;
+    }, new Map());
+  };
 
   const getMeetings = (s: Section) => {
-    return s.meetings.map((m) => (
+    return s.meetings.map((m) =>
       Array.from(groupedTimesAndDays(m.times)).map(([time, days]) => (
         <>
-          <span className='MobileSectionPanel__meetings--time'>
+          <span className="MobileSectionPanel__meetings--time">
             {`${days}, ${time} | ${m.location}`}
           </span>
           <br />
         </>
       ))
-    ))
-  }
+    );
+  };
 
   return (
-    <div className='MobileSectionPanel'>
-      <div className='MobileSectionPanel__header'>
+    <div className="MobileSectionPanel">
+      <div className="MobileSectionPanel__header">
         <span>{getProfs(section).join(', ')}</span>
         <span>Boston</span>
       </div>
-      <div className='MobileSectionPanel__firstRow'>
+      <div className="MobileSectionPanel__firstRow">
         <div>
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            href={ section.url }
-          >
+          <a target="_blank" rel="noopener noreferrer" href={section.url}>
             <IconGlobe />
           </a>
           <span>{section.crn}</span>
         </div>
-        {showNotificationSwitches && <NotifCheckBox section={ section } />}
+        {showNotificationSwitches && <NotifCheckBox section={section} />}
       </div>
-      <div className='MobileSectionPanel__secondRow'>
-        {!section.online && <WeekdayBoxes meetingDays={ getDaysOfWeekAsBooleans(section) } />}
+      <div className="MobileSectionPanel__secondRow">
+        {!section.online && (
+          <WeekdayBoxes meetingDays={getDaysOfWeekAsBooleans(section)} />
+        )}
       </div>
-      <div className='MobileSectionPanel__meetings'>
-        {section.online ? <span className='MobileSectionPanel__meetings--online'>Online Class</span>
-          : getMeetings(section)}
+      <div className="MobileSectionPanel__meetings">
+        {section.online ? (
+          <span className="MobileSectionPanel__meetings--online">
+            Online Class
+          </span>
+        ) : (
+          getMeetings(section)
+        )}
       </div>
-      <div className={ getSeatsClass() }>
+      <div className={getSeatsClass()}>
         {`${section.seatsRemaining}/${section.seatsCapacity} Seats Available `}
       </div>
     </div>
-  )
+  );
 }

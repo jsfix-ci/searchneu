@@ -1,15 +1,15 @@
-import { ReactElement } from "react";
-import { campusToColor } from "../../utils/campusToColor";
-import { Campus } from "../types";
+import { ReactElement } from 'react';
+import { campusToColor } from '../../utils/campusToColor';
+import { Campus } from '../types';
 
 interface LogoProp {
-  className: string
-  campus: Campus,
+  className: string;
+  campus: Campus;
 }
 export default function Logo({
   className,
   campus = Campus.NEU,
-}: LogoProp) : ReactElement {
+}: LogoProp): ReactElement {
   const fill = campusToColor[campus];
   return (
     <svg

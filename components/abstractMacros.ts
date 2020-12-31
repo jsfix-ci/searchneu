@@ -32,7 +32,6 @@ class Macros {
   // Google analytics token
   static googleAnalyticsToken: string = 'UA-85376897-3';
 
-
   // Use this for normal logging
   // Will log as normal, but stays silent during testing
   static log(...args: any) {
@@ -68,7 +67,11 @@ class Macros {
 }
 
 // Set up the Macros.TEST, Macros.DEV, and Macros.PROD based on some env variables.
-if (process.env.PROD || process.env.NODE_ENV === 'production' || (process.env.CI && process.env.NODE_ENV !== 'test')) {
+if (
+  process.env.PROD ||
+  process.env.NODE_ENV === 'production' ||
+  (process.env.CI && process.env.NODE_ENV !== 'test')
+) {
   Macros.PROD = true;
   console.log('Running in prod mode.'); // eslint-disable-line no-console
 } else if (process.env.DEV) {
@@ -92,6 +95,5 @@ if (!Macros.DEV) {
 if (!Macros.TEST) {
   Macros.TEST = false;
 }
-
 
 export default Macros;

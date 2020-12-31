@@ -7,14 +7,18 @@ import { useEffect } from 'react';
  * @param setFlag function to set the open state of the component
  */
 
-export default function useClickOutside(ref: React.RefObject<HTMLElement>, flag: boolean, setFlag: (b: boolean) => void) {
+export default function useClickOutside(
+  ref: React.RefObject<HTMLElement>,
+  flag: boolean,
+  setFlag: (b: boolean) => void
+) {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (ref.current.contains(e.target)) {
         return;
       }
       setFlag(false);
-    }
+    };
 
     if (flag) {
       document.addEventListener('mousedown', handleClickOutside);

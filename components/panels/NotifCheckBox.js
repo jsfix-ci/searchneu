@@ -19,7 +19,7 @@ export default class NotifCheckBox extends React.Component {
   // was rendered in. We can get all the other data from that.
   static propTypes = {
     section: PropTypes.object.isRequired,
-  }
+  };
 
   // creates a new Notification Check Box that has the section's
   // hash in section, and sets checked to be the initial value of if the section
@@ -37,7 +37,6 @@ export default class NotifCheckBox extends React.Component {
     this.onUserUpdate = this.onUserUpdate.bind(this);
   }
 
-
   componentDidMount() {
     // Register a handler to get updates if user changes.
     user.registerUserChangeHandler(this.onUserUpdate);
@@ -52,7 +51,9 @@ export default class NotifCheckBox extends React.Component {
   // Internal only.
   onUserUpdate() {
     // Show the notification toggles if the user is watching this class.
-    const checked = user.isWatchingSection(Keys.getSectionHash(this.props.section));
+    const checked = user.isWatchingSection(
+      Keys.getSectionHash(this.props.section)
+    );
     if (checked !== this.state.checked) {
       this.setState({
         checked: checked,
@@ -73,38 +74,55 @@ export default class NotifCheckBox extends React.Component {
     }
   }
 
-
   // renders the proper checkbox. If there are still seats, then make it read
   // only, otherwise, set up callback on onChange
   render() {
     // Don't show the toggle if this section has over 5 remaining seats.
     if (this.props.section.seatsRemaining > 5) {
-      return <div style={{ color: '#d3d3d3' }} data-tip='There are still seats remaining for this section' className='inlineBlock'><Icon name='info circle' className='myIcon' /></div>;
+      return (
+        <div
+          style={{ color: '#d3d3d3' }}
+          data-tip="There are still seats remaining for this section"
+          className="inlineBlock"
+        >
+          <Icon name="info circle" className="myIcon" />
+        </div>
+      );
     }
 
     return (
-      <div data-tip='Sign up for notifications for this section' className='inlineBlock'>
-        { macros.isMobile ? (
-          <div className={ this.state.checked ? 'notifSubscribeButton--checked' : 'notifSubscribeButton' } role='button' tabIndex={ 0 } onClick={ this.onCheckboxClick }>
+      <div
+        data-tip="Sign up for notifications for this section"
+        className="inlineBlock"
+      >
+        {macros.isMobile ? (
+          <div
+            className={
+              this.state.checked
+                ? 'notifSubscribeButton--checked'
+                : 'notifSubscribeButton'
+            }
+            role="button"
+            tabIndex={0}
+            onClick={this.onCheckboxClick}
+          >
             {this.state.checked && <IconCheckMark />}
-            <span>
-              {this.state.checked ? 'Subscribed' : 'Subscribe'}
-            </span>
+            <span>{this.state.checked ? 'Subscribed' : 'Subscribe'}</span>
           </div>
         ) : (
-          <div className='notifSwitch'>
+          <div className="notifSwitch">
             <input
-              checked={ this.state.checked }
-              onChange={ this.onCheckboxClick }
-              className='notif-switch-checkbox'
-              id={ this.state.notifSwitchId }
-              type='checkbox'
+              checked={this.state.checked}
+              onChange={this.onCheckboxClick}
+              className="notif-switch-checkbox"
+              id={this.state.notifSwitchId}
+              type="checkbox"
             />
             <label
-              className='notif-switch-label'
-              htmlFor={ this.state.notifSwitchId }
+              className="notif-switch-label"
+              htmlFor={this.state.notifSwitchId}
             >
-              <span className='notif-switch-button' />
+              <span className="notif-switch-button" />
             </label>
           </div>
         )}

@@ -9,7 +9,6 @@ import macros from './macros';
 import Keys from './Keys';
 import { v4 } from 'uuid';
 
-
 // Manages user data in the frontend
 // Downloads the data from the server when the page first starts
 
@@ -72,32 +71,34 @@ class User {
     // Keep track of the status of this call, so future calls that
     // modify the user and update the backend
     // can wait for this to finish before running.
-    this.userDataPromise = request.post({
-      url: '/user',
-      body: body,
-    }).then((response) => {
-      // If error, delete local invalid data.
-      if (response.error) {
-        macros.log('Data in localStorage is invalid, deleting');
-        this.logOut();
-        return;
-      }
+    this.userDataPromise = request
+      .post({
+        url: '/user',
+        body: body,
+      })
+      .then((response) => {
+        // If error, delete local invalid data.
+        if (response.error) {
+          macros.log('Data in localStorage is invalid, deleting');
+          this.logOut();
+          return;
+        }
 
-      // Check to see if we got a user back.
-      if (!response.user) {
-        macros.warn("Download user data request didn't get a user back."); // TODO: should we try again here?
-        return;
-      }
+        // Check to see if we got a user back.
+        if (!response.user) {
+          macros.warn("Download user data request didn't get a user back."); // TODO: should we try again here?
+          return;
+        }
 
-      this.user = response.user;
+        this.user = response.user;
 
-      // Keep track of the sender id too.
-      window.localStorage.senderId = response.user.facebookMessengerId;
+        // Keep track of the sender id too.
+        window.localStorage.senderId = response.user.facebookMessengerId;
 
-      this.callUserChangeHandlers();
+        this.callUserChangeHandlers();
 
-      macros.log('got user data', this.user);
-    });
+        macros.log('got user data', this.user);
+      });
   }
 
   // Revokes the loginKey and all other user-specific data
@@ -157,14 +158,22 @@ class User {
     await this.userDataPromise;
 
     if (!this.user || !this.hasLoggedInBefore()) {
-      macros.error('Remove section called with no valid user.', this.user, this.hasLoggedInBefore());
+      macros.error(
+        'Remove section called with no valid user.',
+        this.user,
+        this.hasLoggedInBefore()
+      );
       return;
     }
 
     const sectionHash = Keys.getSectionHash(section);
 
     if (!this.user.watchingSections.includes(sectionHash)) {
-      macros.error("removed section that doesn't exist on user?", section, this.user);
+      macros.error(
+        "removed section that doesn't exist on user?",
+        section,
+        this.user
+      );
       return;
     }
 
@@ -186,7 +195,6 @@ class User {
       body: body,
     });
 
-
     this.callUserChangeHandlers();
   }
 
@@ -204,7 +212,11 @@ class User {
     await this.userDataPromise;
 
     if (!this.user || !this.hasLoggedInBefore()) {
-      macros.error('Add section called with no valid user.', this.user, this.hasLoggedInBefore());
+      macros.error(
+        'Add section called with no valid user.',
+        this.user,
+        this.hasLoggedInBefore()
+      );
       return;
     }
 
@@ -255,7 +267,11 @@ class User {
     await this.userDataPromise;
 
     if (!this.user || !this.hasLoggedInBefore()) {
-      macros.error('Add class called with no valid user.', this.user, this.hasLoggedInBefore());
+      macros.error(
+        'Add class called with no valid user.',
+        this.user,
+        this.hasLoggedInBefore()
+      );
       return;
     }
 
@@ -275,7 +291,7 @@ class User {
     };
 
     await request.post({
-      url:'/subscription',
+      url: '/subscription',
       body: body,
     });
 
@@ -284,6 +300,5 @@ class User {
     macros.log('class registered', this.user);
   }
 }
-
 
 export default new User();

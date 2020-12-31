@@ -10,5 +10,5 @@ const TestHook = ({ callback }) => {
 };
 
 export default function TestHookComponent(callback) {
-  return mount(<TestHook callback={ callback } />);
+  return mount(<TestHook callback={callback} />);
 }

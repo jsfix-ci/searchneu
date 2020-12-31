@@ -1,7 +1,6 @@
-
-
 # Contributing 🎉🎉🎉
-We'd love to have more people help out with the project! 
+
+We'd love to have more people help out with the project!
 
 There are TONS of different things that you could help with including the programming itself, the design of the site, marketing, promotion, etc. You don't have to have any Computer Science experience to help out!
 

@@ -11,7 +11,8 @@ export default function useAtTop(): boolean {
   const [atTop, setAtTop] = useState(true);
   useEffect(() => {
     const handleScroll = () => {
-      const pageY = document.body.scrollTop || document.documentElement.scrollTop;
+      const pageY =
+        document.body.scrollTop || document.documentElement.scrollTop;
       setAtTop(pageY === 0);
     };
     window.addEventListener('scroll', handleScroll);

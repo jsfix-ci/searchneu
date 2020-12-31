@@ -47,7 +47,6 @@ class FeedbackModal extends React.Component {
     super(props);
 
     this.state = {
-
       // The value of the message box.
       messageValue: '',
 
@@ -68,10 +67,12 @@ class FeedbackModal extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-
   async onSubmit() {
     // Send an event to amplitude too, just for redundancy.
-    macros.logAmplitudeEvent('Feedback', { text: this.state.messageValue, contact: this.state.contactValue });
+    macros.logAmplitudeEvent('Feedback', {
+      text: this.state.messageValue,
+      contact: this.state.contactValue,
+    });
 
     const response = await request.post({
       url: '/feedback',
@@ -82,7 +83,12 @@ class FeedbackModal extends React.Component {
     });
 
     if (response.error) {
-      macros.error('Unable to submit feedback', response.error, this.state.messageValue, this.state.contactValue);
+      macros.error(
+        'Unable to submit feedback',
+        response.error,
+        this.state.messageValue,
+        this.state.contactValue
+      );
     }
 
     this.setState({
@@ -131,53 +137,75 @@ class FeedbackModal extends React.Component {
     let header = null;
 
     if (this.props.isFeedback) {
-      firstText = 'Find a bug in Search NEU? Find a query that doesn\'t come up with the results you were looking for? Have an idea for an improvement or just want to say hi? Drop a line below! Feel free to write whatever you want to and someone on the team will read it.';
+      firstText =
+        "Find a bug in Search NEU? Find a query that doesn't come up with the results you were looking for? Have an idea for an improvement or just want to say hi? Drop a line below! Feel free to write whatever you want to and someone on the team will read it.";
       secondBody = [
-        <p key='0'>
-          By default this form is anonymous. Leave your name and/or email if you want us to be able to contact you.
+        <p key="0">
+          By default this form is anonymous. Leave your name and/or email if you
+          want us to be able to contact you.
         </p>,
-        <Input name='contact' form='feedbackForm' className='formModalInput' onChange={ this.onContactChange } key='1' />,
+        <Input
+          name="contact"
+          form="feedbackForm"
+          className="formModalInput"
+          onChange={this.onContactChange}
+          key="1"
+        />,
       ];
 
       header = 'Search NEU Feedback';
     } else {
       header = 'Get Involved with Search NEU!';
-      firstText = 'Thanks for your interest! We\'d love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There\'s a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don\'t have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!';
+      firstText =
+        "Thanks for your interest! We'd love to have more people help out with the project. We are looking for people for both introductory level roles and leadership roles. There's a lot of CS stuff (new features, etc) and non-CS stuff (posters, marketing, outreach, etc) that we could work on, so it is no problem at all if you don't have a lot of experience in CS! Everything is flexible, and we could help you learn some programming along the way if you want to work on the site 🙂. Leave your name and some way we can get in contact (Facebook URL, email, Fortnite username, etc) and someone will reach out!";
     }
 
     return (
-      <div className='feedback-container'>
-        <Transition in={ this.state.messageVisible } timeout={ 500 }>
+      <div className="feedback-container">
+        <Transition in={this.state.messageVisible} timeout={500}>
           {(state) => {
             return (
               <Message
                 success
-                className='alertMessage'
-                header='Your submission was successful.'
+                className="alertMessage"
+                header="Your submission was successful."
                 style={{ ...transitionStyles[state] }}
-                onDismiss={ this.hideMessage }
+                onDismiss={this.hideMessage}
               />
             );
           }}
         </Transition>
-        <Modal open={ this.props.feedbackModalOpen } onClose={ this.props.toggleForm } size='small' className='feedback-modal-container'>
-          <Header icon='mail' content={ header } />
-          <Modal.Content className='formModalContent'>
+        <Modal
+          open={this.props.feedbackModalOpen}
+          onClose={this.props.toggleForm}
+          size="small"
+          className="feedback-modal-container"
+        >
+          <Header icon="mail" content={header} />
+          <Modal.Content className="formModalContent">
             <Form>
-              <div className='feedbackParagraph'>
-                {firstText}
-              </div>
-              <TextArea name='response' form='feedbackForm' className='feedbackTextbox' onChange={ this.onTextAreaChange } />
+              <div className="feedbackParagraph">{firstText}</div>
+              <TextArea
+                name="response"
+                form="feedbackForm"
+                className="feedbackTextbox"
+                onChange={this.onTextAreaChange}
+              />
               {secondBody}
             </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button basic color='red' onClick={ this.props.toggleForm }>
-              <Icon name='remove' />
+            <Button basic color="red" onClick={this.props.toggleForm}>
+              <Icon name="remove" />
               Cancel
             </Button>
-            <Button type='submit' color='green' form='feedbackForm' onClick={ this.onSubmit }>
-              <Icon name='checkmark' />
+            <Button
+              type="submit"
+              color="green"
+              form="feedbackForm"
+              onClick={this.onSubmit}
+            >
+              <Icon name="checkmark" />
               Submit
             </Button>
           </Modal.Actions>

@@ -1,14 +1,25 @@
-import React from 'react'
+import React from 'react';
 
-const IconGradcap = (
-  {
-    width = '27', height = '18', className,
-  } : {
-    width?: string, height?: string, className?: string}
-) => <svg width={ width } height={ height } className={ className } viewBox='0 0 174 116' fill='none' xmlns='http://www.w3.org/2000/svg'>
-  <g clipPath='url(#clip0)'>
-    <path
-      d='M173.95 35.0359C173.95 34.9355 174 34.8351 174 34.7347C174 34.5842 173.95 34.534 173.95 34.4336C173.95 34.3332 173.95
+const IconGradcap = ({
+  width = '27',
+  height = '18',
+  className,
+}: {
+  width?: string;
+  height?: string;
+  className?: string;
+}) => (
+  <svg
+    width={width}
+    height={height}
+    className={className}
+    viewBox="0 0 174 116"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clipPath="url(#clip0)">
+      <path
+        d="M173.95 35.0359C173.95 34.9355 174 34.8351 174 34.7347C174 34.5842 173.95 34.534 173.95 34.4336C173.95 34.3332 173.95
 34.2328 173.9 34.1324C173.85 34.032 173.85 33.9316 173.799 33.8312C173.749 33.7308 173.749 33.6807 173.749 33.6305C173.699
 33.6305 173.699 33.5803 173.699 33.5803C173.649 33.4799 173.599 33.4297 173.549 33.2791C173.499 33.2289 173.449 33.1285
 173.398 33.0783C173.348 32.9779 173.248 32.9277 173.198 32.8273C173.098 32.727 173.098 32.6768 173.048 32.5764C172.997
@@ -48,15 +59,16 @@ const IconGradcap = (
 68.1644C86.9749 68.1644 86.9749 68.1644 87.0251 68.1644C87.1755 68.1644 87.376 68.1142 87.5765 68.1142C87.6266 68.064
 87.6768 68.064 87.7269 68.064C87.8773 68.0138 87.9775 68.0138 88.1279 67.9636C88.178 67.9636 88.178 67.9636 88.2282
 67.9636L119.409 56.6698V83.8252C110.536 86.8369 99.4572 89.2964 87.0251 88.9952ZM139.611 74.0372C137.405 75.4929 132.643
-78.4042 125.825 81.3154V54.3107L139.561 49.3414L139.611 74.0372Z'
-      fill='#DF404E'
-    />
-  </g>
-  <defs>
-    <clipPath id='clip0'>
-      <rect width='174' height='116' fill='white' />
-    </clipPath>
-  </defs>
-</svg>;
+78.4042 125.825 81.3154V54.3107L139.561 49.3414L139.611 74.0372Z"
+        fill="#DF404E"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0">
+        <rect width="174" height="116" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
 
 export default IconGradcap;
