@@ -22,7 +22,7 @@ SearchNEU is maintained by [Sandbox](https://www.sandboxnu.com/), Northeastern's
 
 ### Contributing 🎉🎉🎉
 
-If you are interested in helping make this site awesome that is fantastic! There are TONS of different things that you could help with including the programming itself, the design of the site, marketing, promotion, etc. You don't have to have any Computer Science experience to help out! More details [here](https://github.com/sandboxnu/searchneu/blob/master/docs/Contributing.md).
+If you are interested in helping make this site awesome that is fantastic! There are TONS of different things that you could help with including the programming itself, the design of the site, marketing, promotion, etc. You don't have to have any Computer Science experience to help out!
 
 Feel free to reach out if you have any questions! hey@searchneu.com
 
@@ -38,7 +38,7 @@ Special shout out to the following folks for contributing!
 
 ### API 🎉👍
 
-All the data on SearchNEU is available to download! For more details see [the documentation](https://github.com/sandboxnu/searchneu/blob/master/docs/API.md).
+The Course API used by SearchNEU and GraduateNU is in [this repo](https://github.com/sandboxnu/course-catalog-api)
 
 ### License
 
