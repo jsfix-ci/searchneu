@@ -37,7 +37,7 @@ class Search {
 
   // Clears the cache stored in this module.
   // Used for testing.
-  clearCache() {
+  clearCache(): void {
     this.cache = {};
     this.allLoaded = {};
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const IconGlobe = ({
   width = '14',
@@ -10,7 +10,7 @@ const IconGlobe = ({
   height?: string;
   fill?: string;
   className?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

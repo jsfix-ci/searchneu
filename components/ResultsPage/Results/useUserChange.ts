@@ -7,7 +7,7 @@ export default function useUserChange(aClass: Course): boolean {
   const [userIsWatchingClass, setUserIsWatchingClass] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const onUserUpdate = () => {
+  const onUserUpdate = (): void => {
     // Show the notification toggles if the user is watching this class.
     const isWatching = user.isWatchingClass(Keys.getClassHash(aClass));
     if (isWatching !== userIsWatchingClass) {
@@ -19,7 +19,7 @@ export default function useUserChange(aClass: Course): boolean {
     setUserIsWatchingClass(user.isWatchingClass(Keys.getClassHash(aClass)));
     user.registerUserChangeHandler(onUserUpdate);
     return () => user.unregisterUserChangeHandler(onUserUpdate);
-  }, [onUserUpdate]);
+  }, [aClass, onUserUpdate]);
 
   return userIsWatchingClass;
 }

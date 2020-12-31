@@ -2,7 +2,7 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import macros from '../macros';
 
 enum Status {
@@ -43,14 +43,18 @@ export default function useSearch<P, R>(
     status: Status.FETCHING_NEW,
   });
   // Equivalent of setState in class components.
-  function updateState(changes: Partial<State>) {
-    setState((prev) => ({ ...prev, ...changes }));
-  }
+  const updateState = useCallback(
+    (changes: Partial<State>) => {
+      setState((prev) => ({ ...prev, ...changes }));
+    },
+    [setState]
+  );
+
   const { params, page, results, status } = state;
 
   useEffect(() => {
     let ignore = false;
-    const searchWrap = async () => {
+    const searchWrap = async (): Promise<void> => {
       const data = await fetchResults(params, page);
       // Ignore will be true if out of order because useEffect is cleaned up before executing the next effect
       if (ignore) {
@@ -63,7 +67,7 @@ export default function useSearch<P, R>(
     return () => {
       ignore = true;
     };
-  }, [params, page, fetchResults]);
+  }, [params, page, fetchResults, updateState]);
 
   const loadMore = useCallback(() => {
     // Only load more if nothing else is mid-flight
@@ -75,13 +79,16 @@ export default function useSearch<P, R>(
     });
   }, []);
 
-  const doSearch = useCallback((p) => {
-    updateState({
-      params: p,
-      page: 0,
-      status: Status.FETCHING_NEW,
-    });
-  }, []);
+  const doSearch = useCallback(
+    (p) => {
+      updateState({
+        params: p,
+        page: 0,
+        status: Status.FETCHING_NEW,
+      });
+    },
+    [updateState]
+  );
 
   return {
     results: results,

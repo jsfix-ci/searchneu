@@ -11,7 +11,9 @@ if (process.env.PROD !== 'true') {
       setTimeout(() => callback(), 0);
     };
 
-    window.ga = function ga() {};
+    window.ga = function ga() {
+      return undefined;
+    };
   }
 
   // Mock out this file on all tests/

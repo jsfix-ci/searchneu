@@ -15,7 +15,7 @@ jest.mock('next/router', () => ({
 }));
 
 jest.mock('use-query-params', () => ({
-  useQueryParam: () => ['202030', () => {}],
+  useQueryParam: () => ['202030'],
 }));
 
 Enzyme.configure({ adapter: new Adapter() });

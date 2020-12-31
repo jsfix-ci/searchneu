@@ -2,9 +2,9 @@
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
  */
-import React, { useState, useEffect } from 'react';
-import macros from '../macros';
+import React, { ReactElement, useEffect, useState } from 'react';
 import MagnifyingGlass from '../icons/magnifying-glass.svg';
+import macros from '../macros';
 
 interface SearchBarProps {
   query: string;
@@ -21,7 +21,7 @@ export default function SearchBar({
   onSearch,
   onClick,
   buttonColor,
-}: SearchBarProps) {
+}: SearchBarProps): ReactElement {
   // controlledQuery represents what's typed into the searchbar - even BEFORE enter is hit
   const [controlledQuery, setControlledQuery] = useState(query);
 
@@ -31,7 +31,7 @@ export default function SearchBar({
   }, [query]);
 
   // Hide keyboard and execute search
-  const search = () => {
+  const search = (): void => {
     if (macros.isMobile) {
       if (
         document.activeElement &&
@@ -50,7 +50,7 @@ export default function SearchBar({
         id="search_id"
         autoComplete="off"
         spellCheck="false"
-        // eslint-disable-next-line jsx-a11y/no-autofocus
+        // TODO: ahhh what is this lmao // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={!macros.isMobile}
         tabIndex={0}
         className="searchbar__input"

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import IconClose from '../icons/IconClose';
+import macros from '../macros';
 import FilterPanel from './FilterPanel';
 import FilterPills from './FilterPills';
-import macros from '../macros';
-import IconClose from '../icons/IconClose';
-import { FilterSelection, FilterOptions, areFiltersSet } from './filters';
+import { areFiltersSet, FilterOptions, FilterSelection } from './filters';
 
 /**
  * setFilterPills sets the selected filters
@@ -30,7 +30,7 @@ export default function MobileSearchOverlay({
   filterOptions,
   query,
   onExecute,
-}: MobileSearchOverlayProps) {
+}: MobileSearchOverlayProps): ReactElement {
   // controlledQuery represents what's typed into the searchbar - even BEFORE enter is hit
   const [controlledQuery, setControlledQuery] = useState(query);
 
@@ -40,7 +40,7 @@ export default function MobileSearchOverlay({
   }, [query]);
 
   // Hide keyboard and execute search
-  const search = () => {
+  const search = (): void => {
     if (macros.isMobile) {
       if (
         document.activeElement &&

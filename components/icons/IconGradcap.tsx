@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const IconGradcap = ({
   width = '27',
@@ -8,7 +8,7 @@ const IconGradcap = ({
   width?: string;
   height?: string;
   className?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

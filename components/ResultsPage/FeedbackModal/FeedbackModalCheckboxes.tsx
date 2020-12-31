@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import CheckboxGroup from '../CheckboxGroup';
 
 interface CheckboxProps {
@@ -14,7 +14,7 @@ export default function FeedbackModalCheckboxes({
   feedbackOptions,
   selectedFeedback,
   setSelectedFeedback,
-}: CheckboxProps) {
+}: CheckboxProps): ReactElement {
   return (
     <>
       <div className="FeedbackModal__popoutSubHeader">

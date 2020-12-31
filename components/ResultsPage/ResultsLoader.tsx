@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { cloneDeep, flatten, groupBy, values } from 'lodash';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Keys from '../Keys';
 import macros from '../macros';
@@ -68,6 +68,7 @@ const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
   return flatten(valuesGroupedByTimeOfDay);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getFormattedSections = (sections: any): Section[] => {
   const formattedSections: Section[] = [];
 
@@ -90,7 +91,10 @@ const getFormattedSections = (sections: any): Section[] => {
   return formattedSections;
 };
 
-function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
+function ResultsLoader({
+  results,
+  loadMore,
+}: ResultsLoaderProps): ReactElement {
   return (
     <InfiniteScroll
       dataLength={results.length}
@@ -122,7 +126,11 @@ function ResultsLoader({ results, loadMore }: ResultsLoaderProps) {
 
 // Memoize result items to avoid unneeded re-renders and to reuse
 // If the Panels are updated to function components, we can memoize them instead and remove this
-const ResultItemMemoized = React.memo(({ result }: { result }) => {
+const ResultItemMemoized = React.memo(function ResultItemMemoized({
+  result,
+}: {
+  result;
+}) {
   if (result.type === 'class') {
     const course = result.class;
     // TODO: Can we get rid of this clone deep?

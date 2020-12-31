@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { getTermDropdownOptionsForCampus } from '../global';
 import IconGradcap from '../icons/IconGradcap';
 import IconScale from '../icons/IconScale';
@@ -24,7 +24,7 @@ const HomeSearch = ({
   termId,
   campus,
   setCampus,
-}: HomeSearchProps) => {
+}: HomeSearchProps): ReactElement => {
   const router = useRouter();
   return (
     <div className="HomeSearch">

@@ -11,9 +11,9 @@ export default function useClickOutside(
   ref: React.RefObject<HTMLElement>,
   flag: boolean,
   setFlag: (b: boolean) => void
-) {
+): void {
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e): void => {
       if (ref.current.contains(e.target)) {
         return;
       }

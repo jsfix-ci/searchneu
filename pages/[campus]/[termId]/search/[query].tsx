@@ -5,7 +5,7 @@
 import _ from 'lodash';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
 import Footer from '../../../../components/Footer';
@@ -48,7 +48,7 @@ interface SearchParams {
 
 let count = 0;
 // Log search queries to amplitude on enter.
-function logSearch(searchQuery: string) {
+function logSearch(searchQuery: string): void {
   searchQuery = searchQuery.trim();
 
   if (searchQuery) {
@@ -77,7 +77,7 @@ const fetchResults = async (
   return response;
 };
 
-export default function Results() {
+export default function Results(): ReactElement {
   const atTop = useAtTop();
   const router = useRouter();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
@@ -88,7 +88,7 @@ export default function Results() {
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const allCampuses = getAllCampusDropdownOptions();
 
-  const setSearchQuery = (q: string) => {
+  const setSearchQuery = (q: string): void => {
     router.push(`/${campus}/${termId}/search/${q}${window.location.search}`);
   };
   const setTermAndCampus = useCallback(
@@ -124,7 +124,7 @@ export default function Results() {
     return null;
   }
 
-  const filtersAreSet: Boolean = areFiltersSet(filters);
+  const filtersAreSet: boolean = areFiltersSet(filters);
   const { results, filterOptions } = us.results;
 
   if (showOverlay && macros.isMobile) {

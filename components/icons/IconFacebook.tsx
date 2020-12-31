@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const IconFacebook = ({
   width = '15',
@@ -10,7 +10,7 @@ const IconFacebook = ({
   height?: string;
   fill?: string;
   className?: string;
-}) => (
+}): ReactElement => (
   <svg
     width={width}
     height={height}

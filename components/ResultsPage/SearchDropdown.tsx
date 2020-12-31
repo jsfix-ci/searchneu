@@ -1,5 +1,5 @@
+import React, { ReactElement } from 'react';
 import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
-import React from 'react';
 
 interface DropdownProps {
   options: DropdownItemProps[];
@@ -17,7 +17,7 @@ function SearchDropdown({
   onChange,
   className = 'searchDropdown',
   compact = false,
-}: DropdownProps) {
+}: DropdownProps): ReactElement {
   return (
     <Dropdown
       selection

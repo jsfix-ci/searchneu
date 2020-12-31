@@ -1,13 +1,14 @@
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import React, { ReactElement } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import '../styles/base.scss';
-import Head from 'next/head';
-import React from 'react';
 import { useGoogleAnalyticsOnPageChange } from '../utils/gtag';
 import { QueryParamProvider } from '../utils/QueryParamProvider';
 
 // TODO: Split CSS per page so we don't import all css in every page
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps): ReactElement {
   useGoogleAnalyticsOnPageChange();
 
   return (

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import IconCollapseExpand from '../../icons/IconCollapseExpand';
 
 interface MobileCollapsableDetailProps {
   title: string;
   expand: boolean;
   setExpand: (b: boolean) => void;
-  renderChildren: () => JSX.Element | any[];
+  renderChildren: () => JSX.Element | JSX.Element[];
 }
 
 function MobileCollapsableDetail({
@@ -13,7 +13,7 @@ function MobileCollapsableDetail({
   expand,
   setExpand,
   renderChildren,
-}: MobileCollapsableDetailProps) {
+}: MobileCollapsableDetailProps): ReactElement {
   return (
     <div
       className="MobileSearchResult__panel--collapsableContainer"

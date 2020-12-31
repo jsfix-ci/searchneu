@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * This file is part of Search NEU and licensed under AGPL3.
  * See the license file in the root folder for details.
@@ -16,25 +17,25 @@ class Macros {
   static PROD: boolean;
 
   // XXX: This is stuff that is hardcoded for now, need to change when expanding to other schools.
-  static collegeName: string = 'Northeastern University';
+  static collegeName = 'Northeastern University';
 
-  static collegeHost: string = 'neu.edu';
+  static collegeHost = 'neu.edu';
 
   // This is the same token in the frontend and the backend, and does not need to be kept private.
-  static amplitudeToken: string = 'e0801e33a10c3b66a3c1ac8ebff53359';
+  static amplitudeToken = 'e0801e33a10c3b66a3c1ac8ebff53359';
 
   // Also decided to keep all the other tracker Id's here because the amplitude one needs to be here and might as well keep them all in the same place.
-  static fullStoryToken: string = '4ZDGH';
+  static fullStoryToken = '4ZDGH';
 
   // Rollbar token
-  static rollbarToken: string = '3a76015293344e6f9c47e35c9ce4c84c';
+  static rollbarToken = '3a76015293344e6f9c47e35c9ce4c84c';
 
   // Google analytics token
-  static googleAnalyticsToken: string = 'UA-85376897-3';
+  static googleAnalyticsToken = 'UA-85376897-3';
 
   // Use this for normal logging
   // Will log as normal, but stays silent during testing
-  static log(...args: any) {
+  static log(...args: any): void {
     if (process.env.NODE_ENV === 'test') {
       return;
     }
@@ -42,7 +43,7 @@ class Macros {
     console.log(...args); // eslint-disable-line no-console
   }
 
-  static warn(...args: any) {
+  static warn(...args: any): void {
     if (process.env.NODE_ENV === 'test') {
       return;
     }
@@ -51,7 +52,7 @@ class Macros {
     console.warn(...args); // eslint-disable-line no-console
   }
 
-  static error(...args: any) {
+  static error(...args: any): void {
     if (Macros.TEST) {
       return;
     }
@@ -61,7 +62,7 @@ class Macros {
   }
 
   // https://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
-  static isNumeric(n: any) {
+  static isNumeric(n: any): boolean {
     return !isNaN(parseFloat(n)) && isFinite(n); //eslint-disable-line no-restricted-globals
   }
 }

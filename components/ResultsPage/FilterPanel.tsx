@@ -1,11 +1,9 @@
-import React from 'react';
 import _ from 'lodash';
-
+import React, { ReactElement } from 'react';
 import CheckboxFilter from './CheckboxFilter';
 import DropdownFilter from './DropdownFilter';
-import RangeFilter from './RangeFilter';
-
 import { FilterOptions, FilterSelection, FILTERS_IN_ORDER } from './filters';
+import RangeFilter from './RangeFilter';
 
 export interface FilterPanelProps {
   options: FilterOptions;
@@ -13,12 +11,16 @@ export interface FilterPanelProps {
   setActive: (f: FilterSelection) => void;
 }
 
-function FilterPanel({ options, selected, setActive }: FilterPanelProps) {
+function FilterPanel({
+  options,
+  selected,
+  setActive,
+}: FilterPanelProps): ReactElement {
   return (
     <div className="FilterPanel">
       {FILTERS_IN_ORDER.map(({ key, display, category }) => {
         const aFilter = selected[key];
-        const setActiveFilter = (a) => setActive({ [key]: a });
+        const setActiveFilter = (a): void => setActive({ [key]: a });
 
         return (
           <>
