@@ -5,7 +5,7 @@
 
 import request from './request';
 import macros from './macros';
-import user from './user';
+import { mutate } from 'swr';
 
 // This file is a wrapper around Facebook's API.
 // Call through this file if you need anything related to FB API
@@ -156,7 +156,7 @@ class Facebook {
       macros.log(`Checkbox state: ${checkboxState}`);
     } else if (e.event === 'not_you') {
       macros.log("User clicked 'not you'");
-      user.logOut();
+      // user.logOut(); TODO: figure out to use localStorage here
     } else if (e.event === 'hidden') {
       macros.log('Plugin was hidden');
     } else if (e.event === 'opt_in') {
@@ -164,7 +164,7 @@ class Facebook {
 
       // User is now authenticated with Facebook.
       // Download any potential user data from the backend.
-      user.downloadUserData();
+      mutate('https://searchneu.com/user');
 
       macros.logAmplitudeEvent('FB Send to Messenger', {
         message: 'Sign up clicked',
