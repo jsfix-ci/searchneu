@@ -156,7 +156,7 @@ class Facebook {
       macros.log(`Checkbox state: ${checkboxState}`);
     } else if (e.event === 'not_you') {
       macros.log("User clicked 'not you'");
-      // user.logOut(); TODO: figure out to use localStorage here
+      // user.logOut(); TODO: figure out to use localStorage here since we dont' have hooks
     } else if (e.event === 'hidden') {
       macros.log('Plugin was hidden');
     } else if (e.event === 'opt_in') {
