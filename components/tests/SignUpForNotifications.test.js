@@ -37,20 +37,3 @@ it('should render', () => {
   ).debug();
   expect(result).toMatchSnapshot();
 });
-
-it('should render the fb button after the button is clicked', async (done) => {
-  const wrapper = shallow(
-    <SignUpForNotifications
-      course={mockData.cs1210}
-      userIsWatchingClass={false}
-    />
-  );
-  const instance = wrapper.instance();
-
-  await instance.onSubscribeToggleChange();
-
-  wrapper.update();
-
-  expect(wrapper.contains('Click this button to continue')).toBeTruthy();
-  done();
-});
