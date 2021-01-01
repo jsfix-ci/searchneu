@@ -3,10 +3,12 @@
  * See the license file in the root folder for details.
  */
 
+// TODO: useSWR up search.ts
+
+import axios from 'axios';
 import _ from 'lodash';
 import URI from 'urijs';
 import macros from './macros';
-import request from './request';
 import {
   DEFAULT_FILTER_SELECTION,
   FilterSelection,
@@ -37,7 +39,7 @@ class Search {
 
   // Clears the cache stored in this module.
   // Used for testing.
-  clearCache(): void {
+  clearCache() {
     this.cache = {};
     this.allLoaded = {};
   }
@@ -108,9 +110,9 @@ class Search {
 
     // gets results
     const startTime = Date.now();
-    const waitedRequest = await request.get(url);
+    const request = await axios.get(url);
 
-    const results = waitedRequest.results;
+    const results = request.data.results;
     macros.logAmplitudeEvent('Search Timing', {
       query: query.toLowerCase(),
       time: Date.now() - startTime,
@@ -135,7 +137,7 @@ class Search {
     cacheResult.results = cacheResult.results.concat(results);
 
     // set filterOptions
-    cacheResult.filterOptions = waitedRequest.filterOptions;
+    cacheResult.filterOptions = request.data.filterOptions;
 
     if (results.length < termCount - existingTermCount) {
       this.allLoaded[searchHash] = true;

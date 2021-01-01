@@ -18,7 +18,7 @@ function FilterPanel({
 }: FilterPanelProps): ReactElement {
   return (
     <div className="FilterPanel">
-      {FILTERS_IN_ORDER.map(({ key, display, category }) => {
+      {FILTERS_IN_ORDER.map(({ key, display, category }, index) => {
         const aFilter = selected[key];
         const setActiveFilter = (a): void => setActive({ [key]: a });
 
@@ -26,6 +26,7 @@ function FilterPanel({
           <>
             {category === 'Dropdown' && (
               <DropdownFilter
+                key={index}
                 title={display}
                 options={options[key]}
                 selected={aFilter}
@@ -34,6 +35,7 @@ function FilterPanel({
             )}
             {category === 'Checkboxes' && (
               <CheckboxFilter
+                key={index}
                 title={display}
                 options={options[key]}
                 selected={aFilter}
@@ -42,6 +44,7 @@ function FilterPanel({
             )}
             {category === 'Range' && (
               <RangeFilter
+                key={index}
                 title={display}
                 selected={aFilter}
                 setActive={setActiveFilter}

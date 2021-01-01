@@ -19,7 +19,7 @@ import {
 } from 'semantic-ui-react';
 
 import macros from './macros';
-import request from './request';
+import axios from 'axios';
 
 // This file manages the two popups that asks for user information
 // 1. the feedback popup that shows up if you click the feedback button on the bottom of the page
@@ -74,12 +74,9 @@ class FeedbackModal extends React.Component {
       contact: this.state.contactValue,
     });
 
-    const response = await request.post({
-      url: '/feedback',
-      body: {
-        message: this.state.messageValue,
-        contact: this.state.contactValue,
-      },
+    const response = await axios.post('https://searchneu.com/feedback', {
+      message: this.state.messageValue,
+      contact: this.state.contactValue,
     });
 
     if (response.error) {

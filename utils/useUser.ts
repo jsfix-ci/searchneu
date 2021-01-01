@@ -1,9 +1,9 @@
+import axios from 'axios';
 import { pull } from 'lodash';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
 import Keys from '../components/Keys';
 import macros from '../components/macros';
-import request from '../components/request';
 import { Course, Section, User } from '../components/types';
 import { useLocalStorage } from './useLocalStorage';
 
@@ -38,11 +38,8 @@ export default function useUser(): UseUserReturn {
   const { data: user, error, mutate } = useSWR(
     `https://searchneu.com/user`,
     async (): Promise<User> =>
-      await request.post({
-        url: 'https://searchneu.com/user',
-        body: {
-          loginKey,
-        },
+      await axios.post('https://searchneu.com/user', {
+        loginKey,
       })
   );
 
@@ -70,10 +67,7 @@ export default function useUser(): UseUserReturn {
       classHash: courseHash,
     };
 
-    await request.post({
-      url: 'https://searchneu.com/subscription',
-      body: body,
-    });
+    await axios.post('https://searchneu.com/subscription', { ...body });
   };
 
   const subscribeToCourse = async (course: Course): Promise<void> => {
@@ -113,10 +107,7 @@ export default function useUser(): UseUserReturn {
 
     macros.log('Adding section to user', user.user, sectionHash, body);
 
-    await request.post({
-      url: 'https://searchneu.com/subscription',
-      body: body,
-    });
+    await axios.post('https://searchneu.com/subscription', { ...body });
 
     mutate();
   };
@@ -146,9 +137,13 @@ export default function useUser(): UseUserReturn {
       },
     };
 
-    await request.delete({
-      url: 'https://searchneu.com/subscription',
-      body: body,
+    await axios.delete('https://searchneu.com/subscription', {
+      headers: {
+        Authorization: '', // TODO: Figure out this stuff whenever the backend gets fixed.
+      },
+      data: {
+        ...body,
+      },
     });
 
     mutate();

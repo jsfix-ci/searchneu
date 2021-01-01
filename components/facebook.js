@@ -3,9 +3,9 @@
  * See the license file in the root folder for details.
  */
 
-import request from './request';
 import macros from './macros';
 import { mutate } from 'swr';
+import axios from 'axios';
 
 // This file is a wrapper around Facebook's API.
 // Call through this file if you need anything related to FB API
@@ -188,31 +188,28 @@ class Facebook {
       if (macros.DEV) {
         macros.log('Your FB id is:', fbMessengerId, typeof fbMessengerId);
 
-        request.post({
-          url: '/webhook',
-          body: {
-            object: 'page',
-            entry: [
-              {
-                id: '111111111111111',
-                time: Date.now(),
-                messaging: [
-                  {
-                    recipient: {
-                      id: '111111111111111',
-                    },
-                    timestamp: Date.now(),
-                    sender: {
-                      id: fbMessengerId,
-                    },
-                    optin: {
-                      ref: e.ref,
-                    },
+        axios.post('https://searchneu.com/webhook', {
+          object: 'page',
+          entry: [
+            {
+              id: '111111111111111',
+              time: Date.now(),
+              messaging: [
+                {
+                  recipient: {
+                    id: '111111111111111',
                   },
-                ],
-              },
-            ],
-          },
+                  timestamp: Date.now(),
+                  sender: {
+                    id: fbMessengerId,
+                  },
+                  optin: {
+                    ref: e.ref,
+                  },
+                },
+              ],
+            },
+          ],
         });
       } else {
         macros.log(e, 'other message');
