@@ -83,7 +83,9 @@ export default async function handler(
 ) {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/xml');
-  res.setHeader('Cache-Control', 's-maxage=2592000, stale-while-revalidate'); // cache 30 days
+
+  // Have Vercel cache for 30 days for us https://vercel.com/docs/serverless-functions/edge-caching
+  res.setHeader('Cache-Control', 's-maxage=2592000, stale-while-revalidate');
   res.write(await generateSitemap());
   res.end();
 }
