@@ -1,7 +1,9 @@
 overwrite: true
 schema: 'https://searchneu.com/graphql'
 documents:
-  - '**/*.graphql'
+  - 'pages/**/*.graphql'
+  - 'components/**/*.graphql'
+  - 'utils/**/*.graphql'
 generates:
   generated/graphql.ts:
     plugins:
