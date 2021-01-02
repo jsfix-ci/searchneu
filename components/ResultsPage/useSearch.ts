@@ -5,7 +5,9 @@
 
 import axios from 'axios';
 import { isEqual, pickBy } from 'lodash';
+import { useEffect } from 'react';
 import { useSWRInfinite } from 'swr';
+import macros from '../macros';
 import { SearchResult } from '../types';
 import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
 
@@ -20,6 +22,20 @@ interface UseSearchReturn {
 }
 
 const apiVersion = 2;
+
+let count = 0;
+// Log search queries to amplitude on enter.
+function logSearch(searchQuery: string): void {
+  searchQuery = searchQuery.trim();
+
+  if (searchQuery) {
+    count++;
+    macros.logAmplitudeEvent('Search', {
+      query: searchQuery.toLowerCase(),
+      sessionCount: count,
+    });
+  }
+}
 
 /**
  * P is the type of the search params, R is the type of the result item
@@ -47,28 +63,32 @@ export default function useSearch({
       Object.keys(nonDefaultFilters).sort()
     );
 
-    const url = new URL(
-      'https://searchneu.com/search?' +
-        new URLSearchParams({
-          // TODO: is this how we're gonna access the api in the future?
-          query,
-          termId,
-          minIndex: String(pageIndex * 10),
-          maxIndex: String((pageIndex + 1) * 10),
-          apiVersion: String(apiVersion),
-          filters: stringFilters,
-        }).toString()
-    ).toString();
-
+    const url = new URLSearchParams({
+      // TODO: is this how we're gonna access the api in the future?
+      query,
+      termId,
+      minIndex: String(pageIndex * 10),
+      maxIndex: String((pageIndex + 1) * 10),
+      apiVersion: String(apiVersion),
+      filters: stringFilters,
+    }).toString();
     return url;
   };
 
-  const { data, setSize } = useSWRInfinite(
+  const { data, size, setSize } = useSWRInfinite(
     getKey,
-    async (url): Promise<SearchResult> => {
-      return (await axios.get(url)).data;
+    async (query): Promise<SearchResult> => {
+      return (await axios.get('https://searchneu.com/search?' + query)).data;
     }
   );
+
+  const queryKey = getKey(0);
+  useEffect(() => {
+    if (size === 1 && queryKey) {
+      console.log('ligma', queryKey);
+      logSearch(queryKey);
+    }
+  }, [queryKey, size]);
 
   const returnedData = data && {
     filterOptions: data[0].filterOptions,

@@ -3,6 +3,7 @@
  * See the license file in the root folder for details.
  */
 import _ from 'lodash';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
@@ -35,20 +36,6 @@ import useSearch, {
   SearchParams,
 } from '../../../../components/ResultsPage/useSearch';
 import { Campus, EMPTY_FILTER_OPTIONS } from '../../../../components/types';
-
-let count = 0;
-// Log search queries to amplitude on enter.
-function logSearch(searchQuery: string): void {
-  searchQuery = searchQuery.trim();
-
-  if (searchQuery) {
-    count++;
-    macros.logAmplitudeEvent('Search', {
-      query: searchQuery.toLowerCase(),
-      sessionCount: count,
-    });
-  }
-}
 
 export default function Results(): ReactElement {
   const atTop = useAtTop();
@@ -223,3 +210,10 @@ export default function Results(): ReactElement {
     </div>
   );
 }
+
+// this prevents Next js static optimization so we don't have a second search query sent to the backend
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {},
+  };
+};
