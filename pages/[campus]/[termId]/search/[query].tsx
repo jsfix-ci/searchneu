@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
 import Footer from '../../../../components/Footer';
 import {
@@ -32,19 +31,10 @@ import ResultsLoader from '../../../../components/ResultsPage/ResultsLoader';
 import SearchBar from '../../../../components/ResultsPage/SearchBar';
 import SearchDropdown from '../../../../components/ResultsPage/SearchDropdown';
 import useAtTop from '../../../../components/ResultsPage/useAtTop';
-import useSearch from '../../../../components/ResultsPage/useSearch';
-import search from '../../../../components/search';
-import {
-  BLANK_SEARCH_RESULT,
-  Campus,
-  SearchResult,
-} from '../../../../components/types';
-
-interface SearchParams {
-  termId: string;
-  query: string;
-  filters: FilterSelection;
-}
+import useSearch, {
+  SearchParams,
+} from '../../../../components/ResultsPage/useSearch';
+import { Campus, EMPTY_FILTER_OPTIONS } from '../../../../components/types';
 
 let count = 0;
 // Log search queries to amplitude on enter.
@@ -59,23 +49,6 @@ function logSearch(searchQuery: string): void {
     });
   }
 }
-
-// Retreive result data from backend.
-const fetchResults = async (
-  { query, termId, filters }: SearchParams,
-  page: number
-): Promise<SearchResult> => {
-  const response: SearchResult = await search.search(
-    query,
-    termId,
-    filters,
-    (1 + page) * 10
-  );
-  if (page === 0) {
-    logSearch(query);
-  }
-  return response;
-};
 
 export default function Results(): ReactElement {
   const atTop = useAtTop();
@@ -112,27 +85,20 @@ export default function Results(): ReactElement {
     filters,
   };
 
-  const us = useSearch(searchParams, BLANK_SEARCH_RESULT(), fetchResults);
-
-  const { isReady, loadMore, doSearch } = us;
-
-  useDeepCompareEffect(() => {
-    doSearch(searchParams);
-  }, [searchParams, doSearch]);
+  const { searchData, loadMore } = useSearch(searchParams);
 
   if (!query && !termId) {
     return null;
   }
 
   const filtersAreSet: boolean = areFiltersSet(filters);
-  const { results, filterOptions } = us.results;
 
   if (showOverlay && macros.isMobile) {
     return (
       <MobileSearchOverlay
         query={query}
         filterSelection={filters}
-        filterOptions={filterOptions}
+        filterOptions={searchData?.filterOptions || EMPTY_FILTER_OPTIONS()}
         setFilterPills={setQParams}
         setQuery={(q: string) => setSearchQuery(q)}
         onExecute={() => setShowOverlay(false)}
@@ -227,7 +193,7 @@ export default function Results(): ReactElement {
           <>
             <div className="Results_SidebarWrapper">
               <FilterPanel
-                options={filterOptions}
+                options={searchData?.filterOptions || EMPTY_FILTER_OPTIONS()}
                 selected={filters}
                 setActive={setQParams}
               />
@@ -239,16 +205,16 @@ export default function Results(): ReactElement {
           {filtersAreSet && (
             <FilterPills filters={filters} setFilters={setQParams} />
           )}
-          {!isReady && <div style={{ visibility: 'hidden' }} />}
-          {isReady && results.length === 0 && (
+          {!searchData && <div style={{ visibility: 'hidden' }} />}
+          {searchData && searchData.results.length === 0 && (
             <EmptyResultsContainer
               query={query}
               filtersAreSet={filtersAreSet}
               setFilters={setQParams}
             />
           )}
-          {isReady && results.length > 0 && (
-            <ResultsLoader results={results} loadMore={loadMore} />
+          {searchData && searchData.results.length > 0 && (
+            <ResultsLoader results={searchData.results} loadMore={loadMore} />
           )}
           <Footer />
         </div>

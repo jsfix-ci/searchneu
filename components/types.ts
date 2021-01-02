@@ -125,6 +125,15 @@ export function BLANK_SEARCH_RESULT(): SearchResult {
   };
 }
 
+export function EMPTY_FILTER_OPTIONS(): FilterOptions {
+  return {
+    nupath: [],
+    subject: [],
+    classType: [],
+    campus: [],
+  };
+}
+
 export enum DayOfWeek {
   SUNDAY,
   MONDAY,
