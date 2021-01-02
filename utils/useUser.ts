@@ -8,7 +8,7 @@ import { Course, Section, User } from '../components/types';
 import { useLocalStorage } from './useLocalStorage';
 
 type UseUserReturn = {
-  user: User;
+  user: User | undefined;
   subscribeToCourse: (course: Course) => Promise<void>;
   subscribeToSection: (section: Section) => Promise<void>;
   unsubscribeFromSection: (section: Section) => Promise<void>;
@@ -105,7 +105,7 @@ export default function useUser(): UseUserReturn {
       await subscribeToCourseUsingHash(courseHash);
     }
 
-    macros.log('Adding section to user', user.user, sectionHash, body);
+    macros.log('Adding section to user', user?.user, sectionHash, body);
 
     await axios.post('https://searchneu.com/subscription', { ...body });
 

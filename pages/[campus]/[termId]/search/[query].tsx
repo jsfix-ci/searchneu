@@ -37,7 +37,7 @@ import useSearch, {
 } from '../../../../components/ResultsPage/useSearch';
 import { Campus, EMPTY_FILTER_OPTIONS } from '../../../../components/types';
 
-export default function Results(): ReactElement {
+export default function Results(): ReactElement | null {
   const atTop = useAtTop();
   const router = useRouter();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
