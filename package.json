@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 5000",
+    "dev:db:up": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml up -d",
+    "dev:db:down": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml down",
     "build": "next build",
     "start": "next start -p 5000",
     "test": "jest",
@@ -11,6 +13,7 @@
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx ."
   },
   "dependencies": {
+    "@prisma/client": "2.13.1",
     "@types/axios": "^0.14.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
     "amplitude-js": "^7.3.3",
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^10.0.4",
+    "@prisma/cli": "2.13.1",
     "@svgr/webpack": "^5.5.0",
     "@types/amplitude-js": "^7.0.0",
     "@types/gtag.js": "^0.0.4",

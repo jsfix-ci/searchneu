@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model FollowedCourse {
+  courseHash String @map(name: "course_hash")
+  userId     String @map(name: "user_id")
+  user       User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, courseHash])
+  @@map(name: "followed_courses")
+}
+
+model FollowedSection {
+  sectionHash String @map(name: "section_hash")
+  userId      String @map(name: "user_id")
+  user        User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, sectionHash])
+  @@map(name: "followed_sections")
+}
+
+model User {
+  fbMessengerId    String?           @map(name: "fb_messenger_id")
+  firstName        String?           @map(name: "first_name")
+  id               String            @id
+  lastName         String?           @map(name: "last_name")
+  followedCourses  FollowedCourse[]
+  followedSections FollowedSection[]
+
+  @@map(name: "users")
+}
