@@ -32,7 +32,6 @@ export default function withUser<T>(
       ).catch(); // swallow errors
       newReq.userId = jwtPayload?.userId;
     }
-    newReq.userId = 1;
     return handler(newReq, res);
   };
 }
