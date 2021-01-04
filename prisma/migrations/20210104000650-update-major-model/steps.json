@@ -1,0 +1,65 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Major",
+      "field": "yearVersion",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Major",
+          "field": "yearVersion"
+        },
+        "directive": "map"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Major",
+          "field": "yearVersion"
+        },
+        "directive": "map"
+      },
+      "argument": "name",
+      "value": "\"year_version\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Major",
+      "field": "spec",
+      "type": "Json",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Major",
+      "field": "catalogYear"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Major",
+      "field": "name"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Major",
+      "field": "requirements"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Major",
+      "field": "plansOfStudy",
+      "arity": "Required"
+    }
+  ]
+}
