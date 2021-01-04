@@ -34,13 +34,20 @@ function fetchData(): MajorJSON {
 
 function migrateData(majorDirectory: MajorInput[]): Promise<Major[]> {
   return pMap(majorDirectory, (m: MajorInput) => {
-    return prisma.major.create({
-      data: {
-        majorId: m.id,
-        yearVersion: String(m.yearVersion),
-        spec: m.major,
-        plansOfStudy: m.plansOfStudy,
-      }
+    const majorId = m.id;
+    const yearVersion = String(m.yearVersion);
+
+    const newMajor: Major = {
+      majorId,
+      yearVersion,
+      spec: m.major,
+      plansOfStudy: m.plansOfStudy,
+    };
+
+    return prisma.major.upsert({
+      where: { yearVersion_majorId: { majorId, yearVersion } },
+      create: newMajor,
+      update: newMajor,
     });
   }, { concurrency: CONCURRENCY_COUNT });
 }
