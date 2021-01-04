@@ -1,8 +1,18 @@
+/*
+ * This file is part of Search NEU and licensed under AGPL3.
+ * See the license file in the root folder for details.
+ */
 import fs from 'fs-extra';
 import path from 'path';
 import pMap from 'p-map';
 import { Major, InputJsonObject } from '@prisma/client';
 import prisma from '../backend/prisma';
+
+// In order to execute this module, you need a directory `data`
+// that contains the file `majors.json`. The JSON object in
+// that file must conform to the `MajorJSON` interface.
+// This file will then insert all majors provided in the file
+// into the database.
 
 const FILE_NAME = 'majors.json';
 const CONCURRENCY_COUNT = 10;
@@ -18,8 +28,6 @@ interface MajorJSON {
   all_objects: MajorInput[];
 }
 
-// return the javascript object equivalent of a file in data/
-// NOTE Prisma doesn't export its JsonValue/Object type, so have to use this return
 function fetchData(): MajorJSON {
   return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', FILE_NAME)));
 }
