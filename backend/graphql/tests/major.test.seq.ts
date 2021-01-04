@@ -72,8 +72,8 @@ it('gets latest occurrence', async () => {
   const res = await query({
     query: gql`
       query major {
-        majorId
         major(majorId: "computer-information-science/computer-science/bscs") {
+          majorId
           latestOccurrence {
             yearVersion
             spec
@@ -89,8 +89,8 @@ it('cannot find major from non-present majorId', async () => {
   const res = await query({
     query: gql`
       query major {
-        majorId
         major(majorId: "humanities/lovecraftian-studies/lovecraft-studies-ba") {
+          majorId
           latestOccurrence {
             yearVersion
           }
@@ -105,8 +105,8 @@ it('cannot find majorOccurrence from non-present year', async () => {
   const res = await query({
     query: gql`
       query major {
-        majorId
         major(majorId: "computer-information-science/computer-science/bscs") {
+          majorId
           occurrence(year: 1984) {
             spec
           }
