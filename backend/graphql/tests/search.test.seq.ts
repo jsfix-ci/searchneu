@@ -3,7 +3,8 @@ import { gql } from 'apollo-server';
 import { mocked } from 'ts-jest/utils';
 import searcher from '../../searcher';
 import server from '../index';
-import { Course, Requisite, Section } from '../../types';
+import { Course, Section } from '../../types';
+import { Requisite } from '../../../common/types';
 
 jest.mock('../../searcher');
 
