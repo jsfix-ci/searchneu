@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 // tests/nexus-test-environment.js
 const { Client } = require('pg');
 const NodeEnvironment = require('jest-environment-node');
@@ -7,6 +6,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 const prismaBinary = './node_modules/.bin/prisma';
+
 /**
  * Custom test environment for Nexus, Prisma and Postgres
  */
@@ -16,7 +16,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
     // Generate a unique schema identifier for this test context
     this.schema = `test_${uuid()}`;
     // Generate the pg connection string for the test schema
-    this.databaseUrl = `postgres://postgres@localhost:5432/searchneu_users_test?schema=${this.schema}`;
+    this.databaseUrl = `postgres://postgres@localhost:5432/searchneu_test?schema=${this.schema}`;
   }
 
   async setup() {
@@ -26,6 +26,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
     this.global.process.env.DATABASE_URL = this.databaseUrl;
     // Run the migrations to ensure our schema has the required structure
     await exec(`${prismaBinary} migrate dev --preview-feature`);
+    await exec(`${prismaBinary} generate`);
     return super.setup();
   }
 
