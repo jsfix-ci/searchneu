@@ -53,6 +53,8 @@ function migrateData(majorDirectory: MajorInput[]): Promise<Major[]> {
 }
 
 (async () => {
-  await migrateData(fetchData().all_objects);
-  console.log('Success! You may close.');
+  const startTime = Date.now();
+  const ms = await migrateData(fetchData().all_objects);
+  const duration = (Date.now() - startTime) / 1000; // how long inserting took in seconds
+  console.log(`Success! ${ms.length} majors were inserted or updated in ${duration} seconds! You may exit.`);
 })();
