@@ -2,11 +2,9 @@
 
 exports[`cannot find major from non-present majorId 1`] = `
 Object {
-  "data": Object {
-    "major": null,
-  },
+  "data": undefined,
   "errors": Array [
-    [GraphQLError: major not found!],
+    [ValidationError: Cannot query field "majorId" on type "Query". Did you mean "major"?],
   ],
   "extensions": undefined,
   "http": Object {
@@ -19,14 +17,9 @@ Object {
 
 exports[`cannot find majorOccurrence from non-present year 1`] = `
 Object {
-  "data": Object {
-    "major": Object {
-      "name": "Computer Science",
-      "occurrence": null,
-    },
-  },
+  "data": undefined,
   "errors": Array [
-    [GraphQLError: occurrence not found!],
+    [ValidationError: Cannot query field "majorId" on type "Query". Did you mean "major"?],
   ],
   "extensions": undefined,
   "http": Object {
@@ -39,19 +32,10 @@ Object {
 
 exports[`gets latest occurrence 1`] = `
 Object {
-  "data": Object {
-    "major": Object {
-      "latestOccurrence": Object {
-        "catalogYear": 2018,
-        "requirements": Object {
-          "name": "Computer Science, BSCS",
-          "yearVersion": 2018,
-        },
-      },
-      "name": "Computer Science",
-    },
-  },
-  "errors": undefined,
+  "data": undefined,
+  "errors": Array [
+    [ValidationError: Cannot query field "majorId" on type "Query". Did you mean "major"?],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -65,7 +49,7 @@ exports[`gets major from majorId 1`] = `
 Object {
   "data": Object {
     "major": Object {
-      "name": "Computer Science",
+      "majorId": "computer-information-science/computer-science/bscs",
     },
   },
   "errors": undefined,
@@ -82,9 +66,8 @@ exports[`gets specific occurrence 1`] = `
 Object {
   "data": Object {
     "major": Object {
-      "name": "Computer Science",
+      "majorId": "computer-information-science/computer-science/bscs",
       "occurrence": Object {
-        "catalogYear": 2017,
         "plansOfStudy": Array [
           Object {
             "id": "0",
@@ -93,10 +76,11 @@ Object {
             ],
           },
         ],
-        "requirements": Object {
+        "spec": Object {
           "name": "Computer Science, BSCS",
           "yearVersion": 2017,
         },
+        "yearVersion": "2017",
       },
     },
   },
