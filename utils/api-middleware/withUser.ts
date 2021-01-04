@@ -24,7 +24,6 @@ export default function withUser<T>(
 ): NextApiHandler<T> {
   return async (req, res) => {
     const newReq: NextApiRequestWithUser = req;
-
     if (req.cookies.authToken) {
       const jwtPayload: AuthTokenPayload = await verifyAsync(
         req.cookies.authToken,
