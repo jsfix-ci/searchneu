@@ -1,40 +1,43 @@
 import fs from 'fs-extra';
 import path from 'path';
+import pMap from 'p-map';
+import { Major, InputJsonObject } from '@prisma/client';
 import prisma from '../backend/prisma';
 
-interface Major {
-  name: string;
-  majorId: string;
-  major: string;
-  plans: string;
+const FILE_NAME = 'majors.json';
+const CONCURRENCY_COUNT = 10;
+
+interface MajorInput {
+  id: string;
+  yearVersion: string;
+  major: InputJsonObject;
+  plansOfStudy: InputJsonObject;
 }
 
-type MajorJSON = Record<string, Major[]>
+interface MajorJSON {
+  all_objects: MajorInput[];
+}
 
 // return the javascript object equivalent of a file in data/
 // NOTE Prisma doesn't export its JsonValue/Object type, so have to use this return
-function fetchData(filename: string): Record<any, any> {
-  return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', filename)));
+function fetchData(): MajorJSON {
+  return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', FILE_NAME)));
 }
 
-// migrate all majors in the directory to the DB
-function migrateData(majorDirectory: MajorJSON): void {
-  Object.entries(majorDirectory).forEach(([termId, majors]) => {
-    majors.forEach((m: Major) => {
-      const majorObj = fetchData(m.major);
-      const planObj  = fetchData(m.plans);
-
-      prisma.major.create({
-        data: {
-          requirements: majorObj,
-          plansOfStudy: planObj,
-          catalogYear: termId,
-          name: m.name,
-          majorId: m.majorId,
-        }
-      }).then(() => console.log('major created\n'));
+function migrateData(majorDirectory: MajorInput[]): Promise<Major[]> {
+  return pMap(majorDirectory, (m: MajorInput) => {
+    return prisma.major.create({
+      data: {
+        majorId: m.id,
+        yearVersion: String(m.yearVersion),
+        spec: m.major,
+        plansOfStudy: m.plansOfStudy,
+      }
     });
-  });
+  }, { concurrency: CONCURRENCY_COUNT });
 }
 
-migrateData(fetchData('major.json') as MajorJSON);
+(async () => {
+  await migrateData(fetchData().all_objects);
+  console.log('Success! You may close.');
+})();
