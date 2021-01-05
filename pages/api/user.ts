@@ -15,7 +15,6 @@ export default withUser(
       res.status(401).end();
       return;
     }
-    console.log(userId);
     if (req.method === 'GET') {
       const user = await prisma.user.findUnique({
         where: { id: userId },

@@ -1,6 +1,7 @@
 import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import { testApiHandler } from 'next-test-api-route-handler';
+import * as SubscriptionHandler from '../../../pages/api/subscription';
 import * as UserHandler from '../../../pages/api/user';
 import prisma from './prisma';
 
@@ -41,73 +42,113 @@ beforeEach(async () => {
   });
 });
 
-it('gets a user with the id given', async () => {
-  const userHandler: NextApiHandler = UserHandler.default;
+describe('user endpoint', () => {
+  it('gets a user with the id given', async () => {
+    const userHandler: NextApiHandler = UserHandler.default;
 
-  await testApiHandler({
-    handler: userHandler as any,
-    test: async ({ fetch }) => {
-      const mockUserIdSigned = sign(
-        { userId: mockUser.id },
-        process.env.JWT_SECRET
-      );
+    await testApiHandler({
+      handler: userHandler as any,
+      test: async ({ fetch }) => {
+        const mockUserIdSigned = sign(
+          { userId: mockUser.id },
+          process.env.JWT_SECRET
+        );
 
-      const response = await fetch({
-        headers: { cookie: 'authToken=' + mockUserIdSigned },
-      });
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + mockUserIdSigned },
+        });
 
-      const responseData = await response.json();
-      expect(responseData.followedCourses).toEqual(['neu.edu/202130/CS/4500']);
-      expect(responseData.followedSections).toEqual([
-        'neu.edu/202130/CS/4500/12345',
-        'neu.edu/202130/CS/4500/23456',
-      ]);
-    },
+        const responseData = await response.json();
+        expect(responseData.followedCourses).toEqual([
+          'neu.edu/202130/CS/4500',
+        ]);
+        expect(responseData.followedSections).toEqual([
+          'neu.edu/202130/CS/4500/12345',
+          'neu.edu/202130/CS/4500/23456',
+        ]);
+      },
+    });
+  });
+
+  it("attemps to get a user that doesn't exist", async () => {
+    const userHandler: NextApiHandler = UserHandler.default;
+
+    await testApiHandler({
+      handler: userHandler as any,
+      test: async ({ fetch }) => {
+        const mockUserIdSigned = sign(
+          { userId: mockUser.id + 10000 },
+          process.env.JWT_SECRET
+        );
+
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + mockUserIdSigned },
+        });
+        expect(response.status).toBe(404);
+      },
+    });
+  });
+
+  it('garbage in garbage out for the user endpoint', async () => {
+    const userHandler: NextApiHandler = UserHandler.default;
+
+    await testApiHandler({
+      handler: userHandler as any,
+      test: async ({ fetch }) => {
+        const mockUserIdSigned = sign(
+          { userId: 'HOLLA HOLLA' },
+          process.env.JWT_SECRET
+        );
+
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + mockUserIdSigned },
+        });
+        expect(response.status).toBe(401);
+
+        const response2 = await fetch({
+          headers: { cookie: 'wakanda=forever' },
+        });
+        expect(response2.status).toBe(401);
+
+        const response3 = await fetch({});
+        expect(response3.status).toBe(401);
+      },
+    });
   });
 });
 
-it("attemps to get a user that doesn't exist", async () => {
-  const userHandler: NextApiHandler = UserHandler.default;
+describe('subscribing to courses and sections', () => {
+  it('posts a course to follow', async () => {
+    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
 
-  await testApiHandler({
-    handler: userHandler as any,
-    test: async ({ fetch }) => {
-      const mockUserIdSigned = sign(
-        { userId: mockUser.id + 10000 },
-        process.env.JWT_SECRET
-      );
+    await testApiHandler({
+      handler: subscriptionHandler as any,
+      test: async ({ fetch }) => {
+        const mockUserIdSigned = sign(
+          { userId: mockUser.id },
+          process.env.JWT_SECRET
+        );
 
-      const response = await fetch({
-        headers: { cookie: 'authToken=' + mockUserIdSigned },
-      });
-      expect(response.status).toBe(404);
-    },
-  });
-});
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + mockUserIdSigned },
+          body: JSON.stringify({
+            courseHash: 'neu.edu/202130/CS/2500',
+          }),
+          method: 'POST',
+        });
+        expect(response.status).toBe(200);
 
-it('garbage in garbage out for the user endpoint', async () => {
-  const userHandler: NextApiHandler = UserHandler.default;
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedCourses: true, followedSections: true },
+        });
 
-  await testApiHandler({
-    handler: userHandler as any,
-    test: async ({ fetch }) => {
-      const mockUserIdSigned = sign(
-        { userId: 'HOLLA HOLLA' },
-        process.env.JWT_SECRET
-      );
-
-      const response = await fetch({
-        headers: { cookie: 'authToken=' + mockUserIdSigned },
-      });
-      expect(response.status).toBe(401);
-
-      const response2 = await fetch({
-        headers: { cookie: 'wakanda=forever' },
-      });
-      expect(response2.status).toBe(401);
-
-      const response3 = await fetch({});
-      expect(response3.status).toBe(401);
-    },
+        expect(newUser.followedCourses.length).toBe(2);
+        expect(newUser.followedCourses).toContainEqual({
+          courseHash: 'neu.edu/202130/CS/2500',
+          userId: mockUser.id,
+        });
+      },
+    });
   });
 });

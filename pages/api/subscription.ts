@@ -6,48 +6,52 @@ export default withUser(
     const { userId } = req;
     if (!userId) {
       res.status(401).end();
+      return;
     }
-
+    const body = JSON.parse(req.body);
     if (req.method === 'POST') {
-      if (req.body.courseHash) {
+      if (body.courseHash) {
         await prisma.followedCourse.create({
           data: {
-            courseHash: req.body.courseHash,
+            courseHash: body.courseHash,
             user: { connect: { id: userId } },
           },
         });
       }
 
-      if (req.body.sectionHash) {
+      if (body.sectionHash) {
         await prisma.followedSection.create({
           data: {
-            sectionHash: req.body.sectionHash,
+            sectionHash: body.sectionHash,
             user: { connect: { id: userId } },
           },
         });
       }
     }
+
     if (req.method === 'DELETE') {
-      if (req.body.courseHash) {
+      if (body.courseHash) {
         await prisma.followedCourse.delete({
           where: {
             userId_courseHash: {
               userId,
-              courseHash: req.body.courseHash,
+              courseHash: body.courseHash,
             },
           },
         });
       }
-      if (req.body.sectionHash) {
+
+      if (body.sectionHash) {
         await prisma.followedSection.delete({
           where: {
             userId_sectionHash: {
-              sectionHash: req.body.sectionHash,
+              sectionHash: body.sectionHash,
               userId,
             },
           },
         });
       }
     }
+    res.status(200).end();
   }
 );
