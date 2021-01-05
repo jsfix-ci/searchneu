@@ -29,6 +29,10 @@ export default function withUser<T>(
         req.cookies.authToken,
         process.env.JWT_SECRET
       ).catch(); // swallow errors
+      if (typeof jwtPayload.userId !== 'number') {
+        res.status(401).end();
+        return;
+      }
       newReq.userId = jwtPayload?.userId;
     }
     return handler(newReq, res);

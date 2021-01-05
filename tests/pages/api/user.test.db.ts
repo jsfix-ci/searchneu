@@ -41,7 +41,7 @@ beforeEach(async () => {
   });
 });
 
-it('gets a user with the id in ', async () => {
+it('gets a user with the id given', async () => {
   const userHandler: NextApiHandler = UserHandler.default;
 
   await testApiHandler({
@@ -62,6 +62,52 @@ it('gets a user with the id in ', async () => {
         'neu.edu/202130/CS/4500/12345',
         'neu.edu/202130/CS/4500/23456',
       ]);
+    },
+  });
+});
+
+it("attemps to get a user that doesn't exist", async () => {
+  const userHandler: NextApiHandler = UserHandler.default;
+
+  await testApiHandler({
+    handler: userHandler as any,
+    test: async ({ fetch }) => {
+      const mockUserIdSigned = sign(
+        { userId: mockUser.id + 10000 },
+        process.env.JWT_SECRET
+      );
+
+      const response = await fetch({
+        headers: { cookie: 'authToken=' + mockUserIdSigned },
+      });
+      expect(response.status).toBe(404);
+    },
+  });
+});
+
+it('garbage in garbage out for the user endpoint', async () => {
+  const userHandler: NextApiHandler = UserHandler.default;
+
+  await testApiHandler({
+    handler: userHandler as any,
+    test: async ({ fetch }) => {
+      const mockUserIdSigned = sign(
+        { userId: 'HOLLA HOLLA' },
+        process.env.JWT_SECRET
+      );
+
+      const response = await fetch({
+        headers: { cookie: 'authToken=' + mockUserIdSigned },
+      });
+      expect(response.status).toBe(401);
+
+      const response2 = await fetch({
+        headers: { cookie: 'wakanda=forever' },
+      });
+      expect(response2.status).toBe(401);
+
+      const response3 = await fetch({});
+      expect(response3.status).toBe(401);
     },
   });
 });

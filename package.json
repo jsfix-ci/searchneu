@@ -11,7 +11,7 @@
     "test": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "dbtest": "jest -i --projects tests/pages/api"
+    "dbtest": "jest -i --projects tests/pages/api --forceExit"
   },
   "dependencies": {
     "@prisma/client": "2.13.0",
