@@ -42,6 +42,10 @@ beforeEach(async () => {
   });
 });
 
+function generateMockUserJWTToken(): string {
+  return sign({ userId: mockUser.id }, process.env.JWT_SECRET);
+}
+
 describe('user endpoint', () => {
   it('gets a user with the id given', async () => {
     const userHandler: NextApiHandler = UserHandler.default;
@@ -49,13 +53,8 @@ describe('user endpoint', () => {
     await testApiHandler({
       handler: userHandler as any,
       test: async ({ fetch }) => {
-        const mockUserIdSigned = sign(
-          { userId: mockUser.id },
-          process.env.JWT_SECRET
-        );
-
         const response = await fetch({
-          headers: { cookie: 'authToken=' + mockUserIdSigned },
+          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
         });
 
         const responseData = await response.json();
@@ -124,13 +123,8 @@ describe('subscribing to courses and sections', () => {
     await testApiHandler({
       handler: subscriptionHandler as any,
       test: async ({ fetch }) => {
-        const mockUserIdSigned = sign(
-          { userId: mockUser.id },
-          process.env.JWT_SECRET
-        );
-
         const response = await fetch({
-          headers: { cookie: 'authToken=' + mockUserIdSigned },
+          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
           body: JSON.stringify({
             courseHash: 'neu.edu/202130/CS/2500',
           }),
@@ -140,7 +134,7 @@ describe('subscribing to courses and sections', () => {
 
         const newUser = await prisma.user.findFirst({
           where: { id: mockUser.id },
-          include: { followedCourses: true, followedSections: true },
+          include: { followedCourses: true },
         });
 
         expect(newUser.followedCourses.length).toBe(2);
@@ -148,6 +142,91 @@ describe('subscribing to courses and sections', () => {
           courseHash: 'neu.edu/202130/CS/2500',
           userId: mockUser.id,
         });
+      },
+    });
+  });
+
+  it('posts a section to follow', async () => {
+    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
+
+    await testApiHandler({
+      handler: subscriptionHandler as any,
+      test: async ({ fetch }) => {
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
+          body: JSON.stringify({
+            sectionHash: 'neu.edu/202130/CS/2500/12393',
+          }),
+          method: 'POST',
+        });
+        expect(response.status).toBe(200);
+
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedSections: true },
+        });
+
+        expect(newUser.followedSections.length).toBe(3);
+        expect(newUser.followedSections).toContainEqual({
+          sectionHash: 'neu.edu/202130/CS/2500/12393',
+          userId: mockUser.id,
+        });
+      },
+    });
+  });
+
+  it('deletes a course from user', async () => {
+    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
+
+    await testApiHandler({
+      handler: subscriptionHandler as any,
+      test: async ({ fetch }) => {
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
+          body: JSON.stringify({
+            courseHash: 'neu.edu/202130/CS/4500',
+          }),
+          method: 'DELETE',
+        });
+        expect(response.status).toBe(200);
+
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedCourses: true },
+        });
+
+        expect(newUser.followedCourses.length).toBe(0);
+      },
+    });
+  });
+
+  it('deletes a section from following', async () => {
+    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
+
+    await testApiHandler({
+      handler: subscriptionHandler as any,
+      test: async ({ fetch }) => {
+        const response = await fetch({
+          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
+          body: JSON.stringify({
+            sectionHash: 'neu.edu/202130/CS/4500/12345',
+          }),
+          method: 'DELETE',
+        });
+        expect(response.status).toBe(200);
+
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedSections: true },
+        });
+
+        expect(newUser.followedSections.length).toBe(1);
+        expect(newUser.followedSections).toEqual([
+          {
+            sectionHash: 'neu.edu/202130/CS/4500/23456',
+            userId: mockUser.id,
+          },
+        ]);
       },
     });
   });
