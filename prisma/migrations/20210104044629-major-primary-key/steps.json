@@ -1,0 +1,45 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Major",
+      "field": "id"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Major",
+      "field": "majorId",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Major",
+      "field": "yearVersion",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Major"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "Major"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[yearVersion, majorId]"
+    }
+  ]
+}
