@@ -39,7 +39,7 @@
     }
 
     &.red {
-      background: #d41b2c;
+      background: #e63946;
     }
 
     &.yellow {
@@ -52,6 +52,6 @@
   }
 
   @media only screen and (max-width: 767px) {
-    border: 1px solid #d41b2c;
+    border: 1px solid #e63946;
   }
 }
