@@ -17,6 +17,16 @@ export default function NotificationSettings(): ReactElement {
   const watchingSections = userData?.watchingSections;
   const watchingCourses = userData?.watchingCourses;
 
+  const needsBetterName = [];
+  for (const course in watchingCourses) {
+    needsBetterName.push({
+      course,
+      sections: watchingSections.filter((section) =>
+        section.startsWith(course)
+      ),
+    });
+  }
+
   // TODO: literally any design pass please oh lordy lord lord the tigers come at night with their voices soft as thunder
   return data ? (
     <div>
@@ -24,13 +34,13 @@ export default function NotificationSettings(): ReactElement {
         Something about welcome to Search NEU Notifications Diana could probably
         make this say something warm and welcoming but I am the Grinch
       </h1>
-      <h3>These are the classes you&#39;re watching</h3>
-      {watchingCourses?.map((course) => (
-        <div key={course.courseHash}>{course.courseHash}</div>
-      ))}
-      <h3>These are the sections you&#39;re watching</h3>
-      {watchingSections?.map((section) => (
-        <div key={section.sectionHash}>{section.sectionHash}</div>
+      {needsBetterName.map((item) => (
+        <div key={item.course}>
+          <h3>{item.course}</h3>
+          {item.sections.map((section) => (
+            <p key={section}>{section}</p>
+          ))}
+        </div>
       ))}
     </div>
   ) : null;
