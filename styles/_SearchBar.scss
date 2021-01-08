@@ -37,18 +37,6 @@
     &:focus {
       outline: none;
     }
-
-    &.red {
-      background: #e63946;
-    }
-
-    &.yellow {
-      background: #ff9f1c;
-    }
-
-    &.blue {
-      background: #457b9d;
-    }
   }
 
   @media only screen and (max-width: 767px) {
