@@ -10,7 +10,7 @@ interface SearchBarProps {
   query: string;
   onSearch: (q: string) => void;
   onClick?: () => void;
-  buttonColor: 'red' | 'yellow' | 'blue';
+  buttonColor: string;
 }
 
 /**
@@ -71,9 +71,10 @@ export default function SearchBar({
       />
       <div
         onClick={search}
-        className={`searchbar__button ${buttonColor}`}
+        className={`searchbar__button`}
         role="button"
         tabIndex={0}
+        style={{ background: buttonColor }}
       >
         <MagnifyingGlass
           aria-label="magnifying glass"

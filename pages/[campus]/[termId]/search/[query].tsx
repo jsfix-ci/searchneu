@@ -36,6 +36,8 @@ import useSearch, {
   SearchParams,
 } from '../../../../components/ResultsPage/useSearch';
 import { Campus, EMPTY_FILTER_OPTIONS } from '../../../../components/types';
+import { campusToColor } from '../../../../utils/campusToColor';
+import Link from 'next/link';
 
 export default function Results(): ReactElement | null {
   const atTop = useAtTop();
@@ -99,17 +101,15 @@ export default function Results(): ReactElement | null {
         <title>Search NEU - {query}</title>
       </Head>
       <div className={`Results_Header ${atTop ? 'Results_Header-top' : ''}`}>
-        <div
-          onClick={() => {
-            router.push(`/${campus}/${termId}`);
-          }}
-        >
-          <Logo
-            className="Results__Logo"
-            aria-label="logo"
-            campus={Campus.NEU}
-          />
-        </div>
+        <Link href={`/${campus}/${termId}`}>
+          <a className="Results__Logo--wrapper">
+            <Logo
+              className="Results__Logo"
+              aria-label="logo"
+              campus={campus as Campus}
+            />
+          </a>
+        </Link>
         <div className="Results__spacer" />
         {macros.isMobile && (
           <div className="Results__mobileSearchFilterWrapper">
@@ -117,7 +117,7 @@ export default function Results(): ReactElement | null {
               <SearchBar
                 onSearch={setSearchQuery}
                 query={query}
-                buttonColor="red"
+                buttonColor={campusToColor[campus]}
               />
             </div>
             <FilterButton
@@ -136,7 +136,7 @@ export default function Results(): ReactElement | null {
             <SearchBar
               onSearch={setSearchQuery}
               query={query}
-              buttonColor="red"
+              buttonColor={campusToColor[campus]}
             />
           </div>
         )}
