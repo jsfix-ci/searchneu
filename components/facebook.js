@@ -168,7 +168,6 @@ class Facebook {
 
       macros.logAmplitudeEvent('FB Send to Messenger', {
         message: 'Sign up clicked',
-        hash: JSON.parse(atob(e.ref)).classHash,
       });
 
       // In development mode, the fb id of the developer running this code

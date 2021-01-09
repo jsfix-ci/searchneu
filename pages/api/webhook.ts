@@ -45,6 +45,7 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     rawBody,
     req.headers['x-hub-signature'] as string
   );
+  console.log(body);
   if (isValid) {
     try {
       body.entry[0].messaging.map((event) => {
@@ -72,9 +73,7 @@ interface FBOptinEvent {
 
 async function handleMessengerButtonClick(event: FBOptinEvent) {
   // TODO: Validate userobject with class-validator
-  const token = (await verifyAsync(
-    atob(event.optin.ref)
-  )) as MessengerTokenPayload;
+  const token = (await verifyAsync(event.optin.ref)) as MessengerTokenPayload;
   const session = await prisma.facebookLoginSessions.findUnique({
     where: { id: token.fbSessionId },
   });

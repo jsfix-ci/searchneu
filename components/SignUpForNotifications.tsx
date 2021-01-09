@@ -3,8 +3,10 @@
  * See the license file in the root folder for details.
  */
 
+import axios from 'axios';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
+import { GetMessengerTokenResponse } from '../pages/api/user/messenger_token';
 import useUser from '../utils/useUser';
 import facebook from './facebook';
 import LogoInput from './icons/LogoInput';
@@ -31,6 +33,8 @@ export default function SignUpForNotifications({
   // If the plugin failed to load for whatever reason, show this message and ask the user to allow FB plugins
   const [showAdblockModal, setShowAdblockModal] = useState(false);
   const courseHash = Keys.getClassHash(course);
+
+  const [tokens, setTokens] = useState<GetMessengerTokenResponse>(null);
 
   // After the button is added to the DOM, we need to tell FB's SDK that it was added to the code and should be processed.
   // This will tell FB's SDK to scan all the child elements of this.facebookScopeRef to look for fb-send-to-messenger buttons.
@@ -131,6 +135,10 @@ export default function SignUpForNotifications({
         hash: Keys.getClassHash(course),
       });
 
+      if (!tokens) {
+        setTokens((await axios.get('/api/user/messenger_token')).data);
+      }
+
       // Check the status of the FB plugin
       // If it failed to load, show the message that asks user to disable adblock
       setShowMessengerButton(true);
@@ -144,33 +152,8 @@ export default function SignUpForNotifications({
 
   // Return the FB button itself.
   const getSendToMessengerButton = () => {
-    const loginKey =
-      '8iosXzTL2MKqt6Ind91JhzhVd8ZBHB93D3OKpP47IscMFKPAJiQY2lRFGmf2f6INHuFPDM1lzjwzs27GIUqOfGYCIKzXy8HodSDn';
-
-    // Get a list of all the sections that don't have seats remaining
-    const sectionHashes = [];
-
-    // If there is exactly one section in the class and the seats are all taken
-    // automatically sign the user up for it.
-    if (
-      course.sections.length === 1 &&
-      course.sections[0].seatsRemaining <= 0
-    ) {
-      sectionHashes.push(Keys.getSectionHash(course.sections[0]));
-    }
-
-    // JSON stringify it and then base64 encode the data that we want to pass to the backend.
-    // Many characters arn't allowed to be in the ref attribute, including open and closing braces.
-    // So base64 enocode it and then decode it on the server. Without the base64 encoding, the button will not render.
-
-    const payload = {
-      //TODO add type FBUserPayload
-      classHash: Keys.getClassHash(course),
-      sectionHashes: sectionHashes,
-      dev: macros.DEV,
-      loginKey: loginKey,
-    };
-    const dataRef = btoa(JSON.stringify(payload));
+    // TODO: login and subscribe after button
+    const dataRef = tokens.messengerToken;
 
     return (
       <div ref={facebookScopeRef} className="inlineBlock">
@@ -181,8 +164,8 @@ export default function SignUpForNotifications({
           {...{
             // This is cursed, but we're using spread to get around the fact that
             // Facebook needs custom props on a div -- something not supported by TS
-            messenger_app_id: '1979224428978082',
-            page_id: '807584642748179',
+            messenger_app_id: process.env.NEXT_PUBLIC_FB_APP_ID,
+            page_id: process.env.NEXT_PUBLIC_FB_PAGE_ID,
             size: 'large',
           }}
         />
@@ -215,7 +198,7 @@ export default function SignUpForNotifications({
         </div>
       );
     }
-  } else if (showMessengerButton) {
+  } else if (showMessengerButton && tokens) {
     if (facebook.didPluginFail()) {
       content = (
         <Button
