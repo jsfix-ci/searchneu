@@ -12,12 +12,12 @@ export interface GetUserResponse {
  */
 export default withUser(
   async (req, res): Promise<void> => {
-    const { userId } = req;
-    if (!userId) {
-      res.status(401).end();
-      return;
-    }
     if (req.method === 'GET') {
+      const { userId } = req;
+      if (!userId) {
+        res.status(401).end();
+        return;
+      }
       const user = await prisma.user.findUnique({
         where: { id: userId },
         include: { followedCourses: true, followedSections: true },

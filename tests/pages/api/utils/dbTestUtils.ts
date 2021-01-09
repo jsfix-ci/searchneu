@@ -18,6 +18,7 @@ type TestWithHandlerAsUserType = (
   options: RequestOptions,
   test: (response: Response) => Promise<void>
 ) => Promise<void>;
+const HTTPMethods = ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'];
 
 /**
  * Generate test utility for a Next API handler
@@ -58,4 +59,23 @@ export function testHandlerFactory(
     });
   };
   return [testWithHandler, testWithHandlerAsUser];
+}
+
+export function it404sOnInvalidHTTPMethods(
+  handler: NextApiHandler,
+  acceptedMethods: string[]
+): void {
+  it("404's on invalid methods", async () => {
+    await testApiHandler({
+      handler: handler as any,
+      test: async ({ fetch }) => {
+        for (const method of HTTPMethods) {
+          if (!acceptedMethods.includes(method)) {
+            const response = await fetch({ method });
+            expect(response.status).toBe(404);
+          }
+        }
+      },
+    });
+  });
 }

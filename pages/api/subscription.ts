@@ -3,22 +3,28 @@ import withUser, { NextApiHandlerWithUser } from '../../utils/api/withUser';
 
 export default withUser(
   async (req, res): Promise<void> => {
-    const { userId } = req;
-    if (!userId || (await prisma.user.count({ where: { id: userId } })) === 0) {
-      res.status(401).end();
-      return;
-    }
+    if (req.method === 'POST' || req.method === 'DELETE') {
+      const { userId } = req;
+      if (
+        !userId ||
+        (await prisma.user.count({ where: { id: userId } })) === 0
+      ) {
+        res.status(401).end();
+        return;
+      }
 
-    if (req.method === 'POST') {
-      await post(req, res);
-      return;
-    }
+      if (req.method === 'POST') {
+        await post(req, res);
+        return;
+      }
 
-    if (req.method === 'DELETE') {
-      await del(req, res);
-      return;
+      if (req.method === 'DELETE') {
+        await del(req, res);
+        return;
+      }
+      res.status(200).end();
     }
-    res.status(200).end();
+    res.status(404).end();
   }
 );
 

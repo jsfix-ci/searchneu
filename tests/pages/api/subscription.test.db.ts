@@ -2,7 +2,10 @@ import { User } from '@prisma/client';
 import { NextApiHandler } from 'next';
 import * as SubscriptionHandler from '../../../pages/api/subscription';
 import { prisma } from '../../../utils/api/prisma';
-import { testHandlerFactory } from './utils/dbTestUtils';
+import {
+  it404sOnInvalidHTTPMethods,
+  testHandlerFactory,
+} from './utils/dbTestUtils';
 
 let mockUser: User;
 const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
@@ -36,6 +39,7 @@ beforeEach(async () => {
   });
 });
 
+it404sOnInvalidHTTPMethods(subscriptionHandler, ['POST', 'DELETE']);
 describe('POST /api/subscription', () => {
   it('fails for nonexistent user', async () => {
     await testSubscriptionHandlerAsUser(

@@ -3,7 +3,10 @@ import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
 import { prisma } from '../../../utils/api/prisma';
-import { testHandlerFactory } from './utils/dbTestUtils';
+import {
+  it404sOnInvalidHTTPMethods,
+  testHandlerFactory,
+} from './utils/dbTestUtils';
 
 let mockUser: User;
 const userHandler: NextApiHandler = UserHandler.default;
@@ -35,6 +38,8 @@ beforeEach(async () => {
     },
   });
 });
+
+it404sOnInvalidHTTPMethods(userHandler, ['GET']);
 
 describe('GET /api/user', () => {
   it('gets a user with the id given', async () => {
