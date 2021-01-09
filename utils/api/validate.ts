@@ -14,5 +14,9 @@ export async function validateObject<T, V>(
 ): Promise<[T, false] | [false, ValidationError[]]> {
   const instance = plainToClass(cls, object);
   const validationErrors = await validate(instance);
-  return [validationErrors.length === 0 && instance, validationErrors];
+  if (validationErrors.length === 0) {
+    return [instance, false];
+  } else {
+    return [false, validationErrors];
+  }
 }

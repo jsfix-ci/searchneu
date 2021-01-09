@@ -81,14 +81,13 @@ export class LoginTokenPayload {
 }
 
 // Construct verifiers and signers for each token type
-
 function TokenFactory<A extends object, T extends ClassType<A>>(
   tokenClass: T
 ): [
-  (token: string) => Promise<A | false>,
+  (token: string) => Promise<T | false>,
   (...args: ConstructorParameters<T>) => Promise<string>
 ] {
-  async function verifyToken(token: string): Promise<A | false> {
+  async function verifyToken(token: string): Promise<T | false> {
     const [payload] = await validateObject(
       tokenClass,
       await verifyAsync(token)
