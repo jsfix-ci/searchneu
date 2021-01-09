@@ -1,5 +1,5 @@
-import { prisma } from '../../utils/api-middleware/prisma';
-import withUser from '../../utils/api-middleware/withUser';
+import { prisma } from '../../utils/api/prisma';
+import withUser from '../../utils/api/withUser';
 
 export interface GetUserResponse {
   followedCourses: string[];

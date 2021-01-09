@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { NextApiHandler } from 'next';
 import * as SubscriptionHandler from '../../../pages/api/subscription';
-import { prisma } from '../../../utils/api-middleware/prisma';
+import { prisma } from '../../../utils/api/prisma';
 import { testHandlerFactory } from './dbTestUtils';
 
 let mockUser: User;
@@ -37,6 +37,25 @@ beforeEach(async () => {
 });
 
 describe('POST /api/subscription', () => {
+  it('fails for nonexistent user', async () => {
+    await testSubscriptionHandlerAsUser(
+      {
+        method: 'POST',
+        body: {
+          courseHash: 'neu.edu/202130/CS/2500',
+        },
+        userId: mockUser.id + 1000,
+      },
+      async (response) => {
+        expect(response.status).toBe(401);
+
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id + 1000 },
+        });
+        expect(newUser).toBeNull();
+      }
+    );
+  });
   it('posts a course to follow', async () => {
     await testSubscriptionHandlerAsUser(
       {
@@ -47,7 +66,7 @@ describe('POST /api/subscription', () => {
         userId: mockUser.id,
       },
       async (response) => {
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
 
         const newUser = await prisma.user.findFirst({
           where: { id: mockUser.id },
@@ -73,7 +92,7 @@ describe('POST /api/subscription', () => {
         userId: mockUser.id,
       },
       async (response) => {
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
         const newUser = await prisma.user.findFirst({
           where: { id: mockUser.id },
           include: { followedSections: true },
@@ -81,6 +100,30 @@ describe('POST /api/subscription', () => {
         expect(newUser.followedSections.length).toBe(3);
         expect(newUser.followedSections).toContainEqual({
           sectionHash: 'neu.edu/202130/CS/2500/12393',
+          userId: mockUser.id,
+        });
+      }
+    );
+  });
+
+  it('still returns 201 when subscribing already-subscribed', async () => {
+    await testSubscriptionHandlerAsUser(
+      {
+        method: 'POST',
+        body: {
+          sectionHash: 'neu.edu/202130/CS/4500/12345', // already subbed to this
+        },
+        userId: mockUser.id,
+      },
+      async (response) => {
+        expect(response.status).toBe(201);
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedSections: true },
+        });
+        expect(newUser.followedSections.length).toBe(2);
+        expect(newUser.followedSections).toContainEqual({
+          sectionHash: 'neu.edu/202130/CS/4500/12345',
           userId: mockUser.id,
         });
       }
@@ -131,6 +174,26 @@ describe('DELETE / api/subscription', () => {
             userId: mockUser.id,
           },
         ]);
+      }
+    );
+  });
+
+  it('still returns 200 if unsubscribing a course that was never subscribed to begin with', async () => {
+    await testSubscriptionHandlerAsUser(
+      {
+        method: 'DELETE',
+        body: {
+          courseHash: 'neu.edu/202130/MATH/1010',
+        },
+        userId: mockUser.id,
+      },
+      async (response) => {
+        expect(response.status).toBe(200);
+        const newUser = await prisma.user.findFirst({
+          where: { id: mockUser.id },
+          include: { followedCourses: true },
+        });
+        expect(newUser.followedCourses.length).toBe(1);
       }
     );
   });

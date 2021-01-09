@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import crypto from 'crypto';
-import {
-  MessengerTokenPayload,
-  verifyAsync,
-} from '../../utils/api-middleware/jwt';
-import { prisma } from '../../utils/api-middleware/prisma';
+import { MessengerTokenPayload, verifyAsync } from '../../utils/api/jwt';
+import { prisma } from '../../utils/api/prisma';
 import { User } from '@prisma/client';
 import axios from 'axios';
 

@@ -3,8 +3,8 @@ import {
   LoginTokenPayload,
   MessengerTokenPayload,
   signAsync,
-} from '../../../utils/api-middleware/jwt';
-import { prisma } from '../../../utils/api-middleware/prisma';
+} from '../../../utils/api/jwt';
+import { prisma } from '../../../utils/api/prisma';
 
 export interface GetMessengerTokenResponse {
   messengerToken: string;

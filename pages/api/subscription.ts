@@ -1,12 +1,10 @@
-import { prisma } from '../../utils/api-middleware/prisma';
-import withUser, {
-  NextApiHandlerWithUser,
-} from '../../utils/api-middleware/withUser';
+import { prisma } from '../../utils/api/prisma';
+import withUser, { NextApiHandlerWithUser } from '../../utils/api/withUser';
 
 export default withUser(
   async (req, res): Promise<void> => {
     const { userId } = req;
-    if (!userId && (await prisma.user.count({ where: { id: userId } })) > 0) {
+    if (!userId || (await prisma.user.count({ where: { id: userId } })) === 0) {
       res.status(401).end();
       return;
     }
@@ -30,21 +28,21 @@ export default withUser(
  */
 const post: NextApiHandlerWithUser = async (req, res) => {
   const body = JSON.parse(req.body);
-  if (body.courseHash) {
-    await prisma.followedCourse.create({
-      data: {
-        courseHash: body.courseHash,
-        user: { connect: { id: req.userId } },
-      },
+  const { userId } = req;
+  const { courseHash, sectionHash } = body;
+  if (courseHash) {
+    await prisma.followedCourse.upsert({
+      create: { courseHash, user: { connect: { id: userId } } },
+      update: {},
+      where: { userId_courseHash: { courseHash, userId } },
     });
   }
 
-  if (body.sectionHash) {
-    await prisma.followedSection.create({
-      data: {
-        sectionHash: body.sectionHash,
-        user: { connect: { id: req.userId } },
-      },
+  if (sectionHash) {
+    await prisma.followedSection.upsert({
+      create: { sectionHash, user: { connect: { id: userId } } },
+      update: {},
+      where: { userId_sectionHash: { sectionHash, userId } },
     });
   }
   res.status(201).end();
@@ -57,23 +55,20 @@ const post: NextApiHandlerWithUser = async (req, res) => {
 const del: NextApiHandlerWithUser = async (req, res) => {
   const body = JSON.parse(req.body);
   if (body.courseHash) {
-    await prisma.followedCourse.delete({
+    // delete many allows us to continue if there is nothing to delete.
+    await prisma.followedCourse.deleteMany({
       where: {
-        userId_courseHash: {
-          userId: req.userId,
-          courseHash: body.courseHash,
-        },
+        userId: req.userId,
+        courseHash: body.courseHash,
       },
     });
   }
 
   if (body.sectionHash) {
-    await prisma.followedSection.delete({
+    await prisma.followedSection.deleteMany({
       where: {
-        userId_sectionHash: {
-          userId: req.userId,
-          sectionHash: body.sectionHash,
-        },
+        userId: req.userId,
+        sectionHash: body.sectionHash,
       },
     });
   }

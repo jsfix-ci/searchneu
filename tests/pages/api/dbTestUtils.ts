@@ -19,12 +19,18 @@ type TestWithHandlerAsUserType = (
   test: (response: Response) => Promise<void>
 ) => Promise<void>;
 
+/**
+ * Generate test utility for a Next API handler
+ */
 export function testHandlerFactory(
   handler: NextApiHandler
 ): [
   testWithHandler: TestWithHandlerType,
   testWithHandlerAsUser: TestWithHandlerAsUserType
 ] {
+  /**
+   * Raw tester just gives you an instance of fetch. Make the API call and expect stuff.
+   */
   const testWithHandler: TestWithHandlerType = async (test) => {
     await testApiHandler({
       handler: handler as any,
@@ -32,6 +38,10 @@ export function testHandlerFactory(
     });
   };
 
+  /**
+   * Nicer tester logs you in as a user, sends an API call with the given method/body options.
+   * Expect stuff of the response in the test.
+   */
   const testWithHandlerAsUser: TestWithHandlerAsUserType = async (
     options,
     test

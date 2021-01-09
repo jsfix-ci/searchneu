@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
-import { prisma } from '../../../utils/api-middleware/prisma';
+import { prisma } from '../../../utils/api/prisma';
 import { testHandlerFactory } from './dbTestUtils';
 
 let mockUser: User;
