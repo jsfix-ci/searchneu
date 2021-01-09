@@ -3,28 +3,13 @@ import withUser, { NextApiHandlerWithUser } from '../../utils/api/withUser';
 
 export default withUser(
   async (req, res): Promise<void> => {
-    if (req.method === 'POST' || req.method === 'DELETE') {
-      const { userId } = req;
-      if (
-        !userId ||
-        (await prisma.user.count({ where: { id: userId } })) === 0
-      ) {
-        res.status(401).end();
-        return;
-      }
-
-      if (req.method === 'POST') {
-        await post(req, res);
-        return;
-      }
-
-      if (req.method === 'DELETE') {
-        await del(req, res);
-        return;
-      }
-      res.status(200).end();
+    if (req.method === 'POST') {
+      await post(req, res);
+    } else if (req.method === 'DELETE') {
+      await del(req, res);
+    } else {
+      res.status(404).end();
     }
-    res.status(404).end();
   }
 );
 
@@ -33,6 +18,10 @@ export default withUser(
  * subscribe to course or section
  */
 const post: NextApiHandlerWithUser = async (req, res) => {
+  if (!req.user) {
+    res.status(401).end();
+    return;
+  }
   const body = JSON.parse(req.body);
   const { userId } = req;
   const { courseHash, sectionHash } = body;
@@ -59,6 +48,10 @@ const post: NextApiHandlerWithUser = async (req, res) => {
  * unsubscribe to course or section
  */
 const del: NextApiHandlerWithUser = async (req, res) => {
+  if (!req.user) {
+    res.status(401).end();
+    return;
+  }
   const body = JSON.parse(req.body);
   if (body.courseHash) {
     // delete many allows us to continue if there is nothing to delete.

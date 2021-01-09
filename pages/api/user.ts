@@ -13,24 +13,22 @@ export interface GetUserResponse {
 export default withUser(
   async (req, res): Promise<void> => {
     if (req.method === 'GET') {
-      const { userId } = req;
-      if (!userId) {
+      if (!req.user) {
         res.status(401).end();
         return;
       }
+      // Refetch user with subscriptions joined
       const user = await prisma.user.findUnique({
-        where: { id: userId },
+        where: { id: req.userId },
         include: { followedCourses: true, followedSections: true },
       });
-      if (user) {
-        const data: GetUserResponse = {
-          followedCourses: user.followedCourses.map((c) => c.courseHash),
-          followedSections: user.followedSections.map((s) => s.sectionHash),
-        };
-        res.json(data);
-        return;
-      }
+      const data: GetUserResponse = {
+        followedCourses: user.followedCourses.map((c) => c.courseHash),
+        followedSections: user.followedSections.map((s) => s.sectionHash),
+      };
+      res.json(data);
+    } else {
+      res.status(404).end();
     }
-    res.status(404).end();
   }
 );

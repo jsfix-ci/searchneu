@@ -60,7 +60,7 @@ describe('GET /api/user', () => {
   it("attempts to get a user that doesn't exist", async () => {
     await testUserHandlerAsUser(
       { method: 'GET', userId: mockUser.id + 100000000 },
-      async (response) => expect(response.status).toBe(404)
+      async (response) => expect(response.status).toBe(401)
     );
   });
 });

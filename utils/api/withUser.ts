@@ -1,7 +1,9 @@
+import { User } from '@prisma/client';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { AuthTokenPayload, verifyAsync } from './jwt';
+import { prisma } from './prisma';
 
-type NextApiRequestWithUser = NextApiRequest & { userId?: number };
+type NextApiRequestWithUser = NextApiRequest & { userId?: number; user?: User };
 export type NextApiHandlerWithUser<T = any> = (
   req: NextApiRequestWithUser,
   res: NextApiResponse<T>
@@ -25,6 +27,9 @@ export default function withUser<T>(
         return;
       }
       newReq.userId = jwtPayload?.userId;
+      newReq.user =
+        newReq.userId &&
+        (await prisma.user.findUnique({ where: { id: newReq.userId } }));
     }
     return handler(newReq, res);
   };
