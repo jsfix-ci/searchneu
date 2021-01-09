@@ -45,6 +45,8 @@ beforeEach(async () => {
   });
 });
 
+type TestApiHandlerTestType = Parameters<typeof testApiHandler>[0]['test'];
+
 function generateMockUserJWTToken(userId?: number): string {
   return sign(
     { userId: userId ? userId : mockUser.id },
@@ -52,29 +54,68 @@ function generateMockUserJWTToken(userId?: number): string {
   );
 }
 
-async function testUserHandler(test): Promise<void> {
-  await testApiHandler({
-    handler: userHandler as any,
+type TempNameCAuseBrainBroke = {
+  userId?: number;
+  method?: string;
+  body?: Record<string, any>;
+};
+
+function testHandlerFactory(
+  handler: NextApiHandler
+): [
+  testWithHandler: (test: TestApiHandlerTestType) => Promise<void>,
+  testWithHandlerAsUser: (
+    test: (response: Response) => Promise<void>,
+    options?: TempNameCAuseBrainBroke
+  ) => Promise<void>
+] {
+  async function testWithHandler(test: TestApiHandlerTestType): Promise<void> {
+    await testApiHandler({
+      handler: handler as any,
+      test,
+    });
+  }
+
+  async function testWithHandlerAsUser(
     test,
-  });
+    options?: TempNameCAuseBrainBroke
+  ): Promise<void> {
+    await testWithHandler(async ({ fetch }) => {
+      if (!options?.method || options?.method === 'GET') {
+        const response = await fetch({
+          headers: {
+            cookie: 'authToken=' + generateMockUserJWTToken(options?.userId),
+          },
+        });
+        await test(response);
+      } else {
+        const response = await fetch({
+          headers: {
+            cookie: 'authToken=' + generateMockUserJWTToken(options?.userId),
+          },
+          method: options?.method,
+          body: JSON.stringify(options?.body),
+        });
+        await test(response);
+      }
+    });
+  }
+  return [testWithHandler, testWithHandlerAsUser];
 }
 
-async function testUserHandlerAsUser(test, userId?): Promise<void> {
-  await testUserHandler(async ({ fetch }) => {
-    const response = await fetch({
-      headers: { cookie: 'authToken=' + generateMockUserJWTToken(userId) },
-    });
-    test({
-      data: response.status < 400 && (await response.json()), // not an error
-      status: response.status,
-    });
-  });
-}
+const [testUserHandler, testUserHandlerAsUser] = testHandlerFactory(
+  userHandler
+);
+const [
+  testSubscriptionHandler,
+  testSubscriptionHandlerAsUser,
+] = testHandlerFactory(subscriptionHandler);
 
 describe('user endpoint', () => {
   it('gets a user with the id given', async () => {
-    await testUserHandlerAsUser(({ data, status }) => {
-      expect(status).toBe(200);
+    await testUserHandlerAsUser(async (response) => {
+      expect(response.status).toBe(200);
+      const data = await response.json();
       expect(data.followedCourses).toEqual(['neu.edu/202130/CS/4500']);
       expect(data.followedSections).toEqual([
         'neu.edu/202130/CS/4500/12345',
@@ -85,8 +126,8 @@ describe('user endpoint', () => {
 
   it("attempts to get a user that doesn't exist", async () => {
     await testUserHandlerAsUser(
-      ({ status }) => expect(status).toBe(404),
-      mockUser.id + 100000000
+      async (response) => expect(response.status).toBe(404),
+      { userId: mockUser.id + 100000000 }
     );
   });
 });
@@ -116,16 +157,8 @@ describe('withUser', () => {
 
 describe('subscribing to courses and sections', () => {
   it('posts a course to follow', async () => {
-    await testApiHandler({
-      handler: subscriptionHandler as any,
-      test: async ({ fetch }) => {
-        const response = await fetch({
-          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
-          body: JSON.stringify({
-            courseHash: 'neu.edu/202130/CS/2500',
-          }),
-          method: 'POST',
-        });
+    await testSubscriptionHandlerAsUser(
+      async (response) => {
         expect(response.status).toBe(200);
 
         const newUser = await prisma.user.findFirst({
@@ -139,7 +172,13 @@ describe('subscribing to courses and sections', () => {
           userId: mockUser.id,
         });
       },
-    });
+      {
+        method: 'POST',
+        body: {
+          courseHash: 'neu.edu/202130/CS/2500',
+        },
+      }
+    );
   });
 
   it('posts a section to follow', async () => {
