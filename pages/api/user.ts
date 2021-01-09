@@ -6,6 +6,10 @@ export interface GetUserResponse {
   followedSections: string[];
 }
 
+/**
+ * ========================= GET /api/user =======================
+ * Return user subscription info
+ */
 export default withUser(
   async (req, res): Promise<void> => {
     const { userId } = req;

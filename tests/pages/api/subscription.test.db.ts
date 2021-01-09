@@ -36,7 +36,7 @@ beforeEach(async () => {
   });
 });
 
-describe('subscribing to courses and sections', () => {
+describe('POST /api/subscription', () => {
   it('posts a course to follow', async () => {
     await testSubscriptionHandlerAsUser(
       {
@@ -86,7 +86,9 @@ describe('subscribing to courses and sections', () => {
       }
     );
   });
+});
 
+describe('DELETE / api/subscription', () => {
   it('deletes a course from user', async () => {
     await testSubscriptionHandlerAsUser(
       {

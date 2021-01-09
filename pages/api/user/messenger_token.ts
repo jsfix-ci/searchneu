@@ -11,7 +11,10 @@ export interface GetMessengerTokenResponse {
   loginToken: string;
 }
 
-// Begin the facebook login flow by getting LoginToken and MessengerToken
+/**
+ * ========================= GET /api/user/messenger_token =======================
+ * Begin a facebook login session by getting a LoginToken and MessengerToken
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

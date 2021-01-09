@@ -19,8 +19,11 @@ export default async function handler(
   }
 }
 
-// for Facebook verification of the endpoint. (only happens once)
-// https://developers.facebook.com/docs/messenger-platform/getting-started/webhook-setup/
+/**
+ * ========================= GET /api/webhook =======================
+ * Let FB verify this endpoint (just once)
+ * https://developers.facebook.com/docs/messenger-platform/getting-started/webhook-setup/
+ */
 function get(req: NextApiRequest, res: NextApiResponse): void {
   const VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
 
@@ -38,7 +41,10 @@ function get(req: NextApiRequest, res: NextApiResponse): void {
   res.status(400).end();
 }
 
-// accept and respond to events from facebook
+/**
+ * ========================= POST /api/webhook =======================
+ * Handle facebook events from optin button and messenger texts
+ */
 async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const [rawBody, body] = await parseBody(req);
   const isValid = isSignatureValid(
@@ -61,17 +67,13 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   }
 }
 
-/**
- *  ================================================
- *  ||   HANDLE LOGGING IN VIA MESSENGER BUTTON   ||
- *  ================================================
- */
 interface FBOptinEvent {
   sender: { id: string };
   optin: { ref: string };
 }
 
-async function handleMessengerButtonClick(event: FBOptinEvent) {
+// Handle logging in via messenger button
+async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
   // TODO: Validate userobject with class-validator
   const token = (await verifyAsync(event.optin.ref)) as MessengerTokenPayload;
   const session = await prisma.facebookLoginSessions.findUnique({
@@ -99,7 +101,13 @@ async function handleMessengerButtonClick(event: FBOptinEvent) {
 // Create new user from their fb messenger id
 async function createNewUser(fbMessengerId: string): Promise<User> {
   const res = await axios.get(
-    `https://graph.facebook.com/v2.6/${fbMessengerId}?fields=first_name,last_name&access_token=${process.env.FB_ACCESS_TOKEN}`
+    `https://graph.facebook.com/v2.6/${fbMessengerId}`,
+    {
+      params: {
+        fields: 'first_name,last_name',
+        access_token: process.env.FB_ACCESS_TOKEN,
+      },
+    }
   );
   return await prisma.user.create({
     data: {
@@ -110,11 +118,7 @@ async function createNewUser(fbMessengerId: string): Promise<User> {
   });
 }
 
-/**
- *  ================================================
- *  ||       VALIDATE WEBHOOK FROM FACEBOOK       ||
- *  ================================================
- */
+// =============  Helpers to validate webhook is from Facebook  ============= //
 
 // Given unparsed request, get the raw body buffer and the parsed request body
 async function parseBody(

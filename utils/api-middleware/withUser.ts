@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { AuthTokenPayload, verifyAsync } from './jwt';
 
 type NextApiRequestWithUser = NextApiRequest & { userId?: number };
-type NextApiHandlerWithUser<T = any> = (
+export type NextApiHandlerWithUser<T = any> = (
   req: NextApiRequestWithUser,
   res: NextApiResponse<T>
 ) => void | Promise<void>;

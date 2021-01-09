@@ -36,7 +36,7 @@ beforeEach(async () => {
   });
 });
 
-describe('user endpoint', () => {
+describe('GET /api/user', () => {
   it('gets a user with the id given', async () => {
     await testUserHandlerAsUser(
       { method: 'GET', userId: mockUser.id },
