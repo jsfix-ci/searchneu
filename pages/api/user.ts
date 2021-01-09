@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../utils/api-middleware/prisma';
 import withUser from '../../utils/api-middleware/withUser';
-
-const prisma = new PrismaClient();
 
 export interface GetUserResponse {
   followedCourses: string[];

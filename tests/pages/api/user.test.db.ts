@@ -2,8 +2,8 @@ import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
+import { prisma } from '../../../utils/api-middleware/prisma';
 import { testHandlerFactory } from './dbTestUtils';
-import prisma from './prisma';
 
 let mockUser: User;
 const userHandler: NextApiHandler = UserHandler.default;

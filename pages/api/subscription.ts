@@ -1,4 +1,4 @@
-import prisma from '../../tests/pages/api/prisma';
+import { prisma } from '../../utils/api-middleware/prisma';
 import withUser from '../../utils/api-middleware/withUser';
 
 export default withUser(

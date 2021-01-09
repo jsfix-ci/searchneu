@@ -1,8 +1,8 @@
 import { User } from '@prisma/client';
 import { NextApiHandler } from 'next';
 import * as SubscriptionHandler from '../../../pages/api/subscription';
+import { prisma } from '../../../utils/api-middleware/prisma';
 import { testHandlerFactory } from './dbTestUtils';
-import prisma from './prisma';
 
 let mockUser: User;
 const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;

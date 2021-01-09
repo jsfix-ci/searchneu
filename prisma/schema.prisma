@@ -29,7 +29,7 @@ model FollowedSection {
 }
 
 model User {
-  fbMessengerId    String?           @map(name: "fb_messenger_id")
+  fbMessengerId    String?           @unique @map(name: "fb_messenger_id")
   firstName        String?           @map(name: "first_name")
   id               Int               @id @default(autoincrement())
   lastName         String?           @map(name: "last_name")
@@ -37,4 +37,10 @@ model User {
   followedSections FollowedSection[]
 
   @@map(name: "users")
+}
+
+model FacebookLoginSessions {
+  id               Int               @id @default(autoincrement())
+  userId           Int?              @map(name: "user_id")
+  user             User?             @relation(fields: [userId], references: [id])
 }
