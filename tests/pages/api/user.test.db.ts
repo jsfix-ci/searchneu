@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import { testApiHandler } from 'next-test-api-route-handler';
@@ -5,7 +6,9 @@ import * as SubscriptionHandler from '../../../pages/api/subscription';
 import * as UserHandler from '../../../pages/api/user';
 import prisma from './prisma';
 
-let mockUser;
+let mockUser: User;
+const userHandler: NextApiHandler = UserHandler.default;
+const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
 
 beforeEach(async () => {
   await prisma.followedSection.deleteMany({});
@@ -42,84 +45,77 @@ beforeEach(async () => {
   });
 });
 
-function generateMockUserJWTToken(): string {
-  return sign({ userId: mockUser.id }, process.env.JWT_SECRET);
+function generateMockUserJWTToken(userId?: number): string {
+  return sign(
+    { userId: userId ? userId : mockUser.id },
+    process.env.JWT_SECRET
+  );
+}
+
+async function testUserHandler(test): Promise<void> {
+  await testApiHandler({
+    handler: userHandler as any,
+    test,
+  });
+}
+
+async function testUserHandlerAsUser(test, userId?): Promise<void> {
+  await testUserHandler(async ({ fetch }) => {
+    const response = await fetch({
+      headers: { cookie: 'authToken=' + generateMockUserJWTToken(userId) },
+    });
+    test({
+      data: response.status < 400 && (await response.json()), // not an error
+      status: response.status,
+    });
+  });
 }
 
 describe('user endpoint', () => {
   it('gets a user with the id given', async () => {
-    const userHandler: NextApiHandler = UserHandler.default;
-
-    await testApiHandler({
-      handler: userHandler as any,
-      test: async ({ fetch }) => {
-        const response = await fetch({
-          headers: { cookie: 'authToken=' + generateMockUserJWTToken() },
-        });
-
-        const responseData = await response.json();
-        expect(responseData.followedCourses).toEqual([
-          'neu.edu/202130/CS/4500',
-        ]);
-        expect(responseData.followedSections).toEqual([
-          'neu.edu/202130/CS/4500/12345',
-          'neu.edu/202130/CS/4500/23456',
-        ]);
-      },
+    await testUserHandlerAsUser(({ data, status }) => {
+      expect(status).toBe(200);
+      expect(data.followedCourses).toEqual(['neu.edu/202130/CS/4500']);
+      expect(data.followedSections).toEqual([
+        'neu.edu/202130/CS/4500/12345',
+        'neu.edu/202130/CS/4500/23456',
+      ]);
     });
   });
 
-  it("attemps to get a user that doesn't exist", async () => {
-    const userHandler: NextApiHandler = UserHandler.default;
-
-    await testApiHandler({
-      handler: userHandler as any,
-      test: async ({ fetch }) => {
-        const mockUserIdSigned = sign(
-          { userId: mockUser.id + 10000 },
-          process.env.JWT_SECRET
-        );
-
-        const response = await fetch({
-          headers: { cookie: 'authToken=' + mockUserIdSigned },
-        });
-        expect(response.status).toBe(404);
-      },
-    });
+  it("attempts to get a user that doesn't exist", async () => {
+    await testUserHandlerAsUser(
+      ({ status }) => expect(status).toBe(404),
+      mockUser.id + 100000000
+    );
   });
+});
 
+describe('withUser', () => {
   it('garbage in garbage out for the user endpoint', async () => {
-    const userHandler: NextApiHandler = UserHandler.default;
+    await testUserHandler(async ({ fetch }) => {
+      const response = await fetch({
+        headers: {
+          cookie:
+            'authToken=' +
+            sign({ userId: 'HOLLA HOLLA' }, process.env.JWT_SECRET),
+        },
+      });
+      expect(response.status).toBe(401);
 
-    await testApiHandler({
-      handler: userHandler as any,
-      test: async ({ fetch }) => {
-        const mockUserIdSigned = sign(
-          { userId: 'HOLLA HOLLA' },
-          process.env.JWT_SECRET
-        );
+      const response2 = await fetch({
+        headers: { cookie: 'wakanda=forever' },
+      });
+      expect(response2.status).toBe(401);
 
-        const response = await fetch({
-          headers: { cookie: 'authToken=' + mockUserIdSigned },
-        });
-        expect(response.status).toBe(401);
-
-        const response2 = await fetch({
-          headers: { cookie: 'wakanda=forever' },
-        });
-        expect(response2.status).toBe(401);
-
-        const response3 = await fetch({});
-        expect(response3.status).toBe(401);
-      },
+      const response3 = await fetch({});
+      expect(response3.status).toBe(401);
     });
   });
 });
 
 describe('subscribing to courses and sections', () => {
   it('posts a course to follow', async () => {
-    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
-
     await testApiHandler({
       handler: subscriptionHandler as any,
       test: async ({ fetch }) => {
@@ -147,8 +143,6 @@ describe('subscribing to courses and sections', () => {
   });
 
   it('posts a section to follow', async () => {
-    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
-
     await testApiHandler({
       handler: subscriptionHandler as any,
       test: async ({ fetch }) => {
@@ -176,8 +170,6 @@ describe('subscribing to courses and sections', () => {
   });
 
   it('deletes a course from user', async () => {
-    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
-
     await testApiHandler({
       handler: subscriptionHandler as any,
       test: async ({ fetch }) => {
@@ -201,8 +193,6 @@ describe('subscribing to courses and sections', () => {
   });
 
   it('deletes a section from following', async () => {
-    const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
-
     await testApiHandler({
       handler: subscriptionHandler as any,
       test: async ({ fetch }) => {

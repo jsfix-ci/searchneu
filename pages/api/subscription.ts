@@ -8,6 +8,7 @@ export default withUser(
       res.status(401).end();
       return;
     }
+
     const body = JSON.parse(req.body);
     if (req.method === 'POST') {
       if (body.courseHash) {

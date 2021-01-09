@@ -7,7 +7,6 @@ export default function NotificationSettings(): ReactElement {
     '/api/user',
     async () => await axios.get('/api/user')
   );
-  console.log(data, error);
 
   if (error) {
     return <div>Ya gotta Zucc yourself before you wreck yourself</div>;
@@ -17,9 +16,9 @@ export default function NotificationSettings(): ReactElement {
   const watchingSections = userData?.watchingSections;
   const watchingCourses = userData?.watchingCourses;
 
-  const needsBetterName = [];
+  const coursesBundledWithSections = [];
   for (const course in watchingCourses) {
-    needsBetterName.push({
+    coursesBundledWithSections.push({
       course,
       sections: watchingSections.filter((section) =>
         section.startsWith(course)
@@ -34,7 +33,7 @@ export default function NotificationSettings(): ReactElement {
         Something about welcome to Search NEU Notifications Diana could probably
         make this say something warm and welcoming but I am the Grinch
       </h1>
-      {needsBetterName.map((item) => (
+      {coursesBundledWithSections.map((item) => (
         <div key={item.course}>
           <h3>{item.course}</h3>
           {item.sections.map((section) => (
