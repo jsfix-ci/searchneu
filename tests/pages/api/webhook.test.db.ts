@@ -4,7 +4,10 @@ import { mocked } from 'ts-jest/utils';
 import * as WebhookHandler from '../../../pages/api/webhook';
 import { signAsync } from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
-import { testHandlerFactory } from './utils/dbTestUtils';
+import {
+  it404sOnInvalidHTTPMethods,
+  testHandlerFactory,
+} from './utils/dbTestUtils';
 
 jest.mock('axios');
 jest.mock('../../../utils/api/jwt');
@@ -13,20 +16,22 @@ const [testWebhookHandler, testWebhookHandlerAsUser] = testHandlerFactory(
   webhookHandler
 );
 
-beforeEach(async () => {
-  jest.clearAllMocks();
-  await prisma.followedSection.deleteMany({});
-  await prisma.followedCourse.deleteMany({});
-  await prisma.user.deleteMany({});
-  mocked(axios.get).mockResolvedValue({
-    data: {
-      first_name: 'Jorge',
-      last_name: 'Beans',
-    },
-  });
-});
-
 describe('/api/webhook', () => {
+  beforeEach(async () => {
+    jest.clearAllMocks();
+    await prisma.followedSection.deleteMany({});
+    await prisma.followedCourse.deleteMany({});
+    await prisma.user.deleteMany({});
+    mocked(axios.get).mockResolvedValue({
+      data: {
+        first_name: 'Jorge',
+        last_name: 'Beans',
+      },
+    });
+  });
+
+  it404sOnInvalidHTTPMethods(webhookHandler, ['GET', 'POST']);
+
   describe('handleMessengerButtonClick', () => {
     it('creates a user on messenger button click when there is none initially', async () => {
       const noUser = await prisma.user.count({

@@ -13,6 +13,8 @@ export default async function handler(
     get(req, res);
   } else if (req.method === 'POST') {
     await post(req, res);
+  } else {
+    res.status(404).end();
   }
 }
 

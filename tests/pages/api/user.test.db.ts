@@ -14,76 +14,78 @@ const [testUserHandler, testUserHandlerAsUser] = testHandlerFactory(
   userHandler
 );
 
-beforeEach(async () => {
-  await prisma.followedSection.deleteMany({});
-  await prisma.followedCourse.deleteMany({});
-  await prisma.user.deleteMany({});
+describe('/api/user', () => {
+  beforeEach(async () => {
+    await prisma.followedSection.deleteMany({});
+    await prisma.followedCourse.deleteMany({});
+    await prisma.user.deleteMany({});
 
-  mockUser = await prisma.user.create({
-    data: {
-      fbMessengerId: '0000000000',
-      firstName: 'Eddy',
-      lastName: 'Li',
-      followedCourses: { create: [{ courseHash: 'neu.edu/202130/CS/4500' }] },
-      followedSections: {
-        create: [
-          {
-            sectionHash: 'neu.edu/202130/CS/4500/12345',
-          },
-          {
-            sectionHash: 'neu.edu/202130/CS/4500/23456',
-          },
-        ],
-      },
-    },
-  });
-});
-
-it404sOnInvalidHTTPMethods(userHandler, ['GET']);
-
-describe('GET /api/user', () => {
-  it('gets a user with the id given', async () => {
-    await testUserHandlerAsUser(
-      { method: 'GET', userId: mockUser.id },
-      async (response) => {
-        expect(response.status).toBe(200);
-        const data = await response.json();
-        expect(data.followedCourses).toEqual(['neu.edu/202130/CS/4500']);
-        expect(data.followedSections).toEqual([
-          'neu.edu/202130/CS/4500/12345',
-          'neu.edu/202130/CS/4500/23456',
-        ]);
-      }
-    );
-  });
-
-  it("attempts to get a user that doesn't exist", async () => {
-    await testUserHandlerAsUser(
-      { method: 'GET', userId: mockUser.id + 100000000 },
-      async (response) => expect(response.status).toBe(401)
-    );
-  });
-});
-
-describe('withUser', () => {
-  it('garbage in garbage out for the user endpoint', async () => {
-    await testUserHandler(async ({ fetch }) => {
-      const response = await fetch({
-        headers: {
-          cookie:
-            'authToken=' +
-            sign({ userId: 'HOLLA HOLLA' }, process.env.JWT_SECRET),
+    mockUser = await prisma.user.create({
+      data: {
+        fbMessengerId: '0000000000',
+        firstName: 'Eddy',
+        lastName: 'Li',
+        followedCourses: { create: [{ courseHash: 'neu.edu/202130/CS/4500' }] },
+        followedSections: {
+          create: [
+            {
+              sectionHash: 'neu.edu/202130/CS/4500/12345',
+            },
+            {
+              sectionHash: 'neu.edu/202130/CS/4500/23456',
+            },
+          ],
         },
-      });
-      expect(response.status).toBe(401);
+      },
+    });
+  });
 
-      const response2 = await fetch({
-        headers: { cookie: 'wakanda=forever' },
-      });
-      expect(response2.status).toBe(401);
+  it404sOnInvalidHTTPMethods(userHandler, ['GET']);
 
-      const response3 = await fetch({});
-      expect(response3.status).toBe(401);
+  describe('GET', () => {
+    it('gets a user with the id given', async () => {
+      await testUserHandlerAsUser(
+        { method: 'GET', userId: mockUser.id },
+        async (response) => {
+          expect(response.status).toBe(200);
+          const data = await response.json();
+          expect(data.followedCourses).toEqual(['neu.edu/202130/CS/4500']);
+          expect(data.followedSections).toEqual([
+            'neu.edu/202130/CS/4500/12345',
+            'neu.edu/202130/CS/4500/23456',
+          ]);
+        }
+      );
+    });
+
+    it("attempts to get a user that doesn't exist", async () => {
+      await testUserHandlerAsUser(
+        { method: 'GET', userId: mockUser.id + 100000000 },
+        async (response) => expect(response.status).toBe(401)
+      );
+    });
+  });
+
+  describe('withUser', () => {
+    it('garbage in garbage out for the user endpoint', async () => {
+      await testUserHandler(async ({ fetch }) => {
+        const response = await fetch({
+          headers: {
+            cookie:
+              'authToken=' +
+              sign({ userId: 'HOLLA HOLLA' }, process.env.JWT_SECRET),
+          },
+        });
+        expect(response.status).toBe(401);
+
+        const response2 = await fetch({
+          headers: { cookie: 'wakanda=forever' },
+        });
+        expect(response2.status).toBe(401);
+
+        const response3 = await fetch({});
+        expect(response3.status).toBe(401);
+      });
     });
   });
 });
