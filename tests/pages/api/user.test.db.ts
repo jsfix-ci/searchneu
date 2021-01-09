@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
 import { prisma } from '../../../utils/api/prisma';
-import { testHandlerFactory } from './dbTestUtils';
+import { testHandlerFactory } from './utils/dbTestUtils';
 
 let mockUser: User;
 const userHandler: NextApiHandler = UserHandler.default;

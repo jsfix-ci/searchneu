@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { NextApiHandler } from 'next';
 import * as SubscriptionHandler from '../../../pages/api/subscription';
 import { prisma } from '../../../utils/api/prisma';
-import { testHandlerFactory } from './dbTestUtils';
+import { testHandlerFactory } from './utils/dbTestUtils';
 
 let mockUser: User;
 const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
