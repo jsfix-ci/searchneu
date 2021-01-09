@@ -8,10 +8,10 @@
     "dev:db:down": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml down",
     "build": "next build",
     "start": "next start -p 5000",
-    "test": "jest",
+    "test:frontend": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "dbtest": "jest -i --projects tests/pages/api --forceExit"
+    "test:backend": "jest -i --projects tests/pages/api --forceExit"
   },
   "dependencies": {
     "@prisma/client": "2.13.0",
