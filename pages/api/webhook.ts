@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import crypto from 'crypto';
-import { MessengerTokenPayload, verifyAsync } from '../../utils/api/jwt';
-import { prisma } from '../../utils/api/prisma';
 import { User } from '@prisma/client';
 import axios from 'axios';
+import crypto from 'crypto';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { MessengerTokenPayload, verifyAsync } from '../../utils/api/jwt';
+import { prisma } from '../../utils/api/prisma';
 
 export default async function handler(
   req: NextApiRequest,
@@ -159,4 +159,13 @@ export const config = {
   api: {
     bodyParser: false,
   },
+};
+
+/**
+ * Mitch recommended th is for unit testing private functions.
+ * Please don't use these in other modules
+ */
+export const _private = {
+  handleMessengerButtonClick,
+  createNewUser,
 };

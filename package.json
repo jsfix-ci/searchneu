@@ -11,7 +11,7 @@
     "test:frontend": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "test:api": "jest -i --projects tests/pages/api"
+    "test:api": "jest -i --projects tests/pages/api/utils"
   },
   "dependencies": {
     "@prisma/client": "2.13.0",
@@ -74,6 +74,7 @@
     "next-test-api-route-handler": "^1.1.3",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0",
+    "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   },
   "husky": {
