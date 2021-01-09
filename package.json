@@ -11,7 +11,7 @@
     "test:frontend": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "test:api": "jest -i --projects tests/pages/api/utils"
+    "test:api": "jest --projects tests/pages/api/utils --testPathPattern"
   },
   "dependencies": {
     "@prisma/client": "2.13.0",
