@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// tests/nexus-test-environment.js
+// Same as https://github.com/ctrlplusb/prisma-pg-jest/blob/master/prisma/prisma-test-environment.js
 const { Client } = require('pg');
 const NodeEnvironment = require('jest-environment-node');
 const { v4: uuid } = require('uuid');
