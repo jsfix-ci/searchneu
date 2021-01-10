@@ -32,49 +32,61 @@ describe('/api/webhook', () => {
 
   it404sOnInvalidHTTPMethods(webhookHandler, ['GET', 'POST']);
 
-  describe('handleMessengerButtonClick', () => {
-    it('creates a user on messenger button click when there is none initially', async () => {
-      const noUser = await prisma.user.count({
-        where: {
-          fbMessengerId: '12345',
-        },
-      });
-      expect(noUser).toBe(0);
+  describe('private methods', () => {
+    describe('handleMessengerButtonClick', () => {
+      it('creates a user on messenger button click when there is none initially', async () => {
+        expect(
+          await prisma.user.count({
+            where: {
+              fbMessengerId: '12345',
+            },
+          })
+        ).toBe(0);
 
-      const initSession = await prisma.facebookLoginSessions.create({
-        data: {},
-      });
-      await WebhookHandler._private.handleMessengerButtonClick({
-        sender: { id: '12345' },
-        optin: {
-          ref: await signAsync({
-            fbSessionId: initSession.id,
-          }),
-        },
-      });
+        const session = await prisma.facebookLoginSessions.create({
+          data: {},
+        });
+        await WebhookHandler._private.handleMessengerButtonClick({
+          sender: { id: '12345' },
+          optin: {
+            ref: await signAsync({
+              fbSessionId: session.id,
+            }),
+          },
+        });
 
-      const user = await prisma.user.findFirst({
-        where: {
-          fbMessengerId: '12345',
-        },
+        const user = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+          include: { FacebookLoginSessions: true },
+        });
+        expect(user.firstName).toBe('Jorge');
+        expect(user.lastName).toBe('Beans');
+        expect(user.FacebookLoginSessions).toEqual([
+          { id: session.id, userId: user.id },
+        ]);
       });
-      expect(user.firstName).toBe('Jorge');
-      expect(user.lastName).toBe('Beans');
+      it('associates login session with existing user', () => {});
+      it('does nothing if session id does not exist', () => {});
+      it('does nothing if given a logintoken instead of messengertoken', () => {});
     });
-  });
 
-  it('createNewUser', async () => {
-    WebhookHandler._private.createNewUser('12345');
+    describe('createNewUser', () => {
+      it('creates user with id', async () => {
+        WebhookHandler._private.createNewUser('12345');
 
-    const user = await prisma.user.findUnique({
-      where: {
-        fbMessengerId: '12345',
-      },
+        const user = await prisma.user.findUnique({
+          where: {
+            fbMessengerId: '12345',
+          },
+        });
+        expect(user.firstName).toBe('Jorge');
+        expect(user.lastName).toBe('Beans');
+        expect(mocked(axios.get).mock.calls[0][0]).toBe(
+          'https://graph.facebook.com/v2.6/12345'
+        );
+      });
     });
-    expect(user.firstName).toBe('Jorge');
-    expect(user.lastName).toBe('Beans');
-    expect(mocked(axios.get).mock.calls[0][0]).toBe(
-      'https://graph.facebook.com/v2.6/12345'
-    );
   });
 });

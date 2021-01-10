@@ -71,7 +71,7 @@ interface FBOptinEvent {
   optin: { ref: string };
 }
 
-// Handle logging in via messenger button
+// Handle logging in via messenger button, turning login session into user
 async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
   // TODO: Validate userobject with class-validator
   const token = (await verifyAsync(event.optin.ref)) as MessengerTokenPayload;
@@ -93,7 +93,6 @@ async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
       where: { id: session.id },
       data: { user: { connect: { id: user.id } } },
     });
-    console.log(user);
   }
 }
 
