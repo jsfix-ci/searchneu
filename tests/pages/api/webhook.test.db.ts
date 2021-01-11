@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NextApiHandler } from 'next';
 import { mocked } from 'ts-jest/utils';
 import * as WebhookHandler from '../../../pages/api/webhook';
-import { signAsync } from '../../../utils/api/jwt';
+import { signMessengerToken } from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
 import {
   it404sOnInvalidHTTPMethods,
@@ -10,7 +10,7 @@ import {
 } from './utils/dbTestUtils';
 
 jest.mock('axios');
-jest.mock('../../../utils/api/jwt');
+jest.mock('jsonwebtoken');
 const webhookHandler: NextApiHandler = WebhookHandler.default;
 const [testWebhookHandler, testWebhookHandlerAsUser] = testHandlerFactory(
   webhookHandler
@@ -49,9 +49,7 @@ describe('/api/webhook', () => {
         await WebhookHandler._private.handleMessengerButtonClick({
           sender: { id: '12345' },
           optin: {
-            ref: await signAsync({
-              fbSessionId: session.id,
-            }),
+            ref: await signMessengerToken(session.id),
           },
         });
 

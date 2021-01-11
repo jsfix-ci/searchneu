@@ -1,11 +1,9 @@
+import 'reflect-metadata';
 import { User } from '@prisma/client';
 import axios from 'axios';
 import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  MessengerTokenPayload,
-  verifyMessengerToken,
-} from '../../utils/api/jwt';
+import { verifyMessengerToken } from '../../utils/api/jwt';
 import { prisma } from '../../utils/api/prisma';
 
 export default async function handler(
@@ -78,6 +76,9 @@ interface FBOptinEvent {
 async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
   // TODO: Validate userobject with class-validator
   const token = await verifyMessengerToken(event.optin.ref);
+  if (!token) {
+    return;
+  }
   const session = await prisma.facebookLoginSessions.findUnique({
     where: { id: token.fbSessionId },
   });

@@ -1,12 +1,8 @@
-import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import { testApiHandler } from 'next-test-api-route-handler';
+import { signAuthToken } from '../../../../utils/api/jwt';
 
 type TestApiHandlerTestType = Parameters<typeof testApiHandler>[0]['test'];
-
-function generateMockUserJWTToken(userId: number): string {
-  return sign({ userId }, process.env.JWT_SECRET);
-}
 
 type RequestOptions = {
   userId: number;
@@ -50,7 +46,7 @@ export function testHandlerFactory(
     await testWithHandler(async ({ fetch }) => {
       const response = await fetch({
         headers: {
-          cookie: 'authToken=' + generateMockUserJWTToken(options.userId),
+          cookie: 'authToken=' + (await signAuthToken(options.userId)),
         },
         method: options?.method,
         body: options.body ? JSON.stringify(options.body) : undefined,

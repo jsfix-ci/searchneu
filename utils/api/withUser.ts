@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { AuthTokenPayload, verifyAsync } from './jwt';
+import { verifyAuthToken } from './jwt';
 import { prisma } from './prisma';
 
 type NextApiRequestWithUser = NextApiRequest & { userId?: number; user?: User };
@@ -19,14 +19,12 @@ export default function withUser<T>(
   return async (req, res) => {
     const newReq: NextApiRequestWithUser = req;
     if (req.cookies.authToken) {
-      const jwtPayload = (await verifyAsync(
-        req.cookies.authToken
-      ).catch()) as AuthTokenPayload; // swallow errors
-      if (typeof jwtPayload.userId !== 'number') {
+      const jwtPayload = await verifyAuthToken(req.cookies.authToken);
+      if (!jwtPayload || typeof jwtPayload.userId !== 'number') {
         res.status(401).end();
         return;
       }
-      newReq.userId = jwtPayload?.userId;
+      newReq.userId = jwtPayload.userId;
       newReq.user =
         newReq.userId &&
         (await prisma.user.findUnique({ where: { id: newReq.userId } }));

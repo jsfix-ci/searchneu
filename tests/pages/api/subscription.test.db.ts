@@ -7,6 +7,8 @@ import {
   testHandlerFactory,
 } from './utils/dbTestUtils';
 
+jest.mock('jsonwebtoken');
+
 let mockUser: User;
 const subscriptionHandler: NextApiHandler = SubscriptionHandler.default;
 const [

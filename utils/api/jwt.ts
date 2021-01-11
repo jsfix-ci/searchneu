@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ClassType } from 'class-transformer/ClassTransformer';
-import { Equals, IsInt, validate } from 'class-validator';
+import { Equals, IsInt } from 'class-validator';
 import { Secret, sign, verify } from 'jsonwebtoken';
 import { promisify } from 'util';
 import { validateObject } from './validate';
 
 const verifyPromisified = promisify<string, Secret, object | undefined>(verify);
-const signPromisified = promisify<string, Secret, string>(sign);
+const signPromisified = promisify<string | Buffer | object, Secret, string>(
+  sign
+);
 
 async function verifyAsync(payload: string): Promise<object | undefined> {
   return verifyPromisified(payload, process.env.JWT_SECRET);
 }
 
 async function signAsync(payload: object): Promise<string> {
-  return signPromisified(JSON.stringify(payload), process.env.JWT_SECRET);
+  return signPromisified(payload, process.env.JWT_SECRET);
 }
 
 /**
@@ -84,15 +86,19 @@ export class LoginTokenPayload {
 function TokenFactory<A extends object, T extends ClassType<A>>(
   tokenClass: T
 ): [
-  (token: string) => Promise<T | false>,
+  (token: string) => Promise<InstanceType<T> | false>,
   (...args: ConstructorParameters<T>) => Promise<string>
 ] {
-  async function verifyToken(token: string): Promise<T | false> {
-    const [payload] = await validateObject(
-      tokenClass,
-      await verifyAsync(token)
-    );
-    return payload;
+  async function verifyToken(token: string): Promise<InstanceType<T> | false> {
+    try {
+      const [payload] = await validateObject(
+        tokenClass,
+        await verifyAsync(token)
+      );
+      return payload as InstanceType<T>;
+    } catch (e) {
+      return false;
+    }
   }
 
   async function signToken(...args: ConstructorParameters<T>): Promise<string> {

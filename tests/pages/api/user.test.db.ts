@@ -1,5 +1,4 @@
 import { User } from '@prisma/client';
-import { sign } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
 import { prisma } from '../../../utils/api/prisma';
@@ -7,6 +6,8 @@ import {
   it404sOnInvalidHTTPMethods,
   testHandlerFactory,
 } from './utils/dbTestUtils';
+
+jest.mock('jsonwebtoken');
 
 let mockUser: User;
 const userHandler: NextApiHandler = UserHandler.default;
@@ -71,9 +72,7 @@ describe('/api/user', () => {
       await testUserHandler(async ({ fetch }) => {
         const response = await fetch({
           headers: {
-            cookie:
-              'authToken=' +
-              sign({ userId: 'HOLLA HOLLA' }, process.env.JWT_SECRET),
+            cookie: 'authToken={ "userId": "HOLLA HOLLA" }',
           },
         });
         expect(response.status).toBe(401);
@@ -85,6 +84,13 @@ describe('/api/user', () => {
 
         const response3 = await fetch({});
         expect(response3.status).toBe(401);
+
+        const response4 = await fetch({
+          headers: {
+            cookie: 'authToken={jid{}',
+          },
+        });
+        expect(response4.status).toBe(401);
       });
     });
   });
