@@ -7,18 +7,50 @@ import { verifyMessengerToken } from '../../utils/api/jwt';
 import sendFBMessage from '../../utils/api/notifyer';
 import { prisma } from '../../utils/api/prisma';
 
-/*
-TODO: better docs
-
-- need page
-- need app 
-- set PAGE_ID to be the page's ID, and APP_ID to be app's Id
-- set FB_ACCESS_TOKEN
-- FB_APP_SECRET 
-- VERIFY_TOKEN only needs to be set if you plan to have the token echo'd back not be "hello"
-- set NGROK boi
-
-*/
+/**
+ *
+ * To setup for local testing, you need to do the following:
+ *
+ * Make sure you have a Facebook developer account -- you can create one at
+ * https://developers.facebook.com/
+ *
+ * Then, make sure you create a page, and an app.
+ * After you create these, set NEXT_PUBLIC_FB_PAGE_ID="<your fb's page id here>"
+ * and NEXT_PUBLIC_FB_APP_ID="<your fb's app id here>"
+ * Make sure that the ID's are in double quotes!
+ *
+ * Next go to the left sidebar, and go to the page under > Products > Messenger.
+ *
+ * Then, under "Access Tokens", there should be a row with your page's name and
+ * the button "Generate Token." Click that, and then copy paste the token into
+ * .env.local under FB_ACCESS_TOKEN=<your access token>
+ * note that there are NO quotation marks around this.
+ *
+ * Next you'll need your app secret. Navigate to > App Settings > Basic.
+ * There's a field titled "App Secret." Copy that into FB_APP_SECRET
+ * again without quotation marks.
+ *
+ * Afterwards, return to the page under > Products > Messenger. Install
+ * [ngrok](https://ngrok.com/) and have it running, listening to port
+ * 5000 (or wherever you're running Search on). The command to type
+ * would be "ngrok http 5000". Afterwards, there should be a row
+ * labeled "Forwarding" with an https address. Take that, and copy
+ * it into where it says "Callback URL" under Webhooks, but set it to
+ * <ngrokURL>/api/webhook. Then set Verify Token to be "hello"
+ * (this is set in .env.development under FB_VERIFY_TOKEN).
+ * FB should send you a GET request.
+ *
+ * Finally you're here, there should be a button on this page in the Webhooks
+ * section that says "Add Subscriptions." Hit it, and then enable
+ * "messages" and "messaging_optins."
+ *
+ * Then you should be good! Send "test" or "no u" to the Facebook Messenger
+ * bot on your Facebook page and you should be set!
+ *
+ * Remember, in dev, messages will *only* be sent to admins of your page
+ * (which currently means only you!). To give other devs access, you'll
+ * have to do that through Facebook.
+ */
 
 export default async function handler(
   req: NextApiRequest,
@@ -88,7 +120,7 @@ interface FBOptinEvent {
   optin: { ref: string };
 }
 
-// Handle logging in via messenger button, turning login session into user
+// =============  Handle logging in via messenger button, turning login session into user  ============= //
 async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
   // TODO: Validate userobject with class-validator
   const token = await verifyMessengerToken(event.optin.ref);
@@ -141,6 +173,7 @@ interface FBMessageEvent {
   message: { text: string };
 }
 
+// =============  Handle a message sent by a user  ============= //
 async function handleMessage(event: FBMessageEvent): Promise<void> {
   const text = event.message.text;
   const senderId = event.sender.id;
@@ -178,7 +211,6 @@ async function handleMessage(event: FBMessageEvent): Promise<void> {
 }
 
 async function unsubscribeSender(senderId: string): Promise<void> {
-  console.log(senderId);
   await prisma.user.update({
     where: {
       fbMessengerId: senderId,
