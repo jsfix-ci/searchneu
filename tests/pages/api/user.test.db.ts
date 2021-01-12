@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import { NextApiHandler } from 'next';
 import * as UserHandler from '../../../pages/api/user';
+import { signLoginToken } from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
 import {
   it404sOnInvalidHTTPMethods,
@@ -91,6 +92,17 @@ describe('/api/user', () => {
           },
         });
         expect(response4.status).toBe(401);
+      });
+    });
+
+    it('fails if given login token instead of auth token', async () => {
+      await testUserHandler(async ({ fetch }) => {
+        const response = await fetch({
+          headers: {
+            cookie: 'authToken=' + (await signLoginToken(mockUser.id)),
+          },
+        });
+        expect(response.status).toBe(401);
       });
     });
   });
