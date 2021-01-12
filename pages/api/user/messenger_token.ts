@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  LoginTokenPayload,
-  MessengerTokenPayload,
-  signAsync,
-} from '../../../utils/api/jwt';
+import { signLoginToken, signMessengerToken } from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
 
 export interface GetMessengerTokenResponse {
@@ -21,17 +17,9 @@ export default async function handler(
 ): Promise<void> {
   if (req.method === 'GET') {
     const fbSession = await prisma.facebookLoginSessions.create({ data: {} });
-    const messengerToken: MessengerTokenPayload = {
-      messenger: true,
-      fbSessionId: fbSession.id,
-    };
-    const loginToken: LoginTokenPayload = {
-      login: true,
-      fbSessionId: fbSession.id,
-    };
     const data: GetMessengerTokenResponse = {
-      messengerToken: await signAsync(messengerToken),
-      loginToken: await signAsync(loginToken),
+      messengerToken: await signMessengerToken(fbSession.id),
+      loginToken: await signLoginToken(fbSession.id),
     };
     res.json(data);
     return;
