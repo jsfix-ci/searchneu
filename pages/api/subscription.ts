@@ -31,6 +31,13 @@ const post: NextApiHandlerWithUser = async (req, res) => {
       update: {},
       where: { userId_courseHash: { courseHash, userId } },
     });
+
+    // TODO: ask backend people to be able to query for a class's class code based on course hash and verify the course hash exists
+    //const splitHash = courseHash.split('/');
+    //sendFBMessage(
+    //      `Successfully signed up for notifications if sections are added to ${classCode}!`
+    //  );
+    // https://github.com/sandboxnu/searchneu/blob/dba43a7616262040f36552817ed84c03b417073b/backend/routes/webhook.ts
   }
 
   if (sectionHash) {

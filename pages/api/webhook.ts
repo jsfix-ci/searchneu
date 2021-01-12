@@ -1,10 +1,24 @@
-import 'reflect-metadata';
 import { User } from '@prisma/client';
 import axios from 'axios';
 import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
+import 'reflect-metadata';
 import { verifyMessengerToken } from '../../utils/api/jwt';
+import sendFBMessage from '../../utils/api/notifyer';
 import { prisma } from '../../utils/api/prisma';
+
+/*
+TODO: better docs
+
+- need page
+- need app 
+- set PAGE_ID to be the page's ID, and APP_ID to be app's Id
+- set FB_ACCESS_TOKEN
+- FB_APP_SECRET 
+- VERIFY_TOKEN only needs to be set if you plan to have the token echo'd back not be "hello"
+- set NGROK boi
+
+*/
 
 export default async function handler(
   req: NextApiRequest,
@@ -57,6 +71,8 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
       body.entry[0].messaging.map((event) => {
         if (event.optin) {
           handleMessengerButtonClick(event);
+        } else if (event.message) {
+          handleMessage(event);
         }
       });
     } finally {
@@ -118,6 +134,65 @@ async function createNewUser(fbMessengerId: string): Promise<User> {
       lastName: res.data.last_name,
     },
   });
+}
+
+interface FBMessageEvent {
+  sender: { id: string };
+  message: { text: string };
+}
+
+async function handleMessage(event: FBMessageEvent): Promise<void> {
+  const text = event.message.text;
+  const senderId = event.sender.id;
+  const doesUserExist = await prisma.user.count({
+    where: {
+      fbMessengerId: senderId,
+    },
+  });
+
+  if (!doesUserExist) {
+    sendFBMessage(
+      senderId,
+      "Yo! 👋😃😆 I'm the Search NEU bot. I will notify you when seats open up in classes that are full. Sign up on https://searchneu.com!"
+    );
+  }
+
+  if (text === 'test') {
+    sendFBMessage(
+      senderId,
+      'CS 1800 now has 1 seat available!! Check it out on https://searchneu.com/cs1800 !'
+    );
+  } else if (text.toLowerCase() === 'stop') {
+    unsubscribeSender(senderId);
+  } else if (text === 'What is my facebook messenger sender id?') {
+    sendFBMessage(senderId, senderId);
+  } else if (
+    text === 'no u' ||
+    text === 'no you' ||
+    text === 'nou' ||
+    text === 'noyou' ||
+    text === 'haha DJ & Ryan get spammed'
+  ) {
+    sendFBMessage(senderId, 'no u');
+  }
+}
+
+async function unsubscribeSender(senderId: string): Promise<void> {
+  console.log(senderId);
+  await prisma.user.update({
+    where: {
+      fbMessengerId: senderId,
+    },
+    data: {
+      followedCourses: { deleteMany: {} },
+      followedSections: { deleteMany: {} },
+    },
+  });
+
+  sendFBMessage(
+    senderId,
+    "You've been unsubscribed from everything! Free free to re-subscribe to updates on https://searchneu.com"
+  );
 }
 
 // =============  Helpers to validate webhook is from Facebook  ============= //
