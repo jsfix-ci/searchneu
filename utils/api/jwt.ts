@@ -47,8 +47,6 @@ async function signAsync(payload: object): Promise<string> {
  *  The long-lived token set in cookies to authenticate a user
  */
 export class AuthTokenPayload {
-  @Equals(true)
-  auth = true;
   @IsInt()
   userId: number;
   constructor(userId: number) {
@@ -60,8 +58,6 @@ export class AuthTokenPayload {
  *  The short-lived token sent to messenger to associate senderId with user
  */
 export class MessengerTokenPayload {
-  @Equals(true)
-  messenger = true;
   @IsInt()
   fbSessionId: number;
   constructor(fbSessionId: number) {
@@ -73,8 +69,6 @@ export class MessengerTokenPayload {
  * The short-lived token sent by the user to the backend to exchange for an AuthToken
  */
 export class LoginTokenPayload {
-  @Equals(true)
-  login = true;
   @IsInt()
   fbSessionId: number;
   constructor(fbSessionId: number) {
@@ -82,35 +76,45 @@ export class LoginTokenPayload {
   }
 }
 
+interface Wrapper<T> {
+  data: T;
+  type: string;
+}
+
 // Construct verifiers and signers for each token type
 function TokenFactory<A extends object, T extends ClassType<A>>(
-  tokenClass: T
+  tokenClass: T,
+  tokenType: string
 ): [
   (token: string) => Promise<InstanceType<T> | false>,
   (...args: ConstructorParameters<T>) => Promise<string>
 ] {
   async function verifyToken(token: string): Promise<InstanceType<T> | false> {
     try {
-      const [payload] = await validateObject(
-        tokenClass,
-        await verifyAsync(token)
-      );
-      return payload as InstanceType<T>;
+      const wrapper = (await verifyAsync(token)) as Wrapper<T>;
+      const [payload] = await validateObject(tokenClass, wrapper.data);
+      return wrapper.type === tokenType && (payload as InstanceType<T>);
     } catch (e) {
       return false;
     }
   }
 
   async function signToken(...args: ConstructorParameters<T>): Promise<string> {
-    return signAsync(new tokenClass(...args));
+    const wrap = { data: new tokenClass(...args), type: tokenType };
+    return signAsync(wrap);
   }
   return [verifyToken, signToken];
 }
 
-export const [verifyAuthToken, signAuthToken] = TokenFactory(AuthTokenPayload);
+export const [verifyAuthToken, signAuthToken] = TokenFactory(
+  AuthTokenPayload,
+  'auth'
+);
 export const [verifyMessengerToken, signMessengerToken] = TokenFactory(
-  MessengerTokenPayload
+  MessengerTokenPayload,
+  'messenger'
 );
 export const [verifyLoginToken, signLoginToken] = TokenFactory(
-  LoginTokenPayload
+  LoginTokenPayload,
+  'login'
 );
