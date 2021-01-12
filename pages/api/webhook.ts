@@ -175,7 +175,7 @@ interface FBMessageEvent {
 
 // =============  Handle a message sent by a user  ============= //
 async function handleMessage(event: FBMessageEvent): Promise<void> {
-  const text = event.message.text;
+  const text = event.message.text.toLowerCase();
   const senderId = event.sender.id;
   const doesUserExist = await prisma.user.count({
     where: {
@@ -192,21 +192,21 @@ async function handleMessage(event: FBMessageEvent): Promise<void> {
   }
 
   if (text === 'test') {
-    sendFBMessage(
+    await sendFBMessage(
       senderId,
       'CS 1800 now has 1 seat available!! Check it out on https://searchneu.com/cs1800 !'
     );
-  } else if (text.toLowerCase() === 'stop') {
-    unsubscribeSender(senderId);
+  } else if (text === 'stop') {
+    await unsubscribeSender(senderId);
   } else if (text === 'What is my facebook messenger sender id?') {
-    sendFBMessage(senderId, senderId);
+    await sendFBMessage(senderId, senderId);
   } else if (
     text === 'no u' ||
     text === 'no you' ||
     text === 'nou' ||
     text === 'noyou'
   ) {
-    sendFBMessage(senderId, 'no u');
+    await sendFBMessage(senderId, 'no u');
   }
 }
 

@@ -196,6 +196,56 @@ describe('/api/webhook', () => {
           expect(call[1].message.text).toBe('no u');
         });
       });
+
+      it('responds to stop and unsubscribes from classes', async () => {
+        const initUser = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+        });
+
+        await prisma.followedCourse.create({
+          data: {
+            courseHash: 'neu.edu/202130/CS/4500',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await prisma.followedSection.create({
+          data: {
+            sectionHash: 'neu.edu/202130/CS/4500/12345',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await prisma.followedSection.create({
+          data: {
+            sectionHash: 'neu.edu/202130/CS/4500/23456',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await handleMessage({
+          sender: { id: '12345' },
+          message: {
+            text: 'stop',
+          },
+        });
+
+        expect(mocked(axios.post).mock.calls[0][1].message.text).toBe(
+          "You've been unsubscribed from everything! Free free to re-subscribe to updates on https://searchneu.com"
+        );
+
+        const user = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+          include: { followedCourses: true, followedSections: true },
+        });
+
+        expect(user.followedCourses).toStrictEqual([]);
+        expect(user.followedSections).toStrictEqual([]);
+      });
     });
 
     describe('unsubscribeSender', () => {
