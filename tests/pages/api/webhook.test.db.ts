@@ -29,6 +29,11 @@ describe('/api/webhook', () => {
         last_name: 'Beans',
       },
     });
+    mocked(axios.post).mockResolvedValue({
+      data: {
+        message_id: '69420',
+      },
+    });
   });
 
   it404sOnInvalidHTTPMethods(webhookHandler, ['GET', 'POST']);
@@ -37,7 +42,10 @@ describe('/api/webhook', () => {
     const {
       handleMessengerButtonClick,
       createNewUser,
+      handleMessage,
+      unsubscribeSender,
     } = WebhookHandler._private;
+
     describe('handleMessengerButtonClick', () => {
       let session: FacebookLoginSessions;
       beforeEach(async () => {
@@ -128,6 +136,22 @@ describe('/api/webhook', () => {
         expect(user.lastName).toBe('Beans');
         expect(mocked(axios.get).mock.calls[0][0]).toBe(
           'https://graph.facebook.com/v2.6/12345'
+        );
+      });
+    });
+
+    describe('handleMessage', () => {
+      it("responds to a message from a user that doesn't exist in the db", async () => {
+        await handleMessage({
+          sender: { id: '12345' },
+          message: {
+            text: 'test',
+          },
+        });
+        const mockCallParams = mocked(axios.post).mock.calls[0];
+        expect(
+          mockCallParams[1].message.text ===
+            "Yo! 👋😃😆 I'm the Search NEU bot. I will notify you when seats open up in classes that are full. Sign up on https://searchneu.com!"
         );
       });
     });

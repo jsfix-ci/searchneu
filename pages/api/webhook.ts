@@ -188,6 +188,7 @@ async function handleMessage(event: FBMessageEvent): Promise<void> {
       senderId,
       "Yo! 👋😃😆 I'm the Search NEU bot. I will notify you when seats open up in classes that are full. Sign up on https://searchneu.com!"
     );
+    return;
   }
 
   if (text === 'test') {
@@ -280,4 +281,6 @@ export const config = {
 export const _private = {
   handleMessengerButtonClick,
   createNewUser,
+  handleMessage,
+  unsubscribeSender,
 };
