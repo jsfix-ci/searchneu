@@ -204,8 +204,7 @@ async function handleMessage(event: FBMessageEvent): Promise<void> {
     text === 'no u' ||
     text === 'no you' ||
     text === 'nou' ||
-    text === 'noyou' ||
-    text === 'haha DJ & Ryan get spammed'
+    text === 'noyou'
   ) {
     sendFBMessage(senderId, 'no u');
   }

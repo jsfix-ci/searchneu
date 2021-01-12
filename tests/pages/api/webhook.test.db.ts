@@ -141,9 +141,19 @@ describe('/api/webhook', () => {
     });
 
     describe('handleMessage', () => {
+      beforeEach(async () => {
+        await prisma.user.create({
+          data: {
+            firstName: 'Jorge',
+            lastName: 'Beans',
+            fbMessengerId: '12345',
+          },
+        });
+      });
+
       it("responds to a message from a user that doesn't exist in the db", async () => {
         await handleMessage({
-          sender: { id: '12345' },
+          sender: { id: '23456' },
           message: {
             text: 'test',
           },
@@ -153,6 +163,112 @@ describe('/api/webhook', () => {
           mockCallParams[1].message.text ===
             "Yo! 👋😃😆 I'm the Search NEU bot. I will notify you when seats open up in classes that are full. Sign up on https://searchneu.com!"
         );
+      });
+
+      it('responds to test message from a  user who exists', async () => {
+        await handleMessage({
+          sender: { id: '12345' },
+          message: {
+            text: 'test',
+          },
+        });
+        const mockCallParams = mocked(axios.post).mock.calls[0];
+        expect(
+          mockCallParams[1].message.text ===
+            'CS 1800 now has 1 seat available!! Check it out on https://searchneu.com/cs1800 !'
+        );
+      });
+
+      it('responds to no u', async () => {
+        const noYous = ['no u', 'no you', 'nou', 'noyou'];
+
+        for (const text of noYous) {
+          await handleMessage({
+            sender: { id: '12345' },
+            message: {
+              text,
+            },
+          });
+        }
+
+        expect(mocked(axios.post).mock.calls.length).toBe(4);
+        mocked(axios.post).mock.calls.forEach((call) => {
+          expect(call[1].message.text).toBe('no u');
+        });
+      });
+    });
+
+    describe('unsubscribeSender', () => {
+      beforeEach(async () => {
+        await prisma.user.create({
+          data: {
+            firstName: 'Jorge',
+            lastName: 'Beans',
+            fbMessengerId: '12345',
+          },
+        });
+      });
+
+      it("doesn't break on user with nothing followed", async () => {
+        await unsubscribeSender('12345');
+
+        expect(mocked(axios.post).mock.calls[0][1].message.text).toBe(
+          "You've been unsubscribed from everything! Free free to re-subscribe to updates on https://searchneu.com"
+        );
+
+        const user = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+          include: { followedCourses: true, followedSections: true },
+        });
+
+        expect(user.followedCourses).toStrictEqual([]);
+        expect(user.followedSections).toStrictEqual([]);
+      });
+      it('unfollows all things followed', async () => {
+        const initUser = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+        });
+
+        await prisma.followedCourse.create({
+          data: {
+            courseHash: 'neu.edu/202130/CS/4500',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await prisma.followedSection.create({
+          data: {
+            sectionHash: 'neu.edu/202130/CS/4500/12345',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await prisma.followedSection.create({
+          data: {
+            sectionHash: 'neu.edu/202130/CS/4500/23456',
+            user: { connect: { id: initUser.id } },
+          },
+        });
+
+        await unsubscribeSender('12345');
+
+        expect(mocked(axios.post).mock.calls[0][1].message.text).toBe(
+          "You've been unsubscribed from everything! Free free to re-subscribe to updates on https://searchneu.com"
+        );
+
+        const user = await prisma.user.findFirst({
+          where: {
+            fbMessengerId: '12345',
+          },
+          include: { followedCourses: true, followedSections: true },
+        });
+
+        expect(user.followedCourses).toStrictEqual([]);
+        expect(user.followedSections).toStrictEqual([]);
       });
     });
   });
