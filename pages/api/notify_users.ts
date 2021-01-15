@@ -7,19 +7,6 @@ import withValidatedBody from '../../utils/api/withValidatedBody';
 // messages are at
 // https://github.com/sandboxnu/searchneu/blob/4bd3c470d5221ab9eaafb418951d1b6d4326ed25/backend/updater.ts
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
-  // TODO: validate from course catalog api
-
-  if (req.method === 'POST') {
-    post(req, res);
-  } else {
-    res.status(404).end();
-  }
-}
-
 // records of hash -> search query info
 class NotifyUserType {
   @ValidateNested({ each: true })
@@ -60,6 +47,23 @@ class SectionNotificationInfo {
   crn: string;
 }
 
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
+  // TODO: validate from course catalog api
+
+  if (req.method === 'POST') {
+    post(req, res);
+  } else {
+    res.status(404).end();
+  }
+}
+
+/**
+ * ========================= POST /api/notify_users =======================
+ * notify users with subscribed courses and sections
+ */
 const post: NextApiHandler = withValidatedBody(
   NotifyUserType,
   (body) => async (req, res) => {
