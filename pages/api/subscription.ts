@@ -31,6 +31,7 @@ export default async function handler(req, res): Promise<void> {
  * ========================= POST /api/subscription =======================
  * subscribe to course or section
  */
+
 const post: NextApiHandler = withUser((userId, user) =>
   withValidatedBody(
     PostSubscriptionBody,

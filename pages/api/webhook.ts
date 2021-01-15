@@ -65,6 +65,16 @@ export default async function handler(
   }
 }
 
+type FacebookEventsPost = {
+  entry: FacebookEvent[];
+};
+
+type FacebookEvent = {
+  messaging: MessagingEvent[];
+};
+
+type MessagingEvent = FBOptinEvent | FBMessageEvent;
+
 /**
  * ========================= GET /api/webhook =======================
  * Let FB verify this endpoint (just once)
