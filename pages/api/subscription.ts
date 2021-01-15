@@ -1,16 +1,18 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator';
 import { NextApiHandler } from 'next';
 import { prisma } from '../../utils/api/prisma';
 import withUser from '../../utils/api/withUser';
 import withValidatedBody from '../../utils/api/withValidatedBody';
 
 class SubscriptionBody {
+  @ValidateIf((o) => o.sectionHash === undefined)
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   courseHash: string;
 
+  @ValidateIf((o) => o.courseHash === undefined)
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   sectionHash: string;
 }
 
