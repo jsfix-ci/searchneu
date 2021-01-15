@@ -206,4 +206,29 @@ describe('/api/subscription', () => {
       );
     });
   });
+
+  it('aaaaaaaaaaaaaaaaaaaaaaaaaaa', async () => {
+    await testSubscriptionHandlerAsUser(
+      {
+        method: 'POST',
+        body: {
+          ligma: 'FUUCCCKK',
+        },
+        userId: mockUser.id,
+      },
+      async (response) => {
+        expect(response.status).toBe(400);
+        expect(await response.json()).toStrictEqual([
+          {
+            constraints: {
+              whitelistValidation: 'property ligma should not exist',
+            },
+            property: 'ligma',
+            target: { ligma: 'FUUCCCKK' },
+            value: 'FUUCCCKK',
+          },
+        ]);
+      }
+    );
+  });
 });

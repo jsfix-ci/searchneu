@@ -13,7 +13,11 @@ export async function validateObject<T, V>(
   object: V
 ): Promise<[T, false] | [false, ValidationError[]]> {
   const instance = plainToClass(cls, object);
-  const validationErrors = await validate(instance);
+  const validationErrors = await validate(instance, {
+    forbidUnknownValues: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  });
   if (validationErrors.length === 0) {
     return [instance, false];
   } else {

@@ -1,10 +1,26 @@
+import { IsOptional, IsString } from 'class-validator';
 import { prisma } from '../../utils/api/prisma';
+import { validateObject } from '../../utils/api/validate';
 import withUser, { NextApiHandlerWithUser } from '../../utils/api/withUser';
+import withValidatedBody from '../../utils/api/withValidatedBody';
+
+class SubscriptionBody {
+  @IsString()
+  @IsOptional()
+  courseHash: string;
+
+  @IsString()
+  @IsOptional()
+  sectionHash: string;
+}
+
+export class PostSubscriptionBody extends SubscriptionBody {}
+export class DeleteSubscriptionBody extends SubscriptionBody {}
 
 export default withUser(
   async (req, res): Promise<void> => {
     if (req.method === 'POST') {
-      await post(req, res);
+      await withValidatedBody(PostSubscriptionBody, post)(req, res);
     } else if (req.method === 'DELETE') {
       await del(req, res);
     } else {
@@ -22,9 +38,9 @@ const post: NextApiHandlerWithUser = async (req, res) => {
     res.status(401).end();
     return;
   }
-  const body = JSON.parse(req.body);
   const { userId } = req;
-  const { courseHash, sectionHash } = body;
+  const { courseHash, sectionHash } = req.body;
+
   if (courseHash) {
     await prisma.followedCourse.upsert({
       create: { courseHash, user: { connect: { id: userId } } },
@@ -60,6 +76,14 @@ const del: NextApiHandlerWithUser = async (req, res) => {
     return;
   }
   const body = JSON.parse(req.body);
+  const [isBodyValid, validationError] = await validateObject(
+    DeleteSubscriptionBody,
+    body
+  );
+  if (!isBodyValid) {
+    res.status(400).json(validationError);
+    return;
+  }
   if (body.courseHash) {
     // delete many allows us to continue if there is nothing to delete.
     await prisma.followedCourse.deleteMany({
