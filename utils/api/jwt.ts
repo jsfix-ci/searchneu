@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ClassType } from 'class-transformer/ClassTransformer';
-import { Equals, IsInt } from 'class-validator';
+import { IsInt } from 'class-validator';
 import { Secret, sign, verify } from 'jsonwebtoken';
 import { promisify } from 'util';
 import { validateObject } from './validate';
