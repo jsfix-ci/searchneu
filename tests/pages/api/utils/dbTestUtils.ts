@@ -47,7 +47,7 @@ export function testHandlerFactory(
       const response = await fetch({
         headers: {
           cookie: 'authToken=' + (await signAuthToken(options.userId)),
-          'content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
         method: options?.method,
         body: options.body ? JSON.stringify(options.body) : undefined,

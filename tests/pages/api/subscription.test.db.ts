@@ -218,16 +218,14 @@ describe('/api/subscription', () => {
       },
       async (response) => {
         expect(response.status).toBe(400);
-        expect(await response.json()).toStrictEqual([
-          {
-            constraints: {
-              whitelistValidation: 'property ligma should not exist',
-            },
-            property: 'ligma',
-            target: { ligma: 'FUUCCCKK' },
-            value: 'FUUCCCKK',
+        expect(await response.json()).toContainEqual({
+          constraints: {
+            whitelistValidation: 'property ligma should not exist',
           },
-        ]);
+          property: 'ligma',
+          target: { ligma: 'FUUCCCKK' },
+          value: 'FUUCCCKK',
+        });
       }
     );
   });

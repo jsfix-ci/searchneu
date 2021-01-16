@@ -116,6 +116,9 @@ describe('/api/notify_users', () => {
             },
           ],
         }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       expect(response.status).toBe(200);

@@ -103,7 +103,7 @@ describe('/api/login', () => {
         });
 
         expect(response.status).toBe(200);
-        expect(response.headers['set-cookie']).toBeTruthy();
+        expect(response.headers.get('set-cookie')).toContain('authToken=');
       });
     });
   });
