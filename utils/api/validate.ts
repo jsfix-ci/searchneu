@@ -21,6 +21,7 @@ export async function validateObject<T, V>(
   if (validationErrors.length === 0) {
     return [instance, false];
   } else {
+    console.log(JSON.stringify(validationErrors));
     return [false, validationErrors];
   }
 }

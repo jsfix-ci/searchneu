@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { IsInt } from 'class-validator';
-import { Secret, sign, verify } from 'jsonwebtoken';
+import { Secret, sign, SignOptions, verify } from 'jsonwebtoken';
 import { promisify } from 'util';
 import { validateObject } from './validate';
 
 const verifyPromisified = promisify<string, Secret, object | undefined>(verify);
-const signPromisified = promisify<string | Buffer | object, Secret, string>(
-  sign
-);
+const signPromisified = promisify<
+  string | Buffer | object,
+  Secret,
+  SignOptions,
+  string
+>(sign);
 
 async function verifyAsync(payload: string): Promise<object | undefined> {
   return verifyPromisified(payload, process.env.JWT_SECRET);
 }
 
-async function signAsync(payload: object): Promise<string> {
-  return signPromisified(payload, process.env.JWT_SECRET);
+async function signAsync(
+  payload: object,
+  signOptions?: SignOptions
+): Promise<string> {
+  return signPromisified(payload, process.env.JWT_SECRET, signOptions);
 }
 
 /**
@@ -84,7 +90,8 @@ interface Wrapper<T> {
 // Construct verifiers and signers for each token type
 function TokenFactory<A extends object, T extends ClassType<A>>(
   tokenClass: T,
-  tokenType: string
+  tokenType: string,
+  secondsTilExpiration: number
 ): [
   (token: string) => Promise<InstanceType<T> | false>,
   (...args: ConstructorParameters<T>) => Promise<string>
@@ -101,20 +108,29 @@ function TokenFactory<A extends object, T extends ClassType<A>>(
 
   async function signToken(...args: ConstructorParameters<T>): Promise<string> {
     const wrap = { data: new tokenClass(...args), type: tokenType };
-    return signAsync(wrap);
+    return signAsync(wrap, { expiresIn: secondsTilExpiration });
   }
   return [verifyToken, signToken];
 }
 
+export const LOGIN_TOKEN_EXPIRATION_IN_SECONDS = 20;
+const MESSENGER_TOKEN_EXPIRATION_IN_SECONDS = LOGIN_TOKEN_EXPIRATION_IN_SECONDS;
+export const AUTH_TOKEN_EXPIRATION_IN_SECONDS = 60 * 60 * 24 * 115;
+
 export const [verifyAuthToken, signAuthToken] = TokenFactory(
   AuthTokenPayload,
-  'auth'
+  'auth',
+  AUTH_TOKEN_EXPIRATION_IN_SECONDS
 );
+
 export const [verifyMessengerToken, signMessengerToken] = TokenFactory(
   MessengerTokenPayload,
-  'messenger'
+  'messenger',
+  MESSENGER_TOKEN_EXPIRATION_IN_SECONDS
 );
+
 export const [verifyLoginToken, signLoginToken] = TokenFactory(
   LoginTokenPayload,
-  'login'
+  'login',
+  LOGIN_TOKEN_EXPIRATION_IN_SECONDS
 );

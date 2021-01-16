@@ -13,7 +13,6 @@ export default function withValidatedBody<BodyType>(
       JSON.parse(req.body)
     );
     if (!validatedBody) {
-      console.log(validationError);
       res.status(400).json(validationError as ValidationError[]);
       return;
     }

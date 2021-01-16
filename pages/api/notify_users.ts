@@ -1,5 +1,8 @@
+import { Type } from 'class-transformer';
 import { IsNumber, IsString, ValidateNested } from 'class-validator';
+import { keyBy } from 'lodash';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import 'reflect-metadata';
 import sendFBMessage from '../../utils/api/notifyer';
 import { prisma } from '../../utils/api/prisma';
 import withValidatedBody from '../../utils/api/withValidatedBody';
@@ -7,16 +10,21 @@ import withValidatedBody from '../../utils/api/withValidatedBody';
 // messages are at
 // https://github.com/sandboxnu/searchneu/blob/4bd3c470d5221ab9eaafb418951d1b6d4326ed25/backend/updater.ts
 
-// records of hash -> search query info
+// Maps of hash -> search query info
 class NotifyUserType {
   @ValidateNested({ each: true })
-  updatedCourses: Record<string, CourseNotificationInfo>;
+  @Type(() => CourseNotificationInfo)
+  updatedCourses: CourseNotificationInfo[];
 
   @ValidateNested({ each: true })
-  updatedSections: Record<string, SectionNotificationInfo>;
+  @Type(() => SectionNotificationInfo)
+  updatedSections: SectionNotificationInfo[];
 }
 
 class CourseNotificationInfo {
+  @IsString()
+  courseHash: string;
+
   @IsString()
   courseCode: string;
 
@@ -31,6 +39,9 @@ class CourseNotificationInfo {
 }
 
 class SectionNotificationInfo {
+  @IsString()
+  sectionHash: string;
+
   @IsString()
   courseCode: string;
 
@@ -54,7 +65,7 @@ export default async function handler(
   // TODO: validate from course catalog api
 
   if (req.method === 'POST') {
-    post(req, res);
+    await post(req, res);
   } else {
     res.status(404).end();
   }
@@ -78,21 +89,22 @@ const post: NextApiHandler = withValidatedBody(
 );
 
 async function sendCourseNotification(
-  updatedCourses: Record<string, CourseNotificationInfo>
+  updatedCourses: CourseNotificationInfo[]
 ): Promise<void> {
+  const updatedCourseHashes = updatedCourses.map((uc) => uc.courseHash);
+  const coursesKeyedByHash = keyBy(updatedCourses, (uc) => uc.courseHash);
+
   const coursesToSendMessagesFor = await prisma.followedCourse.findMany({
     where: {
       courseHash: {
-        in: Object.keys(updatedCourses),
+        in: updatedCourseHashes,
       },
     },
     include: { user: true },
   });
 
   coursesToSendMessagesFor.forEach(async (prismaCourse) => {
-    const course = Object.keys(updatedCourses)[
-      prismaCourse.courseHash
-    ] as CourseNotificationInfo;
+    const course = coursesKeyedByHash[prismaCourse.courseHash];
     let message = '';
     if (course.count === 1) {
       message += `A section was added to ${course.courseCode}!`;
@@ -105,21 +117,22 @@ async function sendCourseNotification(
 }
 
 async function sendSectionNotifications(
-  updatedSections: Record<string, SectionNotificationInfo>
+  updatedSections: SectionNotificationInfo[]
 ): Promise<void> {
+  const updatedSectionHashes = updatedSections.map((us) => us.sectionHash);
+  const sectionsKeyedByHash = keyBy(updatedSections, (us) => us.sectionHash);
+
   const sectionsToSendMessagesFor = await prisma.followedSection.findMany({
     where: {
       sectionHash: {
-        in: Object.keys(updatedSections),
+        in: updatedSectionHashes,
       },
     },
     include: { user: true },
   });
 
   sectionsToSendMessagesFor.forEach(async (prismaSection) => {
-    const section = Object.keys(updatedSections)[
-      prismaSection.sectionHash
-    ] as SectionNotificationInfo;
+    const section = sectionsKeyedByHash[prismaSection.sectionHash];
     let message = '';
     if (section.seatsRemaining > 0) {
       message = `A seat opened up in ${section.courseCode} (CRN: ${section.crn}). Check it out at https://searchneu.com/${section.campus}/${section.term}/search/${section.courseCode} !`;

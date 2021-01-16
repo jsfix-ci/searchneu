@@ -162,57 +162,23 @@ class Facebook {
     } else if (e.event === 'opt_in') {
       macros.log('Opt in was clicked!', e);
 
-      // User is now authenticated with Facebook.
-      // Download any potential user data from the backend.
-      mutate('https://searchneu.com/user');
+      const setIntervalID = setInterval(async () => {
+        const loginResponse = await axios.post('/api/user/login');
+        if (loginResponse.status === 200) {
+          // User is now authenticated with Facebook.
+          // Download any potential user data from the backend.
+          mutate('https://searchneu.com/user');
 
-      macros.logAmplitudeEvent('FB Send to Messenger', {
-        message: 'Sign up clicked',
-      });
+          macros.logAmplitudeEvent('FB Send to Messenger', {
+            message: 'Sign up clicked',
+          });
+          clearInterval(setIntervalID);
+        }
+      }, 100);
 
-      // In development mode, the fb id of the developer running this code
-      // should be injected into this code with webpack
-      // if is stored in the config.json. (backend macros.getEnvVariable)
-      let fbMessengerId;
-      if (process.env.fbMessengerId) {
-        fbMessengerId = String(process.env.fbMessengerId);
-      } else {
-        // These 0's and the 1's below don't mean anything - they are just filler values.
-        fbMessengerId = '0000000000000000';
-      }
-
-      // When the Send To Messenger button is clicked in development, the webhook is still sent to prod by Facebook
-      // In this case, send the data to the development server directly.
-      // These 1s don't mean anything - they are just filler values.
-      if (macros.DEV) {
-        macros.log('Your FB id is:', fbMessengerId, typeof fbMessengerId);
-
-        axios.post('https://searchneu.com/webhook', {
-          object: 'page',
-          entry: [
-            {
-              id: '111111111111111',
-              time: Date.now(),
-              messaging: [
-                {
-                  recipient: {
-                    id: '111111111111111',
-                  },
-                  timestamp: Date.now(),
-                  sender: {
-                    id: fbMessengerId,
-                  },
-                  optin: {
-                    ref: e.ref,
-                  },
-                },
-              ],
-            },
-          ],
-        });
-      } else {
-        macros.log(e, 'other message');
-      }
+      setTimeout(() => {
+        clearInterval(setIntervalID);
+      }, 5000);
     }
   }
 }
