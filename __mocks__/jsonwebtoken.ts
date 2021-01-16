@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import {
-  Secret,
   GetPublicKeyOrSecret,
-  VerifyCallback,
+  Secret,
   SignCallback,
+  SignOptions,
+  VerifyCallback,
 } from 'jsonwebtoken';
 
 export function verify(
@@ -17,6 +18,7 @@ export function verify(
 export function sign(
   payload: string | Buffer | object,
   secretOrPrivateKey: Secret,
+  signOptions: SignOptions,
   callback: SignCallback
 ): void {
   callback(null, JSON.stringify(payload));

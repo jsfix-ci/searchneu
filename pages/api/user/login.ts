@@ -5,6 +5,7 @@ import {
   verifyLoginToken,
 } from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
+import { serverRollbar } from '../../../utils/api/rollbar';
 import setCookie from '../../../utils/api/setCookie';
 
 export default async function handler(
@@ -29,6 +30,13 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const loginSession = await prisma.facebookLoginSessions.findUnique({
     where: { id: loginPayload.fbSessionId },
   });
+  if (!loginSession) {
+    res.status(401).end();
+    serverRollbar.error(
+      'Invalid login session fbSessionId sent signed by valid JWT key -- is the key compromised?'
+    );
+    return;
+  }
   if (!loginSession.userId) {
     res.status(400).send("Facebook validation hasn't come yet :aaaaaaaaaaaa:");
     return;
