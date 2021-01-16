@@ -25,6 +25,7 @@ export default async function handler(
       res.json({
         messengerToken: await signMessengerToken(previousFBSession.fbSessionId),
       });
+      return;
     }
 
     const fbSession = await prisma.facebookLoginSessions.create({ data: {} });

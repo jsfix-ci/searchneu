@@ -151,11 +151,6 @@ export enum Campus {
 }
 
 export interface User {
-  status: string;
-  user: NotificationUserInfo;
-}
-
-export interface NotificationUserInfo {
   facebookMessengerId: string;
   facebookPageId: string;
   firstName: string;

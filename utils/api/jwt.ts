@@ -113,7 +113,7 @@ function TokenFactory<A extends object, T extends ClassType<A>>(
   return [verifyToken, signToken];
 }
 
-export const LOGIN_TOKEN_EXPIRATION_IN_SECONDS = 20;
+export const LOGIN_TOKEN_EXPIRATION_IN_SECONDS = 60 * 60; // An hour because to login, user has to click TWO ~woks~ buttons
 const MESSENGER_TOKEN_EXPIRATION_IN_SECONDS = LOGIN_TOKEN_EXPIRATION_IN_SECONDS;
 export const AUTH_TOKEN_EXPIRATION_IN_SECONDS = 60 * 60 * 24 * 115;
 

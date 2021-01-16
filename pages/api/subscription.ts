@@ -8,12 +8,12 @@ class SubscriptionBody {
   @ValidateIf((o) => o.sectionHash === undefined)
   @IsString()
   @IsNotEmpty()
-  courseHash: string;
+  courseHash?: string;
 
   @ValidateIf((o) => o.courseHash === undefined)
   @IsString()
   @IsNotEmpty()
-  sectionHash: string;
+  sectionHash?: string;
 }
 
 export class PostSubscriptionBody extends SubscriptionBody {}

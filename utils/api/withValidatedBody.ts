@@ -8,14 +8,19 @@ export default function withValidatedBody<BodyType>(
   generateHandler: (validatedBody: BodyType) => NextApiHandler
 ): NextApiHandler {
   return async (req, res) => {
-    const [validatedBody, validationError] = await validateObject(
-      cls,
-      JSON.parse(req.body)
-    );
-    if (!validatedBody) {
-      res.status(400).json(validationError as ValidationError[]);
-      return;
+    try {
+      const [validatedBody, validationError] = await validateObject(
+        cls,
+        req.body
+      );
+      if (!validatedBody) {
+        res.status(400).json(validationError as ValidationError[]);
+        return;
+      }
+      return generateHandler(validatedBody)(req, res);
+    } catch (e) {
+      console.error(e, req.body, typeof req.body);
+      res.status(400).send('Body was invalid JSON');
     }
-    return generateHandler(validatedBody)(req, res);
   };
 }

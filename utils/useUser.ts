@@ -1,79 +1,42 @@
 import axios from 'axios';
 import { pull } from 'lodash';
 import useSWR from 'swr';
-import { v4 } from 'uuid';
 import Keys from '../components/Keys';
 import macros from '../components/macros';
-import { Course, Section, User } from '../components/types';
-import { useLocalStorage } from './useLocalStorage';
+import { Course, Section } from '../components/types';
+import {
+  DeleteSubscriptionBody,
+  PostSubscriptionBody,
+} from '../pages/api/subscription';
+import { GetUserResponse } from '../pages/api/user';
 
 type UseUserReturn = {
-  user: User | undefined;
+  user: GetUserResponse | undefined;
   subscribeToCourse: (course: Course) => Promise<void>;
   subscribeToSection: (section: Section) => Promise<void>;
   unsubscribeFromSection: (section: Section) => Promise<void>;
 };
 
-type UserCredentials = {
-  loginKey: string;
-  senderId: string;
-};
-
 export default function useUser(): UseUserReturn {
-  const [
-    { loginKey, senderId },
-    setUserCredentials,
-  ] = useLocalStorage<UserCredentials>('userCredentials', {
-    loginKey: '',
-    senderId: '',
-  });
-
-  if (!loginKey) {
-    setUserCredentials({
-      loginKey: v4(),
-      senderId,
-    });
-  }
-
   const { data: user, error, mutate } = useSWR(
-    `https://searchneu.com/user`,
-    async (): Promise<User> =>
-      await axios.post('https://searchneu.com/user', {
-        loginKey,
-      })
+    `/api/user`,
+    async (): Promise<GetUserResponse> => (await axios.get('/api/user')).data
   );
-
-  if (error) {
-    macros.log('Data in localStorage is invalid, deleting');
-    setUserCredentials({
-      loginKey: '',
-      senderId: '',
-    });
-  }
-
-  if (!senderId && user?.user?.facebookMessengerId) {
-    setUserCredentials({
-      loginKey,
-      senderId: user.user.facebookMessengerId,
-    });
-  }
 
   const subscribeToCourseUsingHash = async (
     courseHash: string
   ): Promise<void> => {
-    const body = {
-      loginKey,
-      senderId,
-      classHash: courseHash,
+    const body: PostSubscriptionBody = {
+      courseHash,
     };
 
-    await axios.post('https://searchneu.com/subscription', { ...body });
+    await axios.post('/api/subscription', body);
   };
 
   const subscribeToCourse = async (course: Course): Promise<void> => {
     const courseHash = Keys.getClassHash(course);
-    if (user?.user?.watchingClasses?.includes(courseHash)) {
-      macros.error('user already watching class?', courseHash, user.user);
+    if (user?.followedCourses?.includes(courseHash)) {
+      macros.error('user already watching class?', courseHash, user);
       return;
     }
 
@@ -88,26 +51,24 @@ export default function useUser(): UseUserReturn {
     }
     const sectionHash = Keys.getSectionHash(section);
 
-    if (user?.user?.watchingSections.includes(sectionHash)) {
-      macros.error('user already watching section?', section, user.user);
+    if (user?.followedSections?.includes(sectionHash)) {
+      macros.error('user already watching section?', section, user);
       return;
     }
 
     const courseHash = Keys.getClassHash(section);
 
-    const body = {
-      loginKey,
-      senderId,
+    const body: PostSubscriptionBody = {
       sectionHash,
     };
 
-    if (!user?.user?.watchingClasses.includes(courseHash)) {
+    if (!user?.followedCourses?.includes(courseHash)) {
       await subscribeToCourseUsingHash(courseHash);
     }
 
-    macros.log('Adding section to user', user?.user, sectionHash, body);
+    macros.log('Adding section to user', user, sectionHash, body);
 
-    await axios.post('https://searchneu.com/subscription', { ...body });
+    await axios.post('/api/subscription', body);
 
     mutate();
   };
@@ -115,7 +76,7 @@ export default function useUser(): UseUserReturn {
   const unsubscribeFromSection = async (section: Section): Promise<void> => {
     const sectionHash = Keys.getSectionHash(section);
 
-    if (!user?.user?.watchingSections?.includes(sectionHash)) {
+    if (!user?.followedSections?.includes(sectionHash)) {
       macros.error(
         "removed section that doesn't exist on user?",
         section,
@@ -124,20 +85,13 @@ export default function useUser(): UseUserReturn {
       return;
     }
 
-    pull(user?.user?.watchingSections, sectionHash);
+    pull(user?.followedSections, sectionHash);
 
-    const body = {
-      loginKey: loginKey,
-      senderId: senderId,
+    const body: DeleteSubscriptionBody = {
       sectionHash: sectionHash,
-      notifData: {
-        classId: '', // TODO: when delete works on the backend, figure out how to get these LMAO. Check out `user.js` in older search commits
-        subject: '',
-        crn: section.crn,
-      },
     };
 
-    await axios.delete('https://searchneu.com/subscription', {
+    await axios.delete('/api/subscription', {
       headers: {
         Authorization: '', // TODO: Figure out this stuff whenever the backend gets fixed.
       },

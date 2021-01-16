@@ -116,8 +116,8 @@ export default function SignUpForNotifications({
   // Updates the state to show the button.
   const onSubscribeToggleChange = async (): Promise<void> => {
     // if a user exists already, we can show the notification checkboxes too
-    if (user?.user) {
-      macros.log('user exists already', user.user);
+    if (user) {
+      macros.log('user exists already', user);
 
       await subscribeToCourse(course);
 
@@ -138,6 +138,7 @@ export default function SignUpForNotifications({
       if (!tokens) {
         setTokens((await axios.get('/api/user/messenger_token')).data);
       }
+      facebook.setCourseToSubscribeToAfterLogin(courseHash);
 
       // Check the status of the FB plugin
       // If it failed to load, show the message that asks user to disable adblock
@@ -181,7 +182,7 @@ export default function SignUpForNotifications({
 
   let content = null;
 
-  if (user?.user?.watchingClasses.includes(courseHash)) {
+  if (user?.followedCourses?.includes(courseHash)) {
     if (course.sections.length === 0) {
       content = (
         <Button

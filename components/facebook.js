@@ -37,6 +37,8 @@ class Facebook {
 
     // Bind callbacks
     this.onSendToMessengerClick = this.onSendToMessengerClick.bind(this);
+
+    this.courseToSubscribeToAfterLogin = null;
   }
 
   // Loads the FB Api.
@@ -90,6 +92,10 @@ class Facebook {
 
   getFBPromise() {
     return this.fbPromise;
+  }
+
+  setCourseToSubscribeToAfterLogin(classHash) {
+    this.courseToSubscribeToAfterLogin = classHash;
   }
 
   pluginFailedToRender() {
@@ -163,16 +169,25 @@ class Facebook {
       macros.log('Opt in was clicked!', e);
 
       const setIntervalID = setInterval(async () => {
-        const loginResponse = await axios.post('/api/user/login');
-        if (loginResponse.status === 200) {
-          // User is now authenticated with Facebook.
-          // Download any potential user data from the backend.
-          mutate('https://searchneu.com/user');
+        let loginResponse;
+        try {
+          loginResponse = await axios.post('/api/user/login');
 
-          macros.logAmplitudeEvent('FB Send to Messenger', {
-            message: 'Sign up clicked',
-          });
-          clearInterval(setIntervalID);
+          if (loginResponse.status === 200) {
+            // User is now authenticated with Facebook.
+            // Download any potential user data from the backend.
+            await axios.post('/api/subscription', {
+              courseHash: this.courseToSubscribeToAfterLogin,
+            });
+            mutate('/api/user');
+
+            macros.logAmplitudeEvent('FB Send to Messenger', {
+              message: 'Sign up clicked',
+            });
+            clearInterval(setIntervalID);
+          }
+        } catch (e) {
+          return;
         }
       }, 100);
 

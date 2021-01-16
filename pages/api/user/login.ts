@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { signAuthToken, verifyLoginToken } from '../../../utils/api/jwt';
+import {
+  AUTH_TOKEN_EXPIRATION_IN_SECONDS,
+  signAuthToken,
+  verifyLoginToken,
+} from '../../../utils/api/jwt';
 import { prisma } from '../../../utils/api/prisma';
 import setCookie from '../../../utils/api/setCookie';
 
@@ -27,7 +31,11 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   });
   if (!loginSession.userId) {
     res.status(400).send("Facebook validation hasn't come yet :aaaaaaaaaaaa:");
+    return;
   }
-  setCookie(res, 'authToken', signAuthToken(loginSession.userId));
+  setCookie(res, 'authToken', await signAuthToken(loginSession.userId), {
+    path: '/api/',
+    maxAge: AUTH_TOKEN_EXPIRATION_IN_SECONDS * 1000,
+  });
   res.status(200).end();
 }

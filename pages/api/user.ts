@@ -34,4 +34,5 @@ const get: NextApiHandler = withUser((userId, user) => async (req, res) => {
     followedSections: userData.followedSections.map((s) => s.sectionHash),
   };
   res.json(data);
+  return;
 });
