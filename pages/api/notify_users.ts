@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsDefined, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { keyBy } from 'lodash';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import 'reflect-metadata';
@@ -13,10 +13,12 @@ import withValidatedBody from '../../utils/api/withValidatedBody';
 // Maps of hash -> search query info
 class NotifyUserType {
   @ValidateNested({ each: true })
+  @IsDefined()
   @Type(() => CourseNotificationInfo)
   updatedCourses: CourseNotificationInfo[];
 
   @ValidateNested({ each: true })
+  @IsDefined()
   @Type(() => SectionNotificationInfo)
   updatedSections: SectionNotificationInfo[];
 }

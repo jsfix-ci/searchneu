@@ -11,18 +11,8 @@ import {
 jest.mock('../../../utils/api/notifyer');
 const notifyUsersHandler: NextApiHandler = NotifyUsersHandler.default;
 const [testNotifyUsersHandler, _] = testHandlerFactory(notifyUsersHandler);
-// TODO: write tests
-/**
- * .########..#######..########...#######.
- * ....##....##.....##.##.....##.##.....##
- * ....##....##.....##.##.....##.##.....##
- * ....##....##.....##.##.....##.##.....##
- * ....##....##.....##.##.....##.##.....##
- * ....##....##.....##.##.....##.##.....##
- * ....##.....#######..########...#######.
- */
-// TODO: write tests with bad data
-// TODO: some form of mocking to make sure that we're validating we're getting info from course catalog
+
+// TODO: some form of mocking to make sure that we're validating we're getting info from course catalog (whenever mitch finishes that)
 // TODO: edge cases edge cases edge cases
 
 describe('/api/notify_users', () => {
@@ -137,6 +127,73 @@ describe('/api/notify_users', () => {
           'A seat opened up in CS 4500 (CRN: 12345). Check it out at https://searchneu.com/NEU/202130/search/CS 4500 !',
         ],
       ]);
+    });
+  });
+
+  it("Doesn't send a notification for the wrong term", async () => {
+    await testNotifyUsersHandler(async ({ fetch }) => {
+      const response = await fetch({
+        method: 'POST',
+        body: JSON.stringify({
+          updatedCourses: [
+            {
+              courseCode: 'CS 3650',
+              term: '202130',
+              count: 1,
+              campus: 'NEU',
+              courseHash: 'neu.edu/202130/CS/3650',
+            },
+          ],
+          updatedSections: [],
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      expect(response.status).toBe(200);
+
+      expect(mocked(sendFBMessage).mock.calls.length).toEqual(0);
+    });
+  });
+
+  it('Requires both updatedCourses and updatedSections to be defined', async () => {
+    await testNotifyUsersHandler(async ({ fetch }) => {
+      const response = await fetch({
+        method: 'POST',
+        body: JSON.stringify({
+          updatedSections: [],
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual([
+        {
+          target: { updatedSections: [] },
+          property: 'updatedCourses',
+          children: [],
+          constraints: {
+            isDefined: 'updatedCourses should not be null or undefined',
+          },
+        },
+      ]);
+    });
+  });
+
+  it("doesn't crash on literally not JSON", async () => {
+    await testNotifyUsersHandler(async ({ fetch }) => {
+      const response = await fetch({
+        method: 'POST',
+        body: '{{{{{{',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      expect(response.status).toBe(400);
+      expect(await response.text()).toEqual('Invalid JSON');
     });
   });
 });
