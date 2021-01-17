@@ -50,12 +50,18 @@ export default function Results(): ReactElement | null {
   const allCampuses = getAllCampusDropdownOptions();
 
   const setSearchQuery = (q: string): void => {
-    router.push(`/${campus}/${termId}/search/${q}${window.location.search}`);
+    router.push(
+      `/${campus}/${termId}/search/${encodeURIComponent(q)}${
+        window.location.search
+      }`
+    );
   };
   const setTermAndCampus = useCallback(
     (t: string, newCampus: string) => {
       router.push(
-        `/${newCampus}/${t}/search/${query}${window.location.search}`
+        `/${newCampus}/${t}/search/${encodeURIComponent(query)} ${
+          window.location.search
+        }`
       );
     },
     [router, query]
