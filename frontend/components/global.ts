@@ -15,7 +15,8 @@ export const cpsTermDropdownOptions: DropdownItemProps[] = [
   // removed because data is not yet up on banner
   { text: 'Spring 2021 CPS Semester ', value: '202134' },
   // { text: 'Spring 2021 CPS Quarter', value: '202135' },
-  { text: 'Winter 2020 CPS Quarter', value: '202125' },
+  // CPS is unique in that it's winter quarter starts in November but goes through April, so it's 2021
+  { text: 'Winter 2021 CPS Quarter', value: '202125' },
   { text: 'Fall 2020 CPS Semester', value: '202114' },
   { text: 'Fall 2020 CPS Quarter', value: '202115' },
   { text: 'Summer 2020 CPS Semester', value: '202054' },
