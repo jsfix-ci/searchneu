@@ -7,7 +7,6 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
-import { Icon } from 'semantic-ui-react';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
 import Footer from '../../../../components/Footer';
 import {
@@ -180,12 +179,12 @@ export default function Results(): ReactElement | null {
             />
           </div>
         </div>
-        <Icon
+        {/*<Icon
           name="setting"
           size="large"
           className="Notifications_Settings"
           onClick={() => router.push('/notifications_settings')}
-        />
+        />*/}
       </div>
       {!macros.isMobile && <FeedbackModal />}
       <div className="Results_Container">

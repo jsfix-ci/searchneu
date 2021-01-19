@@ -37,7 +37,7 @@ class CourseNotificationInfo {
   term: string;
 
   @IsNumber()
-  count: number;
+  numberOfSectionsAdded: number;
 }
 
 class SectionNotificationInfo {
@@ -108,10 +108,10 @@ async function sendCourseNotification(
   coursesToSendMessagesFor.forEach(async (prismaCourse) => {
     const course = coursesKeyedByHash[prismaCourse.courseHash];
     let message = '';
-    if (course.count === 1) {
+    if (course.numberOfSectionsAdded === 1) {
       message += `A section was added to ${course.courseCode}!`;
     } else {
-      message += `${course.count} sections were added to ${course.courseCode}!`;
+      message += `${course.numberOfSectionsAdded} sections were added to ${course.courseCode}!`;
     }
     message += ` Check it out at https://searchneu.com/${course.campus}/${course.term}/search/${course.courseCode} !`;
     await sendFBMessage(prismaCourse.user.fbMessengerId, message);
