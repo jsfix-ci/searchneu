@@ -29,7 +29,7 @@ export const lawTermDropdownOptions: DropdownItemProps[] = [
   // removed because data is not yet up on banner
   { text: 'Spring 2021 Law Semester', value: '202132' },
   // { text: 'Spring 2021 Law Quarter', value: '202138' },
-  { text: 'Winter 2020 Law Quarter', value: '202128' },
+  { text: 'Winter 2021 Law Quarter', value: '202128' },
   { text: 'Fall 2020 Law Semester', value: '202112' },
   { text: 'Fall 2020 Law Quarter', value: '202118' },
   { text: 'Summer 2020 Law Semester', value: '202052' },
