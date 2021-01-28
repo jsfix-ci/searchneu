@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
+import { campusToColor } from '../../utils/campusToColor';
 import { getTermDropdownOptionsForCampus } from '../global';
 import IconGradcap from '../icons/IconGradcap';
 import IconScale from '../icons/IconScale';
@@ -14,11 +15,7 @@ interface HomeSearchProps {
   campus: Campus;
   setCampus: (c: Campus) => void;
 }
-const campusToColor: Record<Campus, 'red' | 'yellow' | 'blue'> = {
-  [Campus.NEU]: 'red',
-  [Campus.CPS]: 'yellow',
-  [Campus.LAW]: 'blue',
-};
+
 const HomeSearch = ({
   setTermId,
   termId,

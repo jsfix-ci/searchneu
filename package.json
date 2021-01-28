@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5000",
     "dev:db:up": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml up -d",
     "dev:db:down": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml down",
+    "dev": "concurrently -n app,codegen \"next dev -p 5000\" \"npm:generate:graphql -- --watch\"",
     "build": "next build",
     "start": "next start -p 5000",
     "test:frontend": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
     "lint": "yarn eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "test:api": "jest --projects tests/pages/api/utils --testPathPattern"
+    "test:api": "jest --projects tests/pages/api/utils --testPathPattern",
+    "generate:graphql": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.12",
@@ -29,6 +30,8 @@
     "crypto": "^1.0.1",
     "dayjs": "^1.9.8",
     "enzyme": "^3.11.0",
+    "graphql": "^15.4.0",
+    "graphql-request": "^3.4.0",
     "interweave": "^12.6.0",
     "is-mobile": "^2.2.2",
     "jest-svg-transformer": "^1.0.0",
@@ -55,6 +58,10 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.20.0",
+    "@graphql-codegen/typescript": "1.20.0",
+    "@graphql-codegen/typescript-graphql-request": "^3.0.0",
+    "@graphql-codegen/typescript-operations": "1.17.13",
     "@next/bundle-analyzer": "^10.0.4",
     "@prisma/cli": "^2.13.0",
     "@svgr/webpack": "^5.5.0",
@@ -69,6 +76,7 @@
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "babel-jest": "^26.6.3",
+    "concurrently": "^5.3.0",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-react": "^7.21.5",
