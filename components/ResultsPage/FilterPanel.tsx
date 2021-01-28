@@ -18,12 +18,11 @@ function FilterPanel({
 }: FilterPanelProps): ReactElement {
   return (
     <div className="FilterPanel">
-      {FILTERS_IN_ORDER.map(({ key, display, category }) => {
+      {FILTERS_IN_ORDER.map(({ key, display, category }, index) => {
         const aFilter = selected[key];
         const setActiveFilter = (a): void => setActive({ [key]: a });
-
         return (
-          <>
+          <React.Fragment key={index}>
             {category === 'Dropdown' && (
               <DropdownFilter
                 title={display}
@@ -47,7 +46,7 @@ function FilterPanel({
                 setActive={setActiveFilter}
               />
             )}
-          </>
+          </React.Fragment>
         );
       })}
     </div>
