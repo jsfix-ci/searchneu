@@ -157,6 +157,24 @@ class Request {
 
     return this.getFromInternetWithRetry(config);
   }
+
+  async delete(config) {
+    if (
+      typeof config === 'string' ||
+      Object.keys(config).length > 2 ||
+      !config.url ||
+      !config.body
+    ) {
+      macros.error(
+        'Nothing is supported except JSON DELETE requests to a url.',
+        config
+      );
+    }
+
+    config.method = 'DELETE';
+
+    return this.getFromInternetWithRetry(config);
+  }
 }
 
 export default new Request();

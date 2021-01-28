@@ -24,7 +24,7 @@ afterEach(() => {
 it('should render', () => {
   const result = shallow(
     <SignUpForNotifications
-      aClass={mockData.cs1210}
+      course={mockData.cs1210}
       userIsWatchingClass={false}
     />
   ).debug();
@@ -33,24 +33,7 @@ it('should render', () => {
 
 it('should render', () => {
   const result = shallow(
-    <SignUpForNotifications aClass={mockData.cs1210} userIsWatchingClass />
+    <SignUpForNotifications course={mockData.cs1210} userIsWatchingClass />
   ).debug();
   expect(result).toMatchSnapshot();
-});
-
-it('should render the fb button after the button is clicked', async (done) => {
-  const wrapper = shallow(
-    <SignUpForNotifications
-      aClass={mockData.cs1210}
-      userIsWatchingClass={false}
-    />
-  );
-  const instance = wrapper.instance();
-
-  await instance.onSubscribeToggleChange();
-
-  wrapper.update();
-
-  expect(wrapper.contains('Click this button to continue')).toBeTruthy();
-  done();
 });
