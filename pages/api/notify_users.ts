@@ -28,16 +28,19 @@ class CourseNotificationInfo {
   courseHash: string;
 
   @IsString()
-  courseCode: string;
+  courseId: string;
+
+  @IsString()
+  subject: string;
 
   @IsString()
   campus: string;
 
   @IsString()
-  term: string;
+  termId: string;
 
   @IsNumber()
-  count: number;
+  numberOfSectionsAdded: number;
 }
 
 class SectionNotificationInfo {
@@ -45,13 +48,16 @@ class SectionNotificationInfo {
   sectionHash: string;
 
   @IsString()
-  courseCode: string;
+  courseId: string;
+
+  @IsString()
+  subject: string;
 
   @IsString()
   campus: string;
 
   @IsString()
-  term: string;
+  termId: string;
 
   @IsNumber()
   seatsRemaining: number;
@@ -108,12 +114,12 @@ async function sendCourseNotification(
   coursesToSendMessagesFor.forEach(async (prismaCourse) => {
     const course = coursesKeyedByHash[prismaCourse.courseHash];
     let message = '';
-    if (course.count === 1) {
-      message += `A section was added to ${course.courseCode}!`;
+    if (course.numberOfSectionsAdded === 1) {
+      message += `A section was added to ${course.subject} ${course.courseId}!`;
     } else {
-      message += `${course.count} sections were added to ${course.courseCode}!`;
+      message += `${course.numberOfSectionsAdded} sections were added to ${course.subject} ${course.courseId}!`;
     }
-    message += ` Check it out at https://searchneu.com/${course.campus}/${course.term}/search/${course.courseCode} !`;
+    message += ` Check it out at https://searchneu.com/${course.campus}/${course.termId}/search/${course.subject} ${course.courseId} !`;
     await sendFBMessage(prismaCourse.user.fbMessengerId, message);
   });
 }
@@ -137,9 +143,9 @@ async function sendSectionNotifications(
     const section = sectionsKeyedByHash[prismaSection.sectionHash];
     let message = '';
     if (section.seatsRemaining > 0) {
-      message = `A seat opened up in ${section.courseCode} (CRN: ${section.crn}). Check it out at https://searchneu.com/${section.campus}/${section.term}/search/${section.courseCode} !`;
+      message = `A seat opened up in ${section.subject} ${section.courseId} (CRN: ${section.crn}). Check it out at https://searchneu.com/${section.campus}/${section.termId}/search/${section.subject}${section.courseId} !`;
     } else {
-      message = `A waitlist seat has opened up in ${section.courseCode} (CRN: ${section.crn}). Check it out at https://searchneu.com/${section.campus}/${section.term}/search/${section.courseCode} !`;
+      message = `A waitlist seat has opened up in ${section.subject} ${section.courseId} (CRN: ${section.crn}). Check it out at https://searchneu.com/${section.campus}/${section.termId}/search/${section.subject}${section.courseId} !`;
     }
     await sendFBMessage(prismaSection.user.fbMessengerId, message);
   });

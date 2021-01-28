@@ -7,7 +7,6 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
-import { Icon } from 'semantic-ui-react';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
 import Footer from '../../../../components/Footer';
 import {
@@ -52,12 +51,18 @@ export default function Results(): ReactElement | null {
   const allCampuses = getAllCampusDropdownOptions();
 
   const setSearchQuery = (q: string): void => {
-    router.push(`/${campus}/${termId}/search/${q}${window.location.search}`);
+    router.push(
+      `/${campus}/${termId}/search/${encodeURIComponent(q)}${
+        window.location.search
+      }`
+    );
   };
   const setTermAndCampus = useCallback(
     (t: string, newCampus: string) => {
       router.push(
-        `/${newCampus}/${t}/search/${query}${window.location.search}`
+        `/${newCampus}/${t}/search/${encodeURIComponent(query)} ${
+          window.location.search
+        }`
       );
     },
     [router, query]
@@ -174,12 +179,12 @@ export default function Results(): ReactElement | null {
             />
           </div>
         </div>
-        <Icon
+        {/*<Icon
           name="setting"
           size="large"
           className="Notifications_Settings"
           onClick={() => router.push('/notifications_settings')}
-        />
+        />*/}
       </div>
       {!macros.isMobile && <FeedbackModal />}
       <div className="Results_Container">
