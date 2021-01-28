@@ -85,7 +85,6 @@ export default function useSearch({
   const queryKey = getKey(0);
   useEffect(() => {
     if (size === 1 && queryKey) {
-      console.log('ligma', queryKey);
       logSearch(queryKey);
     }
   }, [queryKey, size]);

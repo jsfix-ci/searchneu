@@ -12,4 +12,5 @@ jobs:
         with:
           node-version: '12.16'
       - run: yarn install
-      - run: yarn test
+      - run: yarn test:frontend
+      - run: yarn test:api
