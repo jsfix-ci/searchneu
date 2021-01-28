@@ -2,7 +2,7 @@
 
 exports[`should render 1`] = `
 "<div className=\\"sign-up-for-notifications-container\\">
-  <div className=\\"initialNotificationButton\\" role=\\"button\\" focusable=\\"true\\" tabIndex={0} onClick={[Function: bound onSubscribeToggleChange]}>
+  <div className=\\"initialNotificationButton\\" role=\\"button\\" tabIndex={0} onClick={[Function: onSubscribeToggleChange]}>
     <LogoInput height=\\"14\\" width=\\"18\\" fill=\\"#d41b2c\\" />
     <span>
       Get notified when seats open up!
@@ -14,9 +14,10 @@ exports[`should render 1`] = `
 
 exports[`should render 2`] = `
 "<div className=\\"sign-up-for-notifications-container\\">
-  <div className=\\"toggleCTA\\">
+  <div className=\\"initialNotificationButton\\" role=\\"button\\" tabIndex={0} onClick={[Function: onSubscribeToggleChange]}>
+    <LogoInput height=\\"14\\" width=\\"18\\" fill=\\"#d41b2c\\" />
     <span>
-      Toggle the sections you want to be notified for!
+      Get notified when seats open up!
     </span>
   </div>
   <Modal header=\\"Please disable adblock and sign into Facebook.\\" open={false} content=\\"Please disable any ad blocking extentions for this site because this feature does not work when adblock is enabled. If you are using Firefox in strict blocking mode, you will need to add an exception for this site for this feature to work. You will also have to uninstall Facebook Container for Firefox, if you have that installed. You can also try using a different browser. If you can\\\\'t get it working send us a message at hey@searchneu.com.\\" actions={{...}} centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\" />
