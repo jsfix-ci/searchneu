@@ -1,0 +1,18 @@
+query getPagesForSitemap($termId: Int!, $offset: Int!) {
+  search(termId: $termId, offset: $offset, first: 1000) {
+    pageInfo {
+      hasNextPage
+    }
+    nodes {
+      __typename
+      ... on ClassOccurrence {
+        subject
+        classId
+        name
+      }
+      ... on Employee {
+        name
+      }
+    }
+  }
+}
