@@ -20,7 +20,14 @@ type UseUserReturn = {
 export default function useUser(): UseUserReturn {
   const { data: user, error, mutate } = useSWR(
     `/api/user`,
-    async (): Promise<GetUserResponse> => (await axios.get('/api/user')).data
+    async (): Promise<GetUserResponse> => (await axios.get('/api/user')).data,
+    {
+      onErrorRetry: (error) => {
+        if (error.status === 401) {
+          return;
+        }
+      },
+    }
   );
 
   const subscribeToCourseUsingHash = async (
