@@ -1,9 +1,0 @@
-# Prisma Migrate lockfile v1
-
-20200914015147-initial
-20201007005859-college
-20201120003615-remove-college-from-courses
-20201127003110-add-campus-remove-online
-20201202020255-add-subjects-model
-20210104000650-update-major-model
-20210104044629-major-primary-key

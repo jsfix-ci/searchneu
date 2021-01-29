@@ -7,11 +7,10 @@ jobs:
     name: tsc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: install node v12
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - run: yarn install
-    - run: yarn db:refresh
-    - run: yarn tsc
+      - uses: actions/checkout@v1
+      - name: install node v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install
+      - run: yarn tsc

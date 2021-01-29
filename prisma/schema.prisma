@@ -1,128 +1,46 @@
-generator client {
-  provider = "prisma-client-js"
-}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Course {
-  classAttributes String[]         @map(name: "class_attributes")
-  classId         String?          @map(name: "class_id")
-  coreqs          Json?
-  description     String?
-  feeAmount       Int?             @map(name: "fee_amount")
-  feeDescription  String?          @map(name: "fee_description")
-  host            String?
-  id              String           @id
-  lastUpdateTime  DateTime?        @map(name: "last_update_time")
-  maxCredits      Int?             @map(name: "max_credits")
-  minCredits      Int?             @map(name: "min_credits")
-  name            String?
-  nupath          String[]
-  optPrereqsFor   Json?            @map(name: "opt_prereqs_for")
-  prereqs         Json?
-  prereqsFor      Json?            @map(name: "prereqs_for")
-  prettyUrl       String?          @map(name: "pretty_url")
-  subject         String?
-  termId          String?          @map(name: "term_id")
-  url             String?
-  followedCourses FollowedCourse[] // @map(name: "followed_courses") NOT SURE ABOUT THIS ONE
-  sections        Section[]
-
-  @@map(name: "courses")
-  @@unique([classId, termId, subject], name: "uniqueCourseProps")
+generator client {
+  provider = "prisma-client-js"
 }
 
 model FollowedCourse {
-  courseId  String  @map(name: "course_id")
-  userId    String  @map(name: "user_id")
-  course    Course  @relation(fields: [courseId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  courseHash String @map(name: "course_hash")
+  userId     Int @map(name: "user_id")
+  user       User   @relation(fields: [userId], references: [id])
 
+  @@id([userId, courseHash])
   @@map(name: "followed_courses")
-  @@id([userId, courseId])
 }
 
 model FollowedSection {
-  sectionId String   @map(name: "section_id")
-  userId    String   @map(name: "user_id")
-  section   Section  @relation(fields: [sectionId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  sectionHash String @map(name: "section_hash")
+  userId      Int @map(name: "user_id")
+  user        User   @relation(fields: [userId], references: [id])
 
+  @@id([userId, sectionHash])
   @@map(name: "followed_sections")
-  @@id([userId, sectionId])
-}
-
-model Major {
-  yearVersion  String @map(name: "year_version")
-  majorId      String @map(name: "major_id")
-  plansOfStudy Json   @map(name: "plans_of_study")
-  spec         Json
-
-  @@map(name: "majors")
-  @@id([yearVersion, majorId])
-}
-
-model Professor {
-  bigPictureUrl     String?  @map(name: "big_picture_url")
-  email             String?
-  emails            String[]
-  firstName         String?  @map(name: "first_name")
-  googleScholarId   String?  @map(name: "google_scholar_id")
-  id                String   @id
-  lastName          String?  @map(name: "last_name")
-  link              String?
-  name              String?
-  officeRoom        String?  @map(name: "office_room")
-  personalSite      String?  @map(name: "personal_site")
-  phone             String?
-  pic               Json?
-  primaryDepartment String?  @map(name: "primary_department")
-  primaryRole       String?  @map(name: "primary_role")
-  streetAddress     String?  @map(name: "street_address")
-  url               String?
-
-  @@map(name: "professors")
-}
-
-model Section {
-  classHash        String?           @map(name: "class_hash")
-  classType        String?           @map(name: "class_type")
-  crn              String?
-  honors           Boolean?
-  id               String            @id
-  info             String?
-  meetings         Json?
-  campus           String?
-  profs            String[]
-  seatsCapacity    Int?              @map(name: "seats_capacity")
-  seatsRemaining   Int?              @map(name: "seats_remaining")
-  url              String?
-  waitCapacity     Int?              @map(name: "wait_capacity")
-  waitRemaining    Int?              @map(name: "wait_remaining")
-  course           Course?           @relation(fields: [classHash], references: [id])
-  followedSections FollowedSection[]
-
-  @@map(name: "sections")
 }
 
 model User {
-  facebookPageId   String?           @map(name: "facebook_page_id")
+  fbMessengerId    String?           @unique @map(name: "fb_messenger_id")
   firstName        String?           @map(name: "first_name")
-  id               String            @id
+  id               Int               @id @default(autoincrement())
   lastName         String?           @map(name: "last_name")
-  loginKeys        String[]          @map(name: "login_keys")
   followedCourses  FollowedCourse[]
   followedSections FollowedSection[]
 
   @@map(name: "users")
 }
 
-model Subject {
-  abbreviation    String    @id
-  description     String
-
-  @@map(name: "subjects")
+model FacebookLoginSessions {
+  id               Int               @id @default(autoincrement())
+  userId           Int?              @map(name: "user_id")
+  user             User?             @relation(fields: [userId], references: [id])
 }

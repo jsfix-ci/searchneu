@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
-    // Don't output the built files - Babel will do that. Tsc just for checking.
+    "experimentalDecorators": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "jsx": "react"
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": [
-    "./frontend/**/*",
-    "./backend/**/*",
-    "./common/**/*",
-    "./scripts/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

@@ -4,9 +4,9 @@ SearchNEU is powered by Sass. Sass is a superscript of CSS that provides some re
 
 If you're unfamiliar with Sass, I'd highly recommend checking out their [getting started page][sass-getting-started].
 
-
 ## Layout
-All our styling files are in `/frontend/css`, and are parallel to the content in `/frontend/components`. For example, `/frontend/components/panels/BaseClassPanel.js` has a corresponding `.sass` file in `/frontend/css/panels/_BaseClassPanel.scss`. Partials, `.scss` files whose first character is an underscore `_`, should never affect styles outside that specific file. To resolve this, we must namespace and ecapsulate our styles. Practically, this means that every partial should have one root style, and all styling is nested within that style.
+
+All our styling files are in `/styles`, and are parallel to the content in `/components`. Partials, `.scss` files whose first character is an underscore `_`, should never affect styles outside that specific file. To resolve this, we must namespace and ecapsulate our styles. Practically, this means that every partial should have one root style, and all styling is nested within that style.
 
 ### Exceptions
 
@@ -17,6 +17,5 @@ There are two exceptions to the above layout, `css/base.scss` and `_variables.sc
 ## Adding new styles
 
 Adding a new style file is easy. First, create a Sass file that reflects the file path relative to the `components` folder. Make sure it's a partial (`_<FileName>.scss`). Next, import it in `base.scss`. Finally, make sure you namespace that file. We do not like having leaking styles! :c
-
 
 [sass-getting-started]: http://sass-lang.com/guide
