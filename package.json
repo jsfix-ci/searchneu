@@ -7,7 +7,7 @@
     "dev:db:down": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml down",
     "dev": "concurrently -n app,codegen \"next dev -p 5000\" \"npm:generate:graphql -- --watch\"",
     "build": "next build",
-    "vercel:build": "DATABASE_URL=\"$NON_POOLED_DATABASE_URL\"; prisma migrate deploy --preview-feature && yarn build",
+    "vercel:build": "DATABASE_URL=\"$NON_POOLED_DATABASE_URL\"; prisma migrate deploy --preview-feature && DATABASE_URL=\"$POOLED_DATABASE_URL\"; prisma generate && yarn build",
     "start": "next start -p 5000",
     "test:frontend": "jest",
     "style": "yarn prettier --write . --ignore-path .gitignore",
