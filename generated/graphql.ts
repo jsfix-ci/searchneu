@@ -106,8 +106,8 @@ export type Section = {
 
 export type Major = {
   __typename?: 'Major';
-  name: Scalars['String'];
   majorId: Scalars['String'];
+  yearVersion: Scalars['String'];
   occurrence?: Maybe<MajorOccurrence>;
   latestOccurrence?: Maybe<MajorOccurrence>;
 };
@@ -118,11 +118,10 @@ export type MajorOccurrenceArgs = {
 
 export type MajorOccurrence = {
   __typename?: 'MajorOccurrence';
-  name: Scalars['String'];
   majorId: Scalars['String'];
-  catalogYear: Scalars['Int'];
-  requirements?: Maybe<Scalars['JSON']>;
-  plansOfStudy?: Maybe<Scalars['JSON']>;
+  yearVersion: Scalars['String'];
+  spec: Scalars['JSON'];
+  plansOfStudy: Scalars['JSON'];
 };
 
 export type IntRange = {
