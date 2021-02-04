@@ -14,6 +14,7 @@ import {
   getTermDropdownOptionsForCampus,
 } from '../../components/global';
 import HomeSearch from '../../components/HomePage/HomeSearch';
+import ExploratorySearchButton from '../../components/HomePage/ExploratorySearchButton';
 import Boston from '../../components/icons/boston.svg';
 import Husky from '../../components/icons/Husky';
 import Logo from '../../components/icons/Logo';
@@ -100,6 +101,7 @@ export default function Home(): ReactElement {
                 router.push(`/${c}/${getRoundedTerm(c, termId)}`);
               }}
             />
+            <ExploratorySearchButton termId={termId} campus={campus} />
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
