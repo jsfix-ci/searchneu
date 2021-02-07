@@ -14,8 +14,8 @@ exports[`render the default notification checkbox 1`] = `
 exports[`render the read only notification checkbox 1`] = `
 "<div data-tip=\\"Sign up for notifications for this section\\" className=\\"inlineBlock\\">
   <div className=\\"notifSwitch\\">
-    <input checked={[undefined]} onChange={[Function: onCheckboxClick]} className=\\"notif-switch-checkbox\\" id=\\"notifSwitch-3\\" type=\\"checkbox\\" />
-    <label className=\\"notif-switch-label\\" htmlFor=\\"notifSwitch-3\\">
+    <input checked={[undefined]} onChange={[Function: onCheckboxClick]} className=\\"notif-switch-checkbox\\" id=\\"notifSwitch-2\\" type=\\"checkbox\\" />
+    <label className=\\"notif-switch-label\\" htmlFor=\\"notifSwitch-2\\">
       <span className=\\"notif-switch-button\\" />
     </label>
   </div>
