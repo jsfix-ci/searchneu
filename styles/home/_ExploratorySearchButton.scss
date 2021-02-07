@@ -5,6 +5,10 @@
   width: fit-content;
   font-weight: 400;
   color: #2a426b;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .selectedCampusAndTerm {
