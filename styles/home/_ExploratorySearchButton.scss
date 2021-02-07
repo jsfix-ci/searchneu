@@ -1,4 +1,12 @@
 .searchByFilters {
   pointer-events: initial;
   cursor: pointer;
+  margin: 36px 0px 0px 50px;
+  width: fit-content;
+  font-weight: 400;
+  color: #2a426b;
+}
+
+.selectedCampusAndTerm {
+  font-style: italic;
 }

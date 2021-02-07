@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Campus } from '../types';
 import { useRouter } from 'next/router';
+import { getTermName } from '../global';
 
 interface ExploratorySearchButtonProps {
   termId: string;
@@ -17,7 +18,10 @@ const ExploratorySearchButton = ({
       className="searchByFilters"
       onClick={() => router.push(`/${campus}/${termId}/search`)}
     >
-      Hello! Click me :O
+      View all classes for
+      <span className="selectedCampusAndTerm">{` ${campus} ${getTermName(
+        termId
+      )}`}</span>
     </div>
   );
 };
