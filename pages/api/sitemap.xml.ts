@@ -27,7 +27,7 @@ async function generateSitemap(): Promise<string> {
 
   // Items to link to.
   // The part after the https://searchneu.com/
-  let items: Set<string> = new Set();
+  const items: Set<string> = new Set();
 
   // latest terms for each campus
   const latestTerms: [Campus, number][] = Object.values(Campus).map((c) => [
