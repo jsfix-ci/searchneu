@@ -14,27 +14,27 @@ export const neuTermDropdownOptions: DropdownItemProps[] = [
 ];
 // spring 2021 CPS semester
 export const cpsTermDropdownOptions: DropdownItemProps[] = [
-  { text: 'Summer 2021 CPS Quarter', value: '202155' },
-  { text: 'Summer 2021 CPS Semester', value: '202154' },
-  { text: 'Spring 2021 CPS Semester ', value: '202134' },
-  { text: 'Spring 2021 CPS Quarter', value: '202135' },
-  { text: 'Winter 2020 CPS Quarter', value: '202125' },
-  { text: 'Fall 2020 CPS Semester', value: '202114' },
-  { text: 'Fall 2020 CPS Quarter', value: '202115' },
-  { text: 'Summer 2020 CPS Semester', value: '202054' },
-  { text: 'Summer 2020 CPS Quarter', value: '202055' },
+  { text: 'Summer 2021 Quarter', value: '202155' },
+  { text: 'Summer 2021 Semester', value: '202154' },
+  { text: 'Spring 2021 Semester ', value: '202134' },
+  { text: 'Spring 2021 Quarter', value: '202135' },
+  { text: 'Winter 2020 Quarter', value: '202125' },
+  { text: 'Fall 2020 Semester', value: '202114' },
+  { text: 'Fall 2020 Quarter', value: '202115' },
+  { text: 'Summer 2020 Semester', value: '202054' },
+  { text: 'Summer 2020 Quarter', value: '202055' },
 ];
 
 export const lawTermDropdownOptions: DropdownItemProps[] = [
-  { text: 'Summer 2021 Law Quarter', value: '202158' },
-  { text: 'Summer 2021 Law Semester', value: '202152' },
-  { text: 'Spring 2021 Law Semester', value: '202132' },
-  { text: 'Spring 2021 Law Quarter', value: '202138' },
-  { text: 'Winter 2020 Law Quarter', value: '202128' },
-  { text: 'Fall 2020 Law Semester', value: '202112' },
-  { text: 'Fall 2020 Law Quarter', value: '202118' },
-  { text: 'Summer 2020 Law Semester', value: '202052' },
-  { text: 'Summer 2020 Law Quarter', value: '202058' },
+  { text: 'Summer 2021 Quarter', value: '202158' },
+  { text: 'Summer 2021 Semester', value: '202152' },
+  { text: 'Spring 2021 Semester', value: '202132' },
+  { text: 'Spring 2021 Quarter', value: '202138' },
+  { text: 'Winter 2020 Quarter', value: '202128' },
+  { text: 'Fall 2020 Semester', value: '202112' },
+  { text: 'Fall 2020 Quarter', value: '202118' },
+  { text: 'Summer 2020 Semester', value: '202052' },
+  { text: 'Summer 2020 Quarter', value: '202058' },
 ];
 
 export const campusDropdownOptions: DropdownItemProps[] = [
