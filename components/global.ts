@@ -14,8 +14,8 @@ export const neuTermDropdownOptions: DropdownItemProps[] = [
 ];
 // spring 2021 CPS semester
 export const cpsTermDropdownOptions: DropdownItemProps[] = [
-  { text: 'Summer 2021 Quarter', value: '202155' },
   { text: 'Summer 2021 Semester', value: '202154' },
+  { text: 'Summer 2021 Quarter', value: '202155' },
   { text: 'Spring 2021 Semester ', value: '202134' },
   { text: 'Spring 2021 Quarter', value: '202135' },
   { text: 'Winter 2020 Quarter', value: '202125' },
@@ -26,8 +26,8 @@ export const cpsTermDropdownOptions: DropdownItemProps[] = [
 ];
 
 export const lawTermDropdownOptions: DropdownItemProps[] = [
-  { text: 'Summer 2021 Quarter', value: '202158' },
   { text: 'Summer 2021 Semester', value: '202152' },
+  { text: 'Summer 2021 Quarter', value: '202158' },
   { text: 'Spring 2021 Semester', value: '202132' },
   { text: 'Spring 2021 Quarter', value: '202138' },
   { text: 'Winter 2020 Quarter', value: '202128' },
