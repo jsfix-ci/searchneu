@@ -87,9 +87,9 @@ exports[`should render a section 1`] = `
                   <Ref innerRef={{...}}>
                     <RefFindNode innerRef={{...}}>
                       <div role=\\"listbox\\" aria-busy={[undefined]} aria-disabled={[undefined]} aria-expanded={false} aria-multiselectable={[undefined]} className=\\"ui fluid selection dropdown searchDropdown \\" onBlur={[Function (anonymous)]} onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onFocus={[Function (anonymous)]} onChange={[Function (anonymous)]} tabIndex={0}>
-                        <DropdownText className=\\"text\\" content={{...}}>
+                        <DropdownText className=\\"text\\" content=\\"Select a term\\">
                           <div aria-atomic={true} aria-live=\\"polite\\" role=\\"alert\\" className=\\"divider text\\">
-                            Spring 2020
+                            Select a term
                           </div>
                         </DropdownText>
                         <Icon name=\\"dropdown\\" className=\\"\\" onClick={[Function: onClick]} as=\\"i\\">
@@ -97,6 +97,27 @@ exports[`should render a section 1`] = `
                         </Icon>
                         <DropdownMenu direction={[undefined]} open={[undefined]}>
                           <div className=\\"menu transition\\">
+                            <DropdownItem active={false} onClick={[Function (anonymous)]} selected={true} text=\\"Summer II 2021\\" value=\\"202160\\" style={{...}}>
+                              <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={false} aria-selected={true} className=\\"selected item\\" onClick={[Function (anonymous)]}>
+                                <span className=\\"text\\">
+                                  Summer II 2021
+                                </span>
+                              </div>
+                            </DropdownItem>
+                            <DropdownItem active={false} onClick={[Function (anonymous)]} selected={false} text=\\"Summer Full 2021\\" value=\\"202150\\" style={{...}}>
+                              <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={false} aria-selected={false} className=\\"item\\" onClick={[Function (anonymous)]}>
+                                <span className=\\"text\\">
+                                  Summer Full 2021
+                                </span>
+                              </div>
+                            </DropdownItem>
+                            <DropdownItem active={false} onClick={[Function (anonymous)]} selected={false} text=\\"Summer I 2021\\" value=\\"202140\\" style={{...}}>
+                              <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={false} aria-selected={false} className=\\"item\\" onClick={[Function (anonymous)]}>
+                                <span className=\\"text\\">
+                                  Summer I 2021
+                                </span>
+                              </div>
+                            </DropdownItem>
                             <DropdownItem active={false} onClick={[Function (anonymous)]} selected={false} text=\\"Spring 2021\\" value=\\"202130\\" style={{...}}>
                               <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={false} aria-selected={false} className=\\"item\\" onClick={[Function (anonymous)]}>
                                 <span className=\\"text\\">
@@ -129,13 +150,6 @@ exports[`should render a section 1`] = `
                               <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={false} aria-selected={false} className=\\"item\\" onClick={[Function (anonymous)]}>
                                 <span className=\\"text\\">
                                   Summer II 2020
-                                </span>
-                              </div>
-                            </DropdownItem>
-                            <DropdownItem active={true} onClick={[Function (anonymous)]} selected={true} text=\\"Spring 2020\\" value=\\"202030\\" style={{...}}>
-                              <div style={{...}} role=\\"option\\" aria-disabled={[undefined]} aria-checked={true} aria-selected={true} className=\\"active selected item\\" onClick={[Function (anonymous)]}>
-                                <span className=\\"text\\">
-                                  Spring 2020
                                 </span>
                               </div>
                             </DropdownItem>
