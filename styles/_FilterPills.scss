@@ -12,12 +12,15 @@
   &__row {
     display: flex;
     margin-bottom: -5px;
-    overflow-x: scroll;
     padding: 10px 15px;
     max-width: 75vw;
     margin-left: 5px;
     padding-left: 0;
     padding-bottom: 0;
+
+    @media (max-width: 500px) {
+      overflow-x: scroll;
+    }
   }
 
   &__clear {
