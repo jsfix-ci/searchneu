@@ -249,7 +249,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
         nodes?: Maybe<
           Array<
             Maybe<
-              | ({ __typename: 'ClassOccurrence' } & Pick<
+              | ({ __typename?: 'ClassOccurrence' } & Pick<
                   ClassOccurrence,
                   | 'name'
                   | 'subject'
@@ -265,7 +265,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                   | 'classAttributes'
                   | 'url'
                   | 'lastUpdateTime'
-                > & {
+                > & { type: 'ClassOccurrence' } & {
                     sections: Array<
                       { __typename?: 'Section' } & Pick<
                         Section,
@@ -286,7 +286,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                       >
                     >;
                   })
-              | ({ __typename: 'Employee' } & Pick<
+              | ({ __typename?: 'Employee' } & Pick<
                   Employee,
                   | 'bigPictureUrl'
                   | 'emails'
@@ -301,7 +301,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                   | 'primaryDepartment'
                   | 'primaryRole'
                   | 'streetAddress'
-                >)
+                > & { type: 'Employee' })
             >
           >
         >;
@@ -383,7 +383,7 @@ export const SearchResultsDocument = gql`
         }
       }
       nodes {
-        __typename
+        type: __typename
         ... on Employee {
           bigPictureUrl
           emails

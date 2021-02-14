@@ -47,7 +47,7 @@ query searchResults(
       }
     }
     nodes {
-      __typename
+      type: __typename
       ... on Employee {
         bigPictureUrl
         emails

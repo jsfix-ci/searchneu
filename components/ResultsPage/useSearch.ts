@@ -10,6 +10,7 @@ import { useSWRInfinite } from 'swr';
 import macros from '../macros';
 import { SearchResult } from '../types';
 import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
+import { gqlClient } from '../../utils/courseAPIClient';
 
 export interface SearchParams {
   termId: string;
@@ -78,6 +79,18 @@ export default function useSearch({
   const { data, size, setSize } = useSWRInfinite(
     getKey,
     async (query): Promise<SearchResult> => {
+      const urlParams = Object.fromEntries(new URLSearchParams(query));
+      const nonDefaultFilters = pickBy(
+        filters,
+        (v, k: keyof FilterSelection) =>
+          !isEqual(v, DEFAULT_FILTER_SELECTION[k])
+      );
+      const searchResults = await gqlClient.searchResults({
+        termId: parseInt(termId),
+        query: urlParams.query,
+        offset: parseInt(urlParams.minIndex),
+        ...nonDefaultFilters,
+      });
       return (await axios.get('https://searchneu.com/search?' + query)).data;
     }
   );
