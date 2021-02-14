@@ -3,38 +3,38 @@ import { DropdownItemProps } from 'semantic-ui-react';
 import { Campus } from './types';
 
 export const neuTermDropdownOptions: DropdownItemProps[] = [
+  { text: 'Summer II 2021', value: '202160' },
+  { text: 'Summer Full 2021', value: '202150' },
+  { text: 'Summer I 2021', value: '202140' },
   { text: 'Spring 2021', value: '202130' },
   { text: 'Fall 2020', value: '202110' },
   { text: 'Summer I 2020', value: '202040' },
   { text: 'Summer Full 2020', value: '202050' },
   { text: 'Summer II 2020', value: '202060' },
-  { text: 'Spring 2020', value: '202030' },
 ];
 // spring 2021 CPS semester
 export const cpsTermDropdownOptions: DropdownItemProps[] = [
-  // removed because data is not yet up on banner
-  { text: 'Spring 2021 CPS Semester ', value: '202134' },
-  // { text: 'Spring 2021 CPS Quarter', value: '202135' },
-  { text: 'Winter 2020 CPS Quarter', value: '202125' },
-  { text: 'Fall 2020 CPS Semester', value: '202114' },
-  { text: 'Fall 2020 CPS Quarter', value: '202115' },
-  { text: 'Summer 2020 CPS Semester', value: '202054' },
-  { text: 'Summer 2020 CPS Quarter', value: '202055' },
-  { text: 'Spring 2020 CPS Semester', value: '202034' },
-  { text: 'Spring 2020 CPS Quarter', value: '202035' },
+  { text: 'Summer 2021 Semester', value: '202154' },
+  { text: 'Summer 2021 Quarter', value: '202155' },
+  { text: 'Spring 2021 Semester ', value: '202134' },
+  { text: 'Spring 2021 Quarter', value: '202135' },
+  { text: 'Winter 2020 Quarter', value: '202125' },
+  { text: 'Fall 2020 Semester', value: '202114' },
+  { text: 'Fall 2020 Quarter', value: '202115' },
+  { text: 'Summer 2020 Semester', value: '202054' },
+  { text: 'Summer 2020 Quarter', value: '202055' },
 ];
 
 export const lawTermDropdownOptions: DropdownItemProps[] = [
-  // removed because data is not yet up on banner
-  { text: 'Spring 2021 Law Semester', value: '202132' },
-  // { text: 'Spring 2021 Law Quarter', value: '202138' },
-  { text: 'Winter 2020 Law Quarter', value: '202128' },
-  { text: 'Fall 2020 Law Semester', value: '202112' },
-  { text: 'Fall 2020 Law Quarter', value: '202118' },
-  { text: 'Summer 2020 Law Semester', value: '202052' },
-  { text: 'Summer 2020 Law Quarter', value: '202058' },
-  { text: 'Spring 2020 Law Semester', value: '202032' },
-  { text: 'Spring 2020 Law Quarter', value: '202038' },
+  { text: 'Summer 2021 Semester', value: '202152' },
+  { text: 'Summer 2021 Quarter', value: '202158' },
+  { text: 'Spring 2021 Semester', value: '202132' },
+  { text: 'Spring 2021 Quarter', value: '202138' },
+  { text: 'Winter 2020 Quarter', value: '202128' },
+  { text: 'Fall 2020 Semester', value: '202112' },
+  { text: 'Fall 2020 Quarter', value: '202118' },
+  { text: 'Summer 2020 Semester', value: '202052' },
+  { text: 'Summer 2020 Quarter', value: '202058' },
 ];
 
 export const campusDropdownOptions: DropdownItemProps[] = [
