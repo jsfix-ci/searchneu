@@ -9,8 +9,13 @@ import { useEffect } from 'react';
 import { useSWRInfinite } from 'swr';
 import macros from '../macros';
 import { SearchResult } from '../types';
-import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
+import {
+  DEFAULT_FILTER_SELECTION,
+  FilterOptions,
+  FilterSelection,
+} from './filters';
 import { gqlClient } from '../../utils/courseAPIClient';
+import { SearchResultsQuery } from '../../generated/graphql';
 
 export interface SearchParams {
   termId: string;
@@ -91,9 +96,12 @@ export default function useSearch({
         offset: parseInt(urlParams.minIndex),
         ...nonDefaultFilters,
       });
-      return (await axios.get('https://searchneu.com/search?' + query)).data;
+      // return (await axios.get('https://searchneu.com/search?' + query)).data;
+      return transformGraphQLToSearchResult(searchResults);
     }
   );
+
+  console.log(data);
 
   const queryKey = getKey(0);
   useEffect(() => {
@@ -111,4 +119,33 @@ export default function useSearch({
     searchData: returnedData,
     loadMore: () => setSize((s) => s + 1),
   };
+}
+
+function transformGraphQLToSearchResult(
+  graphqlResults: SearchResultsQuery
+): SearchResult {
+  const transformedResults: SearchResult = {
+    results: [],
+    filterOptions: graphqlResults.search.filterOptions as FilterOptions,
+  };
+  transformedResults.results = graphqlResults.search.nodes.map((node) => {
+    const searchItem = {};
+    const itemValue = { ...node };
+
+    if (node.type === 'ClassOccurrence') {
+      searchItem['sections'] = node.sections.map((section) => ({
+        lastUpdateTime: node.lastUpdateTime,
+        ...section,
+      }));
+      searchItem['class'] = itemValue;
+      searchItem['type'] = 'class';
+    } else {
+      searchItem['employee'] = itemValue;
+      searchItem['type'] = 'employee';
+    }
+
+    return searchItem;
+  });
+
+  return transformedResults;
 }
