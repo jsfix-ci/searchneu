@@ -73,7 +73,8 @@ export default function useResultDetail(
     const isCompositeReq = (
       variableToCheck: any
     ): variableToCheck is CompositeReq =>
-      (variableToCheck as CompositeReq).type !== undefined;
+      (variableToCheck as CompositeReq).type === 'and' ||
+      (variableToCheck as CompositeReq).type === 'or';
 
     const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq =>
       (variableToCheck as CourseReq).classId !== undefined;

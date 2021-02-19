@@ -3,7 +3,6 @@
  * See the license file in the root folder for details.
  */
 
-import axios from 'axios';
 import { isEqual, pickBy } from 'lodash';
 import { useEffect } from 'react';
 import { useSWRInfinite } from 'swr';
@@ -96,12 +95,9 @@ export default function useSearch({
         offset: parseInt(urlParams.minIndex),
         ...nonDefaultFilters,
       });
-      // return (await axios.get('https://searchneu.com/search?' + query)).data;
       return transformGraphQLToSearchResult(searchResults);
     }
   );
-
-  console.log(data);
 
   const queryKey = getKey(0);
   useEffect(() => {
@@ -137,7 +133,11 @@ function transformGraphQLToSearchResult(
         lastUpdateTime: node.lastUpdateTime,
         ...section,
       }));
-      searchItem['class'] = itemValue;
+      searchItem['class'] = {
+        ...itemValue,
+        termId: node.termId.toString(),
+        classId: node.classId.toString(),
+      };
       searchItem['type'] = 'class';
     } else {
       searchItem['employee'] = itemValue;

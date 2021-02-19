@@ -93,7 +93,9 @@ export type ClassOccurrence = {
   classAttributes: Array<Scalars['String']>;
   url: Scalars['String'];
   lastUpdateTime?: Maybe<Scalars['Float']>;
+  nupath: Array<Scalars['String']>;
   sections: Array<Section>;
+  host: Scalars['String'];
 };
 
 export type Section = {
@@ -112,6 +114,7 @@ export type Section = {
   url: Scalars['String'];
   profs: Array<Scalars['String']>;
   meetings?: Maybe<Scalars['JSON']>;
+  host: Scalars['String'];
 };
 
 export type Major = {
@@ -255,7 +258,9 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                   | 'subject'
                   | 'classId'
                   | 'termId'
+                  | 'host'
                   | 'desc'
+                  | 'nupath'
                   | 'prereqs'
                   | 'coreqs'
                   | 'prereqsFor'
@@ -274,6 +279,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                         | 'classType'
                         | 'crn'
                         | 'honors'
+                        | 'host'
                         | 'meetings'
                         | 'profs'
                         | 'seatsCapacity'
@@ -404,7 +410,9 @@ export const SearchResultsDocument = gql`
           subject
           classId
           termId
+          host
           desc
+          nupath
           prereqs
           coreqs
           prereqsFor
@@ -420,6 +428,7 @@ export const SearchResultsDocument = gql`
             classType
             crn
             honors
+            host
             meetings
             profs
             seatsCapacity

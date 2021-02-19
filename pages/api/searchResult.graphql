@@ -68,7 +68,9 @@ query searchResults(
         subject
         classId
         termId
+        host
         desc
+        nupath
         prereqs
         coreqs
         prereqsFor
@@ -84,6 +86,7 @@ query searchResults(
           classType
           crn
           honors
+          host
           meetings
           profs
           seatsCapacity
