@@ -189,7 +189,7 @@ class Facebook {
         } catch (e) {
           return;
         }
-      }, 100);
+      }, 500);
 
       setTimeout(() => {
         clearInterval(setIntervalID);

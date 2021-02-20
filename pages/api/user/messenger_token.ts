@@ -33,7 +33,7 @@ export default async function handler(
       messengerToken: await signMessengerToken(fbSession.id),
     };
     setCookie(res, 'loginToken', await signLoginToken(fbSession.id), {
-      maxAge: 2000,
+      maxAge: 5 * 60 * 1000,
     });
     res.json(data);
     return;
