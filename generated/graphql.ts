@@ -115,6 +115,7 @@ export type Section = {
   profs: Array<Scalars['String']>;
   meetings?: Maybe<Scalars['JSON']>;
   host: Scalars['String'];
+  lastUpdateTime?: Maybe<Scalars['Float']>;
 };
 
 export type Major = {
@@ -280,6 +281,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                         | 'crn'
                         | 'honors'
                         | 'host'
+                        | 'lastUpdateTime'
                         | 'meetings'
                         | 'profs'
                         | 'seatsCapacity'
@@ -429,6 +431,7 @@ export const SearchResultsDocument = gql`
             crn
             honors
             host
+            lastUpdateTime
             meetings
             profs
             seatsCapacity

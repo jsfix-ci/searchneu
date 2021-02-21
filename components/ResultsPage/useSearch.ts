@@ -125,26 +125,22 @@ function transformGraphQLToSearchResult(
     filterOptions: graphqlResults.search.filterOptions as FilterOptions,
   };
   transformedResults.results = graphqlResults.search.nodes.map((node) => {
-    const searchItem = {};
-    const itemValue = { ...node };
-
     if (node.type === 'ClassOccurrence') {
-      searchItem['sections'] = node.sections.map((section) => ({
-        lastUpdateTime: node.lastUpdateTime,
-        ...section,
-      }));
-      searchItem['class'] = {
-        ...itemValue,
-        termId: node.termId.toString(),
-        classId: node.classId.toString(),
+      return {
+        sections: node.sections,
+        class: {
+          ...node,
+          termId: node.termId.toString(),
+          classId: node.classId.toString(),
+        },
+        type: 'class',
       };
-      searchItem['type'] = 'class';
     } else {
-      searchItem['employee'] = itemValue;
-      searchItem['type'] = 'employee';
+      return {
+        employee: node,
+        type: 'employee',
+      };
     }
-
-    return searchItem;
   });
 
   return transformedResults;

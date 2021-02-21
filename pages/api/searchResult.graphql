@@ -87,6 +87,7 @@ query searchResults(
           crn
           honors
           host
+          lastUpdateTime
           meetings
           profs
           seatsCapacity
