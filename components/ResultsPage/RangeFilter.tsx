@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { ClassRange } from './filters';
+import macros from '../macros';
 
 interface RangeFilterProps {
   title: string;
@@ -32,7 +33,9 @@ export default function RangeFilter({
             value={controlledInput.min}
             onChange={(event) =>
               setControlledInput({
-                min: event.target.value,
+                min: macros.isNumeric(event.target.value)
+                  ? parseInt(event.target.value)
+                  : '',
                 max: controlledInput.max,
               })
             }
@@ -47,7 +50,9 @@ export default function RangeFilter({
             onChange={(event) =>
               setControlledInput({
                 min: controlledInput.min,
-                max: event.target.value,
+                max: macros.isNumeric(event.target.value)
+                  ? parseInt(event.target.value)
+                  : '',
               })
             }
           />
@@ -58,8 +63,8 @@ export default function RangeFilter({
           className="RangeFilter__apply-input"
           onClick={() =>
             setActive({
-              min: controlledInput.min || '0',
-              max: controlledInput.max || '9999',
+              min: controlledInput.min || 0,
+              max: controlledInput.max || 9999,
             })
           }
         >

@@ -37,7 +37,7 @@ type TypeForCat = {
   Checkboxes: string[];
   Range: ClassRange;
 };
-export type ClassRange = { min: number | null; max: number | null };
+export type ClassRange = { min: number | ''; max: number | '' };
 
 // Query param encoders for each category of filter
 const ENCODERS_FOR_CAT: Record<FilterCategory, QueryParamConfig<any, any>> = {
@@ -75,7 +75,7 @@ const CLASSTYPE_SPEC: FilterSpec<'Checkboxes'> = {
 };
 const CLASSIDRANGE_SPEC: FilterSpec<'Range'> = {
   category: FilterCategories.Range,
-  default: { min: null, max: null },
+  default: { min: '', max: '' },
   display: 'Course Number',
   order: 5,
 };
