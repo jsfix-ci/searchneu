@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
 
@@ -26,7 +27,14 @@ function SearchDropdown({
       value={value}
       placeholder={placeholder}
       className={`${className} ${compact ? `${className}--compact` : ''}`}
-      options={options}
+      options={options.map((o) => ({
+        ...o,
+        content: (
+          <Link href="jfids">
+            <a>{o.text}</a>
+          </Link>
+        ),
+      }))}
       onChange={(e, data) => onChange(data.value as string)}
     />
   );

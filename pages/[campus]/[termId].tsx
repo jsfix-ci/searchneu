@@ -90,16 +90,7 @@ export default function Home(): ReactElement {
           <div className="centerTextContainer">
             <Logo className="logo" aria-label="logo" campus={campus} />
 
-            <HomeSearch
-              setTermId={(newTermId) => {
-                router.push(`/${campus}/${newTermId}`);
-              }}
-              termId={termId}
-              campus={campus}
-              setCampus={(c) => {
-                router.push(`/${c}/${getRoundedTerm(c, termId)}`);
-              }}
-            />
+            <HomeSearch termId={termId} campus={campus} />
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
