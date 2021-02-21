@@ -112,9 +112,7 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
             )}
           </div>
           <div className="SearchResult__panel--right">
-            {notMostRecentTerm(course.termId) ? undefined : (
-              <SignUpForNotifications course={course} />
-            )}
+            <SignUpForNotifications course={course} />
           </div>
         </div>
       </div>
