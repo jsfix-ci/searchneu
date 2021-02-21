@@ -34,7 +34,7 @@ export default function RangeFilter({
             onChange={(event) =>
               setControlledInput({
                 min: macros.isNumeric(event.target.value)
-                  ? parseInt(event.target.value)
+                  ? Number(event.target.value)
                   : '',
                 max: controlledInput.max,
               })
@@ -51,7 +51,7 @@ export default function RangeFilter({
               setControlledInput({
                 min: controlledInput.min,
                 max: macros.isNumeric(event.target.value)
-                  ? parseInt(event.target.value)
+                  ? Number(event.target.value)
                   : '',
               })
             }
