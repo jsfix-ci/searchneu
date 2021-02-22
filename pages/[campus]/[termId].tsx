@@ -8,11 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import Footer from '../../components/Footer';
-import {
-  getLatestTerm,
-  getRoundedTerm,
-  getTermDropdownOptionsForCampus,
-} from '../../components/global';
+import { getLatestTerm, getTermInfoForCampus } from '../../components/global';
 import HomeSearch from '../../components/HomePage/HomeSearch';
 import Boston from '../../components/icons/boston.svg';
 import Husky from '../../components/icons/Husky';
@@ -27,11 +23,9 @@ export default function Home(): ReactElement {
   const LATEST_TERM = getLatestTerm(campus);
   const termId = (router.query.termId as string) || LATEST_TERM;
 
-  const AVAILABLE_TERM_IDS = getTermDropdownOptionsForCampus(campus).map(
-    (t) => {
-      return t.value;
-    }
-  );
+  const AVAILABLE_TERM_IDS = getTermInfoForCampus(campus).map((t) => {
+    return t.value;
+  });
 
   // Redirect to latest if we're at an old term
   if (!AVAILABLE_TERM_IDS.includes(termId)) {
@@ -108,7 +102,7 @@ export function getStaticPaths(): GetStaticPathsResult {
   const result: GetStaticPathsResult = { paths: [], fallback: false };
 
   for (const campus of Object.values(Campus)) {
-    for (const termId of getTermDropdownOptionsForCampus(campus)) {
+    for (const termId of getTermInfoForCampus(campus)) {
       result.paths.push({
         params: { campus, termId: termId.value as string },
       });

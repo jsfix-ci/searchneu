@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { campusToColor } from '../../utils/campusToColor';
-import { getRoundedTerm, getTermDropdownOptionsForCampus } from '../global';
+import { getRoundedTerm, getTermInfoForCampus } from '../global';
 import IconGradcap from '../icons/IconGradcap';
 import IconScale from '../icons/IconScale';
 import IconTie from '../icons/IconTie';
@@ -69,10 +69,12 @@ const HomeSearch = ({ termId, campus }: HomeSearchProps): ReactElement => {
       <div className="HomeSearch__searchBar">
         <div className="HomeSearch__searchBar--dropdown">
           <SearchDropdown
-            options={getTermDropdownOptionsForCampus(campus)}
+            options={getTermInfoForCampus(campus).map((terminfo) => ({
+              text: terminfo.text,
+              value: terminfo.value,
+              link: `/${campus}/${terminfo.value}`,
+            }))}
             value={termId}
-            placeholder="Fall 2020"
-            onChange={(newTermId) => router.push(`/${campus}/${newTermId}`)}
             className="searchDropdown"
             compact={false}
             key={campus}
