@@ -71,7 +71,6 @@ export default async function handler(
   res: NextApiResponse
 ): Promise<void> {
   // TODO: validate from course catalog api
-
   if (req.method === 'POST') {
     await post(req, res);
   } else {
@@ -119,7 +118,7 @@ async function sendCourseNotification(
     } else {
       message += `${course.numberOfSectionsAdded} sections were added to ${course.subject} ${course.courseId}!`;
     }
-    message += ` Check it out at https://searchneu.com/${course.campus}/${course.termId}/search/${course.subject} ${course.courseId} !`;
+    message += ` Check it out at https://searchneu.com/${course.campus}/${course.termId}/search/${course.subject}${course.courseId} !`;
     await sendFBMessage(prismaCourse.user.fbMessengerId, message);
   });
 }
