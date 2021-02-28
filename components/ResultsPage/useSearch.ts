@@ -63,37 +63,25 @@ export default function useSearch({
       filters,
       (v, k: keyof FilterSelection) => !isEqual(v, DEFAULT_FILTER_SELECTION[k])
     );
-    const stringFilters = JSON.stringify(
-      nonDefaultFilters,
-      Object.keys(nonDefaultFilters).sort()
-    );
-
-    const url = new URLSearchParams({
-      // TODO: is this how we're gonna access the api in the future?
+    return JSON.stringify({
       query,
       termId,
       minIndex: String(pageIndex * 10),
       maxIndex: String((pageIndex + 1) * 10),
       apiVersion: String(apiVersion),
-      filters: stringFilters,
-    }).toString();
-    return url;
+      filters: nonDefaultFilters,
+    });
   };
 
   const { data, size, setSize } = useSWRInfinite(
     getKey,
-    async (query): Promise<SearchResult> => {
-      const urlParams = Object.fromEntries(new URLSearchParams(query));
-      const nonDefaultFilters = pickBy(
-        filters,
-        (v, k: keyof FilterSelection) =>
-          !isEqual(v, DEFAULT_FILTER_SELECTION[k])
-      );
+    async (params): Promise<SearchResult> => {
+      params = JSON.parse(params);
       const searchResults = await gqlClient.searchResults({
         termId: parseInt(termId),
-        query: urlParams.query,
-        offset: parseInt(urlParams.minIndex),
-        ...nonDefaultFilters,
+        query: params.query,
+        offset: parseInt(params.minIndex),
+        ...params.filters,
       });
       return transformGraphQLToSearchResult(searchResults);
     }
