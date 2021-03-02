@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'https://searchneu.com/graphql'
+schema: ${GRAPHQL_ENDPOINT}
 documents:
   - 'pages/**/*.graphql'
   - 'components/**/*.graphql'
