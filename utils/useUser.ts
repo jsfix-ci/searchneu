@@ -36,7 +36,7 @@ export default function useUser(): UseUserReturn {
     const body: PostSubscriptionBody = {
       courseHash,
     };
-
+    console.log('inside useUser');
     await axios.post('/api/subscription', body);
   };
 
