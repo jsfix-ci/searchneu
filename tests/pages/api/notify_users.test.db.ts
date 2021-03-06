@@ -88,21 +88,23 @@ describe('/api/notify_users', () => {
         body: JSON.stringify({
           updatedCourses: [
             {
-              courseCode: 'CS 4500',
-              term: '202130',
-              count: 1,
+              courseId: '4500',
+              subject: 'CS',
+              termId: '202130',
+              numberOfSectionsAdded: 1,
               campus: 'NEU',
               courseHash: 'neu.edu/202130/CS/4500',
             },
           ],
           updatedSections: [
             {
-              courseCode: 'CS 4500',
-              term: '202130',
+              termId: '202130',
               crn: '12345',
               seatsRemaining: 2,
               campus: 'NEU',
               sectionHash: 'neu.edu/202130/CS/4500/12345',
+              subject: 'CS',
+              courseId: '4500',
             },
           ],
         }),
@@ -116,15 +118,15 @@ describe('/api/notify_users', () => {
       expect(mocked(sendFBMessage).mock.calls).toEqual([
         [
           '0000000000',
-          'A section was added to CS 4500! Check it out at https://searchneu.com/NEU/202130/search/CS 4500 !',
+          'A section was added to CS 4500! Check it out at https://searchneu.com/NEU/202130/search/CS4500 !',
         ],
         [
           '2222222222',
-          'A section was added to CS 4500! Check it out at https://searchneu.com/NEU/202130/search/CS 4500 !',
+          'A section was added to CS 4500! Check it out at https://searchneu.com/NEU/202130/search/CS4500 !',
         ],
         [
           '0000000000',
-          'A seat opened up in CS 4500 (CRN: 12345). Check it out at https://searchneu.com/NEU/202130/search/CS 4500 !',
+          'A seat opened up in CS 4500 (CRN: 12345). Check it out at https://searchneu.com/NEU/202130/search/CS4500 !',
         ],
       ]);
     });
@@ -137,9 +139,10 @@ describe('/api/notify_users', () => {
         body: JSON.stringify({
           updatedCourses: [
             {
-              courseCode: 'CS 3650',
-              term: '202130',
-              count: 1,
+              courseId: '3650',
+              subject: 'CS',
+              termId: '202130',
+              numberOfSectionsAdded: 1,
               campus: 'NEU',
               courseHash: 'neu.edu/202130/CS/3650',
             },
