@@ -116,8 +116,8 @@ function getSecondToLastDigit(s: string): string {
 
 function tryGetMatchingSecondToLastDigitOption(
   secondToLast: string,
-  options: DropdownItemProps[]
-): DropdownItemProps | undefined {
+  options: TermInfo[]
+): TermInfo | undefined {
   for (const option of options) {
     const secondToLastOfOption = getSecondToLastDigit(option.value as string);
     if (secondToLast === secondToLastOfOption) {
