@@ -166,8 +166,9 @@ export function getTermName(termId: string): string {
     ...lawTermDropdownOptions,
   ];
   // return first instance of the termId matching a termId in a id-name mapping
-  const termName: object = allTermMappings.find(
-    (termMapping: object): boolean => termMapping['value'] === termId
+  const termName: Record<string, string> = allTermMappings.find(
+    (termMapping: Record<string, string>): boolean =>
+      termMapping['value'] === termId
   );
 
   return termName && termName['text'];
