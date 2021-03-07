@@ -24,6 +24,7 @@ exports[`should render a section 1`] = `
       <div className=\\"centerTextContainer\\">
         <Logo className=\\"logo\\" aria-label=\\"logo\\" campus=\\"NEU\\" />
         <HomeSearch setTermId={[Function: setTermId]} termId=\\"202160\\" campus=\\"NEU\\" setCampus={[Function: setCampus]} />
+        <ExploratorySearchButton termId=\\"202160\\" campus=\\"NEU\\" />
       </div>
       <Husky className=\\"husky\\" campus=\\"NEU\\" aria-label=\\"husky\\" />
       <div className=\\"bostonContainer\\">
