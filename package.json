@@ -6,7 +6,7 @@
     "dev:db:up": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml up -d",
     "dev:db:down": "docker-compose -p searchneu_users -f infrastructure/dev/docker-compose.yml down",
     "dev": "concurrently -n app,codegen \"next dev -p 5000\" \"npm:generate:graphql -- --watch\"",
-    "dev:fullstack": "GRAPHQL_ENDPOINT=http://localhost:4000 yarn run dev",
+    "dev:fullstack": "NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://localhost:4000 yarn run dev",
     "build": "next build",
     "migrate": "npx prisma migrate dev --preview-feature",
     "vercel:build": "DATABASE_URL=\"$NON_POOLED_DATABASE_URL\"; prisma migrate deploy --preview-feature && yarn build",
