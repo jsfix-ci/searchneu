@@ -23,7 +23,6 @@ function SearchDropdown({
   const currentText = options.find((o) => o.value == currentValue).text;
   return (
     <Dropdown
-      selection
       fluid
       compact={compact}
       text={currentText}
