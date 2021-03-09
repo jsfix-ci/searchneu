@@ -1,0 +1,21 @@
+.searchByFilters {
+  pointer-events: initial;
+  cursor: pointer;
+  margin: 36px 0px 0px 50px;
+  width: fit-content;
+  font-weight: 400;
+  color: #2a426b;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 500px) {
+    margin: 0px auto;
+    margin-top: 36px;
+  }
+}
+
+.selectedCampusAndTerm {
+  font-style: italic;
+}
