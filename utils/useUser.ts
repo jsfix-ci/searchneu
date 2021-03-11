@@ -54,16 +54,25 @@ export default function useUser(): UseUserReturn {
 
   const unsubscribeFromCourse = async (course: Course): Promise<void> => {
     const courseHash = Keys.getClassHash(course);
-    if (!user?.followedSections?.includes(courseHash)) {
+    if (!user?.followedCourses?.includes(courseHash)) {
       macros.error("removed course that doesn't exist on user?", course, user);
       return;
     }
-
+    const sectionHashes = course.sections.map((section) =>
+      Keys.getSectionHash(section)
+    );
+    console.log('sectionHashes', sectionHashes);
     pull(user?.followedCourses, courseHash);
+    user.followedSections = user.followedSections.filter(
+      (section) => section.slice(0, -6) !== courseHash
+    );
 
     const body: DeleteSubscriptionBody = {
       courseHash: courseHash,
+      sectionHashes: sectionHashes,
     };
+
+    macros.log('Unsubscribing from course', user, courseHash, body);
 
     await axios.delete('/api/subscription', {
       headers: {

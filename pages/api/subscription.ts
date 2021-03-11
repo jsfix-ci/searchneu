@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, ValidateIf } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  ValidateIf,
+  IsArray,
+  IsOptional,
+} from 'class-validator';
 import { NextApiHandler } from 'next';
 import { prisma } from '../../utils/api/prisma';
 import withUser from '../../utils/api/withUser';
@@ -10,6 +16,12 @@ class SubscriptionBody {
   @IsString()
   @IsNotEmpty()
   courseHash?: string;
+
+  @ValidateIf((o) => o.sectionHashes === undefined)
+  @IsArray()
+  @IsNotEmpty()
+  @IsOptional()
+  sectionHashes?: string[];
 
   @ValidateIf((o) => o.courseHash === undefined)
   @IsString()
@@ -100,6 +112,16 @@ const del: NextApiHandler = withUser((userId, user) =>
             courseHash: body.courseHash,
           },
         });
+
+        for (const sectionHash of body.sectionHashes) {
+          await prisma.followedSection.deleteMany({
+            where: {
+              userId: userId,
+              sectionHash: sectionHash,
+            },
+          });
+        }
+
         sendFBMessage(
           user.fbMessengerId,
           `Successfully unsubscribed from notifications for course ${body.courseHash}`
