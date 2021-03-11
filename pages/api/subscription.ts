@@ -56,7 +56,7 @@ const post: NextApiHandler = withUser((userId, user) =>
         const splitHash = courseHash.split('/');
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully signed up for notifications for course ${courseHash}`
+          `Successfully subscribed to notifications for course ${courseHash}`
         );
         // https://github.com/sandboxnu/searchneu/blob/dba43a7616262040f36552817ed84c03b417073b/backend/routes/webhook.ts
       }
@@ -69,7 +69,7 @@ const post: NextApiHandler = withUser((userId, user) =>
         });
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully signed up for notifications for section ${sectionHash}`
+          `Successfully subscribed tp notifications for section ${sectionHash}`
         );
       }
       res.status(201).end();
@@ -91,6 +91,7 @@ const del: NextApiHandler = withUser((userId, user) =>
       }
       const body = validatedBody;
 
+      console.log('body', body);
       if (body.courseHash) {
         // delete many allows us to continue if there is nothing to delete.
         await prisma.followedCourse.deleteMany({

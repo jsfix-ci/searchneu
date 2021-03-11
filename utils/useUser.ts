@@ -15,6 +15,7 @@ type UseUserReturn = {
   subscribeToCourse: (course: Course) => Promise<void>;
   subscribeToSection: (section: Section) => Promise<void>;
   unsubscribeFromSection: (section: Section) => Promise<void>;
+  unsubscribeFromCourse: (course: Course) => Promise<void>;
 };
 
 export default function useUser(): UseUserReturn {
@@ -48,6 +49,31 @@ export default function useUser(): UseUserReturn {
     }
 
     await subscribeToCourseUsingHash(courseHash);
+    mutate();
+  };
+
+  const unsubscribeFromCourse = async (course: Course): Promise<void> => {
+    const courseHash = Keys.getClassHash(course);
+    if (!user?.followedSections?.includes(courseHash)) {
+      macros.error("removed course that doesn't exist on user?", course, user);
+      return;
+    }
+
+    pull(user?.followedCourses, courseHash);
+
+    const body: DeleteSubscriptionBody = {
+      courseHash: courseHash,
+    };
+
+    await axios.delete('/api/subscription', {
+      headers: {
+        Authorization: '', // TODO: Figure out this stuff whenever the backend gets fixed.
+      },
+      data: {
+        ...body,
+      },
+    });
+
     mutate();
   };
 
@@ -115,5 +141,6 @@ export default function useUser(): UseUserReturn {
     subscribeToCourse,
     subscribeToSection,
     unsubscribeFromSection,
+    unsubscribeFromCourse,
   };
 }
