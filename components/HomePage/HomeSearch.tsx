@@ -70,6 +70,15 @@ const HomeSearch = ({
         </label>
       </div>
       <div className="HomeSearch__searchBar">
+        <div className="HomeSearch__searchBar--input">
+          <SearchBar
+            onSearch={(q) => {
+              router.push(`/${campus}/${termId}/search/${q}`);
+            }}
+            query=""
+            buttonColor={campusToColor[campus]}
+          />
+        </div>
         <div className="HomeSearch__searchBar--dropdown">
           <SearchDropdown
             options={getTermDropdownOptionsForCampus(campus)}
@@ -79,15 +88,6 @@ const HomeSearch = ({
             className="searchDropdown"
             compact={false}
             key={campus}
-          />
-        </div>
-        <div className="HomeSearch__searchBar--input">
-          <SearchBar
-            onSearch={(q) => {
-              router.push(`/${campus}/${termId}/search/${q}`);
-            }}
-            query=""
-            buttonColor={campusToColor[campus]}
           />
         </div>
       </div>
