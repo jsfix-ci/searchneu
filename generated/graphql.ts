@@ -28,13 +28,23 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   class?: Maybe<Class>;
+  classByHash?: Maybe<ClassOccurrence>;
+  sectionByHash?: Maybe<Section>;
   major?: Maybe<Major>;
   search?: Maybe<SearchResultItemConnection>;
 };
 
 export type QueryClassArgs = {
   subject: Scalars['String'];
-  classId: Scalars['Int'];
+  classId: Scalars['String'];
+};
+
+export type QueryClassByHashArgs = {
+  hash: Scalars['String'];
+};
+
+export type QuerySectionByHashArgs = {
+  hash: Scalars['String'];
 };
 
 export type QueryMajorArgs = {
@@ -57,14 +67,14 @@ export type Class = {
   __typename?: 'Class';
   name: Scalars['String'];
   subject: Scalars['String'];
-  classId: Scalars['Int'];
+  classId: Scalars['String'];
   occurrence?: Maybe<ClassOccurrence>;
   latestOccurrence?: Maybe<ClassOccurrence>;
   allOccurrences: Array<Maybe<ClassOccurrence>>;
 };
 
 export type ClassOccurrenceArgs = {
-  termId: Scalars['Int'];
+  termId: Scalars['String'];
 };
 
 export type ClassOccurrence = {
@@ -83,7 +93,9 @@ export type ClassOccurrence = {
   classAttributes: Array<Scalars['String']>;
   url: Scalars['String'];
   lastUpdateTime?: Maybe<Scalars['Float']>;
+  nupath: Array<Scalars['String']>;
   sections: Array<Section>;
+  host: Scalars['String'];
 };
 
 export type Section = {
@@ -102,6 +114,8 @@ export type Section = {
   url: Scalars['String'];
   profs: Array<Scalars['String']>;
   meetings?: Maybe<Scalars['JSON']>;
+  host: Scalars['String'];
+  lastUpdateTime?: Maybe<Scalars['Float']>;
 };
 
 export type Major = {
@@ -134,6 +148,7 @@ export type SearchResultItemConnection = {
   totalCount: Scalars['Int'];
   pageInfo: PageInfo;
   nodes?: Maybe<Array<Maybe<SearchResultItem>>>;
+  filterOptions: FilterOptions;
 };
 
 export type PageInfo = {
@@ -162,10 +177,48 @@ export type Employee = {
   officeRoom?: Maybe<Scalars['String']>;
 };
 
+export type FilterOptions = {
+  __typename?: 'FilterOptions';
+  nupath?: Maybe<Array<FilterAgg>>;
+  subject?: Maybe<Array<FilterAgg>>;
+  classType?: Maybe<Array<FilterAgg>>;
+  campus?: Maybe<Array<FilterAgg>>;
+};
+
+export type FilterAgg = {
+  __typename?: 'FilterAgg';
+  value: Scalars['String'];
+  count: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+};
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE',
 }
+
+export type GetCourseInfoByHashQueryVariables = Exact<{
+  hash: Scalars['String'];
+}>;
+
+export type GetCourseInfoByHashQuery = { __typename?: 'Query' } & {
+  classByHash?: Maybe<
+    { __typename?: 'ClassOccurrence' } & Pick<
+      ClassOccurrence,
+      'subject' | 'classId'
+    >
+  >;
+};
+
+export type GetSectionInfoByHashQueryVariables = Exact<{
+  hash: Scalars['String'];
+}>;
+
+export type GetSectionInfoByHashQuery = { __typename?: 'Query' } & {
+  sectionByHash?: Maybe<
+    { __typename?: 'Section' } & Pick<Section, 'subject' | 'classId' | 'crn'>
+  >;
+};
 
 export type GetPagesForSitemapQueryVariables = Exact<{
   termId: Scalars['Int'];
@@ -191,6 +244,23 @@ export type GetPagesForSitemapQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export const GetCourseInfoByHashDocument = gql`
+  query getCourseInfoByHash($hash: String!) {
+    classByHash(hash: $hash) {
+      subject
+      classId
+    }
+  }
+`;
+export const GetSectionInfoByHashDocument = gql`
+  query getSectionInfoByHash($hash: String!) {
+    sectionByHash(hash: $hash) {
+      subject
+      classId
+      crn
+    }
+  }
+`;
 export const GetPagesForSitemapDocument = gql`
   query getPagesForSitemap($termId: Int!, $offset: Int!) {
     search(termId: $termId, offset: $offset, first: 1000) {
@@ -220,6 +290,30 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    getCourseInfoByHash(
+      variables: GetCourseInfoByHashQueryVariables,
+      requestHeaders?: Headers
+    ): Promise<GetCourseInfoByHashQuery> {
+      return withWrapper(() =>
+        client.request<GetCourseInfoByHashQuery>(
+          print(GetCourseInfoByHashDocument),
+          variables,
+          requestHeaders
+        )
+      );
+    },
+    getSectionInfoByHash(
+      variables: GetSectionInfoByHashQueryVariables,
+      requestHeaders?: Headers
+    ): Promise<GetSectionInfoByHashQuery> {
+      return withWrapper(() =>
+        client.request<GetSectionInfoByHashQuery>(
+          print(GetSectionInfoByHashDocument),
+          variables,
+          requestHeaders
+        )
+      );
+    },
     getPagesForSitemap(
       variables: GetPagesForSitemapQueryVariables,
       requestHeaders?: Headers

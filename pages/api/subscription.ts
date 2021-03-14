@@ -10,6 +10,7 @@ import { prisma } from '../../utils/api/prisma';
 import withUser from '../../utils/api/withUser';
 import withValidatedBody from '../../utils/api/withValidatedBody';
 import sendFBMessage from '../../utils/api/notifyer';
+import { gqlClient } from '../../utils/courseAPIClient';
 
 class SubscriptionBody {
   @ValidateIf((o) => o.sectionHash === undefined)
@@ -64,11 +65,13 @@ const post: NextApiHandler = withUser((userId, user) =>
           where: { userId_courseHash: { courseHash, userId } },
         });
 
-        // TODO: ask backend people to be able to query for a class's class code based on course hash and verify the course hash exists
-        const splitHash = courseHash.split('/');
+        const courseInfo = await gqlClient.getCourseInfoByHash({
+          hash: courseHash,
+        });
+
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully subscribed to notifications for course ${courseHash}`
+          `Successfully subscribed to notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
         // https://github.com/sandboxnu/searchneu/blob/dba43a7616262040f36552817ed84c03b417073b/backend/routes/webhook.ts
       }
@@ -79,9 +82,14 @@ const post: NextApiHandler = withUser((userId, user) =>
           update: {},
           where: { userId_sectionHash: { sectionHash, userId } },
         });
+
+        const sectionInfo = await gqlClient.getSectionInfoByHash({
+          hash: sectionHash,
+        });
+
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully subscribed tp notifications for section ${sectionHash}`
+          `Successfully subscribed to notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn}`
         );
       }
       res.status(201).end();
@@ -122,9 +130,13 @@ const del: NextApiHandler = withUser((userId, user) =>
           });
         }
 
+        const courseInfo = await gqlClient.getCourseInfoByHash({
+          hash: body.courseHash,
+        });
+
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully unsubscribed from notifications for course ${body.courseHash}`
+          `Successfully unsubscribed from notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
         console.log('deleted course');
       }
@@ -136,9 +148,14 @@ const del: NextApiHandler = withUser((userId, user) =>
             sectionHash: body.sectionHash,
           },
         });
+
+        const sectionInfo = await gqlClient.getSectionInfoByHash({
+          hash: body.sectionHash,
+        });
+
         sendFBMessage(
           user.fbMessengerId,
-          `Successfully unsubscribed from notifications for section ${body.sectionHash}`
+          `Successfully unsubscribed from notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn} `
         );
         console.log('deleted section');
       }
