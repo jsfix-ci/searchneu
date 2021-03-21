@@ -21,16 +21,19 @@ export default function NotifCheckBox({
 }: NotifCheckBoxProps): ReactElement {
   const { user, subscribeToSection, unsubscribeFromSection } = useUser();
 
-  const checked = user?.followedSections?.includes(
-    Keys.getSectionHash(section)
+  const [checked, setChecked] = useState(
+    user?.followedSections?.includes(Keys.getSectionHash(section))
   );
+
   const [notifSwitchId] = useState(uniqueId('notifSwitch-'));
 
   function onCheckboxClick(): void {
     if (checked) {
       unsubscribeFromSection(section);
+      setChecked(false);
     } else {
       subscribeToSection(section);
+      setChecked(true);
     }
   }
 

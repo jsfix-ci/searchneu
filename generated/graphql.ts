@@ -92,10 +92,13 @@ export type ClassOccurrence = {
   minCredits?: Maybe<Scalars['Int']>;
   classAttributes: Array<Scalars['String']>;
   url: Scalars['String'];
+  prettyUrl?: Maybe<Scalars['String']>;
   lastUpdateTime?: Maybe<Scalars['Float']>;
   nupath: Array<Scalars['String']>;
   sections: Array<Section>;
   host: Scalars['String'];
+  feeAmount?: Maybe<Scalars['Int']>;
+  feeDescription?: Maybe<Scalars['String']>;
 };
 
 export type Section = {

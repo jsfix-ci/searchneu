@@ -107,7 +107,7 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     rawBody,
     req.headers['x-hub-signature'] as string
   );
-  console.log(body);
+
   if (isValid) {
     try {
       body.entry[0].messaging.map((event) => {

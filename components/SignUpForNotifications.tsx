@@ -42,12 +42,7 @@ export default function SignUpForNotifications({
   // will be asked to sign in after clicking it.
   const facebookScopeRef = useRef(null);
 
-  const {
-    user,
-    subscribeToCourse,
-    subscribeToSection,
-    unsubscribeFromCourse,
-  } = useUser();
+  const { user, subscribeToCourse, subscribeToSection } = useUser();
 
   useEffect(() => {
     (async () => {
@@ -199,17 +194,9 @@ export default function SignUpForNotifications({
       );
     } else {
       content = (
-        <>
-          <div className="toggleCTA">
-            <span>Toggle the sections you want to be notified for!</span>
-          </div>
-          <div
-            className="courseUnsubscribeButton"
-            onClick={() => unsubscribeFromCourse(course)}
-          >
-            Unsubscribe from course
-          </div>
-        </>
+        <div className="toggleCTA">
+          <span>Toggle the sections you want to be notified for!</span>
+        </div>
       );
     }
   } else if (showMessengerButton && tokens) {

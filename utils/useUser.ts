@@ -37,7 +37,7 @@ export default function useUser(): UseUserReturn {
     const body: PostSubscriptionBody = {
       courseHash,
     };
-    console.log('inside useUser');
+
     await axios.post('/api/subscription', body);
   };
 
@@ -54,15 +54,18 @@ export default function useUser(): UseUserReturn {
 
   const unsubscribeFromCourse = async (course: Course): Promise<void> => {
     const courseHash = Keys.getClassHash(course);
+
     if (!user?.followedCourses?.includes(courseHash)) {
       macros.error("removed course that doesn't exist on user?", course, user);
       return;
     }
+
     const sectionHashes = course.sections.map((section) =>
       Keys.getSectionHash(section)
     );
-    console.log('sectionHashes', sectionHashes);
+
     pull(user?.followedCourses, courseHash);
+
     user.followedSections = user.followedSections.filter(
       (section) => section.slice(0, -6) !== courseHash
     );

@@ -18,7 +18,7 @@ class SubscriptionBody {
   @IsNotEmpty()
   courseHash?: string;
 
-  @ValidateIf((o) => o.sectionHashes === undefined)
+  @ValidateIf((o) => o.sectionHash === undefined && o.courseHash)
   @IsArray()
   @IsNotEmpty()
   @IsOptional()
@@ -73,7 +73,6 @@ const post: NextApiHandler = withUser((userId, user) =>
           user.fbMessengerId,
           `Successfully subscribed to notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
-        // https://github.com/sandboxnu/searchneu/blob/dba43a7616262040f36552817ed84c03b417073b/backend/routes/webhook.ts
       }
 
       if (sectionHash) {
@@ -111,7 +110,6 @@ const del: NextApiHandler = withUser((userId, user) =>
       }
       const body = validatedBody;
 
-      console.log('body', body);
       if (body.courseHash) {
         // delete many allows us to continue if there is nothing to delete.
         await prisma.followedCourse.deleteMany({
@@ -138,7 +136,6 @@ const del: NextApiHandler = withUser((userId, user) =>
           user.fbMessengerId,
           `Successfully unsubscribed from notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
-        console.log('deleted course');
       }
 
       if (body.sectionHash) {
@@ -157,7 +154,6 @@ const del: NextApiHandler = withUser((userId, user) =>
           user.fbMessengerId,
           `Successfully unsubscribed from notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn} `
         );
-        console.log('deleted section');
       }
       res.status(200).end();
     }
