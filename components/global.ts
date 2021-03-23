@@ -151,3 +151,20 @@ export function getRoundedTerm(nextCampus: Campus, prevTerm: string): string {
   );
   return result2.value as string;
 }
+
+// Get the name version of a term id
+export function getTermName(termId: string): string {
+  // gather all termId to term name mappings
+  const allTermMappings = [
+    ...neuTermDropdownOptions,
+    ...cpsTermDropdownOptions,
+    ...lawTermDropdownOptions,
+  ];
+  // return first instance of the termId matching a termId in a id-name mapping
+  const termName: Record<string, string> = allTermMappings.find(
+    (termMapping: Record<string, string>): boolean =>
+      termMapping['value'] === termId
+  );
+
+  return termName && termName['text'];
+}

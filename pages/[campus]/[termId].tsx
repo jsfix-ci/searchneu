@@ -10,6 +10,7 @@ import React, { ReactElement } from 'react';
 import Footer from '../../components/Footer';
 import { getLatestTerm, getTermInfoForCampus } from '../../components/global';
 import HomeSearch from '../../components/HomePage/HomeSearch';
+import ExploratorySearchButton from '../../components/HomePage/ExploratorySearchButton';
 import Boston from '../../components/icons/boston.svg';
 import Husky from '../../components/icons/Husky';
 import Logo from '../../components/icons/Logo';
@@ -83,8 +84,8 @@ export default function Home(): ReactElement {
         >
           <div className="centerTextContainer">
             <Logo className="logo" aria-label="logo" campus={campus} />
-
             <HomeSearch termId={termId} campus={campus} />
+            <ExploratorySearchButton termId={termId} campus={campus} />
           </div>
           <Husky className="husky" campus={campus} aria-label="husky" />
           <div className="bostonContainer">
