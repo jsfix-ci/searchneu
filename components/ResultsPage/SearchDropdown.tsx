@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Menu } from 'semantic-ui-react';
 
 interface ItemProps {
   text: string;
@@ -26,7 +26,9 @@ function SearchDropdown({
       fluid
       compact={compact}
       text={currentText}
-      className={`${className} ${compact ? `${className}--compact` : ''}`}
+      className={`selection ${className} ${
+        compact ? `${className}--compact` : ''
+      }`}
     >
       <Dropdown.Menu>
         {options.map(({ text, value, link }) => (
