@@ -28,13 +28,23 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   class?: Maybe<Class>;
+  classByHash?: Maybe<ClassOccurrence>;
+  sectionByHash?: Maybe<Section>;
   major?: Maybe<Major>;
   search?: Maybe<SearchResultItemConnection>;
 };
 
 export type QueryClassArgs = {
   subject: Scalars['String'];
-  classId: Scalars['Int'];
+  classId: Scalars['String'];
+};
+
+export type QueryClassByHashArgs = {
+  hash: Scalars['String'];
+};
+
+export type QuerySectionByHashArgs = {
+  hash: Scalars['String'];
 };
 
 export type QueryMajorArgs = {
@@ -57,14 +67,14 @@ export type Class = {
   __typename?: 'Class';
   name: Scalars['String'];
   subject: Scalars['String'];
-  classId: Scalars['Int'];
+  classId: Scalars['String'];
   occurrence?: Maybe<ClassOccurrence>;
   latestOccurrence?: Maybe<ClassOccurrence>;
   allOccurrences: Array<Maybe<ClassOccurrence>>;
 };
 
 export type ClassOccurrenceArgs = {
-  termId: Scalars['Int'];
+  termId: Scalars['String'];
 };
 
 export type ClassOccurrence = {
@@ -83,7 +93,9 @@ export type ClassOccurrence = {
   classAttributes: Array<Scalars['String']>;
   url: Scalars['String'];
   lastUpdateTime?: Maybe<Scalars['Float']>;
+  nupath: Array<Scalars['String']>;
   sections: Array<Section>;
+  host: Scalars['String'];
 };
 
 export type Section = {
@@ -102,6 +114,8 @@ export type Section = {
   url: Scalars['String'];
   profs: Array<Scalars['String']>;
   meetings?: Maybe<Scalars['JSON']>;
+  host: Scalars['String'];
+  lastUpdateTime?: Maybe<Scalars['Float']>;
 };
 
 export type Major = {
@@ -134,6 +148,7 @@ export type SearchResultItemConnection = {
   totalCount: Scalars['Int'];
   pageInfo: PageInfo;
   nodes?: Maybe<Array<Maybe<SearchResultItem>>>;
+  filterOptions: FilterOptions;
 };
 
 export type PageInfo = {
@@ -162,10 +177,145 @@ export type Employee = {
   officeRoom?: Maybe<Scalars['String']>;
 };
 
+export type FilterOptions = {
+  __typename?: 'FilterOptions';
+  nupath?: Maybe<Array<FilterAgg>>;
+  subject?: Maybe<Array<FilterAgg>>;
+  classType?: Maybe<Array<FilterAgg>>;
+  campus?: Maybe<Array<FilterAgg>>;
+};
+
+export type FilterAgg = {
+  __typename?: 'FilterAgg';
+  value: Scalars['String'];
+  count: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+};
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE',
 }
+
+export type SearchResultsQueryVariables = Exact<{
+  termId: Scalars['Int'];
+  query?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  subject?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  nupath?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  campus?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  classType?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  classIdRange?: Maybe<IntRange>;
+}>;
+
+export type SearchResultsQuery = { __typename?: 'Query' } & {
+  search?: Maybe<
+    { __typename?: 'SearchResultItemConnection' } & Pick<
+      SearchResultItemConnection,
+      'totalCount'
+    > & {
+        pageInfo: { __typename?: 'PageInfo' } & Pick<PageInfo, 'hasNextPage'>;
+        filterOptions: { __typename?: 'FilterOptions' } & {
+          nupath?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          subject?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          classType?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          campus?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+        };
+        nodes?: Maybe<
+          Array<
+            Maybe<
+              | ({ __typename?: 'ClassOccurrence' } & Pick<
+                  ClassOccurrence,
+                  | 'name'
+                  | 'subject'
+                  | 'classId'
+                  | 'termId'
+                  | 'host'
+                  | 'desc'
+                  | 'nupath'
+                  | 'prereqs'
+                  | 'coreqs'
+                  | 'prereqsFor'
+                  | 'optPrereqsFor'
+                  | 'maxCredits'
+                  | 'minCredits'
+                  | 'classAttributes'
+                  | 'url'
+                  | 'lastUpdateTime'
+                > & { type: 'ClassOccurrence' } & {
+                    sections: Array<
+                      { __typename?: 'Section' } & Pick<
+                        Section,
+                        | 'campus'
+                        | 'classId'
+                        | 'classType'
+                        | 'crn'
+                        | 'honors'
+                        | 'host'
+                        | 'lastUpdateTime'
+                        | 'meetings'
+                        | 'profs'
+                        | 'seatsCapacity'
+                        | 'seatsRemaining'
+                        | 'subject'
+                        | 'termId'
+                        | 'url'
+                        | 'waitCapacity'
+                        | 'waitRemaining'
+                      >
+                    >;
+                  })
+              | ({ __typename?: 'Employee' } & Pick<
+                  Employee,
+                  | 'bigPictureUrl'
+                  | 'emails'
+                  | 'firstName'
+                  | 'googleScholarId'
+                  | 'lastName'
+                  | 'link'
+                  | 'name'
+                  | 'officeRoom'
+                  | 'personalSite'
+                  | 'phone'
+                  | 'primaryDepartment'
+                  | 'primaryRole'
+                  | 'streetAddress'
+                > & { type: 'Employee' })
+            >
+          >
+        >;
+      }
+  >;
+};
 
 export type GetPagesForSitemapQueryVariables = Exact<{
   termId: Scalars['Int'];
@@ -191,6 +341,112 @@ export type GetPagesForSitemapQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export const SearchResultsDocument = gql`
+  query searchResults(
+    $termId: Int!
+    $query: String
+    $offset: Int = 0
+    $first: Int = 10
+    $subject: [String!]
+    $nupath: [String!]
+    $campus: [String!]
+    $classType: [String!]
+    $classIdRange: IntRange
+  ) {
+    search(
+      termId: $termId
+      query: $query
+      offset: $offset
+      first: $first
+      subject: $subject
+      nupath: $nupath
+      campus: $campus
+      classType: $classType
+      classIdRange: $classIdRange
+    ) {
+      totalCount
+      pageInfo {
+        hasNextPage
+      }
+      filterOptions {
+        nupath {
+          value
+          count
+          description
+        }
+        subject {
+          value
+          count
+          description
+        }
+        classType {
+          value
+          count
+          description
+        }
+        campus {
+          value
+          count
+          description
+        }
+      }
+      nodes {
+        type: __typename
+        ... on Employee {
+          bigPictureUrl
+          emails
+          firstName
+          googleScholarId
+          lastName
+          link
+          name
+          officeRoom
+          personalSite
+          phone
+          primaryDepartment
+          primaryRole
+          streetAddress
+        }
+        ... on ClassOccurrence {
+          name
+          subject
+          classId
+          termId
+          host
+          desc
+          nupath
+          prereqs
+          coreqs
+          prereqsFor
+          optPrereqsFor
+          maxCredits
+          minCredits
+          classAttributes
+          url
+          lastUpdateTime
+          sections {
+            campus
+            classId
+            classType
+            crn
+            honors
+            host
+            lastUpdateTime
+            meetings
+            profs
+            seatsCapacity
+            seatsRemaining
+            subject
+            termId
+            url
+            waitCapacity
+            waitRemaining
+          }
+        }
+      }
+    }
+  }
+`;
 export const GetPagesForSitemapDocument = gql`
   query getPagesForSitemap($termId: Int!, $offset: Int!) {
     search(termId: $termId, offset: $offset, first: 1000) {
@@ -220,6 +476,18 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    searchResults(
+      variables: SearchResultsQueryVariables,
+      requestHeaders?: Headers
+    ): Promise<SearchResultsQuery> {
+      return withWrapper(() =>
+        client.request<SearchResultsQuery>(
+          print(SearchResultsDocument),
+          variables,
+          requestHeaders
+        )
+      );
+    },
     getPagesForSitemap(
       variables: GetPagesForSitemapQueryVariables,
       requestHeaders?: Headers

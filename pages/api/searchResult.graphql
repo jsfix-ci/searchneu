@@ -1,0 +1,104 @@
+query searchResults(
+  $termId: Int!
+  $query: String
+  $offset: Int = 0
+  $first: Int = 10
+  $subject: [String!]
+  $nupath: [String!]
+  $campus: [String!]
+  $classType: [String!]
+  $classIdRange: IntRange
+) {
+  search(
+    termId: $termId
+    query: $query
+    offset: $offset
+    first: $first
+    subject: $subject
+    nupath: $nupath
+    campus: $campus
+    classType: $classType
+    classIdRange: $classIdRange
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+    }
+    filterOptions {
+      nupath {
+        value
+        count
+        description
+      }
+      subject {
+        value
+        count
+        description
+      }
+      classType {
+        value
+        count
+        description
+      }
+      campus {
+        value
+        count
+        description
+      }
+    }
+    nodes {
+      type: __typename
+      ... on Employee {
+        bigPictureUrl
+        emails
+        firstName
+        googleScholarId
+        lastName
+        link
+        name
+        officeRoom
+        personalSite
+        phone
+        primaryDepartment
+        primaryRole
+        streetAddress
+      }
+      ... on ClassOccurrence {
+        name
+        subject
+        classId
+        termId
+        host
+        desc
+        nupath
+        prereqs
+        coreqs
+        prereqsFor
+        optPrereqsFor
+        maxCredits
+        minCredits
+        classAttributes
+        url
+        lastUpdateTime
+        sections {
+          campus
+          classId
+          classType
+          crn
+          honors
+          host
+          lastUpdateTime
+          meetings
+          profs
+          seatsCapacity
+          seatsRemaining
+          subject
+          termId
+          url
+          waitCapacity
+          waitRemaining
+        }
+      }
+    }
+  }
+}

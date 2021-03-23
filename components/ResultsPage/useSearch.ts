@@ -3,13 +3,18 @@
  * See the license file in the root folder for details.
  */
 
-import axios from 'axios';
 import { isEqual, pickBy } from 'lodash';
 import { useEffect } from 'react';
 import { useSWRInfinite } from 'swr';
 import macros from '../macros';
 import { SearchResult } from '../types';
-import { DEFAULT_FILTER_SELECTION, FilterSelection } from './filters';
+import {
+  DEFAULT_FILTER_SELECTION,
+  FilterOptions,
+  FilterSelection,
+} from './filters';
+import { gqlClient } from '../../utils/courseAPIClient';
+import { SearchResultsQuery } from '../../generated/graphql';
 
 export interface SearchParams {
   termId: string;
@@ -58,27 +63,27 @@ export default function useSearch({
       filters,
       (v, k: keyof FilterSelection) => !isEqual(v, DEFAULT_FILTER_SELECTION[k])
     );
-    const stringFilters = JSON.stringify(
-      nonDefaultFilters,
-      Object.keys(nonDefaultFilters).sort()
-    );
-
-    const url = new URLSearchParams({
-      // TODO: is this how we're gonna access the api in the future?
+    return JSON.stringify({
       query,
       termId,
       minIndex: String(pageIndex * 10),
       maxIndex: String((pageIndex + 1) * 10),
       apiVersion: String(apiVersion),
-      filters: stringFilters,
-    }).toString();
-    return url;
+      filters: nonDefaultFilters,
+    });
   };
 
   const { data, size, setSize } = useSWRInfinite(
     getKey,
-    async (query): Promise<SearchResult> => {
-      return (await axios.get('https://searchneu.com/search?' + query)).data;
+    async (params): Promise<SearchResult> => {
+      params = JSON.parse(params);
+      const searchResults = await gqlClient.searchResults({
+        termId: parseInt(termId),
+        query: params.query,
+        offset: parseInt(params.minIndex),
+        ...params.filters,
+      });
+      return transformGraphQLToSearchResult(searchResults);
     }
   );
 
@@ -98,4 +103,33 @@ export default function useSearch({
     searchData: returnedData,
     loadMore: () => setSize((s) => s + 1),
   };
+}
+
+function transformGraphQLToSearchResult(
+  graphqlResults: SearchResultsQuery
+): SearchResult {
+  const transformedResults: SearchResult = {
+    results: [],
+    filterOptions: graphqlResults.search.filterOptions as FilterOptions,
+  };
+  transformedResults.results = graphqlResults.search.nodes.map((node) => {
+    if (node.type === 'ClassOccurrence') {
+      return {
+        sections: node.sections,
+        class: {
+          ...node,
+          termId: node.termId.toString(),
+          classId: node.classId.toString(),
+        },
+        type: 'class',
+      };
+    } else {
+      return {
+        employee: node,
+        type: 'employee',
+      };
+    }
+  });
+
+  return transformedResults;
 }
