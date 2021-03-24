@@ -69,7 +69,7 @@ const post: NextApiHandler = withUser((userId, user) =>
           hash: courseHash,
         });
 
-        sendFBMessage(
+        await sendFBMessage(
           user.fbMessengerId,
           `Successfully subscribed to notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
@@ -86,7 +86,7 @@ const post: NextApiHandler = withUser((userId, user) =>
           hash: sectionHash,
         });
 
-        sendFBMessage(
+        await sendFBMessage(
           user.fbMessengerId,
           `Successfully subscribed to notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn}`
         );
@@ -132,7 +132,7 @@ const del: NextApiHandler = withUser((userId, user) =>
           hash: body.courseHash,
         });
 
-        sendFBMessage(
+        await sendFBMessage(
           user.fbMessengerId,
           `Successfully unsubscribed from notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
@@ -150,7 +150,7 @@ const del: NextApiHandler = withUser((userId, user) =>
           hash: body.sectionHash,
         });
 
-        sendFBMessage(
+        await sendFBMessage(
           user.fbMessengerId,
           `Successfully unsubscribed from notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn} `
         );
