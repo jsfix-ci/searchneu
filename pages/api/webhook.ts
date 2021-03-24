@@ -109,17 +109,19 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   );
 
   // Keep this here for now
-  console.log(JSON.stringify(body), 'isValid: ', isValid);
+  console.log(JSON.stringify(body, null, 2), 'isValid: ', isValid);
   console.log(req.headers['x-hub-signature'] as string);
   if (isValid) {
     try {
-      body.entry[0].messaging.map((event) => {
-        if (event.optin) {
-          handleMessengerButtonClick(event);
-        } else if (event.message) {
-          handleMessage(event);
-        }
-      });
+      await Promise.all(
+        body.entry[0].messaging.map(async (event) => {
+          if (event.optin) {
+            await handleMessengerButtonClick(event);
+          } else if (event.message) {
+            await handleMessage(event);
+          }
+        })
+      );
     } finally {
       res.status(200).end();
     }
