@@ -120,13 +120,15 @@ const del: NextApiHandler = withUser((userId, user) =>
           },
         });
 
-        for (const sectionHash of body.sectionHashes) {
-          await prisma.followedSection.deleteMany({
-            where: {
-              userId: userId,
-              sectionHash: sectionHash,
-            },
-          });
+        if (body.sectionHashes) {
+          for (const sectionHash of body.sectionHashes) {
+            await prisma.followedSection.deleteMany({
+              where: {
+                userId: userId,
+                sectionHash: sectionHash,
+              },
+            });
+          }
         }
 
         const courseInfo = await gqlClient.getCourseInfoByHash({
