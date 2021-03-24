@@ -1,15 +1,15 @@
 import {
+  IsArray,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateIf,
-  IsArray,
-  IsOptional,
 } from 'class-validator';
 import { NextApiHandler } from 'next';
+import sendFBMessage from '../../utils/api/notifyer';
 import { prisma } from '../../utils/api/prisma';
 import withUser from '../../utils/api/withUser';
 import withValidatedBody from '../../utils/api/withValidatedBody';
-import sendFBMessage from '../../utils/api/notifyer';
 import { gqlClient } from '../../utils/courseAPIClient';
 
 class SubscriptionBody {
@@ -48,6 +48,7 @@ export default async function handler(req, res): Promise<void> {
  * subscribe to course or section
  */
 
+// TODO: TEST THE NEW NOTIF MESSAGESA
 const post: NextApiHandler = withUser((userId, user) =>
   withValidatedBody(
     PostSubscriptionBody,
@@ -71,7 +72,7 @@ const post: NextApiHandler = withUser((userId, user) =>
 
         await sendFBMessage(
           user.fbMessengerId,
-          `Successfully subscribed to notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
+          `We'll send you a message when new sections of ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId} are offered!`
         );
       }
 
@@ -88,7 +89,7 @@ const post: NextApiHandler = withUser((userId, user) =>
 
         await sendFBMessage(
           user.fbMessengerId,
-          `Successfully subscribed to notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn}`
+          `We'll send you a message when seats open up for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn}!`
         );
       }
       res.status(201).end();
@@ -134,7 +135,7 @@ const del: NextApiHandler = withUser((userId, user) =>
 
         await sendFBMessage(
           user.fbMessengerId,
-          `Successfully unsubscribed from notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
+          `Unsubscribed from notifications for course ${courseInfo.classByHash.subject} ${courseInfo.classByHash.classId}`
         );
       }
 
@@ -152,7 +153,7 @@ const del: NextApiHandler = withUser((userId, user) =>
 
         await sendFBMessage(
           user.fbMessengerId,
-          `Successfully unsubscribed from notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn} `
+          `Unsubscribed from notifications for ${sectionInfo.sectionByHash.subject} ${sectionInfo.sectionByHash.classId}, section ${sectionInfo.sectionByHash.crn}`
         );
       }
       res.status(200).end();
