@@ -35,10 +35,10 @@ exports[`should render a section 1`] = `
           <div className=\\"Breadcrumb_Container\\">
             <div className=\\"Breadcrumb_Container__dropDownContainer\\">
               <Memo(SearchDropdown) options={{...}} value=\\"NEU\\" className=\\"searchDropdown\\" compact={false}>
-                <Dropdown fluid={true} compact={false} text=\\"NEU\\" className=\\"searchDropdown \\" additionLabel=\\"Add \\" additionPosition=\\"top\\" closeOnBlur={true} closeOnEscape={true} deburr={false} icon=\\"dropdown\\" minCharacters={1} noResultsMessage=\\"No results found.\\" openOnFocus={true} renderLabel={[Function: renderItemContent]} searchInput=\\"text\\" selectOnBlur={true} selectOnNavigation={true} wrapSelection={true}>
+                <Dropdown fluid={true} compact={false} text=\\"NEU\\" className=\\"selection searchDropdown \\" additionLabel=\\"Add \\" additionPosition=\\"top\\" closeOnBlur={true} closeOnEscape={true} deburr={false} icon=\\"dropdown\\" minCharacters={1} noResultsMessage=\\"No results found.\\" openOnFocus={true} renderLabel={[Function: renderItemContent]} searchInput=\\"text\\" selectOnBlur={true} selectOnNavigation={true} wrapSelection={true}>
                   <Ref innerRef={{...}}>
                     <RefFindNode innerRef={{...}}>
-                      <div role=\\"listbox\\" aria-busy={[undefined]} aria-disabled={[undefined]} aria-expanded={false} aria-multiselectable={[undefined]} className=\\"ui fluid dropdown searchDropdown \\" onBlur={[Function (anonymous)]} onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onFocus={[Function (anonymous)]} onChange={[Function (anonymous)]} tabIndex={0}>
+                      <div role=\\"listbox\\" aria-busy={[undefined]} aria-disabled={[undefined]} aria-expanded={false} aria-multiselectable={[undefined]} className=\\"ui fluid dropdown selection searchDropdown \\" onBlur={[Function (anonymous)]} onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onFocus={[Function (anonymous)]} onChange={[Function (anonymous)]} tabIndex={0}>
                         <DropdownText className=\\"text\\" content=\\"NEU\\">
                           <div aria-atomic={true} aria-live=\\"polite\\" role=\\"alert\\" className=\\"divider text\\">
                             NEU
@@ -89,10 +89,10 @@ exports[`should render a section 1`] = `
             </span>
             <div className=\\"Breadcrumb_Container__dropDownContainer\\">
               <Memo(SearchDropdown) options={{...}} value=\\"202160\\" className=\\"searchDropdown\\" compact={false}>
-                <Dropdown fluid={true} compact={false} text=\\"Summer II 2021\\" className=\\"searchDropdown \\" additionLabel=\\"Add \\" additionPosition=\\"top\\" closeOnBlur={true} closeOnEscape={true} deburr={false} icon=\\"dropdown\\" minCharacters={1} noResultsMessage=\\"No results found.\\" openOnFocus={true} renderLabel={[Function: renderItemContent]} searchInput=\\"text\\" selectOnBlur={true} selectOnNavigation={true} wrapSelection={true}>
+                <Dropdown fluid={true} compact={false} text=\\"Summer II 2021\\" className=\\"selection searchDropdown \\" additionLabel=\\"Add \\" additionPosition=\\"top\\" closeOnBlur={true} closeOnEscape={true} deburr={false} icon=\\"dropdown\\" minCharacters={1} noResultsMessage=\\"No results found.\\" openOnFocus={true} renderLabel={[Function: renderItemContent]} searchInput=\\"text\\" selectOnBlur={true} selectOnNavigation={true} wrapSelection={true}>
                   <Ref innerRef={{...}}>
                     <RefFindNode innerRef={{...}}>
-                      <div role=\\"listbox\\" aria-busy={[undefined]} aria-disabled={[undefined]} aria-expanded={false} aria-multiselectable={[undefined]} className=\\"ui fluid dropdown searchDropdown \\" onBlur={[Function (anonymous)]} onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onFocus={[Function (anonymous)]} onChange={[Function (anonymous)]} tabIndex={0}>
+                      <div role=\\"listbox\\" aria-busy={[undefined]} aria-disabled={[undefined]} aria-expanded={false} aria-multiselectable={[undefined]} className=\\"ui fluid dropdown selection searchDropdown \\" onBlur={[Function (anonymous)]} onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onFocus={[Function (anonymous)]} onChange={[Function (anonymous)]} tabIndex={0}>
                         <DropdownText className=\\"text\\" content=\\"Summer II 2021\\">
                           <div aria-atomic={true} aria-live=\\"polite\\" role=\\"alert\\" className=\\"divider text\\">
                             Summer II 2021
