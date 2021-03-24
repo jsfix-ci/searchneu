@@ -73,7 +73,8 @@ export default function useResultDetail(
     const isCompositeReq = (
       variableToCheck: any
     ): variableToCheck is CompositeReq =>
-      (variableToCheck as CompositeReq).type !== undefined;
+      (variableToCheck as CompositeReq).type === 'and' ||
+      (variableToCheck as CompositeReq).type === 'or';
 
     const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq =>
       (variableToCheck as CourseReq).classId !== undefined;
@@ -218,7 +219,7 @@ export default function useResultDetail(
       aClass.maxCredits > 1 || aClass.maxCredits === 0 ? 'CREDITS' : 'CREDIT';
     return aClass.maxCredits === aClass.minCredits
       ? `${aClass.maxCredits} ${creditDescriptor}`
-      : `${aClass.maxCredits}-${aClass.maxCredits} ${creditDescriptor}`;
+      : `${aClass.minCredits}-${aClass.maxCredits} ${creditDescriptor}`;
   };
 
   return {

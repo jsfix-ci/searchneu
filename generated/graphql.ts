@@ -213,6 +213,126 @@ export type GetCourseInfoByHashQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type SearchResultsQueryVariables = Exact<{
+  termId: Scalars['Int'];
+  query?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  subject?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  nupath?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  campus?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  classType?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  classIdRange?: Maybe<IntRange>;
+}>;
+
+export type SearchResultsQuery = { __typename?: 'Query' } & {
+  search?: Maybe<
+    { __typename?: 'SearchResultItemConnection' } & Pick<
+      SearchResultItemConnection,
+      'totalCount'
+    > & {
+        pageInfo: { __typename?: 'PageInfo' } & Pick<PageInfo, 'hasNextPage'>;
+        filterOptions: { __typename?: 'FilterOptions' } & {
+          nupath?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          subject?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          classType?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+          campus?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
+        };
+        nodes?: Maybe<
+          Array<
+            Maybe<
+              | ({ __typename?: 'ClassOccurrence' } & Pick<
+                  ClassOccurrence,
+                  | 'name'
+                  | 'subject'
+                  | 'classId'
+                  | 'termId'
+                  | 'host'
+                  | 'desc'
+                  | 'nupath'
+                  | 'prereqs'
+                  | 'coreqs'
+                  | 'prereqsFor'
+                  | 'optPrereqsFor'
+                  | 'maxCredits'
+                  | 'minCredits'
+                  | 'classAttributes'
+                  | 'url'
+                  | 'lastUpdateTime'
+                > & { type: 'ClassOccurrence' } & {
+                    sections: Array<
+                      { __typename?: 'Section' } & Pick<
+                        Section,
+                        | 'campus'
+                        | 'classId'
+                        | 'classType'
+                        | 'crn'
+                        | 'honors'
+                        | 'host'
+                        | 'lastUpdateTime'
+                        | 'meetings'
+                        | 'profs'
+                        | 'seatsCapacity'
+                        | 'seatsRemaining'
+                        | 'subject'
+                        | 'termId'
+                        | 'url'
+                        | 'waitCapacity'
+                        | 'waitRemaining'
+                      >
+                    >;
+                  })
+              | ({ __typename?: 'Employee' } & Pick<
+                  Employee,
+                  | 'bigPictureUrl'
+                  | 'emails'
+                  | 'firstName'
+                  | 'googleScholarId'
+                  | 'lastName'
+                  | 'link'
+                  | 'name'
+                  | 'officeRoom'
+                  | 'personalSite'
+                  | 'phone'
+                  | 'primaryDepartment'
+                  | 'primaryRole'
+                  | 'streetAddress'
+                > & { type: 'Employee' })
+            >
+          >
+        >;
+      }
+  >;
+};
+
 export type GetSectionInfoByHashQueryVariables = Exact<{
   hash: Scalars['String'];
 }>;
@@ -252,6 +372,112 @@ export const GetCourseInfoByHashDocument = gql`
     classByHash(hash: $hash) {
       subject
       classId
+    }
+  }
+`;
+export const SearchResultsDocument = gql`
+  query searchResults(
+    $termId: Int!
+    $query: String
+    $offset: Int = 0
+    $first: Int = 10
+    $subject: [String!]
+    $nupath: [String!]
+    $campus: [String!]
+    $classType: [String!]
+    $classIdRange: IntRange
+  ) {
+    search(
+      termId: $termId
+      query: $query
+      offset: $offset
+      first: $first
+      subject: $subject
+      nupath: $nupath
+      campus: $campus
+      classType: $classType
+      classIdRange: $classIdRange
+    ) {
+      totalCount
+      pageInfo {
+        hasNextPage
+      }
+      filterOptions {
+        nupath {
+          value
+          count
+          description
+        }
+        subject {
+          value
+          count
+          description
+        }
+        classType {
+          value
+          count
+          description
+        }
+        campus {
+          value
+          count
+          description
+        }
+      }
+      nodes {
+        type: __typename
+        ... on Employee {
+          bigPictureUrl
+          emails
+          firstName
+          googleScholarId
+          lastName
+          link
+          name
+          officeRoom
+          personalSite
+          phone
+          primaryDepartment
+          primaryRole
+          streetAddress
+        }
+        ... on ClassOccurrence {
+          name
+          subject
+          classId
+          termId
+          host
+          desc
+          nupath
+          prereqs
+          coreqs
+          prereqsFor
+          optPrereqsFor
+          maxCredits
+          minCredits
+          classAttributes
+          url
+          lastUpdateTime
+          sections {
+            campus
+            classId
+            classType
+            crn
+            honors
+            host
+            lastUpdateTime
+            meetings
+            profs
+            seatsCapacity
+            seatsRemaining
+            subject
+            termId
+            url
+            waitCapacity
+            waitRemaining
+          }
+        }
+      }
     }
   }
 `;
@@ -300,6 +526,18 @@ export function getSdk(
       return withWrapper(() =>
         client.request<GetCourseInfoByHashQuery>(
           print(GetCourseInfoByHashDocument),
+          variables,
+          requestHeaders
+        )
+      );
+    },
+    searchResults(
+      variables: SearchResultsQueryVariables,
+      requestHeaders?: Headers
+    ): Promise<SearchResultsQuery> {
+      return withWrapper(() =>
+        client.request<SearchResultsQuery>(
+          print(SearchResultsDocument),
           variables,
           requestHeaders
         )
