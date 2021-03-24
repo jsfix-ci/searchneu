@@ -151,7 +151,7 @@ async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
       user = await createNewUser(fbMessengerId);
       await sendFBMessage(
         fbMessengerId,
-        `Yo! 👋😃😆 Thanks for signing up for notifications ${user.firstName}! Holla Holla!`
+        `Yo! 👋😃😆 Thanks for signing up for notifications ${user.firstName}! `
       );
     }
     session.userId = user.id;
