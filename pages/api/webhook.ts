@@ -107,7 +107,7 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     rawBody,
     req.headers['x-hub-signature'] as string
   );
-  console.log(body);
+
   if (isValid) {
     try {
       body.entry[0].messaging.map((event) => {
@@ -149,6 +149,10 @@ async function handleMessengerButtonClick(event: FBOptinEvent): Promise<void> {
     if (!user) {
       //make new user
       user = await createNewUser(fbMessengerId);
+      await sendFBMessage(
+        fbMessengerId,
+        `Yo! 👋😃😆 Thanks for signing up for notifications ${user.firstName}! `
+      );
     }
     session.userId = user.id;
     await prisma.facebookLoginSessions.update({
@@ -194,7 +198,7 @@ async function handleMessage(event: FBMessageEvent): Promise<void> {
   });
 
   if (!doesUserExist) {
-    sendFBMessage(
+    await sendFBMessage(
       senderId,
       "Yo! 👋😃😆 I'm the Search NEU bot. I will notify you when seats open up in classes that are full. Sign up on https://searchneu.com!"
     );
@@ -231,7 +235,7 @@ async function unsubscribeSender(senderId: string): Promise<void> {
     },
   });
 
-  sendFBMessage(
+  await sendFBMessage(
     senderId,
     "You've been unsubscribed from everything! Free free to re-subscribe to updates on https://searchneu.com"
   );
