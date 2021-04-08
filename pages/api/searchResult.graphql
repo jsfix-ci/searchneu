@@ -80,8 +80,6 @@ query searchResults(
         classAttributes
         url
         lastUpdateTime
-        feeAmount
-        feeDescription
         sections {
           campus
           classId

@@ -61,7 +61,7 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
 
   const feeString =
     course.feeDescription && course.feeAmount
-      ? `${course.feeDescription} - $${course.feeAmount.toLocaleString()}`
+      ? `${course.feeDescription}- $${course.feeAmount}`
       : null;
 
   return (

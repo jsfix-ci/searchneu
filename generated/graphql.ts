@@ -287,8 +287,6 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                   | 'classAttributes'
                   | 'url'
                   | 'lastUpdateTime'
-                  | 'feeAmount'
-                  | 'feeDescription'
                 > & { type: 'ClassOccurrence' } & {
                     sections: Array<
                       { __typename?: 'Section' } & Pick<
@@ -460,8 +458,6 @@ export const SearchResultsDocument = gql`
           classAttributes
           url
           lastUpdateTime
-          feeAmount
-          feeDescription
           sections {
             campus
             classId
