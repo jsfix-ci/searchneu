@@ -6,6 +6,7 @@ import useFeedbackSchedule from '../useFeedbackSchedule';
 import FeedbackModalCheckboxes from './FeedbackModalCheckboxes';
 import FeedbackModalFree from './FeedbackModalFree';
 import FeedbackModalInitial from './FeedbackModalInitial';
+import axios from 'axios';
 
 enum FeedbackStep {
   initial,
@@ -35,7 +36,7 @@ export default function FeedbackModal(): ReactElement {
     'Something else',
   ];
 
-  function handleSubmit(): void {
+  async function handleSubmit(): Promise<void> {
     switch (step) {
       case FeedbackStep.initial:
         if (yes) {
@@ -62,6 +63,8 @@ export default function FeedbackModal(): ReactElement {
           feedbackType: feedbackType,
           feedbackQuery: feedbackQuery,
         });
+        const res = await axios.post('/api/feedback', { text: feedbackQuery });
+        console.log('slack res', res);
         setSubmitted(true);
         setFinished();
         break;
