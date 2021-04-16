@@ -55,6 +55,8 @@ export default function Page(): ReactElement {
         termAndCampusToURL={termAndCampusToURL}
       />
       <PageContent
+        termId={termId}
+        campus={campus}
         subject={subject}
         classId={classId}
         classPageInfo={classPageInfo}
@@ -63,6 +65,8 @@ export default function Page(): ReactElement {
       {coreqInfo.map((info, index) => (
         <PageContent
           key={index}
+          termId={termId}
+          campus={campus}
           subject={subject}
           classId={classId}
           classPageInfo={info}

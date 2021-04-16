@@ -92,12 +92,17 @@
   }
 
   .classPageBody {
-    margin-top: 60px;
     margin-bottom: 60px;
+  }
+
+  .classPageBody,
+  .classPageReqsBody {
+    margin-top: 60px;
 
     .classPageHeader {
       font-size: 22px;
       font-weight: 500;
+      margin-bottom: 16px;
     }
 
     .classPageBodyLeft {
@@ -119,6 +124,13 @@
       font-size: 20px;
     }
 
+    .prereqsDisplay {
+      ul > li {
+        margin-left: 20px;
+        line-height: 30px;
+      }
+    }
+
     .avgSeatsFilled,
     .avgSeatsAvail,
     .avgNumSections,
@@ -126,8 +138,41 @@
       width: 50%;
     }
 
-    .emptyCourseFee p {
+    .emptyCourseFee p,
+    .noReqs,
+    .noNUPaths {
       color: #969696;
+    }
+
+    .reqItemsContainer.showScroll {
+      height: 130px;
+      width: 220px;
+      border: 1px #e2e2e2 solid;
+      border-radius: 10px;
+      padding: 4px 0px 4px 0px;
+      .reqItemsScroll {
+        overflow: auto;
+        height: 100%;
+      }
+      .reqItem {
+        padding: 7px 7px 7px 10px;
+        border-bottom: 1px #e2e2e2 solid;
+      }
+    }
+  }
+  .classPageReqsBody .flex .nupaths,
+  .prereqs,
+  .coreqs,
+  .link,
+  .prereqsFor,
+  .optPrereqsFor {
+    width: 30%;
+    a,
+    p,
+    span {
+      font-size: 18px;
+      line-height: 30px;
+      margin: 0;
     }
   }
 }
