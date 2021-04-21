@@ -1,14 +1,13 @@
-import { Section } from '../../types';
-
 interface UseSectionPanelDetailReturn {
   getSeatsClass: () => string;
 }
 
 export default function useSectionPanelDetail(
-  section: Section
+  seatsRemaining: number,
+  seatsCapacity: number
 ): UseSectionPanelDetailReturn {
   const getSeatsClass = (): string => {
-    const seatingPercentage = section.seatsRemaining / section.seatsCapacity;
+    const seatingPercentage = seatsRemaining / seatsCapacity;
     if (seatingPercentage > 2 / 3) {
       return 'green';
     }

@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { GetClassPageInfoQuery } from '../../generated/graphql';
-import ClassPageInfoHeader from './ClassPageInfoHeader';
 import ClassPageInfoBody from './ClassPageInfoBody';
+import ClassPageInfoHeader from './ClassPageInfoHeader';
 import ClassPageReqsBody from './ClassPageReqsBody';
+import ClassPageSections from './ClassPageSections';
 
 type PageContentProps = {
   termId: string;
@@ -24,8 +25,15 @@ export default function PageContent({
 }: PageContentProps): ReactElement {
   const router = useRouter();
 
+  // TODO: hacky front-end solution because for some reason allOccurrences includes
+  // termIds where there are no sections. This should probably be fixed on the backend.
+  if (classPageInfo && classPageInfo.class) {
+    classPageInfo.class.allOccurrences = classPageInfo.class.allOccurrences.filter(
+      (occurrence) => occurrence.sections.length > 0
+    );
+  }
   return (
-    <div className="pageContent">
+    <div className={`pageContent ${isCoreq ? 'coreqPageContent' : ''}`}>
       {isCoreq ? (
         <h2 className="coreqHeader">
           COREQUISITES for
@@ -48,9 +56,7 @@ export default function PageContent({
             classPageInfo={classPageInfo}
           />
           <div className="horizontalLine" />
-          <div className="horizontalLine" />
-          <div className="horizontalLine" />
-          <div className="horizontalLine" />
+          <ClassPageSections classPageInfo={classPageInfo} />
           <div className="horizontalLine" />
         </div>
       )}
