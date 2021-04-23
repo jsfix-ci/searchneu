@@ -1,14 +1,17 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Markup } from 'interweave';
 import { cloneDeep } from 'lodash';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useState } from 'react';
 import useUser from '../../../utils/useUser';
-import { notMostRecentTerm } from '../../global';
+import {
+  CreditsDisplay,
+  CreditsDisplayMobile,
+} from '../../common/CreditsDisplay';
+import { LastUpdated, LastUpdatedMobile } from '../../common/LastUpdated';
 import IconArrow from '../../icons/IconArrow';
 import IconCollapseExpand from '../../icons/IconCollapseExpand';
-import IconGlobe from '../../icons/IconGlobe';
+import IconNotepad from '../../icons/IconNotepad';
 import Keys from '../../Keys';
 import { Course, PrereqType, Section } from '../../types';
 import MobileCollapsableDetail from './MobileCollapsableDetail';
@@ -21,15 +24,9 @@ const SignUpForNotifications = dynamic(
   { ssr: false }
 );
 
-dayjs.extend(relativeTime);
-
 interface SearchResultProps {
   course: Course;
 }
-
-const getLastUpdateString = (course: Course): string => {
-  return course.lastUpdateTime ? dayjs(course.lastUpdateTime).fromNow() : null;
-};
 
 const sortSections = (sections: Section[]): Section[] => {
   const sortedSections = cloneDeep(sections);
@@ -47,8 +44,11 @@ const sortSections = (sections: Section[]): Section[] => {
 };
 
 export function SearchResult({ course }: SearchResultProps): ReactElement {
+  const router = useRouter();
+  const termId = router.query.termId as string;
+  const campus = router.query.campus as string;
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);
-  const { optionalDisplay, creditsString } = useResultDetail(course);
+  const { optionalDisplay } = useResultDetail(course);
 
   const { user } = useUser();
   const userIsWatchingClass = user?.followedCourses?.includes(
@@ -71,21 +71,17 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
           <span className="SearchResult__header--classTitle">
             {course.subject} {course.classId}: {course.name}
           </span>
-          <div className="SearchResult__header--sub">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              data-tip={`View on ${course.host}`}
-              href={course.prettyUrl}
-            >
-              <IconGlobe />
-            </a>
-            <span>{`Updated ${getLastUpdateString(course)}`}</span>
-          </div>
+          <LastUpdated
+            host={course.host}
+            prettyUrl={course.prettyUrl}
+            lastUpdateTime={course.lastUpdateTime}
+            className="SearchResult__header--sub"
+          />
         </div>
-        <span className="SearchResult__header--creditString">
-          {creditsString()}
-        </span>
+        <CreditsDisplay
+          maxCredits={course.maxCredits}
+          minCredits={course.minCredits}
+        ></CreditsDisplay>
       </div>
       <div className="SearchResult__panel">
         <Markup content={course.desc} />
@@ -112,6 +108,19 @@ export function SearchResult({ course }: SearchResultProps): ReactElement {
             )}
           </div>
           <div className="SearchResult__panel--right">
+            <div
+              onClick={() =>
+                router.push(
+                  `/${campus}/${termId}/classPage/${course.subject}/${course.classId}`
+                )
+              }
+            >
+              <div className="view-more-info-container">
+                <IconNotepad className="notepad-icon" />
+                <span>View more info for this class</span>
+              </div>
+            </div>
+
             <SignUpForNotifications course={course} />
           </div>
         </div>
@@ -179,7 +188,7 @@ export function MobileSearchResult({
     sortedSections
   );
 
-  const { optionalDisplay, creditsString } = useResultDetail(course);
+  const { optionalDisplay } = useResultDetail(course);
 
   const renderNUPaths = (): ReactElement => (
     // eslint-disable-next-line react/prop-types
@@ -213,12 +222,15 @@ export function MobileSearchResult({
         <div className="MobileSearchResult__panel">
           <div className="MobileSearchResult__panel--mainContainer">
             <div className="MobileSearchResult__panel--infoStrings">
-              <a
-                href={course.prettyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >{`Updated ${getLastUpdateString(course)}`}</a>
-              <span>{creditsString()}</span>
+              <LastUpdatedMobile
+                host={course.host}
+                prettyUrl={course.prettyUrl}
+                lastUpdateTime={course.lastUpdateTime}
+              />
+              <CreditsDisplayMobile
+                maxCredits={course.maxCredits}
+                minCredits={course.minCredits}
+              />
             </div>
             <div
               className={

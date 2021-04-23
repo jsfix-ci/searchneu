@@ -1,0 +1,269 @@
+.pageContent {
+  margin-left: 10.49%;
+  margin-top: 150px;
+  padding-bottom: 120px;
+  width: 80vw;
+  color: black;
+  &.coreqPageContent {
+    margin-top: 0px;
+  }
+
+  .backToResults {
+    height: 38px;
+    font-size: 17px;
+    cursor: pointer;
+    color: #009fda;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .title {
+    height: 155px;
+    margin-top: 17px;
+    line-height: 48px;
+    display: flex;
+    align-items: center;
+
+    .titleItems {
+      display: flex;
+      flex-direction: column;
+
+      .classCode {
+        font-size: 40px;
+        font-weight: 700;
+      }
+
+      .className {
+        font-size: 38px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .coreqHeader {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    font-style: normal;
+
+    .coreqHeaderCourse {
+      font-style: italic;
+    }
+  }
+
+  .horizontalLine {
+    background-color: #979797;
+    height: 1px;
+  }
+
+  .verticalLine {
+    border-left: 1px solid #979797;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .justify-space-between {
+    justify-content: space-between;
+  }
+
+  .classPageLastUpdated {
+    font-size: 17px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+  }
+
+  .creditsDisplay {
+    text-align: center;
+
+    .creditsNumericDisplay {
+      font-size: 36px;
+      line-height: 42px;
+      font-weight: 400;
+    }
+
+    .creditsDescriptionDisplay {
+      font-size: 18px;
+    }
+  }
+
+  .classPageInfoHeader {
+    margin-bottom: 10px;
+  }
+
+  .classPageBody {
+    margin-bottom: 60px;
+  }
+
+  .classPageBody,
+  .classPageReqsBody {
+    margin-top: 60px;
+
+    .classPageHeader {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .classPageBodyLeft {
+      width: 45%;
+    }
+
+    .classPageBodyRight {
+      width: 45%;
+    }
+
+    .headerBodyGroup {
+      margin-bottom: 60px;
+      p {
+        font-size: 16px;
+      }
+    }
+
+    .lg-text p {
+      font-size: 20px;
+    }
+
+    .prereqsDisplay {
+      ul > li {
+        margin-left: 20px;
+        line-height: 30px;
+      }
+    }
+
+    .avgSeatsFilled,
+    .avgSeatsAvail,
+    .avgNumSections,
+    .courseFees {
+      width: 50%;
+    }
+
+    .emptyCourseFee p,
+    .noReqs,
+    .noNUPaths {
+      color: #969696;
+    }
+
+    .reqItemsContainer.showScroll {
+      height: 130px;
+      width: 220px;
+      border: 1px #e2e2e2 solid;
+      border-radius: 10px;
+      padding: 4px 0px 4px 0px;
+      .reqItemsScroll {
+        overflow: auto;
+        height: 100%;
+      }
+      .reqItem {
+        padding: 7px 7px 7px 10px;
+        border-bottom: 1px #e2e2e2 solid;
+      }
+    }
+  }
+  .classPageReqsBody .flex .nupaths,
+  .prereqs,
+  .coreqs,
+  .link,
+  .prereqsFor,
+  .optPrereqsFor {
+    width: 30%;
+    a,
+    p,
+    span {
+      font-size: 18px;
+      line-height: 30px;
+      margin: 0;
+    }
+  }
+
+  .classPageSections {
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+    .sectionsNav {
+      margin-bottom: 60px;
+    }
+
+    .campusNav,
+    .termNav {
+      font-size: 26px;
+      font-weight: 500;
+      vertical-align: middle;
+    }
+    .navArrow {
+      padding: 8px;
+      cursor: pointer;
+      &.disabled {
+        cursor: default;
+      }
+    }
+
+    .sectionsCampusDropdown {
+      .divider.text {
+        text-decoration: underline;
+      }
+      .dropdown.icon {
+        margin: 0 0 0 12px;
+      }
+      .sectionsCampusDropdownMenu {
+        margin-top: 10px;
+      }
+
+      .sectionsCampusOption.item {
+        padding: 28px !important;
+        span {
+          font-size: 22px;
+          color: #636363;
+          margin-top: 8px;
+          margin-bottom: 8px;
+        }
+      }
+    }
+
+    .sectionCards .horizontalLine {
+      margin: 60px 0px;
+    }
+
+    .sectionCard {
+      width: 45%;
+      font-size: 18px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+
+      .sectionCardProfs {
+        margin-bottom: 14px;
+      }
+
+      .sectionCRN {
+        margin: 24px 0;
+      }
+
+      .courseMeeting {
+        margin: 7px 0;
+      }
+
+      .seatsAvailable {
+        margin: 20px 0;
+        &.green {
+          color: #27ae34;
+        }
+
+        &.yellow {
+          color: #ffbf3d;
+        }
+
+        &.red {
+          color: #d41b2c;
+        }
+      }
+    }
+  }
+}

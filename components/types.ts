@@ -62,6 +62,7 @@ export interface Course {
   termId: string;
   desc: string;
   name: string;
+  url: string;
   prettyUrl: string;
   classId: string;
   subject: string;
@@ -96,6 +97,12 @@ export interface Meeting {
   startDate: Dayjs;
   endDate: Dayjs;
   times: DayjsTuple[];
+  type: MeetingType;
+}
+
+export enum MeetingType {
+  CLASS = 'Class',
+  FINAL_EXAM = 'Final Exam',
 }
 
 // ======= Search Results ========
@@ -103,6 +110,7 @@ export interface Meeting {
 export interface SearchResult {
   results: SearchItem[];
   filterOptions: FilterOptions;
+  hasNextPage: boolean;
 }
 
 export type CourseResult = {
@@ -122,6 +130,7 @@ export function BLANK_SEARCH_RESULT(): SearchResult {
       classType: [],
       campus: [],
     },
+    hasNextPage: false,
   };
 }
 

@@ -3,24 +3,50 @@ import React, { ReactElement } from 'react';
 import macros from '../../macros';
 import {
   CompositeReq,
-  Course,
   CourseReq,
   PrereqType,
   Requisite,
+  ReqFor,
 } from '../../types';
 
+export interface CourseReqs {
+  termId: string | number;
+  prereqsFor: ReqFor;
+  optPrereqsFor: ReqFor;
+  prereqs: CompositeReq;
+  coreqs: CompositeReq;
+}
+
+export type OptionalDisplay = (
+  PreqreqType: PrereqType,
+  Course: CourseReqs
+) => ReactElement | ReactElement[];
+
+export const isCompositeReq = (
+  variableToCheck: unknown
+): variableToCheck is CompositeReq =>
+  (variableToCheck as CompositeReq).type === 'and' ||
+  (variableToCheck as CompositeReq).type === 'or';
+
+export const isCourseReq = (
+  variableToCheck: unknown
+): variableToCheck is CourseReq =>
+  (variableToCheck as CourseReq).classId !== undefined;
+
 export default function useResultDetail(
-  aClass: Course
+  aClass: CourseReqs
 ): {
-  optionalDisplay: (PreqreqType, Course) => ReactElement | ReactElement[];
-  creditsString: () => string;
+  optionalDisplay: OptionalDisplay;
 } {
   const router = useRouter();
-  const onReqClick = (reqType, childBranch, event, searchQuery): void => {
+  const onReqClick = (reqType, childBranch, event, subject, classId): void => {
     router.push(
-      `/${router.query.campus}/${router.query.termId}/search/${searchQuery}`
+      `/${router.query.campus}/${router.query.termId}/search/${
+        subject + classId
+      }`
     );
 
+    // QUESTION: why are we making a custom event and dispatching it??
     // Create the React element and add it to retVal
     const searchEvent = new CustomEvent(macros.searchEvent, {
       detail: `${childBranch.subject} ${childBranch.classId}`,
@@ -58,7 +84,7 @@ export default function useResultDetail(
   };
 
   const getReqsStringHelper = (
-    requisite: Course | CompositeReq,
+    requisite: CourseReqs | CompositeReq,
     reqType: PrereqType,
     childNodes: Requisite[]
   ): ReactElement | ReactElement[] => {
@@ -69,15 +95,6 @@ export default function useResultDetail(
     // This is because there is no need to show (eg. CS 2500 and CS 2500 (hon)) in the same group
     // because only the subject and the classId are going to be shown.
     const processedSubjectClassIds = {};
-
-    const isCompositeReq = (
-      variableToCheck: any
-    ): variableToCheck is CompositeReq =>
-      (variableToCheck as CompositeReq).type === 'and' ||
-      (variableToCheck as CompositeReq).type === 'or';
-
-    const isCourseReq = (variableToCheck: any): variableToCheck is CourseReq =>
-      (variableToCheck as CourseReq).classId !== undefined;
 
     childNodes.forEach((childBranch) => {
       if (!isCourseReq(childBranch) && !isCompositeReq(childBranch)) {
@@ -111,7 +128,8 @@ export default function useResultDetail(
                 reqType,
                 childBranch,
                 event,
-                childBranch.subject + childBranch.classId
+                childBranch.subject,
+                childBranch.classId
               );
             }}
           >
@@ -186,7 +204,7 @@ export default function useResultDetail(
   // returns an array made to be rendered by react to display the prereqs
   const getReqsString = (
     reqType: PrereqType,
-    course: Course
+    course: CourseReqs
   ): ReactElement | ReactElement[] => {
     let childNodes: Requisite[];
 
@@ -207,23 +225,14 @@ export default function useResultDetail(
 
   const optionalDisplay = (
     prereqType: PrereqType,
-    course: Course
+    course: CourseReqs
   ): ReactElement | ReactElement[] => {
     const data = getReqsString(prereqType, course);
 
     return data;
   };
 
-  const creditsString = (): string => {
-    const creditDescriptor =
-      aClass.maxCredits > 1 || aClass.maxCredits === 0 ? 'CREDITS' : 'CREDIT';
-    return aClass.maxCredits === aClass.minCredits
-      ? `${aClass.maxCredits} ${creditDescriptor}`
-      : `${aClass.minCredits}-${aClass.maxCredits} ${creditDescriptor}`;
-  };
-
   return {
     optionalDisplay,
-    creditsString,
   };
 }

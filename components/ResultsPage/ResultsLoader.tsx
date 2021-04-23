@@ -22,9 +22,10 @@ const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 interface ResultsLoaderProps {
   results: SearchItem[];
   loadMore: () => void;
+  hasNextPage: boolean;
 }
 
-const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
+export const getGroupedByTimeOfDay = (times): DayjsTuple[] => {
   const timeMoments = [];
 
   if (times) {
@@ -81,6 +82,7 @@ const getFormattedSections = (sections: any): Section[] => {
         startDate: dayjs((meeting.startDate + 1) * DAY_IN_MILLISECONDS),
         endDate: dayjs((meeting.endDate + 1) * DAY_IN_MILLISECONDS),
         times: getGroupedByTimeOfDay(meeting.times),
+        type: meeting.type,
       });
     });
 
@@ -94,12 +96,13 @@ const getFormattedSections = (sections: any): Section[] => {
 function ResultsLoader({
   results,
   loadMore,
+  hasNextPage,
 }: ResultsLoaderProps): ReactElement {
   return (
     <InfiniteScroll
       dataLength={results.length}
       next={loadMore}
-      hasMore
+      hasMore={hasNextPage}
       loader={null}
     >
       <div className="five column row">

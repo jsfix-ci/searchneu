@@ -81,7 +81,7 @@ export type ClassOccurrence = {
   __typename?: 'ClassOccurrence';
   name: Scalars['String'];
   subject: Scalars['String'];
-  classId: Scalars['Int'];
+  classId: Scalars['String'];
   termId: Scalars['Int'];
   desc: Scalars['String'];
   prereqs?: Maybe<Scalars['JSON']>;
@@ -233,9 +233,12 @@ export type GetClassPageInfoQuery = { __typename?: 'Query' } & {
             | 'minCredits'
             | 'classAttributes'
             | 'url'
+            | 'prettyUrl'
             | 'lastUpdateTime'
+            | 'feeAmount'
             | 'nupath'
             | 'host'
+            | 'termId'
           >
         >;
         allOccurrences: Array<
@@ -339,6 +342,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
                   | 'minCredits'
                   | 'classAttributes'
                   | 'url'
+                  | 'prettyUrl'
                   | 'lastUpdateTime'
                   | 'feeAmount'
                   | 'feeDescription'
@@ -446,9 +450,12 @@ export const GetClassPageInfoDocument = gql`
         minCredits
         classAttributes
         url
+        prettyUrl
         lastUpdateTime
+        feeAmount
         nupath
         host
+        termId
       }
       allOccurrences {
         termId
@@ -550,6 +557,7 @@ export const SearchResultsDocument = gql`
           minCredits
           classAttributes
           url
+          prettyUrl
           lastUpdateTime
           feeAmount
           feeDescription

@@ -2,9 +2,16 @@ import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import IconGlobe from '../../icons/IconGlobe';
 import Keys from '../../Keys';
-import { DayjsTuple, DayOfWeek, Meeting, Section } from '../../types';
+import {
+  DayjsTuple,
+  DayOfWeek,
+  Meeting,
+  MeetingType,
+  Section,
+} from '../../types';
 import useSectionPanelDetail from './useSectionPanelDetail';
 import WeekdayBoxes from './WeekdayBoxes';
+import Tooltip, { TooltipDirection } from '../../Tooltip';
 
 const NotifCheckBox = dynamic(() => import('../../panels/NotifCheckBox'), {
   ssr: false,
@@ -62,7 +69,10 @@ export function DesktopSectionPanel({
   section,
   showNotificationSwitches,
 }: SectionPanelProps): ReactElement {
-  const { getSeatsClass } = useSectionPanelDetail(section);
+  const { getSeatsClass } = useSectionPanelDetail(
+    section.seatsRemaining,
+    section.seatsCapacity
+  );
 
   const getUniqueTimes = (times: DayjsTuple[]): DayjsTuple[] => {
     const seenTimes = new Set();
@@ -82,14 +92,25 @@ export function DesktopSectionPanel({
     if (daysMet.some((d) => d)) {
       return (
         <div className="DesktopSectionPanel__meetings">
-          <WeekdayBoxes meetingDays={daysMet} />
+          <WeekdayBoxes meetingDays={daysMet} meetingType={meeting.type} />
           <div className="DesktopSectionPanel__meetings--times">
             {getUniqueTimes(meeting.times).map((time) => (
               <>
                 <span>
-                  {`${time.start.format('h:mm')}-${time.end.format(
-                    'h:mm a'
-                  )} | ${meeting.location}`}
+                  {meeting.type === MeetingType.FINAL_EXAM ? (
+                    <>
+                      <b>Final Exam</b> |{' '}
+                      {`${time.start.format('h:mm')}-${time.end.format(
+                        'h:mm a'
+                      )} | ${meeting.location} | ${meeting.startDate.format(
+                        'MMM D'
+                      )}`}
+                    </>
+                  ) : (
+                    `${time.start.format('h:mm')}-${time.end.format(
+                      'h:mm a'
+                    )} | ${meeting.location}`
+                  )}
                 </span>
                 <br />
               </>
@@ -106,6 +127,8 @@ export function DesktopSectionPanel({
   };
 
   const getMeetings = (s: Section): ReactElement[] => {
+    // Class meeting times should always come before Final Exam times
+    s.meetings.sort((a) => (a.type === MeetingType.CLASS ? -1 : 1));
     return s.meetings.map((m) => {
       const meetingDays = Array(7).fill(false);
       meetingDays.forEach((d, index) => {
@@ -121,6 +144,10 @@ export function DesktopSectionPanel({
         <a href={section.url} target="_blank" rel="noopener noreferrer">
           {section.crn}
         </a>
+        <Tooltip
+          text={'View this section on Banner.'}
+          direction={TooltipDirection.Up}
+        />
       </td>
       <td>{getProfs(section).join(', ')}</td>
       <td>
@@ -151,7 +178,10 @@ export function MobileSectionPanel({
   section,
   showNotificationSwitches,
 }: SectionPanelProps): ReactElement {
-  const { getSeatsClass } = useSectionPanelDetail(section);
+  const { getSeatsClass } = useSectionPanelDetail(
+    section.seatsRemaining,
+    section.seatsCapacity
+  );
 
   const groupedTimesAndDays = (times: DayjsTuple[]): Map<string, string[]> => {
     const daysOfWeek = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S'];
@@ -169,7 +199,11 @@ export function MobileSectionPanel({
   };
 
   const getMeetings = (s: Section): ReactElement[][] => {
-    return s.meetings.map((m) =>
+    // Mobile only displays class times, no final exams
+    const classMeetings = s.meetings.filter(
+      (m) => m.type === MeetingType.CLASS
+    );
+    return classMeetings.map((m) =>
       Array.from(groupedTimesAndDays(m.times)).map(([time, days]) => (
         <>
           <span className="MobileSectionPanel__meetings--time">
@@ -198,7 +232,10 @@ export function MobileSectionPanel({
       </div>
       <div className="MobileSectionPanel__secondRow">
         {!section.online && (
-          <WeekdayBoxes meetingDays={getDaysOfWeekAsBooleans(section)} />
+          <WeekdayBoxes
+            meetingDays={getDaysOfWeekAsBooleans(section)}
+            meetingType={MeetingType.CLASS}
+          />
         )}
       </div>
       <div className="MobileSectionPanel__meetings">
