@@ -20,45 +20,36 @@ const HomeSearch = ({ termId, campus }: HomeSearchProps): ReactElement => {
   return (
     <div className="HomeSearch">
       <div className="HomeSearch__campusSelector">
-        <input
-          type="radio"
-          id="campusSelectorNeu"
-          name="CampusSelector"
-          defaultChecked={campus == Campus.NEU}
-        />
         <Link href={`/${Campus.NEU}/${getRoundedTerm(Campus.NEU, termId)}`}>
           <label
-            className="HomeSearch__campusSelector--neu"
+            className={
+              'HomeSearch__campusSelector--item --neu' +
+              (campus === Campus.NEU ? ' --checked' : '')
+            }
             htmlFor="campusSelectorNeu"
           >
             <IconGradcap />
             <span>NEU</span>
           </label>
         </Link>
-        <input
-          type="radio"
-          id="campusSelectorCps"
-          name="CampusSelector"
-          defaultChecked={campus == Campus.CPS}
-        />
         <Link href={`/${Campus.CPS}/${getRoundedTerm(Campus.CPS, termId)}`}>
           <label
-            className="HomeSearch__campusSelector--cps"
+            className={
+              'HomeSearch__campusSelector--item --cps' +
+              (campus === Campus.CPS ? ' --checked' : '')
+            }
             htmlFor="campusSelectorCps"
           >
             <IconTie />
             <span>CPS</span>
           </label>
         </Link>
-        <input
-          type="radio"
-          id="campusSelectorLaw"
-          name="CampusSelector"
-          defaultChecked={campus == Campus.LAW}
-        />
         <Link href={`/${Campus.LAW}/${getRoundedTerm(Campus.LAW, termId)}`}>
           <label
-            className="HomeSearch__campusSelector--law"
+            className={
+              'HomeSearch__campusSelector--item --law' +
+              (campus === Campus.LAW ? ' --checked' : '')
+            }
             htmlFor="campusSelectorLaw"
           >
             <IconScale />
