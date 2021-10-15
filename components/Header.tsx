@@ -20,15 +20,19 @@ import {
   Campus,
   EMPTY_FILTER_OPTIONS,
   SearchResult,
+  UserInfo,
 } from '../components/types';
 import { campusToColor } from '../utils/campusToColor';
 import MobileSearchOverlay from './ResultsPage/MobileSearchOverlay';
+import { Button } from 'antd';
 
 type HeaderProps = {
   router: NextRouter;
   title: string;
   searchData: SearchResult;
   termAndCampusToURL: (t: string, newCampus: string, query: string) => string;
+  userInfo: UserInfo;
+  onSignOut: () => void;
 };
 
 export default function Header({
@@ -36,6 +40,8 @@ export default function Header({
   title,
   searchData,
   termAndCampusToURL,
+  userInfo,
+  onSignOut,
 }: HeaderProps): ReactElement {
   const atTop = useAtTop();
   const [showOverlay, setShowOverlay] = useQueryParam('overlay', BooleanParam);
@@ -148,6 +154,16 @@ export default function Header({
             />
           </div>
         </div>
+        {userInfo && (
+          <>
+            <div className="User_Header">{userInfo.phoneNumber}</div>
+            <div className="User_SignOut">
+              <Button danger onClick={onSignOut}>
+                Sign Out
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
