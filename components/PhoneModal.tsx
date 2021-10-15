@@ -29,6 +29,7 @@ export function PhoneModal({
   const [responseMessage, setResponseMessage] = useState('');
 
   // TODO: Use regex check to see if phone number is valid, could be all numbers or dashes and parentheses in the right places. Send message if wrong format, else strip out non-number characters then send to backend.
+  console.log(`NOTIFS ENDPOINT: ${process.env.NEXT_PUBLIC_NOTIFS_ENDPOINT}`);
   const onPhoneNumberSubmit = (): void => {
     axios
       .post(`${process.env.NEXT_PUBLIC_NOTIFS_ENDPOINT}/sms/signup`, {
