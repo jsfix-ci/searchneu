@@ -90,6 +90,7 @@ export interface Section {
   campus: string;
   campusDescription: string;
   url: string;
+  termHalf: string;
 }
 
 export interface Meeting {
@@ -127,6 +128,7 @@ export function BLANK_SEARCH_RESULT(): SearchResult {
     filterOptions: {
       nupath: [],
       subject: [],
+      termHalf: [],
       classType: [],
       campus: [],
     },
@@ -138,6 +140,7 @@ export function EMPTY_FILTER_OPTIONS(): FilterOptions {
   return {
     nupath: [],
     subject: [],
+    termHalf: [],
     classType: [],
     campus: [],
   };

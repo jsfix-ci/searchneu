@@ -99,6 +99,7 @@ export type FilterOptions = {
   subject?: Maybe<Array<FilterAgg>>;
   classType?: Maybe<Array<FilterAgg>>;
   campus?: Maybe<Array<FilterAgg>>;
+  termHalf?: Maybe<Array<FilterAgg>>;
 };
 
 export type IntRange = {
@@ -163,6 +164,7 @@ export type QuerySearchArgs = {
   query?: Maybe<Scalars['String']>;
   subject?: Maybe<Array<Scalars['String']>>;
   nupath?: Maybe<Array<Scalars['String']>>;
+  termHalf?: Maybe<Array<Scalars['String']>>;
   campus?: Maybe<Array<Scalars['String']>>;
   classType?: Maybe<Array<Scalars['String']>>;
   classIdRange?: Maybe<IntRange>;
@@ -198,6 +200,7 @@ export type Section = {
   meetings?: Maybe<Scalars['JSON']>;
   host: Scalars['String'];
   lastUpdateTime?: Maybe<Scalars['Float']>;
+  termHalf?: Maybe<Scalars['String']>;
 };
 
 export type GetCourseInfoByHashQueryVariables = Exact<{
@@ -275,6 +278,7 @@ export type SearchResultsQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   subject?: Maybe<Array<Scalars['String']> | Scalars['String']>;
   nupath?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  termHalf?: Maybe<Array<Scalars['String']> | Scalars['String']>;
   campus?: Maybe<Array<Scalars['String']> | Scalars['String']>;
   classType?: Maybe<Array<Scalars['String']> | Scalars['String']>;
   classIdRange?: Maybe<IntRange>;
@@ -481,6 +485,7 @@ export const SearchResultsDocument = gql`
     $first: Int = 10
     $subject: [String!]
     $nupath: [String!]
+    $termHalf: [String!]
     $campus: [String!]
     $classType: [String!]
     $classIdRange: IntRange
@@ -492,6 +497,7 @@ export const SearchResultsDocument = gql`
       first: $first
       subject: $subject
       nupath: $nupath
+      termHalf: $termHalf
       campus: $campus
       classType: $classType
       classIdRange: $classIdRange

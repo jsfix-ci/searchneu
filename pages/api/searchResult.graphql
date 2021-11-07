@@ -5,6 +5,7 @@ query searchResults(
   $first: Int = 10
   $subject: [String!]
   $nupath: [String!]
+  $termHalf: [String!]
   $campus: [String!]
   $classType: [String!]
   $classIdRange: IntRange
@@ -16,6 +17,7 @@ query searchResults(
     first: $first
     subject: $subject
     nupath: $nupath
+    termHalf: $termHalf
     campus: $campus
     classType: $classType
     classIdRange: $classIdRange

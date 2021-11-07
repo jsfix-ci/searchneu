@@ -51,17 +51,17 @@ const ENCODERS_FOR_CAT: Record<FilterCategory, QueryParamConfig<any, any>> = {
 
 // ============== Filter specifications ================
 // Specify which filters exist, and which category they are
-const NUPATH_SPEC: FilterSpec<'Dropdown'> = {
-  category: FilterCategories.Dropdown,
-  default: [],
-  display: 'NU Path',
-  order: 2,
-};
 const SUBJECT_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown,
   default: [],
   display: 'Subject',
   order: 1,
+};
+const NUPATH_SPEC: FilterSpec<'Dropdown'> = {
+  category: FilterCategories.Dropdown,
+  default: [],
+  display: 'NU Path',
+  order: 2,
 };
 const CAMPUS_SPEC: FilterSpec<'Dropdown'> = {
   category: FilterCategories.Dropdown,
@@ -69,22 +69,29 @@ const CAMPUS_SPEC: FilterSpec<'Dropdown'> = {
   display: 'Campus',
   order: 3,
 };
+const TERMHALF_SPEC: FilterSpec<'Dropdown'> = {
+  category: FilterCategories.Dropdown,
+  default: [],
+  display: 'Term Half',
+  order: 4,
+};
 const CLASSTYPE_SPEC: FilterSpec<'Checkboxes'> = {
   category: FilterCategories.Checkboxes,
   default: [],
   display: 'Class Type',
-  order: 4,
+  order: 5,
 };
 const CLASSIDRANGE_SPEC: FilterSpec<'Range'> = {
   category: FilterCategories.Range,
   default: {},
   display: 'Course Number',
-  order: 5,
+  order: 6,
 };
 export const FILTER_SPECS = {
   nupath: NUPATH_SPEC,
   subject: SUBJECT_SPEC,
   campus: CAMPUS_SPEC,
+  termHalf: TERMHALF_SPEC,
   classType: CLASSTYPE_SPEC,
   classIdRange: CLASSIDRANGE_SPEC,
 };
