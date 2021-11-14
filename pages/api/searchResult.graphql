@@ -37,6 +37,11 @@ query searchResults(
         count
         description
       }
+      termHalf {
+        value
+        count
+        description
+      }
       classType {
         value
         count

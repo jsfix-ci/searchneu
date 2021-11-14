@@ -308,6 +308,14 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
               >
             >
           >;
+          termHalf?: Maybe<
+            Array<
+              { __typename?: 'FilterAgg' } & Pick<
+                FilterAgg,
+                'value' | 'count' | 'description'
+              >
+            >
+          >;
           classType?: Maybe<
             Array<
               { __typename?: 'FilterAgg' } & Pick<
@@ -513,6 +521,11 @@ export const SearchResultsDocument = gql`
           description
         }
         subject {
+          value
+          count
+          description
+        }
+        termHalf {
           value
           count
           description
