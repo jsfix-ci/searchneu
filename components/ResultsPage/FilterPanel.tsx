@@ -19,7 +19,7 @@ function FilterPanel({
   return (
     <div className="FilterPanel">
       {FILTERS_IN_ORDER.map(({ key, display, category }, index) => {
-        console.log(`Key: ${key} Options: ${options}`);
+        console.log(`Key: ${key} Options: ${JSON.stringify(options[key])}`);
         const aFilter = selected[key];
         const setActiveFilter = (a): void => setActive({ [key]: a });
         return (

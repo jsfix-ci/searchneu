@@ -87,6 +87,8 @@ export default function useSearch({
         offset: parseInt(params.minIndex),
         ...params.filters,
       });
+      console.log(`Query: ${params.query}`);
+      console.log(`searchResults: ${JSON.stringify(searchResults)}`);
       return transformGraphQLToSearchResult(searchResults);
     }
   );

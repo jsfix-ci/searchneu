@@ -81,7 +81,7 @@ export default function Results(): ReactElement | null {
         });
     }
   };
-
+  console.log('SearchParams: ' + JSON.stringify(searchParams));
   const { searchData, loadMore } = useSearch(searchParams);
 
   if (!query && !termId) {
@@ -117,9 +117,9 @@ export default function Results(): ReactElement | null {
           <>
             <div className="Results_SidebarWrapper">
               {console.log(
-                `DATA: ${
+                `DATA IN QUERY: ${
                   searchData
-                    ? JSON.stringify(searchData)
+                    ? 'SEARCH DATA IS GOOD: ' + JSON.stringify(searchData)
                     : EMPTY_FILTER_OPTIONS()
                 }`
               )}
