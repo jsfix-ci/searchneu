@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { NextRouter } from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
 import { BooleanParam, useQueryParam, useQueryParams } from 'use-query-params';
-import { getRoundedTerm, getTermInfoForCampus } from '../components/global';
+import { getRoundedTerm } from './terms';
 import FilterButton from '../components/icons/FilterButton.svg';
 import Logo from '../components/icons/Logo';
 import macros from '../components/macros';
@@ -25,6 +25,7 @@ import {
 import { campusToColor } from '../utils/campusToColor';
 import MobileSearchOverlay from './ResultsPage/MobileSearchOverlay';
 import { Button } from 'antd';
+import getTermInfos from '../utils/TermInfoProvider';
 
 type HeaderProps = {
   router: NextRouter;
@@ -49,6 +50,9 @@ export default function Header({
   const query = (router.query.query as string) || '';
   const termId = router.query.termId as string;
   const campus = router.query.campus as string;
+
+  // Get the TermInfo dict from the app context
+  const termInfos = getTermInfos();
 
   const [qParams, setQParams] = useQueryParams(QUERY_PARAM_ENCODERS);
   const filters: FilterSelection = merge({}, DEFAULT_FILTER_SELECTION, qParams);
@@ -130,7 +134,10 @@ export default function Header({
               options={Object.keys(Campus).map((c: Campus) => ({
                 text: c,
                 value: c,
-                link: termAndCampusToURLCallback(getRoundedTerm(c, termId), c),
+                link: termAndCampusToURLCallback(
+                  getRoundedTerm(termInfos, c, termId),
+                  c
+                ),
               }))}
               value={campus}
               className="searchDropdown"
@@ -140,13 +147,11 @@ export default function Header({
           <span className="Breadcrumb_Container__slash">/</span>
           <div className="Breadcrumb_Container__dropDownContainer">
             <SearchDropdown
-              options={getTermInfoForCampus(Campus[campus.toUpperCase()]).map(
-                (terminfo) => ({
-                  text: terminfo.text,
-                  value: terminfo.value,
-                  link: termAndCampusToURLCallback(terminfo.value, campus),
-                })
-              )}
+              options={termInfos[campus].map((terminfo) => ({
+                text: terminfo.text,
+                value: terminfo.value,
+                link: termAndCampusToURLCallback(terminfo.value, campus),
+              }))}
               value={termId}
               className="searchDropdown"
               compact={false}

@@ -139,6 +139,7 @@ export type Query = {
   sectionByHash?: Maybe<Section>;
   major?: Maybe<Major>;
   search?: Maybe<SearchResultItemConnection>;
+  termInfos: Array<TermInfo>;
 };
 
 export type QueryClassArgs = {
@@ -170,6 +171,10 @@ export type QuerySearchArgs = {
   first?: Maybe<Scalars['Int']>;
 };
 
+export type QueryTermInfosArgs = {
+  subCollege: Scalars['String'];
+};
+
 export type SearchResultItem = ClassOccurrence | Employee;
 
 export type SearchResultItemConnection = {
@@ -198,6 +203,13 @@ export type Section = {
   meetings?: Maybe<Scalars['JSON']>;
   host: Scalars['String'];
   lastUpdateTime?: Maybe<Scalars['Float']>;
+};
+
+export type TermInfo = {
+  __typename?: 'TermInfo';
+  termId: Scalars['String'];
+  subCollege: Scalars['String'];
+  text: Scalars['String'];
 };
 
 export type GetCourseInfoByHashQueryVariables = Exact<{
@@ -425,6 +437,16 @@ export type GetPagesForSitemapQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type GetTermIDsByCollegeQueryVariables = Exact<{
+  subCollege: Scalars['String'];
+}>;
+
+export type GetTermIDsByCollegeQuery = { __typename?: 'Query' } & {
+  termInfos: Array<
+    { __typename?: 'TermInfo' } & Pick<TermInfo, 'text' | 'termId'>
+  >;
+};
+
 export const GetCourseInfoByHashDocument = gql`
   query getCourseInfoByHash($hash: String!) {
     classByHash(hash: $hash) {
@@ -611,6 +633,14 @@ export const GetPagesForSitemapDocument = gql`
     }
   }
 `;
+export const GetTermIDsByCollegeDocument = gql`
+  query getTermIDsByCollege($subCollege: String!) {
+    termInfos(subCollege: $subCollege) {
+      text
+      termId
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -691,6 +721,20 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'getPagesForSitemap'
+      );
+    },
+    getTermIDsByCollege(
+      variables: GetTermIDsByCollegeQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<GetTermIDsByCollegeQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetTermIDsByCollegeQuery>(
+            GetTermIDsByCollegeDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'getTermIDsByCollege'
       );
     },
   };
