@@ -116,13 +116,6 @@ export default function Results(): ReactElement | null {
         {!macros.isMobile && (
           <>
             <div className="Results_SidebarWrapper">
-              {console.log(
-                `DATA IN QUERY: ${
-                  searchData
-                    ? 'SEARCH DATA IS GOOD: ' + JSON.stringify(searchData)
-                    : EMPTY_FILTER_OPTIONS()
-                }`
-              )}
               <FilterPanel
                 options={searchData?.filterOptions || EMPTY_FILTER_OPTIONS()}
                 selected={filters}
