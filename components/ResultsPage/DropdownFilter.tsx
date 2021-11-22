@@ -22,7 +22,6 @@ export default function DropdownFilter({
 
   const dropdown = useRef(null);
 
-  console.log(`options: ${options}`);
   const filteredOptions = options.filter(
     (option) =>
       option.value.toUpperCase().includes(filterString.toUpperCase()) &&
