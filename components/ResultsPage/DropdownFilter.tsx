@@ -56,14 +56,22 @@ export default function DropdownFilter({
     return '';
   }
 
+  function getTotalAgg(): string {
+    if (selected.length > 0) {
+      let selectedOptions = options.filter((option) =>
+        selected.includes(option.value)
+      );
+      return ` (${selectedOptions.reduce(
+        (total_aggregation, option) => total_aggregation + option.count,
+        0
+      )})`;
+    }
+    return '';
+  }
+
   return (
     <div className="DropdownFilter">
-      <div className="DropdownFilter__title">
-        {`${title} (${options.reduce(
-          (total_aggregation, option) => total_aggregation + option.count,
-          0
-        )})`}
-      </div>
+      <div className="DropdownFilter__title">{`${title}${getTotalAgg()}`}</div>
       <div
         className="DropdownFilter__dropdown"
         ref={dropdown}
