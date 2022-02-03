@@ -4,6 +4,7 @@ import DropdownArrow from '../icons/DropdownArrow.svg';
 import PillClose from '../icons/pillClose.svg';
 import { Option } from './filters';
 import useClickOutside from './useClickOutside';
+import { getTotalAggregation } from '../../utils/filterUtils';
 
 interface DropdownFilter {
   title: string;
@@ -56,22 +57,12 @@ export default function DropdownFilter({
     return '';
   }
 
-  function getTotalAgg(): string {
-    if (selected.length > 0) {
-      let selectedOptions = options.filter((option) =>
-        selected.includes(option.value)
-      );
-      return ` (${selectedOptions.reduce(
-        (total_aggregation, option) => total_aggregation + option.count,
-        0
-      )})`;
-    }
-    return '';
-  }
-
   return (
     <div className="DropdownFilter">
-      <div className="DropdownFilter__title">{`${title}${getTotalAgg()}`}</div>
+      <div className="DropdownFilter__title">{`${title}${getTotalAggregation(
+        selected,
+        options
+      )}`}</div>
       <div
         className="DropdownFilter__dropdown"
         ref={dropdown}

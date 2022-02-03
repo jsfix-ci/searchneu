@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import CheckboxGroup from './CheckboxGroup';
 import { Option } from './filters';
+import { getTotalAggregation } from '../../utils/filterUtils';
 
 interface CheckboxFilterProps {
   title: string;
@@ -17,7 +18,10 @@ export default function CheckboxFilter({
 }: CheckboxFilterProps): ReactElement {
   return (
     <div className="CheckboxFilter">
-      <span className="CheckboxFilter__title">{title}</span>
+      <span className="CheckboxFilter__title">
+        {title}
+        {getTotalAggregation(selected, options)}
+      </span>
       <CheckboxGroup
         name="CheckboxFilter"
         value={selected}
