@@ -154,6 +154,14 @@ export function DesktopSectionPanel({
           text={'View this section on Banner.'}
           direction={TooltipDirection.Up}
         />
+        {section.honors ? (
+          <i>
+            <br />
+            Honors
+          </i>
+        ) : (
+          ''
+        )}
       </td>
       <td>{getProfs(section).join(', ')}</td>
       <td>
@@ -232,14 +240,17 @@ export function MobileSectionPanel({
     <div className="MobileSectionPanel">
       <div className="MobileSectionPanel__header">
         <span>{getProfs(section).join(', ')}</span>
-        <span>Boston</span>
+        <span>{section.campus}</span>
       </div>
       <div className="MobileSectionPanel__firstRow">
         <div>
           <a target="_blank" rel="noopener noreferrer" href={section.url}>
             <IconGlobe />
           </a>
-          <span>{section.crn}</span>
+          <span>
+            {section.crn}
+            {section.honors ? <i>&nbsp;&nbsp;&nbsp;Honors</i> : ''}
+          </span>
         </div>
         {showNotificationSwitches && (
           <SectionCheckBox

@@ -4,12 +4,12 @@
  */
 
 import React, { ReactElement, useState } from 'react';
-import { UserInfo } from '../components/types';
-import Keys from './Keys';
-import CourseCheckBox from './panels/CourseCheckBox';
-import { PhoneModal } from './PhoneModal';
-import NotifSignUpButton from './ResultsPage/Results/NotifSignUpButton';
-import { Course } from './types';
+import { UserInfo } from '../types';
+import Keys from '../Keys';
+import CourseCheckBox from '../panels/CourseCheckBox';
+import SignUpModal from './modal/SignUpModal';
+import NotifSignUpButton from '../ResultsPage/Results/NotifSignUpButton';
+import { Course } from '../types';
 
 type SignUpForNotificationsProps = {
   course: Course;
@@ -35,10 +35,24 @@ export default function SignUpForNotifications({
     setShowModal(true);
   };
 
+  const numOpenSections = course.sections.reduce((prev, cur) => {
+    if (cur.seatsRemaining > 0) {
+      return prev + 1;
+    }
+    return prev;
+  }, 0);
+
+  const openSectionsText =
+    numOpenSections === 1
+      ? 'There is 1 section with seats left.'
+      : `There are ${numOpenSections} sections with seats left.`;
+
   return showNotificationSignup ? (
     userInfo ? (
       <div className="DesktopSectionPanel__notifs">
-        Sign up for course-wide notifications:
+        <span className="checkboxLabel">
+          Notify me when new sections are added:
+        </span>
         <CourseCheckBox
           course={course}
           checked={checked}
@@ -49,7 +63,7 @@ export default function SignUpForNotifications({
     ) : (
       <>
         <NotifSignUpButton onNotifSignUp={onNotifSignUp} />
-        <PhoneModal
+        <SignUpModal
           visible={showModal}
           onCancel={() => setShowModal(false)}
           onSignIn={onSignIn}
@@ -59,7 +73,7 @@ export default function SignUpForNotifications({
     )
   ) : (
     <div className="allSeatsAvailable">
-      <span>There are seats available in all sections.</span>
+      <span>{openSectionsText}</span>
     </div>
   );
 }
