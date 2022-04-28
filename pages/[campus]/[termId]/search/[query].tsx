@@ -81,7 +81,6 @@ export default function Results(): ReactElement | null {
         });
     }
   };
-  console.log('SearchParams: ' + JSON.stringify(searchParams));
   const { searchData, loadMore } = useSearch(searchParams);
 
   if (!query && !termId) {
