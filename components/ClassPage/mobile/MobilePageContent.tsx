@@ -1,14 +1,13 @@
 import { Markup } from 'interweave';
 import { mean } from 'lodash';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Dropdown } from 'semantic-ui-react';
 import IconCollapseExpand from '../../icons/IconCollapseExpand';
+import IconArrow from '../../icons/IconArrow';
 import { PageContentProps } from '../PageContent';
 import { getLastUpdateString } from '../../common/LastUpdated';
-import {
-  creditsDescription,
-  creditsNumericDisplay,
-} from '../../common/CreditsDisplay';
+import { creditsNumericDisplay } from '../../common/CreditsDisplay';
 import { Campus } from '../../types';
 import IconGradcap from '../../icons/IconGradcap';
 import IconScale from '../../icons/IconScale';
@@ -19,10 +18,22 @@ import {
   seatsAvailable,
   seatsFilled,
 } from '../ClassPageInfoBody';
-import Expandable from './MobileClassInfoExpandable';
+import Expandable, { SupportedInfoTypes } from './MobileClassInfoExpandable';
 import IconGlobe from '../../icons/IconGlobe';
 import IconMessage from '../../icons/IconMessage';
 import SignUpForNotifications from '../../SignUpForNotifications';
+import {
+  ClassPageSection,
+  getCampusOptions,
+  splitMeetingsAndExamTimes,
+  getDaysOfWeekAsBooleans,
+  displayCourseMeetingTimes,
+  displayFinalExamDate,
+  displayFinalExamTimes,
+} from '../ClassPageSections';
+import { getSeason, getYear } from '../../terms';
+import WeekdayBoxes from '../../ResultsPage/Results/WeekdayBoxes';
+import useSectionPanelDetail from '../../ResultsPage/Results/useSectionPanelDetail';
 
 export default function MobilePageContent({
   termId,
@@ -34,7 +45,48 @@ export default function MobilePageContent({
 }: PageContentProps): ReactElement {
   const router = useRouter();
   const [expanded, setExpanded] = useState(true);
-  const [showingMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [sectionsExpanded, setSectionsExpanded] = useState(true);
+
+  // states related to sections
+  const [currTermIndex, setCurrTermIndex] = useState(0);
+  const [sectionCampuses, setSectionCampuses] = useState([]);
+  const [selectedCampus, setSelectedCampus] = useState('');
+  const [sections, setSections] = useState<ClassPageSection[]>([]);
+  const [semesters, setSemesters] = useState([]);
+  const [selectedSemester, setSelectedSemester] = useState(termId);
+
+  useEffect(() => {
+    if (classPageInfo && classPageInfo.class) {
+      setSectionCampuses(getCampusOptions(currTermIndex, classPageInfo));
+    }
+  }, [currTermIndex, classPageInfo]);
+
+  useEffect(() => {
+    if (classPageInfo && classPageInfo.class) {
+      const tempSems = [];
+      classPageInfo.class.allOccurrences.forEach((occurrence) =>
+        tempSems.push(occurrence.termId)
+      );
+      setSemesters(tempSems);
+    }
+  }, [classPageInfo]);
+
+  useEffect(() => {
+    if (sectionCampuses) {
+      setSelectedCampus(sectionCampuses[0]);
+    }
+  }, [sectionCampuses]);
+
+  useEffect(() => {
+    if (classPageInfo && classPageInfo.class) {
+      setSections(
+        classPageInfo.class.allOccurrences[currTermIndex].sections.filter(
+          (section) => section.campus === selectedCampus
+        )
+      );
+    }
+  }, [currTermIndex, selectedCampus, classPageInfo]);
 
   return (
     <div className="mobilePageContent">
@@ -61,148 +113,232 @@ export default function MobilePageContent({
           </div>
 
           {expanded && (
-            <div className="classPageContainer__panel">
-              <div className="updateCreditPanel">
-                <div className="lastUpdated">
-                  {`Updated ${getLastUpdateString(
-                    classPageInfo.class.latestOccurrence.lastUpdateTime
-                  )}`}
+            <div className="panel">
+              <div className="panel__classInfo">
+                <div className="updateCreditPanel">
+                  <div className="lastUpdated">
+                    {`Updated ${getLastUpdateString(
+                      classPageInfo.class.latestOccurrence.lastUpdateTime
+                    )}`}
+                  </div>
+                  <div className="creditsDisplay">
+                    <span className="creditsNumericDisplay">
+                      {creditsNumericDisplay(
+                        classPageInfo.class.latestOccurrence.maxCredits,
+                        classPageInfo.class.latestOccurrence.minCredits
+                      )}
+                    </span>
+                    {classPageInfo.class.latestOccurrence.maxCredits === 1
+                      ? ' Credit'
+                      : ' Credits'}
+                  </div>
                 </div>
-                <div className="creditsDisplay">
-                  <span className="creditsNumericDisplay">
-                    {creditsNumericDisplay(
-                      classPageInfo.class.latestOccurrence.maxCredits,
-                      classPageInfo.class.latestOccurrence.minCredits
-                    )}
-                  </span>
-                  {classPageInfo.class.latestOccurrence.maxCredits === 1
-                    ? ' Credit'
-                    : ' Credits'}
-                </div>
-              </div>
 
-              <div
-                className={
-                  showingMore
-                    ? 'classPageContainer__panel--description'
-                    : 'classPageContainer__panel--descriptionHidden'
-                }
-              >
-                <Markup content={classPageInfo.class.latestOccurrence.desc} />
-              </div>
-              <div
-                className="classPageContainer__panel--showMore"
-                role="button"
-                tabIndex={0}
-                onClick={() => setShowMore(!showingMore)}
-              >
-                {showingMore ? 'Show less' : 'Show more'}
-              </div>
-
-              <div className="courseLevel">
-                {campus === Campus.NEU ? (
-                  <IconGradcap />
-                ) : campus === Campus.CPS ? (
-                  <IconTie />
-                ) : (
-                  <IconScale />
-                )}
-                <span className="courseLevelText">
-                  {campus === Campus.NEU &&
-                    `${
-                      parseInt(classId) < 5000 ? 'Undergraduate' : 'Graduate'
-                    } Course Level`}
-                  {campus === Campus.CPS && 'College of Professional Studies'}
-                  {campus == Campus.LAW && 'School of Law'}
-                </span>
-              </div>
-
-              {classPageInfo.class.latestOccurrence.feeAmount && (
-                <div className="courseFees">
-                  <IconDollarSign />
-                  <span className="courseFeesText">
-                    {`Course Fees: $${classPageInfo.class.latestOccurrence.feeAmount.toLocaleString()}`}
-                  </span>
-                </div>
-              )}
-
-              <div className="avgInfo">
-                <p>In this course, there are, on average:</p>
-                <ul>
-                  <li>
-                    <b>{Math.round(mean(numberOfSections(classPageInfo)))}</b>{' '}
-                    sections
-                  </li>
-                  <li>
-                    <b>{Math.round(mean(seatsAvailable(classPageInfo)))}</b>{' '}
-                    seats per section
-                  </li>
-                  <li>
-                    <b>{Math.round(mean(seatsFilled(classPageInfo)))}</b> seats
-                    filled, or{' '}
-                    <b>
-                      {(
-                        (Math.round(mean(seatsFilled(classPageInfo))) /
-                          Math.round(mean(seatsAvailable(classPageInfo)))) *
-                        100
-                      ).toFixed(1)}
-                      %
-                    </b>{' '}
-                    of seats per section filled.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="expandables">
-                <Expandable
-                  title="RECENT PROFESSORS"
-                  classPageInfo={classPageInfo}
-                />
-                <Expandable
-                  title="RECENT SEMESTERS OFFERED"
-                  classPageInfo={classPageInfo}
-                />
-                <Expandable title="NUPATHS" classPageInfo={classPageInfo} />
-                <Expandable
-                  title="PREREQUISITES"
-                  classPageInfo={classPageInfo}
-                />
-                <Expandable
-                  title="COREQUISITES"
-                  classPageInfo={classPageInfo}
-                />
-                <Expandable
-                  title="PREREQUISITE FOR"
-                  classPageInfo={classPageInfo}
-                />
-                <Expandable
-                  title="OPTIONAL PREREQUISITE FOR"
-                  classPageInfo={classPageInfo}
-                />
-              </div>
-
-              <div className="bannerButton">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={classPageInfo.class.latestOccurrence.prettyUrl}
-                  className="bannerPageLink"
+                <div
+                  className={
+                    showMore
+                      ? 'panel__classInfo--description'
+                      : 'panel__classInfo--descriptionHidden'
+                  }
                 >
-                  <IconGlobe width="22" height="22" className="globe-icon" />
-                  <span>View the course on Banner</span>
-                </a>
+                  <Markup content={classPageInfo.class.latestOccurrence.desc} />
+                </div>
+                <div
+                  className="panel__classInfo--showMore"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setShowMore(!showMore)}
+                >
+                  {showMore ? 'Show less' : 'Show more'}
+                </div>
+
+                <div className="courseLevel">
+                  {campus === Campus.NEU ? (
+                    <IconGradcap />
+                  ) : campus === Campus.CPS ? (
+                    <IconTie />
+                  ) : (
+                    <IconScale />
+                  )}
+                  <span className="courseLevelText">
+                    {`${
+                      campus === Campus.NEU ? 'Undergraduate' : 'Graduate'
+                    } Course Level`}
+                  </span>
+                </div>
+
+                <div className="courseFees">
+                  {classPageInfo.class.latestOccurrence.feeAmount && (
+                    <>
+                      <IconDollarSign />
+                      <span className="courseFeesText">
+                        {`Course Fees: $${classPageInfo.class.latestOccurrence.feeAmount.toLocaleString()}`}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <div className="avgInfo">
+                  <p>In this course, there is, on average:</p>
+                  <ul>
+                    <li>
+                      <b>{Math.round(mean(numberOfSections(classPageInfo)))}</b>{' '}
+                      sections
+                    </li>
+                    <li>
+                      <b>{Math.round(mean(seatsAvailable(classPageInfo)))}</b>{' '}
+                      seats per section
+                    </li>
+                    <li>
+                      <b>{Math.round(mean(seatsFilled(classPageInfo)))}</b>{' '}
+                      seats filled, or{' '}
+                      <b>
+                        {(
+                          Math.round(mean(seatsFilled(classPageInfo))) /
+                          Math.round(mean(seatsAvailable(classPageInfo)))
+                        ).toFixed(1)}
+                        %
+                      </b>{' '}
+                      of seats per section filled.
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="expandables">
+                  {Object.values(SupportedInfoTypes).map((type, index) => (
+                    <div key={`expandable${index}`}>
+                      <Expandable
+                        type={type}
+                        classPageInfo={classPageInfo}
+                        termId={termId}
+                        campus={campus}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bannerButton">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={classPageInfo.class.latestOccurrence.prettyUrl}
+                    className="bannerPageLink"
+                  >
+                    <IconGlobe width="22" height="22" className="globe-icon" />
+                    <span>View the course on Banner</span>
+                  </a>
+                </div>
+
+                <div className="notifyButton">
+                  {/* <SignUpForNotifications
+                    course={classPageInfo.class.latestOccurrence}
+                    userInfo={userInfo}
+                    onSignIn={onSignIn}
+                    showNotificationSignup={false}
+                    fetchUserInfo={fetchUserInfo}
+                  /> */}
+                  <IconMessage className="message-icon" />
+                  <span>Notify me when seats open!</span>
+                </div>
               </div>
 
-              <div className="notifyButton">
-                {/* <SignUpForNotifications
-                  course={classPageInfo.class.latestOccurrence}
-                  userInfo={userInfo}
-                  onSignIn={onSignIn}
-                  showNotificationSignup={false}
-                  fetchUserInfo={fetchUserInfo}
-                /> */}
-                <IconMessage className="message-icon" />
-                <span>Notify me when seats open!</span>
+              {/* Section Information */}
+              <div className="sections">
+                {sectionsExpanded && (
+                  <div className="sections--expanded">
+                    <div className="header">{`Viewing ${subject}${classId} sections for:`}</div>
+                    <div className="campus">
+                      <b>Campus:</b> <br />
+                      <Dropdown
+                        selection
+                        text={selectedCampus || ''}
+                        className="sectionsCampusDropdown"
+                      >
+                        <Dropdown.Menu className="sectionsCampusDropdownMenu">
+                          {sectionCampuses.map((campus) => (
+                            <Dropdown.Item
+                              className={'sectionsCampusOption'}
+                              value={campus}
+                              text={campus}
+                              selected={campus === selectedCampus}
+                              onClick={() => setSelectedCampus(campus)}
+                              key={campus}
+                            ></Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                    <div className="semester">
+                      <b>Semester:</b> <br />
+                      <Dropdown
+                        selection
+                        text={
+                          `${getSeason(`${selectedSemester}`)} ${getYear(
+                            `${selectedSemester}`
+                          )}` || ''
+                        }
+                        className="sectionsSemesterDropdown"
+                      >
+                        <Dropdown.Menu className="sectionsSemesterDropdownMenu">
+                          {semesters.map((semester, index) => {
+                            if (
+                              classPageInfo.class.allOccurrences[index] &&
+                              classPageInfo.class.allOccurrences[index].sections
+                            ) {
+                              return (
+                                <Dropdown.Item
+                                  className={'sectionsSemesterOption'}
+                                  value={index}
+                                  text={`${getSeason(`${semester}`)} ${getYear(
+                                    `${semester}`
+                                  )}`}
+                                  selected={semester === termId}
+                                  onClick={() => {
+                                    setSelectedSemester(semester);
+                                    setCurrTermIndex(index);
+                                  }}
+                                  key={campus}
+                                ></Dropdown.Item>
+                              );
+                            }
+                          })}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                    {sections.map((section, index) => {
+                      if (section.campus === selectedCampus) {
+                        return (
+                          <div key={`sectionCard${index}`}>
+                            <MobileSectionCard section={section} />
+                            {index < sections.length - 1 && (
+                              <div className="horizontalLine"></div>
+                            )}
+                          </div>
+                        );
+                      } else {
+                        return <div key={`sectionCard${index}`}></div>;
+                      }
+                    })}
+                  </div>
+                )}
+                <div
+                  className="sections--toggle"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSectionsExpanded(!sectionsExpanded)}
+                >
+                  {sectionsExpanded ? (
+                    <>
+                      <b>Collapse all sections</b>
+                      <IconArrow className="arrow-left" />
+                    </>
+                  ) : (
+                    <>
+                      <b>Show all sections</b>
+                      <IconArrow className="arrow-right" />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -211,3 +347,61 @@ export default function MobilePageContent({
     </div>
   );
 }
+
+type MobileSectionCardProps = {
+  section: ClassPageSection;
+};
+
+const MobileSectionCard = ({
+  section,
+}: MobileSectionCardProps): ReactElement => {
+  const { getSeatsClass } = useSectionPanelDetail(
+    section.seatsRemaining,
+    section.seatsCapacity
+  );
+  const [classMeetings, finalExamMeeting] = splitMeetingsAndExamTimes(
+    section.meetings
+  );
+  return (
+    <div className="mobileSectionCard">
+      <div className="sectionProfCampusFlex">
+        <div className="sectionProfs">{section.profs.join(', ')}</div>
+        <div className="sectionCampus">{section.campus}</div>
+      </div>
+
+      <div className="sectionCRN">
+        {'CRN: '}
+        <a href={section.url}>{`${section.crn}`}</a>
+      </div>
+
+      <div className="sectionMeetings">
+        {classMeetings.map((meeting, index) => (
+          <div key={`meeting${index}`}>
+            <WeekdayBoxes
+              meetingDays={getDaysOfWeekAsBooleans(meeting)}
+              meetingType={meeting.type}
+            />
+            <div className="meetingTimeAndLocation">{`${displayCourseMeetingTimes(
+              meeting
+            )} | ${meeting.where}`}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="sectionFinalExam">
+        {finalExamMeeting.map((meeting, index) => (
+          <div key={`finalExam${index}`}>
+            {`Final Exam: 
+            ${displayFinalExamDate(meeting)} | 
+            ${displayFinalExamTimes(meeting)} | 
+            ${meeting.where}`}
+          </div>
+        ))}
+      </div>
+
+      <div className={`seatsAvailable ${getSeatsClass()}`}>
+        {`${section.seatsRemaining}/${section.seatsCapacity} Seats Available `}
+      </div>
+    </div>
+  );
+};
