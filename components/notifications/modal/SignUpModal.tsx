@@ -42,6 +42,24 @@ export default function SignUpModal({
   const [resendDisabled, setResendDisabled] = useState(false);
   const [resendDisabledTimeout, setResendDisabledTimeout] = useState(0);
 
+  if ('OTPCredential' in window) {
+    window.addEventListener('DOMContentLoaded', e => {
+      const ac = new AbortController();
+
+      // This is a relatively new API, the types aren't updated yet
+      // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/webappsec-credential-management/index.d.ts#L287
+      navigator.credentials.get({
+        // @ts-ignore, types don't exist yet
+        otp: { transport:['sms'] },
+        signal: ac.signal
+      }).then(otp => {
+        // @ts-ignore, types don't exist yet
+        setVerificationCode(otp.code);
+        ac.abort();
+      });
+    });
+  }
+
   // To reset step status and associated message
   useEffect(() => {
     setIsLoading(false);
