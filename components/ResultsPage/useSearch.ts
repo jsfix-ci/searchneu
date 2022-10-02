@@ -103,6 +103,7 @@ export default function useSearch({
     totalCount: data[0].totalCount,
     results: data.map((d) => d.results).flat(),
     hasNextPage: data[0].hasNextPage,
+    isCurrentTerm: data[0].isCurrentTerm,
   };
 
   return {
@@ -119,6 +120,7 @@ function transformGraphQLToSearchResult(
     totalCount: graphqlResults.search.totalCount,
     filterOptions: graphqlResults.search.filterOptions as FilterOptions,
     hasNextPage: graphqlResults.search.pageInfo.hasNextPage,
+    isCurrentTerm: graphqlResults.search.isCurrentTerm,
   };
   transformedResults.results = graphqlResults.search.nodes.map((node) => {
     if (node.type === 'ClassOccurrence') {

@@ -295,6 +295,8 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
       SearchResultItemConnection,
       'totalCount'
     > & {
+        isCurrentTerm: boolean;
+
         pageInfo: { __typename?: 'PageInfo' } & Pick<PageInfo, 'hasNextPage'>;
         filterOptions: { __typename?: 'FilterOptions' } & {
           nupath?: Maybe<

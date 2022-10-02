@@ -112,6 +112,7 @@ export interface SearchResult {
   totalCount: number;
   filterOptions: FilterOptions;
   hasNextPage: boolean;
+  isCurrentTerm: boolean;
 }
 
 export type CourseResult = {
@@ -133,6 +134,7 @@ export function BLANK_SEARCH_RESULT(): SearchResult {
       campus: [],
     },
     hasNextPage: false,
+    isCurrentTerm: false,
   };
 }
 
