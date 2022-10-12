@@ -178,6 +178,7 @@ export default function Results(): ReactElement | null {
               userInfo={userInfo}
               onSignIn={onSignIn}
               fetchUserInfo={fetchUserInfo}
+              isCurrentTerm={searchData.isCurrentTerm}
             />
           )}
           <Footer />

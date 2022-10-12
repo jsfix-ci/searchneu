@@ -22,6 +22,7 @@ interface CourseResultProps {
   userInfo: UserInfo;
   onSignIn: (token: string) => void;
   fetchUserInfo: () => void;
+  isCurrentTerm: boolean;
 }
 
 const sortSections = (sections: Section[]): Section[] => {
@@ -44,6 +45,7 @@ export function CourseResult({
   userInfo,
   onSignIn,
   fetchUserInfo,
+  isCurrentTerm,
 }: CourseResultProps): ReactElement {
   const router = useRouter();
   const termId = router.query.termId as string;
@@ -130,7 +132,9 @@ export function CourseResult({
                 course={course}
                 userInfo={userInfo}
                 onSignIn={onSignIn}
-                showNotificationSignup={hasAtLeastOneSectionFull()}
+                showNotificationSignup={
+                  hasAtLeastOneSectionFull() && isCurrentTerm
+                }
                 fetchUserInfo={fetchUserInfo}
               />
             </div>
@@ -196,6 +200,7 @@ export function MobileCourseResult({
   userInfo,
   onSignIn,
   fetchUserInfo,
+  isCurrentTerm,
 }: CourseResultProps): ReactElement {
   const [showMore, setShowMore] = useState(false);
   const [showNUPath, setShowNUPath] = useState(false);
@@ -286,7 +291,9 @@ export function MobileCourseResult({
                 course={course}
                 userInfo={userInfo}
                 onSignIn={onSignIn}
-                showNotificationSignup={hasAtLeastOneSectionFull()}
+                showNotificationSignup={
+                  hasAtLeastOneSectionFull() && isCurrentTerm
+                }
                 fetchUserInfo={fetchUserInfo}
               />
             </div>
