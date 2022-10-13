@@ -18,7 +18,7 @@ To work on this project, you\'ll need a UNIX-based terminal. Mac/Linux users alr
 ### Source code
 
 - Clone the repo: `git clone https://github.com/sandboxnu/searchneu`
-- Change into the repo directory: `cd ./course-catalog-api`
+- Change into the repo directory: `cd ./searchneu`
 - Switch Node versions: `fnm use`
   - There is a file called `.nvmrc` in the repository, which tells `fnm` which version to use
 
