@@ -26,6 +26,9 @@ export default function Page(): ReactElement {
   const campus = router.query.campus as string;
   const subject = ((router.query.subject as string) || '').toUpperCase();
   const classId = (router.query.classId as string) || '';
+
+  console.log('SUBJECT: ' + subject);
+  console.log('CLASSID: ' + classId);
   const termAndCampusToURL = (t: string, newCampus: string): string => {
     return `/${newCampus}/${t}/classPage/${subject}/${classId}${window.location.search}`;
   };
@@ -73,7 +76,9 @@ export default function Page(): ReactElement {
   };
 
   useEffect(() => {
-    loadClassPageInfo();
+    if (subject != '' && classId != '') {
+      loadClassPageInfo();
+    }
   }, [subject, classId]);
 
   if (!termId || !campus) return null;
