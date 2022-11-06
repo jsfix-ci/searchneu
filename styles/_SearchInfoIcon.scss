@@ -3,12 +3,13 @@
   &__icon {
     &:hover + .tooltip {
       display: block;
-      background: #338ef1;
+      background: #1d3557;
       white-space: wrap;
-      width: 300px;
-      z-index: 100000; 
+      width: 250px;
+      padding: 10px;
+      z-index: 100000;
       & > div {
-        border-color: transparent transparent #338ef1 transparent;
+        border-color: transparent transparent #1d3557 transparent;
       }
     }
   }

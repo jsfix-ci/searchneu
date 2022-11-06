@@ -13,6 +13,7 @@ import WeekdayBoxes from './WeekdayBoxes';
 import Tooltip, { TooltipDirection } from '../../Tooltip';
 import SectionCheckBox from '../../panels/SectionCheckBox';
 import { UserInfo } from '../../../components/types';
+import NegativeSeatCountTooltip from '../../common/NegativeSeatCountTooltip';
 
 interface SectionPanelProps {
   section: Section;
@@ -171,9 +172,12 @@ export function DesktopSectionPanel({
       </td>
       <td>{section.campus}</td>
       <td>
-        <span className={getSeatsClass()}>
-          {section.seatsRemaining}/{section.seatsCapacity}
-        </span>
+        <div className="DeskopSectionPanel__seatcount">
+          <span className={'DesktopSectionPanel__' + getSeatsClass()}>
+            {section.seatsRemaining}/{section.seatsCapacity}
+          </span>
+          {section.seatsRemaining < 0 && <NegativeSeatCountTooltip />}
+        </div>
         <br />
         <span>
           {`${section.waitRemaining}/${section.waitCapacity} Waitlist Seats`}

@@ -49,24 +49,32 @@
     }
   }
 
-  & > td:nth-child(3) {
+  > td:nth-child(3) {
     width: 35%;
   }
 
+  &__green {
+    color: #27ae34;
+  }
+
+  &__yellow {
+    color: #ffbf3d;
+  }
+
+  &__red {
+    color: #d41b2c;
+  }
+
   & > td:nth-child(5) {
+    > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 25%;
+    }
+
     line-height: 20px;
-
-    & > .green {
-      color: #27ae34;
-    }
-
-    & > .yellow {
-      color: #ffbf3d;
-    }
-
-    & > .red {
-      color: #d41b2c;
-    }
 
     & span:nth-of-type(2) {
       font-style: italic;
