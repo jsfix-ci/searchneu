@@ -120,7 +120,7 @@ function transformGraphQLToSearchResult(
     totalCount: graphqlResults.search.totalCount,
     filterOptions: graphqlResults.search.filterOptions as FilterOptions,
     hasNextPage: graphqlResults.search.pageInfo.hasNextPage,
-    isCurrentTerm: graphqlResults.search.isCurrentTerm,
+    isCurrentTerm: graphqlResults.search.isCurrentTerm.isCurrentTerm,
   };
   transformedResults.results = graphqlResults.search.nodes.map((node) => {
     if (node.type === 'ClassOccurrence') {
