@@ -1,7 +1,11 @@
 import { mean } from 'lodash';
 import React, { ReactElement } from 'react';
 import { GetClassPageInfoQuery } from '../../generated/graphql';
-import { getCampusByLastDigit, getSeason, getYear } from '../terms';
+import {
+  getCampusByLastDigit,
+  getSemesterNameFromTermId,
+  getYearFromTermId,
+} from '../terms';
 import { Campus } from '../types';
 import HeaderBody from './HeaderBody';
 
@@ -106,7 +110,7 @@ function getRecentSemesterNames(
 ): string[] {
   const allSemesters = classPageInfo.class.allOccurrences.map((occurrence) => {
     const termId = occurrence.termId.toString();
-    return `${getSeason(termId)} ${getYear(termId)}`;
+    return `${getSemesterNameFromTermId(termId)} ${getYearFromTermId(termId)}`;
   });
   return allSemesters.slice(0, Math.min(limit, allSemesters.length));
 }

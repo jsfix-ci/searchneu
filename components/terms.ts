@@ -126,26 +126,44 @@ export function getTermName(
   return termName ? termName.text : '';
 }
 
-export function getSeason(termId: string): string {
-  const seasonDigit = termId.charAt(termId.length - 2);
-  const seasonDigitMap = {
-    '1': 'Fall',
-    '2': 'Winter',
-    '3': 'Spring',
-    '4': 'Summer I',
-    '5': 'Summer Full',
-    '6': 'Summer II',
+/**
+ * CPS/LAW use different semester names than NEU.
+ * Current semester names for NEU campus: Fall, Winter, Spring, Summer I, Summer II, and Summer Full.
+ * Current semester names for CPS/LAW campus: Fall Semester, Fall Quarter, Winter Quarter,
+ * Spring Semester, Spring Quarter, Summer Semester, Summer Quarter.
+ * Each semester corresponds to a different 2-digits number (last two digits of the term id).
+ */
+export function getSemesterNameFromTermId(termId: string): string {
+  const semesterDigit = termId.slice(-2);
+  const semesterDigitMap = {
+    '10': 'Fall',
+    '14': 'Fall Semester',
+    '15': 'Fall Quarter',
+    '20': 'Winter',
+    '25': 'Winter Quarter',
+    '30': 'Spring',
+    '34': 'Spring Semester',
+    '35': 'Spring Quarter',
+    '40': 'Summer I',
+    '50': 'Summer Full',
+    '54': 'Summer Semester',
+    '55': 'Summer Quarter',
+    '60': 'Summer II',
   };
-  if (!seasonDigitMap[seasonDigit]) throw new Error('unexpected season digit');
-  else return seasonDigitMap[seasonDigit];
+
+  if (!semesterDigitMap[semesterDigit])
+    throw new Error('Unexpected season digit: ' + semesterDigit);
+  else return semesterDigitMap[semesterDigit];
 }
 
 // returns the year the term occurs in
-// ex: 202110 is Fall 2020 not Fall 2021
-export function getYear(termId: string): number {
+export function getYearFromTermId(termId: string): number {
   const givenYear: number = parseInt(termId.substr(0, 4));
-  const season = getSeason(termId);
-  if (season === 'Fall' || season === 'Winter') {
+  const seasonDigit: number = parseInt(termId.charAt(termId.length - 2));
+  // Fall and Winter semesters occurs in the previous year from the given year from termId.
+  // ex: 202110 should be Fall 2020 not Fall 2021
+  // Fall semesters have season digit 1; Winter semesters have season digit 2.
+  if (seasonDigit < 3) {
     return givenYear - 1;
   } else {
     return givenYear;

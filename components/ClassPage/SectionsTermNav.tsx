@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { GetClassPageInfoQuery } from '../../generated/graphql';
-import { getSeason, getYear } from '../terms';
+import { getSemesterNameFromTermId, getYearFromTermId } from '../terms';
 import { LeftNavArrow, RightNavArrow } from '../icons/NavArrow';
 
 type sectionsTermNavProps = {
@@ -35,7 +35,7 @@ export default function SectionsTermNav({
           fill={leftNavDisabled(currTermIndex) ? '#969696' : '#000000'}
         />
       </span>
-      {`${getSeason(`${currTermId}`)} ${getYear(
+      {`${getSemesterNameFromTermId(`${currTermId}`)} ${getYearFromTermId(
         `${currTermId}`
       )}`.toUpperCase()}
       <span
