@@ -209,7 +209,6 @@ export type TermInfo = {
   termId: Scalars['String'];
   subCollege: Scalars['String'];
   text: Scalars['String'];
-  isCurrentTerm: Scalars['Boolean'];
 };
 
 export type GetCourseInfoByHashQueryVariables = Exact<{
@@ -299,11 +298,8 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
     { __typename?: 'SearchResultItemConnection' } & Pick<
       SearchResultItemConnection,
       'totalCount'
-    > & {
-        isCurrentTerm: { __typename?: 'Boolean' } & Pick<
-          TermInfo,
-          'isCurrentTerm'
-        >;
+    > &
+      Pick<SearchResultItemConnection, 'isCurrentTerm'> & {
         pageInfo: { __typename?: 'PageInfo' } & Pick<PageInfo, 'hasNextPage'>;
         filterOptions: { __typename?: 'FilterOptions' } & {
           nupath?: Maybe<
@@ -314,7 +310,6 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
               >
             >
           >;
-
           subject?: Maybe<
             Array<
               { __typename?: 'FilterAgg' } & Pick<
@@ -348,7 +343,6 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
             >
           >;
         };
-
         nodes?: Maybe<
           Array<
             Maybe<
