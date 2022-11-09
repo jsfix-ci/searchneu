@@ -25,13 +25,26 @@ exports[`should render a section 1`] = `
               <div className=\\"Results__searchwrapper\\">
                 <SearchBar onSearch={[Function: setSearchQuery]} query=\\"cs\\" buttonColor=\\"#E63946\\">
                   <div className=\\"searchbar\\">
-                    <input type=\\"search\\" id=\\"search_id\\" autoComplete=\\"off\\" spellCheck=\\"false\\" autoFocus={true} tabIndex={0} className=\\"searchbar__input\\" size={10} onKeyDown={[Function: onKeyDown]} onClick={[undefined]} onChange={[Function: onChange]} value=\\"cs\\" placeholder=\\"Class, professor, course number\\" />
+                    <input type=\\"search\\" id=\\"search_id\\" autoComplete=\\"off\\" spellCheck=\\"false\\" autoFocus={true} tabIndex={0} className=\\"searchbar__input\\" size={10} onKeyDown={[Function: onKeyDown]} onClick={[undefined]} onChange={[Function: onChange]} value=\\"cs\\" placeholder=\\"Class, professor, course number, \\"phrase\\"\\" />
                     <div onClick={[Function: search]} className=\\"searchbar__button\\" role=\\"button\\" tabIndex={0} style={{...}}>
                       <SvgMagnifyingGlass aria-label=\\"magnifying glass\\" className=\\"searchbar__magnifyingGlass\\">
                         <svg aria-label=\\"magnifying glass\\" className=\\"searchbar__magnifyingGlass\\" data-file-name=\\"SvgMagnifyingGlass\\" />
                       </SvgMagnifyingGlass>
                     </div>
                   </div>
+                  <SearchInfoIcon>
+                    <div className=\\"SearchInfoIcon\\">
+                      <SvgInfoIcon className=\\"SearchInfoIcon__icon\\">
+                        <svg className=\\"SearchInfoIcon__icon\\" data-file-name=\\"SvgInfoIcon\\" />
+                      </SvgInfoIcon>
+                      <Tooltip text=\\"Phrase search guarantees the exact search appears in the results. Ex. If you want the exact phrase \\"studio design\\" to appear in the search results, wrap it up in quotes.\\" direction=\\"DOWN\\">
+                        <div className=\\"tooltip\\">
+                          Phrase search guarantees the exact search appears in the results. Ex. If you want the exact phrase &quot;studio design&quot; to appear in the search results, wrap it up in quotes.
+                          <div className=\\"tooltip__arrow--DOWN\\" />
+                        </div>
+                      </Tooltip>
+                    </div>
+                  </SearchInfoIcon>
                 </SearchBar>
               </div>
               <div className=\\"Breadcrumb_Container\\">
@@ -381,6 +394,31 @@ exports[`should render a section 1`] = `
         </div>
         <div className=\\"botttomPadding\\" />
       </div>
+      <FeedbackModal toggleForm={[Function: toggleModal]} feedbackModalOpen={false}>
+        <div className=\\"feedback-container\\">
+          <Transition in={false} timeout={500} mountOnEnter={false} unmountOnExit={false} appear={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
+            <Message success={true} className=\\"alertMessage\\" header=\\"Your submission was successful.\\" style={{...}} onDismiss={[Function: bound hideMessage]}>
+              <div style={{...}} className=\\"ui success message alertMessage\\">
+                <Icon name=\\"close\\" onClick={[Function (anonymous)]} as=\\"i\\">
+                  <i onClick={[Function (anonymous)]} aria-hidden=\\"true\\" className=\\"close icon\\" />
+                </Icon>
+                <MessageContent>
+                  <div className=\\"content\\">
+                    <MessageHeader content=\\"Your submission was successful.\\">
+                      <div className=\\"header\\">
+                        Your submission was successful.
+                      </div>
+                    </MessageHeader>
+                  </div>
+                </MessageContent>
+              </div>
+            </Message>
+          </Transition>
+          <Modal open={false} onClose={[Function: toggleModal]} size=\\"small\\" className=\\"feedback-modal-container\\" centered={true} dimmer={true} closeOnDimmerClick={true} closeOnDocumentClick={false} eventPool=\\"Modal\\">
+            <Portal closeOnDocumentClick={false} trigger={[undefined]} eventPool=\\"Modal\\" mountNode={{...}} open={false} onClose={[Function (anonymous)]} onMount={[Function (anonymous)]} onOpen={[Function (anonymous)]} onUnmount={[Function (anonymous)]} closeOnEscape={true} openOnTriggerClick={true} />
+          </Modal>
+        </div>
+      </FeedbackModal>
     </Results>
   </LocationProvider>
 </QueryParamProvider>"
