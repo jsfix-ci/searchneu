@@ -5,53 +5,21 @@
 
 import { uniqueId } from 'lodash';
 import React, { ReactElement, useState } from 'react';
-import IconCheckMark from '../icons/IconCheckmark';
 import Tooltip, { TooltipDirection } from '../Tooltip';
-import Keys from '../Keys';
-import macros from '../macros';
 import { Course } from '../types';
-import axios from 'axios';
+
 import { UserInfo } from '../../components/types';
 
 type CourseCheckBoxProps = {
-  course: Course;
   checked: boolean;
-  userInfo: UserInfo;
-  fetchUserInfo: () => void;
+  onCheckboxClick: () => void;
 };
 
 export default function CourseCheckBox({
-  course,
   checked,
-  userInfo,
-  fetchUserInfo,
+  onCheckboxClick,
 }: CourseCheckBoxProps): ReactElement {
   const [notifSwitchId] = useState(uniqueId('notifSwitch-'));
-
-  function onCheckboxClick(): void {
-    if (checked) {
-      axios
-        .delete(
-          `${process.env.NEXT_PUBLIC_NOTIFS_ENDPOINT}/user/subscriptions`,
-          {
-            data: {
-              token: userInfo.token,
-              sectionIds: [],
-              courseIds: [Keys.getClassHash(course)],
-            },
-          }
-        )
-        .then(() => fetchUserInfo());
-    } else {
-      axios
-        .put(`${process.env.NEXT_PUBLIC_NOTIFS_ENDPOINT}/user/subscriptions`, {
-          token: userInfo.token,
-          sectionIds: [],
-          courseIds: [Keys.getClassHash(course)],
-        })
-        .then(() => fetchUserInfo());
-    }
-  }
 
   return (
     <div className="signUpSwitch">

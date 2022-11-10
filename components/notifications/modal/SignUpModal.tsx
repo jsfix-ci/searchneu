@@ -10,6 +10,7 @@ import macros from '../../macros';
 import Modal from '../../Modal';
 import PhoneNumber from './PhoneNumber';
 import VerificationCode from './VerificationCode';
+import Failed from './Failed';
 
 const VERIFICATION_CODE_LENGTH = 6;
 
@@ -18,14 +19,16 @@ interface SignUpModalProps {
   onCancel: () => void;
   onSignIn: (token: string) => void;
   onSuccess: () => void;
+  defaultStep?: Step;
 }
 
 /**
  * A step in the sign-up process associated with a modal screen.
  */
-enum Step {
+export enum Step {
   PhoneNumber,
   VerificationCode,
+  Failed,
 }
 
 export default function SignUpModal({
@@ -33,8 +36,9 @@ export default function SignUpModal({
   onCancel,
   onSignIn,
   onSuccess,
+  defaultStep,
 }: SignUpModalProps): ReactElement {
-  const [step, setStep] = useState<Step>(Step.PhoneNumber);
+  const [step, setStep] = useState<Step>(defaultStep || Step.PhoneNumber);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -156,6 +160,8 @@ export default function SignUpModal({
                   error={statusMessage}
                 />
               );
+            case Step.Failed:
+              return <Failed onCancel={onCancel} />;
             default:
               return <></>;
           }
