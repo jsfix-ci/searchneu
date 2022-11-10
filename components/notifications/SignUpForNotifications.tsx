@@ -27,13 +27,6 @@ export default function SignUpForNotifications({
   showNotificationSignup,
   fetchUserInfo,
 }: SignUpForNotificationsProps): ReactElement {
-  userInfo = {
-    token: null,
-    phoneNumber: null,
-    courseIds: [],
-    sectionIds: [],
-  };
-
   const [showModal, setShowModal] = useState(false);
   const [requesting, setRequesting] = useState(false);
   const [checked, setChecked] = useState(
