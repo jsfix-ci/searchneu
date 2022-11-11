@@ -21,7 +21,6 @@ import {
 import Expandable, { SupportedInfoTypes } from './MobileClassInfoExpandable';
 import IconGlobe from '../../icons/IconGlobe';
 import IconMessage from '../../icons/IconMessage';
-import SignUpForNotifications from '../../SignUpForNotifications';
 import {
   ClassPageSection,
   getCampusOptions,
