@@ -89,10 +89,6 @@ export default function MobilePageContent({
 
   return (
     <div className="mobilePageContent">
-      <div className="backToResults" onClick={() => router.back()}>
-        {'< Back to Search Results'}
-      </div>
-
       {classPageInfo && classPageInfo.class && (
         <div className="classPageContainer">
           <div

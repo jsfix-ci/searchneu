@@ -150,7 +150,7 @@ describe.only('Results page integration tests', () => {
     // click the apply button
     classIdRangeFilter.find('.RangeFilter__apply-input').simulate('click');
     expect(setQParams).toBeCalledWith({
-      classIdRange: { max: 5000, min: 1000 },
+      classIdRange: { max: 6000, min: 1000 },
     });
   });
 });

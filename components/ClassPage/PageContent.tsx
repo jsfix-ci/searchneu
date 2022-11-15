@@ -34,15 +34,11 @@ export default function PageContent({
   }
   return (
     <div className={`pageContent ${isCoreq ? 'coreqPageContent' : ''}`}>
-      {isCoreq ? (
+      {isCoreq && (
         <h2 className="coreqHeader">
           COREQUISITES for
           <span className="coreqHeaderCourse">{` ${subject}${classId}`}</span>
         </h2>
-      ) : (
-        <div className="backToResults" onClick={() => router.back()}>
-          Back to Search Results
-        </div>
       )}
       {classPageInfo && classPageInfo.class && (
         <div className="classPageInfoContent">
