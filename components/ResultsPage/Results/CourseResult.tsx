@@ -241,7 +241,6 @@ export function MobileCourseResult({
           <div className="MobileSearchResult__panel--mainContainer">
             <div className="MobileSearchResult__panel--infoStrings">
               <LastUpdatedMobile
-                host={course.host}
                 prettyUrl={course.prettyUrl}
                 lastUpdateTime={course.lastUpdateTime}
               />
