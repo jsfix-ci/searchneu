@@ -13,7 +13,7 @@ import WeekdayBoxes from './WeekdayBoxes';
 import Tooltip, { TooltipDirection } from '../../Tooltip';
 import SectionCheckBox from '../../panels/SectionCheckBox';
 import { UserInfo } from '../../../components/types';
-import NegativeSeatCountTooltip from '../../common/NegativeSeatCountTooltip';
+import InfoIconTooltip from '../../common/InfoIconTooltip';
 
 interface SectionPanelProps {
   section: Section;
@@ -176,7 +176,12 @@ export function DesktopSectionPanel({
           <span className={'DesktopSectionPanel__' + getSeatsClass()}>
             {section.seatsRemaining}/{section.seatsCapacity}
           </span>
-          {section.seatsRemaining < 0 && <NegativeSeatCountTooltip />}
+          {section.seatsRemaining < 0 && (
+            <InfoIconTooltip
+              text="Negative seat counts are displayed when students override into a course."
+              direction={TooltipDirection.Down}
+            />
+          )}
         </div>
         <br />
         <span>
@@ -284,8 +289,17 @@ export function MobileSectionPanel({
           <span> | </span>
           <span className="MobileSectionPanel__waitlist-text">
             {`${section.waitRemaining}/${section.waitCapacity} Waitlist Seats`}
-          </span>
+          </span>{' '}
+          {section.seatsRemaining < 0 && (
+            <div>
+              <span style={{ color: '#d41b2c' }}>
+                Negative seat counts are displayed when students override into a
+                course.
+              </span>
+            </div>
+          )}
         </div>
+
         {userInfo && (
           <SectionCheckBox
             section={section}

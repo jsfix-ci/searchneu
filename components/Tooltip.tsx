@@ -5,7 +5,7 @@ export enum TooltipDirection {
   Down = 'DOWN',
 }
 
-type TooltipProps = {
+export type TooltipProps = {
   text: string;
   direction: TooltipDirection;
 };
