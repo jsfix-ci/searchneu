@@ -8,13 +8,14 @@ export enum TooltipDirection {
 export type TooltipProps = {
   text: string;
   direction: TooltipDirection;
+  flipLeft?: boolean;
 };
 
-export default function Tooltip({ text, direction }: TooltipProps) {
+export default function Tooltip(props: TooltipProps) {
   return (
-    <div className={'tooltip'}>
-      {text}
-      <div className={`tooltip__arrow--${direction}`} />
+    <div className={props.flipLeft ? 'tooltip flip_tooltip' : 'tooltip'}>
+      {props.text}
+      <div className={`tooltip__arrow--${props.direction}`} />
     </div>
   );
 }

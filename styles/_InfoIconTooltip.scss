@@ -1,15 +1,22 @@
 .InfoIconTooltip {
   background: transparent;
+  position: relative;
+
   &__icon {
     &:hover + .tooltip {
       display: block;
       background: #1d3557;
       white-space: wrap;
-      width: 250px;
-      padding: 10px;
+      width: 225px;
+      padding: 7px;
       z-index: 100000;
-      & > div {
+
+      & > .tooltip__arrow--DOWN {
         border-color: transparent transparent #1d3557 transparent;
+      }
+
+      & > .tooltip__arrow--UP {
+        border-color: #1d3557 transparent transparent transparent;
       }
     }
   }

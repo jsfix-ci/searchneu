@@ -180,6 +180,7 @@ export function DesktopSectionPanel({
             <InfoIconTooltip
               text="Negative seat counts are displayed when students override into a course."
               direction={TooltipDirection.Down}
+              flipLeft={true}
             />
           )}
         </div>
