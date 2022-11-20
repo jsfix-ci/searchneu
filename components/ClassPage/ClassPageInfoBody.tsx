@@ -1,13 +1,10 @@
 import { mean } from 'lodash';
 import React, { ReactElement } from 'react';
 import { GetClassPageInfoQuery } from '../../generated/graphql';
-import {
-  getCampusByLastDigit,
-  getSemesterNameFromTermId,
-  getYearFromTermId,
-} from '../terms';
+import { getTermNameFromId } from '../terms';
 import { Campus } from '../types';
 import HeaderBody from './HeaderBody';
+import { router } from 'next/client';
 
 type ClassPageInfoProp = {
   classPageInfo: GetClassPageInfoQuery;
@@ -24,10 +21,7 @@ export default function ClassPageInfoBody({
           header="COURSE DESCRIPTION"
           body={<p>{latestOccurrence.desc}</p>}
         />
-        <HeaderBody
-          header="COURSE LEVEL"
-          body={<p>{getCourseLevel(latestOccurrence.termId.toString())}</p>}
-        />
+        <HeaderBody header="COURSE LEVEL" body={<p>{getCourseLevel()}</p>} />
       </div>
       <div className="verticalLine" />
       <div className="classPageBodyRight">
@@ -76,9 +70,8 @@ export default function ClassPageInfoBody({
   );
 }
 
-function getCourseLevel(termId: string): string {
-  const termIdLastDigit = termId.charAt(termId.length - 1);
-  const campus = getCampusByLastDigit(termIdLastDigit);
+function getCourseLevel(): string {
+  const campus = (router?.query?.campus as Campus) ?? Campus.NEU;
   return campus === Campus.NEU ? 'Undergraduate' : 'Graduate';
 }
 
@@ -108,9 +101,10 @@ function getRecentSemesterNames(
   classPageInfo: GetClassPageInfoQuery,
   limit: number
 ): string[] {
+  const campus = (router?.query?.campus as Campus) ?? Campus.NEU;
   const allSemesters = classPageInfo.class.allOccurrences.map((occurrence) => {
     const termId = occurrence.termId.toString();
-    return `${getSemesterNameFromTermId(termId)} ${getYearFromTermId(termId)}`;
+    return `${getTermNameFromId(termId, campus)}`;
   });
   return allSemesters.slice(0, Math.min(limit, allSemesters.length));
 }

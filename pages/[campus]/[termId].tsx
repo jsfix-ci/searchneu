@@ -14,7 +14,6 @@ import ExploratorySearchButton from '../../components/HomePage/ExploratorySearch
 import Boston from '../../components/icons/boston.svg';
 import Husky from '../../components/icons/Husky';
 import Logo from '../../components/icons/Logo';
-import macros from '../../components/macros';
 import LoadingContainer from '../../components/ResultsPage/LoadingContainer';
 import AlertBanner, {
   AlertBannerData,
@@ -27,7 +26,7 @@ import getTermInfos from '../../utils/TermInfoProvider';
 export default function Home(): ReactElement {
   const router = useRouter();
 
-  const campus = (router.query.campus as Campus) || Campus.NEU;
+  const campus = (router.query.campus as Campus) ?? Campus.NEU;
   const termInfos = getTermInfos();
   const LATEST_TERM =
     termInfos[campus].length > 0 ? termInfos[campus][0]['value'] : '';

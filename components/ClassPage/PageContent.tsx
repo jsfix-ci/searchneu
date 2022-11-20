@@ -5,6 +5,7 @@ import ClassPageInfoBody from './ClassPageInfoBody';
 import ClassPageInfoHeader from './ClassPageInfoHeader';
 import ClassPageReqsBody from './ClassPageReqsBody';
 import ClassPageSections from './ClassPageSections';
+import getTermInfos from '../../utils/TermInfoProvider';
 
 type PageContentProps = {
   termId: string;
@@ -28,8 +29,13 @@ export default function PageContent({
   // TODO: hacky front-end solution because for some reason allOccurrences includes
   // termIds where there are no sections. This should probably be fixed on the backend.
   if (classPageInfo && classPageInfo.class) {
+    const termIds = getTermInfos()[campus].map((termInfo) => termInfo.value);
     classPageInfo.class.allOccurrences = classPageInfo.class.allOccurrences.filter(
-      (occurrence) => occurrence.sections.length > 0
+      (occurrence) =>
+        occurrence.sections.length > 0 &&
+        // filter out termIds that are not availible from termInfos from Banner,
+        // probably should include this in the backend as well
+        termIds.includes(occurrence.termId)
     );
   }
   return (

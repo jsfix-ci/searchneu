@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Campus } from './types';
 import { gqlClient } from '../utils/courseAPIClient';
+import getTermInfos from '../utils/TermInfoProvider';
 
 /** Information about a term */
 export interface TermInfo {
@@ -53,21 +54,6 @@ export function getLatestTerm(
     return campusTerms[0].value as string;
   }
   return '';
-}
-
-export function getCampusByLastDigit(t: string): Campus {
-  switch (t) {
-    case '0':
-      return Campus.NEU;
-    case '2':
-    case '8':
-      return Campus.LAW;
-    case '4':
-    case '5':
-      return Campus.CPS;
-    default:
-      throw new Error('unexpected campus digit');
-  }
 }
 
 export function greaterTermExists(
@@ -126,46 +112,14 @@ export function getTermName(
   return termName ? termName.text : '';
 }
 
-/**
- * CPS/LAW use different semester names than NEU.
- * Current semester names for NEU campus: Fall, Winter, Spring, Summer I, Summer II, and Summer Full.
- * Current semester names for CPS/LAW campus: Fall Semester, Fall Quarter, Winter Quarter,
- * Spring Semester, Spring Quarter, Summer Semester, Summer Quarter.
- * Each semester corresponds to a different 2-digits number (last two digits of the term id).
- */
-export function getSemesterNameFromTermId(termId: string): string {
-  const semesterDigit = termId.slice(-2);
-  const semesterDigitMap = {
-    '10': 'Fall',
-    '14': 'Fall Semester',
-    '15': 'Fall Quarter',
-    '20': 'Winter',
-    '25': 'Winter Quarter',
-    '30': 'Spring',
-    '34': 'Spring Semester',
-    '35': 'Spring Quarter',
-    '40': 'Summer I',
-    '50': 'Summer Full',
-    '54': 'Summer Semester',
-    '55': 'Summer Quarter',
-    '60': 'Summer II',
-  };
+export function getTermNameFromId(termId: string, campus: string): string {
+  const termInfos = getTermInfos()[campus];
+  const termInfo = termInfos.find((term) => term.value === termId);
 
-  if (!semesterDigitMap[semesterDigit])
-    throw new Error('Unexpected season digit: ' + semesterDigit);
-  else return semesterDigitMap[semesterDigit];
-}
-
-// returns the year the term occurs in
-export function getYearFromTermId(termId: string): number {
-  const givenYear: number = parseInt(termId.substr(0, 4));
-  const seasonDigit: number = parseInt(termId.charAt(termId.length - 2));
-  // Fall and Winter semesters occurs in the previous year from the given year from termId.
-  // ex: 202110 should be Fall 2020 not Fall 2021
-  // Fall semesters have season digit 1; Winter semesters have season digit 2.
-  if (seasonDigit < 3) {
-    return givenYear - 1;
-  } else {
-    return givenYear;
+  if (termInfo === undefined || termInfo === null) {
+    throw new Error(
+      'No Matching Term Name for Term Id: ' + termId + ' for College ' + campus
+    );
   }
+  return termInfo.text;
 }

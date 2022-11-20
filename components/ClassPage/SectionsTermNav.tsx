@@ -1,7 +1,9 @@
 import React, { ReactElement } from 'react';
 import { GetClassPageInfoQuery } from '../../generated/graphql';
-import { getSemesterNameFromTermId, getYearFromTermId } from '../terms';
+import { getTermNameFromId } from '../terms';
 import { LeftNavArrow, RightNavArrow } from '../icons/NavArrow';
+import { router } from 'next/client';
+import { Campus } from '../types';
 
 type sectionsTermNavProps = {
   currTermIndex: number;
@@ -19,6 +21,7 @@ export default function SectionsTermNav({
   const leftNavDisabled = (termIndex): boolean =>
     termIndex === allOccurrences.length - 1;
   const rightNavDisabled = (termIndex): boolean => termIndex === 0;
+  const campus = (router?.query?.campus as Campus) ?? Campus.NEU;
   return (
     <div className="termNav">
       <span
@@ -35,9 +38,7 @@ export default function SectionsTermNav({
           fill={leftNavDisabled(currTermIndex) ? '#969696' : '#000000'}
         />
       </span>
-      {`${getSemesterNameFromTermId(`${currTermId}`)} ${getYearFromTermId(
-        `${currTermId}`
-      )}`.toUpperCase()}
+      {`${getTermNameFromId(`${currTermId}`, `${campus}`)}`.toUpperCase()}
       <span
         onClick={() => setCurrTermIndex(Math.max(currTermIndex - 1, 0))}
         className={`navArrow ${
