@@ -190,7 +190,6 @@ export default function Results(): ReactElement | null {
                 hasNextPage={searchData.hasNextPage}
                 userInfo={userInfo}
                 onSignIn={onSignIn}
-                isCurrentTerm={searchData.isCurrentTerm}
                 fetchUserInfo={fetchUserInfo}
               />
             )}

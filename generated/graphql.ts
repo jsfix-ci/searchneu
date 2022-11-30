@@ -181,7 +181,6 @@ export type SearchResultItemConnection = {
   pageInfo: PageInfo;
   nodes?: Maybe<Array<Maybe<SearchResultItem>>>;
   filterOptions: FilterOptions;
-  isCurrentTerm: Scalars['Boolean'];
 };
 
 export type Section = {
@@ -209,6 +208,7 @@ export type TermInfo = {
   termId: Scalars['String'];
   subCollege: Scalars['String'];
   text: Scalars['String'];
+  isCurrentTerm: Scalars['Boolean'];
 };
 
 export type GetCourseInfoByHashQueryVariables = Exact<{
@@ -298,8 +298,7 @@ export type SearchResultsQuery = { __typename?: 'Query' } & {
     { __typename?: 'SearchResultItemConnection' } & Pick<
       SearchResultItemConnection,
       'totalCount'
-    > &
-      Pick<SearchResultItemConnection, 'isCurrentTerm'> & {
+    > & {
         pageInfo: { __typename?: 'PageInfo' } & Pick<PageInfo, 'hasNextPage'>;
         filterOptions: { __typename?: 'FilterOptions' } & {
           nupath?: Maybe<
@@ -448,7 +447,10 @@ export type GetTermIDsByCollegeQueryVariables = Exact<{
 
 export type GetTermIDsByCollegeQuery = { __typename?: 'Query' } & {
   termInfos: Array<
-    { __typename?: 'TermInfo' } & Pick<TermInfo, 'text' | 'termId'>
+    { __typename?: 'TermInfo' } & Pick<
+      TermInfo,
+      'isCurrentTerm' | 'text' | 'termId'
+    >
   >;
 };
 
@@ -644,6 +646,7 @@ export const GetPagesForSitemapDocument = gql`
 export const GetTermIDsByCollegeDocument = gql`
   query getTermIDsByCollege($subCollege: String!) {
     termInfos(subCollege: $subCollege) {
+      isCurrentTerm
       text
       termId
     }

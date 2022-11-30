@@ -7,7 +7,7 @@ import {
   CreditsDisplayMobile,
 } from '../../common/CreditsDisplay';
 import { LastUpdated, LastUpdatedMobile } from '../../common/LastUpdated';
-import { UserInfo } from '../../types';
+import { Campus, UserInfo } from '../../types';
 import IconArrow from '../../icons/IconArrow';
 import IconNotepad from '../../icons/IconNotepad';
 import SignUpForNotifications from '../../notifications/SignUpForNotifications';
@@ -17,12 +17,14 @@ import { DesktopSectionPanel, MobileSectionPanel } from './SectionPanel';
 import useResultDetail from './useResultDetail';
 import useShowAll from './useShowAll';
 import { MobileSearchResult, SearchResult } from './SearchResult';
+import getTermInfosWithError from '../../../utils/TermInfoProvider';
+import { get } from 'https';
+import { TermInfo } from '../../../generated/graphql';
 interface CourseResultProps {
   course: Course;
   userInfo: UserInfo;
   onSignIn: (token: string) => void;
   fetchUserInfo: () => void;
-  isCurrentTerm: boolean;
 }
 
 const sortSections = (sections: Section[]): Section[] => {
@@ -45,12 +47,27 @@ export function CourseResult({
   userInfo,
   onSignIn,
   fetchUserInfo,
-  isCurrentTerm,
 }: CourseResultProps): ReactElement {
   const router = useRouter();
   const termId = router.query.termId as string;
   const campus = router.query.campus as string;
   const sortedSections = useMemo(() => sortSections(course.sections), [course]);
+  const termInfo = getTermInfosWithError().termInfos.LAW[0];
+
+  const campus2 = (router.query.campus as Campus) || Campus.NEU;
+  const termInfosWithError = getTermInfosWithError();
+  const termInfos = termInfosWithError.termInfos;
+  const isCurrentTerm =
+    termInfos[campus].length > 0
+      ? termInfos[campus].filter((info) => info.value == termId)[0]
+          .isCurrentTerm
+      : true;
+  const currTerm =
+    termInfos[campus].length > 0 ? termInfos[campus][0]['isCurrentTerm'] : '';
+  console.log(currTerm);
+  console.log('terminfo bool above');
+  console.log(termInfos[campus2]);
+
   const { optionalDisplay } = useResultDetail(course);
 
   const { showAll, setShowAll, renderedSections, hideShowAll } = useShowAll(
@@ -200,7 +217,6 @@ export function MobileCourseResult({
   userInfo,
   onSignIn,
   fetchUserInfo,
-  isCurrentTerm,
 }: CourseResultProps): ReactElement {
   const [showMore, setShowMore] = useState(false);
   const [showNUPath, setShowNUPath] = useState(false);
@@ -211,6 +227,17 @@ export function MobileCourseResult({
     sortedSections
   );
 
+  const router = useRouter();
+  const termId = router.query.termId as string;
+  const campus = router.query.campus as string;
+
+  const termInfosWithError = getTermInfosWithError();
+  const termInfos = termInfosWithError.termInfos;
+  const isCurrentTerm =
+    termInfos[campus].length > 0
+      ? termInfos[campus].filter((info) => info.value == termId)[0]
+          .isCurrentTerm
+      : true;
   const { optionalDisplay } = useResultDetail(course);
 
   const hasAtLeastOneSectionFull = (): boolean => {
