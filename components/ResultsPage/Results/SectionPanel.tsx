@@ -290,12 +290,12 @@ export function MobileSectionPanel({
           <span> | </span>
           <span className="MobileSectionPanel__waitlist-text">
             {`${section.waitRemaining}/${section.waitCapacity} Waitlist Seats`}
-          </span>{' '}
+          </span>
           {section.seatsRemaining < 0 && (
             <div>
               <span style={{ color: '#d41b2c' }}>
-                Negative seat counts are displayed when students override into a
-                course.
+                &nbsp;Negative seat counts are displayed when students override
+                into a course.
               </span>
             </div>
           )}

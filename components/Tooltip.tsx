@@ -8,6 +8,11 @@ export enum TooltipDirection {
 export type TooltipProps = {
   text: string;
   direction: TooltipDirection;
+  /**
+   * Decides the orientation of the Tooltip box; by default, the orientation has text
+   * expanding on the right side. If this variable is set to T, the box will have
+   * text expanding the left side, making it "flipped".
+   */
   flipLeft?: boolean;
 };
 
