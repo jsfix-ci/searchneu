@@ -178,7 +178,7 @@ export function DesktopSectionPanel({
           </span>
           {section.seatsRemaining < 0 && (
             <InfoIconTooltip
-              text="Negative seat counts are displayed when students override into a course."
+              text="Negative seat counts are displayed when academic advisors apply course overrides for students."
               direction={TooltipDirection.Down}
               flipLeft={true}
             />
